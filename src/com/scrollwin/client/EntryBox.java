@@ -1,6 +1,5 @@
 package com.scrollwin.client;
 
-import com.google.gwt.user.client.ui.TextArea;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -18,7 +17,6 @@ public class EntryBox extends HLayout {
 
 	//private final DynamicForm form = new DynamicForm();
 	private TextAreaItem messageItem = new TextAreaItem();
-	private TextAreaItem textEntry = new TextAreaItem();
 	private HStack imageStack = new HStack();
 	private DynamicForm form = new DynamicForm(); 
     private ioCallbackInterface myCallbackInterface;
@@ -70,7 +68,7 @@ public class EntryBox extends HLayout {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if(event.getKeyName().compareTo("Shift") == 0)
-					myIsShiftDown= true;
+					myIsShiftDown = true;
 			}
           });
         
@@ -88,19 +86,7 @@ public class EntryBox extends HLayout {
 //			}
 //          });
         
-        
-        
-//    	textEntry.setWidth("400px");
-//		textEntry.addKeyPressHandler(new KeyPressHandler() {
-//
-//            public void onKeyPress(KeyPressEvent event) {
-//              if (event.getCharCode() == (char) 13){
-//            	  myCallbackInterface.messageToSendCallback(escapeJson(textEntry.getText()));
-//            	  event.preventDefault(); // So the "Enter" won't be sent to edit box
-//            	  textEntry.setText("");
-//              }
-//            }
-//          });
+
 		addMember(imageStack);
 		addMember(form);
     }

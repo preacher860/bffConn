@@ -35,7 +35,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 	public static final int MODE_SHUTDOWN = 4;
 	
 	private HStack hStack = new HStack();
-	private VStack vStack = new VStack();
+	private VStack messageVStack = new VStack();
 	private VStack chatvStack = new VStack();
 	private VLayout mainvStack = new VLayout();
 	private VStack menuBox = new VStack();
@@ -54,6 +54,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 	private String mySessionId = "0";
 	private WaitWindow myWaitWindow = new WaitWindow();
 	private Integer myVersion = VersionInfo.CURRENT_VERSION;
+	private boolean myAtBottom = true;
 	
 	public ScrollWin(){
 		
@@ -81,17 +82,17 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
         headerImage.setOverflow(Overflow.HIDDEN);
         mainvStack.addMember(headerImage);
         
-        vStack.setShowEdges(true);  
-        vStack.setMargin(5);
-        vStack.setWidth(800);  
-        vStack.setHeight("80%");
-        vStack.setCanDragResize(true);
-        vStack.setOverflow(Overflow.AUTO);
-        vStack.setLeaveScrollbarGap(true);
-        vStack.setMembersMargin(3);  
-        vStack.setLayoutMargin(4);
+        messageVStack.setShowEdges(true);  
+        messageVStack.setMargin(5);
+        messageVStack.setWidth(800);  
+        messageVStack.setHeight("80%");
+        messageVStack.setCanDragResize(true);
+        messageVStack.setOverflow(Overflow.AUTO);
+        messageVStack.setLeaveScrollbarGap(true);
+        messageVStack.setMembersMargin(3);  
+        messageVStack.setLayoutMargin(4);
         
-        chatvStack.addMember(vStack);
+        chatvStack.addMember(messageVStack);
         chatvStack.addMember(myEntryBox);
         
         LayoutSpacer spacer = new LayoutSpacer();
@@ -107,10 +108,15 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
         //canvas.setBackgroundColor("#A0A0A0");
         canvas.draw();  
         
-        vStack.addScrolledHandler(new ScrolledHandler(){
+        // This scroll handler sets the flag user to determine if we're at bottom or not.
+        // Only if were at bottom do we kick the autoscroll on new messages
+        messageVStack.addScrolledHandler(new ScrolledHandler(){
 			@Override
 			public void onScrolled(ScrolledEvent event) {
-				//vStack.scrollToBottom();
+				if(messageVStack.getScrollTop() == messageVStack.getScrollBottom())
+					myAtBottom = true;
+				else
+					myAtBottom = false;
 			}
         } );
         
@@ -141,7 +147,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 	    myCrappyTimer = new Timer() {
 		      @Override
 		      public void run() {
-		    	  vStack.scrollToBottom();
+		    	  messageVStack.scrollToBottom();
 		      }
 		    };
 		    
@@ -157,12 +163,13 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 			if(messages.get(msgIndex).getMessageSeqId() > myRuntimeData.getNewestSeqId())
 			{
 				ScrollWinElement bb = new ScrollWinElement(messages.get(msgIndex), myUserManager.getUser(messages.get(msgIndex).getMessageUserId()));
-				vStack.addMember(bb);
+				messageVStack.addMember(bb);
 				myRuntimeData.setNewestSeqId(messages.get(msgIndex).getMessageSeqId());
 			}
 		}
 		
-		myCrappyTimer.schedule(200);
+		if(myAtBottom)
+			myCrappyTimer.schedule(200);
 	} 
 	
 	@Override
@@ -250,8 +257,8 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 		ioModule.SendUserMessage(message, myRuntimeData.getNewestSeqId(), myUserId, mySessionId);
 
 		// Control max number of msg displayed - Disabled for DB debugging
-  	  	//if(vStack.getMembers().length > 100)
-		//  vStack.removeMember(vStack.getMember(0));
+  	  	//if(messageVStack.getMembers().length > 100)
+		//  messageVStack.removeMember(messageVStack.getMember(0));
 
 	};
 	
