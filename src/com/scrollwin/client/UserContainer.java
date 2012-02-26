@@ -26,6 +26,18 @@ public class UserContainer {
 		myOnlineStatus = user.getOnlineStatus();
 	}
 	
+	public boolean equals(UserContainer user)
+	{
+		if(myId.equals(user.getId()) &&
+		   (myNick.compareTo(user.getNick()) == 0) &&
+		   (myName.compareTo(user.getName()) == 0) &&
+		   (myAvatarURL.compareTo(user.getAvatarURL()) == 0) &&
+		    myOnlineStatus == user.getOnlineStatus())
+			return true;
+		
+		return false;
+	}
+	
 	public Integer getId() {
 		return myId;
 	}

@@ -34,6 +34,8 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
+	public static final int MSG_INITIAL_RTRV = 200;
+	
 	private HStack hStack = new HStack();
 	private VStack messageVStack = new VStack();
 	private VStack chatvStack = new VStack();
@@ -175,8 +177,8 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 	@Override
 	public void runtimeDataReceivedCallback(RuntimeData data) {
 		// The seqId we want to start with for initial window fill
-		if(data.newestSeqId > 200)
-			myRuntimeData.setNewestSeqId(data.newestSeqId - 200);
+		if(data.newestSeqId > MSG_INITIAL_RTRV)
+			myRuntimeData.setNewestSeqId(data.newestSeqId - MSG_INITIAL_RTRV);
 		else
 			myRuntimeData.setNewestSeqId(1);
 
@@ -187,7 +189,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 	public void usersReceivedCallback(ArrayList<UserContainer> users) {
 		myUserManager.setUserList(users);
 		myUserDataRcvd = true;
-		myUserTileDisplay.UpdateOnlineUsers(myUserManager.getUserList());
+		myUserTileDisplay.UpdateOnlineUsers(myUserManager);
 	}
 
 	@Override

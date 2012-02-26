@@ -14,6 +14,7 @@
 
   <!-- Specify the app entry point class.                         -->
   <inherits name='com.smartgwt.SmartGwt'/>
+  <inherits name='com.smartgwt.Drawing'/>
   <entry-point class='com.scrollwin.client.ScrollWin'/>
 
   <!-- Specify the paths for translatable code                    -->

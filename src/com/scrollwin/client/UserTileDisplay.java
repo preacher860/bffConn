@@ -9,6 +9,7 @@ import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
 public class UserTileDisplay extends TileGrid {
 	private ArrayList<UserContainer> knownUsers = new ArrayList<UserContainer>();
+	int myUserDbVersion = 0;
 	
 	public UserTileDisplay(){
 		setTileWidth(48);
@@ -18,56 +19,40 @@ public class UserTileDisplay extends TileGrid {
 		setMargin(5);
 		setShowAllRecords(true);
 		setAutoFetchData(false);
-		//setAutoHeight();
 		setOverflow(Overflow.VISIBLE);
+		setAnimateTileChange(true);
 		setTileMargin(2);
-
+		
 		DetailViewerField pictureField = new DetailViewerField("picture");
 		pictureField.setType("image");
 		pictureField.setImageURLPrefix("");
 		pictureField.setImageWidth(40);
 		pictureField.setImageHeight(40);
-
-
+		
 		DetailViewerField nameField = new DetailViewerField("name");
 
 		setFields(pictureField, nameField);
 	}
 	
-	public void UpdateOnlineUsers(ArrayList<UserContainer> users){
-		// Eventually detect if the users have changed to minimize refreshes
-		// (and thus flickers) to the tilegrid
-		//invalidateCache();
-		setData(UserData.getNewRecords(users));
-		//knownUsers = cloneList(users);
-	}
-	
-	private ArrayList<UserContainer> cloneList(ArrayList<UserContainer> users) {
-	    ArrayList<UserContainer> clonedList = new ArrayList<UserContainer>(users.size());
-	    for (UserContainer currentUser : users) {
-	        clonedList.add(new UserContainer(currentUser));
-	    }
-	    return clonedList;
+	public void UpdateOnlineUsers(UserManager userManager){
+		if(userManager.getDbVersion() != myUserDbVersion)
+		{
+			if(userManager.getOnlineUsers() != null)
+				setData(UserData.getNewRecords(userManager.getOnlineUsers()));
+			myUserDbVersion = userManager.getDbVersion(); 
+		}
 	}
 }
 
 class UserData {
 	public static UserRecord[] getNewRecords(ArrayList<UserContainer> users) {
-		int numOfOnline = 0;
 		int recIndex = 0;
-		
-		// This sucks, but the records table must have the right size so we need to know
-		// how many guys online before populating.  User manager will make this nicer eventually
-		for(UserContainer currentUser:users) 
-			if(currentUser.getOnlineStatus())
-				numOfOnline++;
-		
-		UserRecord [] records = new UserRecord[numOfOnline];
-		for(UserContainer currentUser:users) 
-			if(currentUser.getOnlineStatus()){
-				records[recIndex] = new UserRecord(currentUser.getNick(), currentUser.getAvatarURL());
-				recIndex++;
-			}
+
+		UserRecord [] records = new UserRecord[users.size()];
+		for(UserContainer currentUser:users) { 
+			records[recIndex] = new UserRecord(currentUser.getNick(), currentUser.getAvatarURL());
+			recIndex++;
+		}
 		
 		return records;
 	}

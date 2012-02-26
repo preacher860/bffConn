@@ -6,6 +6,7 @@ public class UserManager {
 	
 	private ArrayList<UserContainer> myUserList = new ArrayList<UserContainer>();
 	private boolean userListReceived = false;
+	private int myDbVersion = 0;
 	
 	public void setUser(UserContainer user){
 		// Scan the list to see if we're adding or editing a user
@@ -28,6 +29,16 @@ public class UserManager {
 	}
 	
 	public void setUserList(ArrayList<UserContainer> userList){
+		// Check if there is any change from what we had before
+		if(userList.size() != myUserList.size())
+			myDbVersion++;
+		else
+			for(int userIndex = 0; userIndex < userList.size(); userIndex++)
+				if(myUserList.get(userIndex).equals(userList.get(userIndex)) == false) {
+					System.out.println("Diff detected in new user list for user " + userIndex);
+					myDbVersion++;
+					break;
+				}
 		myUserList = userList;		
 		userListReceived = true;
 	}
@@ -40,5 +51,23 @@ public class UserManager {
 	
 	public boolean getUserListReceived() {
 		return userListReceived;
+	}
+	
+	public ArrayList<UserContainer> getOnlineUsers()
+	{
+		ArrayList<UserContainer> onlineUsersList = new ArrayList<UserContainer>();
+		
+		for(UserContainer currentUser:myUserList)
+			if(currentUser.getOnlineStatus() == true) 
+				onlineUsersList.add(currentUser);
+		return onlineUsersList;
+	}
+	
+	public int getDbVersion() {
+		return myDbVersion;
+	}
+
+	public void setDbVersion(int dbVersion) {
+		this.myDbVersion = myDbVersion;
 	}
 }
