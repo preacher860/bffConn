@@ -15,7 +15,6 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 
 public class EntryBox extends HLayout {
 
-	//private final DynamicForm form = new DynamicForm();
 	private TextAreaItem messageItem = new TextAreaItem();
 	private HStack imageStack = new HStack();
 	private DynamicForm form = new DynamicForm(); 
@@ -57,7 +56,7 @@ public class EntryBox extends HLayout {
 	        	if (event.getKeyName().compareTo("Enter") == 0){
 	        		if(!myIsShiftDown){
 						event.cancel();
-						myCallbackInterface.messageToSendCallback(escapeJson(messageItem.getValueAsString()));
+						myCallbackInterface.messageToSendCallback(filterMessage(messageItem.getValueAsString()));
 						messageItem.clearValue();
 	        		}
 				}
@@ -72,21 +71,6 @@ public class EntryBox extends HLayout {
 			}
           });
         
-        //  KeyDown doesn't work anymore as of Chrome 16.0.9xx!! (works on 16.0.8xx and Firefox)
-        //  Lucky us, KeyUp still does what it's supposed to
-//        messageItem.addKeyDownHandler(new KeyDownHandler() {
-//			@Override
-//			public void onKeyDown(KeyDownEvent event) {
-//				System.out.println("KeyDown: "+ event.getKeyName());
-//				if (event.getKeyName().compareTo("Enter") == 0){
-//					event.cancel();
-//					myCallbackInterface.messageToSendCallback(escapeJson(messageItem.getValueAsString()));
-//					messageItem.clearValue();
-//				}
-//			}
-//          });
-        
-
 		addMember(imageStack);
 		addMember(form);
     }
@@ -97,6 +81,26 @@ public class EntryBox extends HLayout {
     	userImage.setBorder("2px groove #808080");
     	imageStack.addMember(userImage, 0);
     }
+
+    public String filterMessage(String Message)
+    {
+    	String outputMessage = "";
+    	
+    	// Split the message in tokens (separator is space) an try to locate URLs
+    	String [] parts = Message.split("\\s");
+    	
+    	for(String item:parts)
+    	{
+    		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
+    			if( (item.endsWith(".jpg")) || (item.endsWith(".gif")) || (item.endsWith(".png")) )
+    				item = "<img src=\"" + item + "\"/>";
+    			else
+    				item = "<a href=\"" + item + "\">lien</a>";
+    		}
+    		outputMessage += item + " ";
+    	}
+    	return escapeJson(outputMessage);
+    }
     
     public String escapeJson(String str) {
 	    str = str.replace("\\", "\\\\");
@@ -104,8 +108,6 @@ public class EntryBox extends HLayout {
 	    str = str.replace("/", "\\/");
 	    str = str.replace("\b", "\\b");
 	    str = str.replace("\f", "\\f");
-	    //str = str.replace("\n", "\\n");
-	    //str = str.replace("\r", "\\r");
 	    str = str.replace("\n", "<br>"); 
 	    str = str.replace("\r", "<br>");
 	    str = str.replace("\t", "\\t");

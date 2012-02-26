@@ -3,6 +3,8 @@ package com.scrollwin.server;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +19,8 @@ import java.util.TimerTask;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import com.scrollwin.client.VersionInfo;
 
@@ -342,7 +346,9 @@ private int getNewestSeq(Connection conn)
 	  if (Message.length() > 1000)
 	  	Message = Message.substring(0, 999);
 
+	  Message = filterMessage(Message);
 	  try {
+		  
 		  // Don't autocommit, we want to save message and update seqId in a single transaction
 	      Connection conn = this.getConn();
 	      conn.setAutoCommit(false);
@@ -359,6 +365,41 @@ private int getNewestSeq(Connection conn)
           System.err.println("Mysql Statement Error in ProcessNewMessage");
           e.printStackTrace();
 	  }
+  }
+  
+  private String filterMessage(String message)
+  {
+	String unescapedMessage = unescapeJson(message);
+  	String cleanedMessage = Jsoup.clean(unescapedMessage, Whitelist.basicWithImages());
+  	String escapedMessage = escapeJson(cleanedMessage);
+  	
+//  	System.out.println("Evil: " + message);
+//  	System.out.println("Unesc: " + unescapedMessage);
+//  	System.out.println("Clean: " + cleanedMessage);
+//  	System.out.println("Escaped: " + escapedMessage);
+  	return escapedMessage;
+  }
+  
+  public String escapeJson(String str) {
+	    str = str.replace("\\", "\\\\");
+	    str = str.replace("\"", "\\\"");
+	    str = str.replace("/", "\\/");
+	    str = str.replace("\b", "\\b");
+	    str = str.replace("\f", "\\f");
+	    str = str.replace("\n", ""); 
+	    str = str.replace("\r", "");
+	    str = str.replace("\t", "\\t");
+	    return str;
+  }
+  
+  public String unescapeJson(String str) {
+	    str = str.replace("\\\\", "\\");
+	    str = str.replace("\\\"", "\"");
+	    str = str.replace("\\/", "/");
+	    str = str.replace("\\b", "\b");
+	    str = str.replace("\\f", "\f");
+	    str = str.replace("\\t", "\t");
+	    return str;
   }
   
   private void getRuntimeData(PrintWriter out)
