@@ -2,6 +2,7 @@ package com.scrollwin.client;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Positioning;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.util.Page;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -27,9 +28,11 @@ public class LoginWin extends Window {
         setShowMinimizeButton(false);  
         setIsModal(true);  
         setShowModalMask(true);  
-        centerInPage();  
+        //centerInPage();  
         setWidth(360);  
         setHeight(150);  
+        
+        moveTo(Page.getWidth() / 2 - getWidth()/2, Page.getHeight() / 2 - getHeight()/2);
         
 		VLayout layout = new VLayout(20);
 		layout.setAlign(Alignment.CENTER);
