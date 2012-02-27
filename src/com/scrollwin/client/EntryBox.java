@@ -93,7 +93,7 @@ public class EntryBox extends HLayout {
     	{
     		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
     			if( (item.endsWith(".jpg")) || (item.endsWith(".gif")) || (item.endsWith(".png")) )
-    				item = "<img src=\"" + item + "\"/>";
+    				item = "<img src=\"" + item + "\" height=200/>";
     			else
     				item = "<a href=\"" + item + "\">lien</a>";
     		}

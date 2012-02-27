@@ -4,6 +4,7 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ImageStyle;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.widgets.HTMLFlow;
 import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
@@ -17,10 +18,11 @@ public class ScrollWinElement extends HStack {
 	private VStack messageStack = new VStack();
 	private VStack imageStack = new VStack();
 	private Label userIdLabel = new Label();
-	//Label userMessageLabel = new Label();
-	private HTMLPane userMessageLabel = new HTMLPane();
+	//Label userMessagePane = new Label();
+	private HTMLPane userMessagePane = new HTMLPane();
 	private Label userInfoLabel = new Label();
 	private Img userImage;
+	private int seqId = 0;
 	
 	public ScrollWinElement(MessageContainer message, UserContainer user)
 	{
@@ -37,18 +39,20 @@ public class ScrollWinElement extends HStack {
 		
 		setWidth100();
 		setHeight(40);
-		messageStack.addMember(userMessageLabel);
+		messageStack.addMember(userMessagePane);
 		messageStack.addMember(userInfoLabel);
 		messageStack.setWidth("94%");
 		
-        userMessageLabel.setAlign(Alignment.LEFT);
-        userMessageLabel.setBackgroundColor("#C3D9FF"); // debug blue
-        //userMessageLabel.setBackgroundColor("#E0E0E0"); 
-        userMessageLabel.setPadding(5);
-        userMessageLabel.setContents(message.getMessage());
-        userMessageLabel.setHeight(20);
-        userMessageLabel.setStyleName("chatText");
-        userMessageLabel.setOverflow(Overflow.VISIBLE);
+        userMessagePane.setAlign(Alignment.LEFT);
+        userMessagePane.setBackgroundColor("#C3D9FF"); // debug blue
+        //userMessagePane.setBackgroundColor("#E0E0E0"); 
+        userMessagePane.setPadding(5);
+        userMessagePane.setContents(message.getMessage());
+        userMessagePane.setHeight(20);
+        userMessagePane.setMaxWidth(80);
+        userMessagePane.setStyleName("chatText");
+        userMessagePane.setOverflow(Overflow.VISIBLE);
+        
         
         userInfoLabel.setAlign(Alignment.LEFT);  
         userInfoLabel.setBackgroundColor("#B0B0B0"); // debug gray
@@ -59,7 +63,7 @@ public class ScrollWinElement extends HStack {
         						  "  à: " + message.getMessageDate());
         userInfoLabel.setHeight(8);
         userInfoLabel.setStyleName("chatInfo");
-        
+        seqId = message.getMessageSeqId();
         
         LayoutSpacer spacer = new LayoutSpacer();
         spacer.setHeight(1);
@@ -74,5 +78,11 @@ public class ScrollWinElement extends HStack {
 		
 		addMember(imageStack);
 		addMember(messageStack);
+	}
+	
+	public void adjustForContents()
+	{
+		System.out.println("Adjusting for contents: " + seqId);
+		userMessagePane.adjustForContent(true);
 	}
 }

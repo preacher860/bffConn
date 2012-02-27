@@ -14,9 +14,11 @@ import com.google.gwt.user.client.Cookies;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.events.ScrolledHandler;
 import com.smartgwt.client.widgets.events.ScrolledEvent;
@@ -34,13 +36,16 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	public static final int MSG_INITIAL_RTRV = 20;
+	public static final int MSG_INITIAL_RTRV = 200;
 	
 	private HStack hStack = new HStack();
 	private VStack messageVStack = new VStack();
 	private VStack chatvStack = new VStack();
 	private VLayout mainvStack = new VLayout();
 	private VStack menuBox = new VStack();
+	private HStack headerStack = new HStack();
+	private VStack versionStack = new VStack();
+	private HTMLPane versionPane = new HTMLPane();
 	
 	private IOModule ioModule = new IOModule(this);
 	private Integer myCurrentMode = MODE_INIT_S1;
@@ -82,7 +87,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
         
         Img headerImage = new Img("http://srv.lanouette.ca/images/bffConnHead2.jpg", 1716, 76);
         headerImage.setOverflow(Overflow.HIDDEN);
-        mainvStack.addMember(headerImage);
+        //mainvStack.addMember(headerImage);
         
         messageVStack.setShowEdges(true);  
         messageVStack.setMargin(5);
@@ -104,8 +109,42 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
         hStack.addMember(chatvStack);
         hStack.setWidth100();
         
-        mainvStack.addMember(hStack);
+        LayoutSpacer headerSpacer = new LayoutSpacer();
+        headerSpacer.setWidth(210);
+        headerStack.setWidth100();
+        headerStack.setDefaultLayoutAlign(Alignment.CENTER);
+        headerStack.setDefaultLayoutAlign(VerticalAlignment.BOTTOM);
+        headerStack.setHeight(76);
         
+        String versionLink ="";
+        String versionString = "<font size=\"2\">Version ";
+        versionString += VersionInfo.CURRENT_MAJOR + "." + VersionInfo.CURRENT_VERSION;
+        versionLink += "<style type=\"text/css\">";
+        versionLink += "a.one:link {color:#000000;text-decoration:none}";
+        versionLink += "a.one:visited {color:#000000;text-decoration:none}";
+        versionLink += "a.one:hover {color:#0000FF;text-decoration:none}";
+        versionLink += "</style>";
+        versionLink += "<a class=\"one\" href=\"https://github.com/preacher860/bffConn/wiki/Historique-des-changements\"><b>";
+        versionLink += versionString;
+        versionLink += "</b></a></font>";
+        versionPane.setContents(versionLink);
+        versionPane.setHeight(15);
+        versionPane.setOverflow(Overflow.HIDDEN);
+        
+        LayoutSpacer versionSpacer = new LayoutSpacer();
+        versionSpacer.setHeight(52);
+        versionStack.setHeight(76);
+        versionStack.addMember(versionSpacer);
+        versionStack.addMember(versionPane);
+        
+        headerStack.addMember(headerSpacer);
+        headerStack.addMember(versionStack);
+        
+        mainvStack.addMember(headerStack);
+        mainvStack.addMember(hStack);
+        mainvStack.setTop(0);
+        
+        canvas.addChild(headerImage);
         canvas.addChild(mainvStack); 
         //canvas.setBackgroundColor("#A0A0A0");
         canvas.draw();  
@@ -131,13 +170,13 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 	      			myEntryBox.setUser(myUserManager.getUser(myUserId));
 	      			myCurrentMode = MODE_RUNNING;
 	      		}
-
+	      		
 		  		ioModule.GetUserMessages(myRuntimeData.getNewestSeqId()+1, myUserId, mySessionId);
 		  		
 		  		// Refresh users to get their online status.  This will be gathered in a better way some day
 		  		ioModule.GetUserInfo(myUserId, mySessionId);
-	  			
-	      		// Don't reschedule if shutting down, nothing good can come out of this
+
+		  		// Don't reschedule if shutting down, nothing good can come out of this
 	  			if(myCurrentMode != MODE_SHUTDOWN)
 	  				myRefreshTimer.schedule(3000);
 	  		}
