@@ -89,6 +89,11 @@ public class EntryBox extends HLayout {
     	// Split the message in tokens (separator is space) an try to locate URLs
     	String [] parts = Message.split("\\s");
     	
+    	// Check if the message is targeted at someone
+    	if(parts[0].startsWith("@"))
+    		parts[0] = "<b>" + parts[0] + " ></b>";
+    	
+    	// Look for URLs and encapsulate them to img or href
     	for(String item:parts)
     	{
     		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){

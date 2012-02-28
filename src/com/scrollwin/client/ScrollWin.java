@@ -36,7 +36,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	public static final int MSG_INITIAL_RTRV = 20;
+	public static final int MSG_INITIAL_RTRV = 200;
 	
 	private HStack hStack = new HStack();
 	private VStack messageVStack = new VStack();
@@ -203,7 +203,9 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 			//  Add only messages newer than what we already got
 			if(messages.get(msgIndex).getMessageSeqId() > myRuntimeData.getNewestSeqId())
 			{
-				ScrollWinElement bb = new ScrollWinElement(messages.get(msgIndex), myUserManager.getUser(messages.get(msgIndex).getMessageUserId()));
+				ScrollWinElement bb = new ScrollWinElement(messages.get(msgIndex), 
+														   myUserManager.getUser(messages.get(msgIndex).getMessageUserId()),
+														   myUserManager.getUser(myUserId));
 				messageVStack.addMember(bb);
 				myRuntimeData.setNewestSeqId(messages.get(msgIndex).getMessageSeqId());
 			}

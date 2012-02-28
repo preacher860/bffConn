@@ -24,7 +24,7 @@ public class ScrollWinElement extends HStack {
 	private Img userImage;
 	private int seqId = 0;
 	
-	public ScrollWinElement(MessageContainer message, UserContainer user)
+	public ScrollWinElement(MessageContainer message, UserContainer user, UserContainer myself)
 	{
 		Integer kittenSelect = 48 + message.getMessageUserId();
 		if(user.getAvatarURL().isEmpty())
@@ -44,7 +44,10 @@ public class ScrollWinElement extends HStack {
 		messageStack.setWidth("94%");
 		
         userMessagePane.setAlign(Alignment.LEFT);
-        userMessagePane.setBackgroundColor("#C3D9FF"); // debug blue
+        if(isMessageForLoggedUser(message, myself))
+        	userMessagePane.setBackgroundColor("#00FF9F"); 
+        else
+        	userMessagePane.setBackgroundColor("#C3D9FF"); // debug blue
         //userMessagePane.setBackgroundColor("#E0E0E0"); 
         userMessagePane.setPadding(5);
         userMessagePane.setContents(message.getMessage());
@@ -84,5 +87,12 @@ public class ScrollWinElement extends HStack {
 	{
 		System.out.println("Adjusting for contents: " + seqId);
 		userMessagePane.adjustForContent(true);
+	}
+	
+	public boolean isMessageForLoggedUser(MessageContainer message, UserContainer myself)
+	{
+		String atUserNick = "<b>@" + myself.getNick();
+		
+		return message.getMessage().startsWith(atUserNick);
 	}
 }

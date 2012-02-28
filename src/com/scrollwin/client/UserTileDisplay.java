@@ -30,6 +30,7 @@ public class UserTileDisplay extends TileGrid {
 		pictureField.setImageHeight(40);
 		
 		DetailViewerField nameField = new DetailViewerField("name");
+		//nameField.setCellStyle("userTile");
 
 		setFields(pictureField, nameField);
 	}
