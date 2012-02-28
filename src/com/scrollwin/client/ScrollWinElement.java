@@ -58,9 +58,9 @@ public class ScrollWinElement extends HStack {
         userInfoLabel.setBackgroundColor("#B0B0B0"); // debug gray
         //userInfoLabel.setBackgroundColor("#E0E0E0");
         userInfoLabel.setPadding(3);
-        userInfoLabel.setContents("Message seq " + message.getMessageSeqId() + "   Envoyé par " + 
-        						  user.getNick() + "  id: " + message.getMessageUserId() + 
-        						  "  à: " + message.getMessageDate());
+        userInfoLabel.setContents("Message " + message.getMessageSeqId() + "   Envoyé par " + 
+        						  user.getNick() + "  le " + message.getMessageDate() + 
+        						  " à " + message.getMessageTime());
         userInfoLabel.setHeight(8);
         userInfoLabel.setStyleName("chatInfo");
         seqId = message.getMessageSeqId();

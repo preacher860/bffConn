@@ -279,9 +279,11 @@ public class IOModule {
 		    	Integer userId = Integer.valueOf(obj.get("user").isString().stringValue());
 		    	String messageText = obj.get("value").isString().stringValue();
 		    	String userNick = obj.get("user_nick").isString().stringValue();
-		    	String timeStamp = obj.get("date").isString().stringValue();
+		    	String dateStamp = obj.get("date").isString().stringValue();
+		    	String timeStamp = obj.get("time").isString().stringValue();
 		    	
-		    	MessageContainer message = new MessageContainer(messageId, userId, messageText, userNick, timeStamp);
+		    	MessageContainer message = new MessageContainer(messageId, userId, messageText, 
+		    													userNick, dateStamp, timeStamp);
 		    	messageList.add(message);
 		    	//myWaitWindow.setBarPos((Index * 1000) / jsonArray.size());
 		    }

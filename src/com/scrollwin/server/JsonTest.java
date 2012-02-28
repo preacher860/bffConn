@@ -295,7 +295,8 @@ private int getNewestSeq(Connection conn)
 	    	  out.println("     \"id\":\"" + seq + "\",");
 	    	  out.println("     \"user\":\"" + user + "\",");
 	    	  out.println("     \"value\":\"" + value + "\",");
-	    	  out.println("     \"date\":\"" + dateStamp + " " + timeStamp + "\",");
+	    	  out.println("     \"date\":\"" + dateStamp + "\",");
+	    	  out.println("     \"time\":\"" + timeStamp + "\",");
 	    	  out.println("     \"user_nick\":\"" + userNick + "\"");
 	          out.print("  }");
 	      }

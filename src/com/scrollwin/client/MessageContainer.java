@@ -6,14 +6,16 @@ public class MessageContainer {
 	private Integer MessageSeqId;
 	private String MessageUserNick;
 	private String MessageDate;
+	private String MessageTime;
 	
-	public MessageContainer(Integer seqId, Integer userId, String msg, String nick, String date)
+	public MessageContainer(Integer seqId, Integer userId, String msg, String nick, String date, String time)
 	{
 		MessageSeqId = seqId;
 		MessageUserId = userId;
 		Message = msg;
 		MessageUserNick = nick;
 		MessageDate = date;
+		MessageTime = time;
 	}
 	
 	public String getMessage() {
@@ -49,6 +51,14 @@ public class MessageContainer {
 
 	public void setMessageDate(String messageDate) {
 		MessageDate = messageDate;
+	}
+
+	public String getMessageTime() {
+		return MessageTime;
+	}
+
+	public void setMessageTime(String messageTime) {
+		MessageTime = messageTime;
 	}
 	
 }
