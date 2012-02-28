@@ -36,7 +36,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	public static final int MSG_INITIAL_RTRV = 200;
+	public static final int MSG_INITIAL_RTRV = 20;
 	
 	private HStack hStack = new HStack();
 	private VStack messageVStack = new VStack();

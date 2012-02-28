@@ -19,10 +19,10 @@ public class UserTileDisplay extends TileGrid {
 	public UserTileDisplay(userCallbackInterface callbackInterface){
 		myUserCallbackInterface = callbackInterface;
 		
-		setTileWidth(48);
-		setTileHeight(60);
+		setTileWidth(50);
+		setTileHeight(62);
 		setHeight(200);
-		setWidth(180);
+		setWidth(186);
 		setMargin(5);
 		setShowAllRecords(true);
 		setAutoFetchData(false);
@@ -35,11 +35,13 @@ public class UserTileDisplay extends TileGrid {
 		pictureField.setImageURLPrefix("");
 		pictureField.setImageWidth(40);
 		pictureField.setImageHeight(40);
+		//pictureField.setCellStyle("userPicTile");
 		
 		DetailViewerField nameField = new DetailViewerField("name");
 		//nameField.setCellStyle("userTile");
 
 		setFields(pictureField, nameField);
+		
 		
 		addClickHandler(new ClickHandler(){
 			@Override

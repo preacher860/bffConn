@@ -57,4 +57,9 @@ h1 {
     font-size:7pt;
 }
 
+.userPicTile {
+	border-style: groove;
+	border-width: 2px;
+	color: #808080
+}
 
