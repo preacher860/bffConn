@@ -29,7 +29,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.layout.VStack;
 
 
-public class ScrollWin implements EntryPoint, ioCallbackInterface {
+public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackInterface {
 	
 	public static final int MODE_INIT_S1  = 1;
 	public static final int MODE_INIT_S2  = 2;
@@ -55,7 +55,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 	private UserManager myUserManager = new UserManager();
 	private boolean myRuntimeDataRcvd = false;
 	private boolean myUserDataRcvd = false;
-	private UserTileDisplay myUserTileDisplay = new UserTileDisplay();
+	private UserTileDisplay myUserTileDisplay = new UserTileDisplay(this);
 	private EntryBox myEntryBox = new EntryBox(this);
 	private Integer myUserId = 0;
 	private String mySessionId = "0";
@@ -205,7 +205,8 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
 			{
 				ScrollWinElement bb = new ScrollWinElement(messages.get(msgIndex), 
 														   myUserManager.getUser(messages.get(msgIndex).getMessageUserId()),
-														   myUserManager.getUser(myUserId));
+														   myUserManager.getUser(myUserId),
+														   this);
 				messageVStack.addMember(bb);
 				myRuntimeData.setNewestSeqId(messages.get(msgIndex).getMessageSeqId());
 			}
@@ -303,6 +304,12 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface {
   	  	//if(messageVStack.getMembers().length > 100)
 		//  messageVStack.removeMember(messageVStack.getMember(0));
 
+	}
+
+	@Override
+	public void avatarClicked(String userNick) {
+		System.out.println("User clicked: " + userNick);
+		myEntryBox.addAddressee(userNick);
 	};
 	
 }

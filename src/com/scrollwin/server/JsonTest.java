@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 public class JsonTest extends HttpServlet {
 
 	private final static int ACTIVITY_TIMEOUT = 60;
+	private final static int SESSION_TIMEOUT  = 7 * 24 * 3600; // 7 days for demanding users
 	
 	private Integer myVersion = VersionInfo.CURRENT_VERSION;
 	private ArrayList<srvUserContainer> userList = new ArrayList<srvUserContainer>();
@@ -589,7 +590,7 @@ private int getNewestSeq(Connection conn)
   
   private void garbageCollectSessions()
   {
-	  Date oldDate = new Date(System.currentTimeMillis() - 3600*1000);
+	  Date oldDate = new Date(System.currentTimeMillis() - SESSION_TIMEOUT * 1000);
 	  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	  
 	  String query = "DELETE from sessions where date < ?";

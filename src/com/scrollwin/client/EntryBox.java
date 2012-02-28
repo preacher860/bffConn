@@ -81,6 +81,19 @@ public class EntryBox extends HLayout {
     	userImage.setBorder("2px groove #808080");
     	imageStack.addMember(userImage, 0);
     }
+    
+    public void addAddressee(String userNick)
+    {
+    	String Message;
+    	
+    	// Add a space before only if we're not beginning the message
+    	if(messageItem.getValueAsString() != null)
+    		Message = messageItem.getValueAsString() + " @" + userNick + " ";
+    	else 
+    		Message = "@" + userNick + " ";
+    	
+    	messageItem.setValue(Message);
+    }
 
     public String filterMessage(String Message)
     {

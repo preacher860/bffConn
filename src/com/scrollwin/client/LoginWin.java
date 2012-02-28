@@ -1,6 +1,5 @@
 package com.scrollwin.client;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.Positioning;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.Page;
 import com.smartgwt.client.widgets.IButton;
@@ -66,21 +65,6 @@ public class LoginWin extends Window {
 			}
 			
 		});
-//		passwordItem.addKeyDownHandler(new KeyDownHandler() {
-//			@Override
-//			public void onKeyDown(KeyDownEvent event) {
-//				System.out.println("Key:" + event.getKeyName());
-//				test.setValue(event.getKeyName());
-//				if (event.getKeyName().compareTo("Enter") == 0){
-//					event.cancel();
-//					loginSubmit();
-//				}
-//			}
-//          });
-		
-		//passwordItem.addKeyPressHandler(new KeyPressHandler() {
-			
-         // });
 		
 		submitButton.addClickHandler(new ClickHandler(){
 			@Override

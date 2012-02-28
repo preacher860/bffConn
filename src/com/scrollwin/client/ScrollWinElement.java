@@ -1,6 +1,8 @@
 package com.scrollwin.client;
 
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.types.ImageStyle;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -23,9 +25,14 @@ public class ScrollWinElement extends HStack {
 	private Label userInfoLabel = new Label();
 	private Img userImage;
 	private int seqId = 0;
+	private userCallbackInterface myUserCallbackInterface;
+	private String myMessageOriginatingUser;
 	
-	public ScrollWinElement(MessageContainer message, UserContainer user, UserContainer myself)
+	public ScrollWinElement(MessageContainer message, UserContainer user, UserContainer myself, userCallbackInterface cb)
 	{
+		myUserCallbackInterface = cb;
+		myMessageOriginatingUser = user.getNick();
+		
 		Integer kittenSelect = 48 + message.getMessageUserId();
 		if(user.getAvatarURL().isEmpty())
 			userImage = new Img("http://placekitten.com/" + kittenSelect + "/" + kittenSelect, 36, 36);
@@ -45,7 +52,7 @@ public class ScrollWinElement extends HStack {
 		
         userMessagePane.setAlign(Alignment.LEFT);
         if(isMessageForLoggedUser(message, myself))
-        	userMessagePane.setBackgroundColor("#00FF9F"); 
+        	userMessagePane.setBackgroundColor("#88FB9E"); 
         else
         	userMessagePane.setBackgroundColor("#C3D9FF"); // debug blue
         //userMessagePane.setBackgroundColor("#E0E0E0"); 
@@ -75,9 +82,15 @@ public class ScrollWinElement extends HStack {
         imageStack.setWidth("6%");
 		imageStack.setAlign(Alignment.CENTER);
 		imageStack.setAlign(VerticalAlignment.CENTER);
-
 		imageStack.addMember(spacer);
 		imageStack.addMember(userImage);
+		
+		imageStack.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				myUserCallbackInterface.avatarClicked(myMessageOriginatingUser);
+			}
+		});
 		
 		addMember(imageStack);
 		addMember(messageStack);
@@ -91,8 +104,8 @@ public class ScrollWinElement extends HStack {
 	
 	public boolean isMessageForLoggedUser(MessageContainer message, UserContainer myself)
 	{
-		String atUserNick = "<b>@" + myself.getNick();
+		String atUserNick = "@" + myself.getNick();
 		
-		return message.getMessage().startsWith(atUserNick);
+		return message.getMessage().contains(atUserNick);
 	}
 }

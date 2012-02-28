@@ -2,16 +2,23 @@ package com.scrollwin.client;
 import java.util.ArrayList;
 
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.tile.TileGrid;
 import com.smartgwt.client.widgets.tile.TileRecord;
+import com.smartgwt.client.widgets.tile.events.RecordClickEvent;
+import com.smartgwt.client.widgets.tile.events.RecordClickHandler;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
 
 public class UserTileDisplay extends TileGrid {
 	private ArrayList<UserContainer> knownUsers = new ArrayList<UserContainer>();
+	private userCallbackInterface myUserCallbackInterface;
 	int myUserDbVersion = 0;
 	
-	public UserTileDisplay(){
+	public UserTileDisplay(userCallbackInterface callbackInterface){
+		myUserCallbackInterface = callbackInterface;
+		
 		setTileWidth(48);
 		setTileHeight(60);
 		setHeight(200);
@@ -33,6 +40,19 @@ public class UserTileDisplay extends TileGrid {
 		//nameField.setCellStyle("userTile");
 
 		setFields(pictureField, nameField);
+		
+		addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				
+			}});
+		
+		addRecordClickHandler(new RecordClickHandler() {  
+			@Override
+			public void onRecordClick(RecordClickEvent event) {
+				myUserCallbackInterface.avatarClicked(event.getRecord().getAttribute("name"));  
+			}  
+        }); 
 	}
 	
 	public void UpdateOnlineUsers(UserManager userManager){
