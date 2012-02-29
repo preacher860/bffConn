@@ -35,7 +35,6 @@ public class UserManager {
 		else
 			for(int userIndex = 0; userIndex < userList.size(); userIndex++)
 				if(myUserList.get(userIndex).equals(userList.get(userIndex)) == false) {
-					System.out.println("Diff detected in new user list for user " + userIndex);
 					myDbVersion++;
 					break;
 				}

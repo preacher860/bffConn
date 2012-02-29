@@ -371,8 +371,10 @@ private int getNewestSeq(Connection conn)
   
   private String filterMessage(String message)
   {
+	Whitelist localWhitelist = Whitelist.basicWithImages().addTags("a").addAttributes("a", "href", "rel", "target");
+	
 	String unescapedMessage = unescapeJson(message);
-  	String cleanedMessage = Jsoup.clean(unescapedMessage, Whitelist.basicWithImages());
+  	String cleanedMessage = Jsoup.clean(unescapedMessage, localWhitelist);
   	String escapedMessage = escapeJson(cleanedMessage);
   	
 //  	System.out.println("Evil: " + message);

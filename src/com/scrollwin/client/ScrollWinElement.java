@@ -63,7 +63,6 @@ public class ScrollWinElement extends HStack {
         userMessagePane.setStyleName("chatText");
         userMessagePane.setOverflow(Overflow.VISIBLE);
         
-        
         userInfoLabel.setAlign(Alignment.LEFT);  
         userInfoLabel.setBackgroundColor("#B0B0B0"); // debug gray
         //userInfoLabel.setBackgroundColor("#E0E0E0");
@@ -84,6 +83,7 @@ public class ScrollWinElement extends HStack {
 		imageStack.setAlign(VerticalAlignment.CENTER);
 		imageStack.addMember(spacer);
 		imageStack.addMember(userImage);
+		imageStack.setTooltip(user.getNick());
 		
 		imageStack.addClickHandler(new ClickHandler() {
 			@Override

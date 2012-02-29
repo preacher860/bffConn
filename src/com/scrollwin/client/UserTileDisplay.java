@@ -19,11 +19,12 @@ public class UserTileDisplay extends TileGrid {
 	public UserTileDisplay(userCallbackInterface callbackInterface){
 		myUserCallbackInterface = callbackInterface;
 		
-		setTileWidth(50);
+		setTileWidth(60);
 		setTileHeight(62);
 		setHeight(200);
-		setWidth(186);
+		setWidth(216);
 		setMargin(5);
+		setTilesPerLine(3);
 		setShowAllRecords(true);
 		setAutoFetchData(false);
 		setOverflow(Overflow.VISIBLE);
@@ -42,17 +43,11 @@ public class UserTileDisplay extends TileGrid {
 
 		setFields(pictureField, nameField);
 		
-		
-		addClickHandler(new ClickHandler(){
-			@Override
-			public void onClick(ClickEvent event) {
-				
-			}});
-		
 		addRecordClickHandler(new RecordClickHandler() {  
 			@Override
 			public void onRecordClick(RecordClickEvent event) {
-				myUserCallbackInterface.avatarClicked(event.getRecord().getAttribute("name"));  
+				myUserCallbackInterface.avatarClicked(event.getRecord().getAttribute("name"));
+				deselectAllRecords();
 			}  
         }); 
 	}

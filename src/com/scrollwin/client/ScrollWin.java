@@ -36,7 +36,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	public static final int MSG_INITIAL_RTRV = 20;
+	public static final int MSG_INITIAL_RTRV = 200;
 	
 	private HStack hStack = new HStack();
 	private VStack messageVStack = new VStack();
@@ -124,7 +124,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         versionLink += "a.one:visited {color:#000000;text-decoration:none}";
         versionLink += "a.one:hover {color:#0000FF;text-decoration:none}";
         versionLink += "</style>";
-        versionLink += "<a class=\"one\" href=\"https://github.com/preacher860/bffConn/wiki/Historique-des-changements\"><b>";
+        versionLink += "<a class=\"one\" href=\"https://github.com/preacher860/bffConn/wiki/Historique-des-changements\" target=\"_blank\"><b>";
         versionLink += versionString;
         versionLink += "</b></a></font>";
         versionPane.setContents(versionLink);
@@ -308,7 +308,6 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 
 	@Override
 	public void avatarClicked(String userNick) {
-		System.out.println("User clicked: " + userNick);
 		myEntryBox.addAddressee(userNick);
 	};
 	

@@ -98,22 +98,35 @@ public class EntryBox extends HLayout {
     public String filterMessage(String Message)
     {
     	String outputMessage = "";
+    	int token = 0;
     	
     	// Split the message in tokens (separator is space) an try to locate URLs
-    	String [] parts = Message.split("\\s");
+    	String [] parts = Message.split("\\s+");
     	
-    	// Check if the message is targeted at someone
-    	if(parts[0].startsWith("@"))
-    		parts[0] = "<b>" + parts[0] + " ></b>";
+    	// Check if the message is targeted at someone (
+    	for(int tok = 0; tok < parts.length; tok++) {
+    		if(parts[token].startsWith("@")){
+    			if(token > 0)
+    				outputMessage +=", ";
+
+    			outputMessage += "<b>" + parts[token] + "</b>";
+    			token++;
+    		} else {
+    			if(token > 0)
+    				outputMessage += "<b> > </b>";
+    			break;
+    		}
+    	}
     	
     	// Look for URLs and encapsulate them to img or href
-    	for(String item:parts)
+    	for(int tok = token; tok < parts.length; tok++)
     	{
+    		String item = parts[tok];
     		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
     			if( (item.endsWith(".jpg")) || (item.endsWith(".gif")) || (item.endsWith(".png")) )
     				item = "<img src=\"" + item + "\" height=200/>";
     			else
-    				item = "<a href=\"" + item + "\">lien</a>";
+    				item = "<a href=\"" + item + "\" target=\"_blank\">lien</a>";
     		}
     		outputMessage += item + " ";
     	}
