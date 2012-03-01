@@ -41,7 +41,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	public static final int MSG_INITIAL_RTRV = 20;
+	public static final int MSG_INITIAL_RTRV = 200;
 	
 	private HStack hStack = new HStack();
 	private VStack messageVStack = new VStack();
@@ -143,6 +143,9 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	    myLogoutButton.setShowHover(true);
 	    myLogoutButton.setShowDown(false);
 	    myLogoutButton.setSrc("logout.png");
+	    //myLogoutButton.setTooltip("Déconnexion");
+	    myLogoutButton.setPrompt("Déconnexion");
+	    myLogoutButton.setHoverStyle("tooltipStyle");
 	    myLogoutButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -272,9 +275,9 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	}
 
 	@Override
-	public void performLoginCallback(String login, String password) {
-		
-		ioModule.GetNewSession(login, password);
+	public void performLoginCallback(String login, String password, String local) {
+			    
+		ioModule.GetNewSession(login, password, local);
 	}
 
 	@Override
@@ -337,8 +340,12 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	};
 	
 	public void performLogout() {
+		Cookies.removeCookie("bffConnexionSID", "/");
 		ioModule.Logout(myUserId, mySessionId);
-		Cookies.removeCookie("bffConnexionSID");
+	}
+
+	@Override
+	public void logoutComplete() {
 		Window.Location.reload();
 	}
 	

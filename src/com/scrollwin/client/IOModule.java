@@ -20,7 +20,6 @@ public class IOModule {
 
 	private ioCallbackInterface myCallbackInterface;
 	private static final String urlPrefix = GWT.getModuleBaseURL();
-	private WaitWindow myWaitWindow = new WaitWindow(); 
 	
 	public IOModule(ioCallbackInterface theCallbackInterface) {
 		myCallbackInterface = theCallbackInterface;
@@ -231,16 +230,17 @@ public class IOModule {
 		}
 	}
 	
-	public void GetNewSession(String login, String password)
+	public void GetNewSession(String login, String password, String local)
 	{
 		String postData = "dummy=0";
 		
 		String url = urlPrefix + "jsontest?" + "request_mode=perform_login";
 		url += "&login=" + URL.encodePathSegment(login);
 		url += "&password=" + URL.encodePathSegment(password);
+		url += "&local=" + URL.encodePathSegment(local);
 		url += "&rnd_value=" + Random.nextInt(400000000);
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
 			Request request = builder.sendRequest(postData, new RequestCallback() {
@@ -278,12 +278,13 @@ public class IOModule {
 		    	Integer messageId = Integer.valueOf(obj.get("id").isString().stringValue());
 		    	Integer userId = Integer.valueOf(obj.get("user").isString().stringValue());
 		    	String messageText = obj.get("value").isString().stringValue();
-		    	String userNick = obj.get("user_nick").isString().stringValue();
+		    	//String userNick = obj.get("user_nick").isString().stringValue();
 		    	String dateStamp = obj.get("date").isString().stringValue();
 		    	String timeStamp = obj.get("time").isString().stringValue();
+		    	String local = obj.get("local").isString().stringValue();
 		    	
 		    	MessageContainer message = new MessageContainer(messageId, userId, messageText, 
-		    													userNick, dateStamp, timeStamp);
+		    													dateStamp, timeStamp, local);
 		    	messageList.add(message);
 		    	//myWaitWindow.setBarPos((Index * 1000) / jsonArray.size());
 		    }
@@ -312,7 +313,7 @@ public class IOModule {
 				}
 	
 				public void onResponseReceived(Request request, Response response) {
-					
+					myCallbackInterface.logoutComplete();
 				}
 			});
 		} catch (RequestException e) {

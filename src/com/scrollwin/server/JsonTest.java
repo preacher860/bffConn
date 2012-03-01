@@ -92,11 +92,12 @@ public JsonTest(){
 	  String sessionId = req.getParameter("session_id");
 	  String login = req.getParameter("login");
 	  String password = req.getParameter("password");
+	  String local = req.getParameter("local");
 
 	  // Login can be performed without active session ID
 	  if((requestMode != null) && requestMode.contentEquals("perform_login"))
 	  {
-		  userLogin(req, out, login, password);
+		  userLogin(req, out, login, password, local);
 	  }
 	  
 	  // Session ID validity check can be performed without userId
@@ -166,7 +167,7 @@ public JsonTest(){
 	  }
   }
 
-  private void userLogin(HttpServletRequest req, PrintWriter out, String login, String password) {
+  private void userLogin(HttpServletRequest req, PrintWriter out, String login, String password, String local) {
 	  
 	  String sessionId = req.getSession().getId();
 	  srvUserContainer foundUser = null;
@@ -183,7 +184,10 @@ public JsonTest(){
 	  }
 
 	  if(foundUser != null)
-		  saveSession(sessionId, foundUser.getId());
+		  saveSession(sessionId, foundUser.getId(), local);
+	  
+	  if(local == null)
+		  local = "";
 	  
 	  out.println('[');
 	  out.println("  {");
@@ -191,7 +195,8 @@ public JsonTest(){
 	  {
 		  out.println("     \"id\":\"" + foundUser.getId() + "\",");
 		  out.println("     \"nick\":\"" + foundUser.getNick() + "\",");
-		  out.println("     \"sessionId\":\"" + sessionId + "\"");
+		  out.println("     \"sessionId\":\"" + sessionId + "\",");
+		  out.println("     \"local\":\"" + local + "\""); 
 	  } else
 		  out.println("     \"sessionId\":\"0\"");
 	  out.println("  }");
@@ -231,14 +236,28 @@ private int getNewestSeq(Connection conn)
 	  }
   }
   
-  private void setNewMessage(Connection conn, String Message, int seqId, Integer userId)
+  private void setNewMessage(Connection conn, String Message, int seqId, Integer userId, String sessionId)
   {
-	  String query = "INSERT into testtable (seq,userid,text) values(?, ?, ?);";
+	  PreparedStatement sessionSelect;
+	  String query = "INSERT into testtable (seq,userid,text,local) values(?, ?, ?, ?);";
+	  String sessionQuery = "SELECT * FROM sessions where id = ?";
+	  String local;
+	  
 	  try {
+		  sessionSelect = conn.prepareStatement(sessionQuery);
+    	  sessionSelect.setString(1, sessionId);
+    	  ResultSet sessionResult = sessionSelect.executeQuery();
+    	  if(!sessionResult.next()) local = "";
+    	  else if((local = sessionResult.getString(4)) == null) local = "";
+
+    	  sessionSelect.close();
+	      sessionResult.close();
+	      
 	      PreparedStatement update = conn.prepareStatement(query);
 	      update.setInt(1, seqId);
 	      update.setInt(2, userId);
 	      update.setString(3, Message);
+	      update.setString(4, local);
 	      update.executeUpdate();
 	      update.close();
 	  } catch(SQLException e) {
@@ -250,10 +269,7 @@ private int getNewestSeq(Connection conn)
   private void getNewMessages(int seqId, int last, PrintWriter out)
   {
 	  String query;
-	  String userQuery;
-	  String userNick;
 	  PreparedStatement select;
-	  PreparedStatement userSelect;
 	  boolean firstEntry = true;
 
 	  out.println('[');
@@ -272,7 +288,6 @@ private int getNewestSeq(Connection conn)
 	    	  select.setInt(1, seqId);
 	      }
 	      
-	      userQuery = "SELECT * FROM users where id = ?";
 	      ResultSet result = select.executeQuery();
 	      
 	      while (result.next()) {
@@ -286,24 +301,16 @@ private int getNewestSeq(Connection conn)
 	    	  String value = result.getString(3);
 	    	  String dateStamp = result.getDate(4).toString();
 	    	  String timeStamp = result.getTime(4).toString();
-	    	  
-	    	  // Remove this when we have real user management
-	    	  userSelect = conn.prepareStatement(userQuery);
-	    	  userSelect.setInt(1, Integer.valueOf(user));
-	    	  ResultSet userResult = userSelect.executeQuery();
-	    	  if(!userResult.next())
-	    		  userNick = "Kitten " + user;
-	    	  else
-	    		  userNick = userResult.getString(2);
-	    	  userSelect.close();
-		      userResult.close();
+	    	  String local = result.getString(5);
+	    	  if(local == null)
+	    		  local = "";
 	    	  
 	    	  out.println("     \"id\":\"" + seq + "\",");
 	    	  out.println("     \"user\":\"" + user + "\",");
 	    	  out.println("     \"value\":\"" + value + "\",");
 	    	  out.println("     \"date\":\"" + dateStamp + "\",");
 	    	  out.println("     \"time\":\"" + timeStamp + "\",");
-	    	  out.println("     \"user_nick\":\"" + userNick + "\"");
+	    	  out.println("     \"local\":\"" + local + "\"");
 	          out.print("  }");
 	      }
 	      select.close();
@@ -363,7 +370,7 @@ private int getNewestSeq(Connection conn)
 	      // For now we won't save using the in-ram seqId as the DB might have been
 	      // tampered with manually.  Perform RMW on seqId instead.
 	      seqId = getNewestSeq(conn);
-	      setNewMessage(conn, Message, seqId + 1, userId);
+	      setNewMessage(conn, Message, seqId + 1, userId, sessionId);
 	      setNewestSeq(conn, seqId + 1);
 	      conn.commit();
 	      conn.close();
@@ -473,14 +480,15 @@ private int getNewestSeq(Connection conn)
 	  return userId;
   }
   
-  private int saveSession(String sessionId, int userId) {
+  private int saveSession(String sessionId, int userId, String local) {
 	  
-	  String query = "INSERT INTO sessions (id,user) values(?, ?)";
+	  String query = "INSERT INTO sessions (id,user,local) values(?, ?, ?)";
 	  try {
 		  Connection conn = this.getConn();
 		  PreparedStatement update = conn.prepareStatement(query);
     	  update.setString(1, sessionId);
     	  update.setInt(2, userId);
+    	  update.setString(3, local);
     	  update.executeUpdate();
 	      update.close();
 	      conn.close();

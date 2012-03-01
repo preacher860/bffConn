@@ -7,15 +7,17 @@ public class MessageContainer {
 	private String MessageUserNick;
 	private String MessageDate;
 	private String MessageTime;
+	private String MessageLocal;
 	
-	public MessageContainer(Integer seqId, Integer userId, String msg, String nick, String date, String time)
+	public MessageContainer(Integer seqId, Integer userId, String msg, String date, String time, String local)
 	{
 		MessageSeqId = seqId;
 		MessageUserId = userId;
 		Message = msg;
-		MessageUserNick = nick;
+		//MessageUserNick = nick;
 		MessageDate = date;
 		MessageTime = time;
+		MessageLocal = local;
 	}
 	
 	public String getMessage() {
@@ -59,6 +61,14 @@ public class MessageContainer {
 
 	public void setMessageTime(String messageTime) {
 		MessageTime = messageTime;
+	}
+
+	public String getMessageLocal() {
+		return MessageLocal;
+	}
+
+	public void setMessageLocal(String messageLocal) {
+		MessageLocal = messageLocal;
 	}
 	
 }

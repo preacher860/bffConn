@@ -63,3 +63,17 @@ h1 {
 	color: #808080
 }
 
+.tooltipStyle {
+    font-family:Verdana,Bitstream Vera Sans,sans-serif;
+    font-size:11px;
+    border:1px solid #808080;
+    padding:4px;
+    background-color:black;
+    color:white;
+    opacity:0.75;
+    width:auto;
+    overflow:hidden;
+    text-align:center;
+    border-radius:6px;
+}
+
