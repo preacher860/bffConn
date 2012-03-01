@@ -294,6 +294,33 @@ public class IOModule {
 		}
 	}
 	
+	public void Logout(Integer userId, String sessionId)
+	{
+		String postData = "dummy=0";
+		
+		String url = urlPrefix + "jsontest?" + "request_mode=perform_logout";
+		url += "&user_id=" + userId;
+		url += "&session_id=" + sessionId;
+		url += "&rnd_value=" + Random.nextInt(400000000);
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
+		try {
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			Request request = builder.sendRequest(postData, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
+				}
+	
+				public void onResponseReceived(Request request, Response response) {
+					
+				}
+			});
+		} catch (RequestException e) {
+			Window.alert("Server error: " + e);
+			// Couldn't connect to server        
+		}
+	}
+	
 	private void handleRuntimeData(String serverResponse)
 	{
 		try

@@ -153,6 +153,11 @@ public JsonTest(){
 			  {
 				  getServerVersion(out);
 			  }
+			  
+			  if(requestMode.contentEquals("perform_logout"))
+			  {
+				  deleteSession(sessionId);
+			  }
 		  }
 	  } else
 	  {
@@ -502,7 +507,22 @@ private int getNewestSeq(Connection conn)
 	      e.printStackTrace();
 	  }
   }
-  
+  private void deleteSession(String sessionId) {
+	  
+	  String query = "DELETE FROM sessions where id=?";
+	  try {
+		  Connection conn = this.getConn();
+		  PreparedStatement update = conn.prepareStatement(query);
+    	  update.setString(1, sessionId);
+    	  update.executeUpdate();
+	      update.close();
+	      conn.close();
+	  } catch(SQLException e) {
+	      System.err.println("Mysql Statement Error");
+	      e.printStackTrace();
+	  }
+  }
+
   private void getServerVersion(PrintWriter out)
   {
 	  out.println('[');

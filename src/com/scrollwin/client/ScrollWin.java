@@ -19,7 +19,11 @@ import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.HTMLPane;
+import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.ImgButton;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.ScrolledHandler;
 import com.smartgwt.client.widgets.events.ScrolledEvent;
 
@@ -27,6 +31,7 @@ import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.layout.VStack;
+import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 
 public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackInterface {
@@ -36,7 +41,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	public static final int MSG_INITIAL_RTRV = 200;
+	public static final int MSG_INITIAL_RTRV = 20;
 	
 	private HStack hStack = new HStack();
 	private VStack messageVStack = new VStack();
@@ -46,6 +51,8 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	private HStack headerStack = new HStack();
 	private VStack versionStack = new VStack();
 	private HTMLPane versionPane = new HTMLPane();
+	private ToolStrip myToolStrip = new ToolStrip();
+	private ImgButton myLogoutButton = new ImgButton();
 	
 	private IOModule ioModule = new IOModule(this);
 	private Integer myCurrentMode = MODE_INIT_S1;
@@ -131,16 +138,34 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         versionPane.setHeight(15);
         versionPane.setOverflow(Overflow.HIDDEN);
         
+        myLogoutButton.setSize(32);  
+	    myLogoutButton.setShowRollOver(false);
+	    myLogoutButton.setShowHover(true);
+	    myLogoutButton.setShowDown(false);
+	    myLogoutButton.setSrc("logout.png");
+	    myLogoutButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				performLogout();
+				
+			}
+		});
+	    
         LayoutSpacer versionSpacer = new LayoutSpacer();
         versionSpacer.setHeight(52);
         versionStack.setHeight(76);
         versionStack.addMember(versionSpacer);
         versionStack.addMember(versionPane);
-        
+                
+        //LayoutSpacer buttonsSpacer = new LayoutSpacer();
+        //buttonsSpacer.setWidth(850);
         headerStack.addMember(headerSpacer);
         headerStack.addMember(versionStack);
+        //headerStack.addMember(buttonsSpacer);
+        headerStack.addMember(myLogoutButton);
         
         mainvStack.addMember(headerStack);
+        //mainvStack.addMember(myToolStrip);
         mainvStack.addMember(hStack);
         mainvStack.setTop(0);
         
@@ -310,5 +335,11 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	public void avatarClicked(String userNick) {
 		myEntryBox.addAddressee(userNick);
 	};
+	
+	public void performLogout() {
+		ioModule.Logout(myUserId, mySessionId);
+		Cookies.removeCookie("bffConnexionSID");
+		Window.Location.reload();
+	}
 	
 }
