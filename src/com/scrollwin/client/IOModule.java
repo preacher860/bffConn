@@ -263,6 +263,39 @@ public class IOModule {
 		}
 	}
 	
+	public void SendLocal(Integer userId, String sessionId, String local)
+	{
+		String postData = "dummy=0";
+		
+		String url = urlPrefix + "jsontest?" + "request_mode=set_local";
+		url += "&user_id=" + userId;
+		url += "&session_id=" + sessionId;
+		url += "&local=" + URL.encodePathSegment(local);
+		url += "&rnd_value=" + Random.nextInt(400000000);
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		try {
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			Request request = builder.sendRequest(postData, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
+				}
+	
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode()) 
+						{} 
+					else if (403 == response.getStatusCode())
+						handleAccessForbidden();
+					else
+						System.out.println("Request response error: " + response.getStatusCode());
+				}
+			});
+		} catch (RequestException e) {
+			Window.alert("Server error: " + e);
+			// Couldn't connect to server        
+		}
+	}
+	
 	private void handleNewMessages(String serverResponse)
 	{
 		try
@@ -389,8 +422,9 @@ public class IOModule {
 	{
 		String sessionId = "";
 		String userNick = "";
+		String userLocal = "";
 		Integer userId = 0;
-		
+		System.out.println("handleSessionReceived()");
 		try
 		{
 			JSONObject obj;
@@ -402,9 +436,10 @@ public class IOModule {
 		    if(sessionId.compareTo("0") != 0) {
 		    	userNick = obj.get("nick").isString().stringValue();
 		    	userId = Integer.valueOf(obj.get("id").isString().stringValue());
+		    	userLocal = obj.get("local").isString().stringValue();
 		    }
 		    
-		    myCallbackInterface.sessionReceivedCallback(sessionId, userId, userNick);
+		    myCallbackInterface.sessionReceivedCallback(sessionId, userId, userNick, userLocal);
 		} catch (Exception e) {
 			System.out.println("JSON exception: " + e.toString());
 		}
@@ -413,11 +448,12 @@ public class IOModule {
 	private void handleSessionValid(String serverResponse)
 	{
 		String sessionId = "";
+		String local = "";
 		String userNick = "";
 		Integer userId = 0;
-		
+		System.out.println("handleSessionValid()");
 		if (serverResponse == null)
-			myCallbackInterface.sessionValidReceivedCallback(null, 0, false);
+			myCallbackInterface.sessionValidReceivedCallback(null, 0, null, false);
 		
 		try
 		{
@@ -428,10 +464,11 @@ public class IOModule {
 		    obj = jsonArray.get(0).isObject();
 	    	sessionId = obj.get("sessionId").isString().stringValue();
 	    	if(sessionId.compareTo("0") == 0)
-	    			myCallbackInterface.sessionValidReceivedCallback(null, 0, false);
+	    			myCallbackInterface.sessionValidReceivedCallback(null, 0, null, false);
 	    	else {
 	    		userId = Integer.valueOf(obj.get("userId").isString().stringValue());
-		        myCallbackInterface.sessionValidReceivedCallback(sessionId, userId, true);
+	    		local  =  obj.get("local").isString().stringValue();
+		        myCallbackInterface.sessionValidReceivedCallback(sessionId, userId, local, true);
 	    	}
 		} catch (Exception e) {
 			System.out.println("JSON exception: " + e.toString());

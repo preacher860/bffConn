@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.Cookies;
 
 import com.smartgwt.client.types.Alignment;
@@ -26,6 +27,10 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.ScrolledHandler;
 import com.smartgwt.client.widgets.events.ScrolledEvent;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.KeyUpEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyUpHandler;
 
 import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
@@ -54,6 +59,8 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	private ToolStrip myToolStrip = new ToolStrip();
 	private ImgButton myLogoutButton = new ImgButton();
 	private ImgButton myLocalButton = new ImgButton();
+	private DynamicForm form = new DynamicForm();
+	private TextItem localItem = new TextItem();
 	
 	private IOModule ioModule = new IOModule(this);
 	private Integer myCurrentMode = MODE_INIT_S1;
@@ -67,6 +74,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	private EntryBox myEntryBox = new EntryBox(this);
 	private Integer myUserId = 0;
 	private String mySessionId = "0";
+	private String mySessionLocal = "";
 	private WaitWindow myWaitWindow = new WaitWindow();
 	private Integer myVersion = VersionInfo.CURRENT_VERSION;
 	private boolean myAtBottom = true;
@@ -161,6 +169,38 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	    myLocalButton.setSrc("local.png");
 	    myLocalButton.setPrompt("Changer localisation");
 	    myLocalButton.setHoverStyle("tooltipStyle");
+	    myLocalButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				form.show();
+			}
+		});
+
+	    localItem.setValue(mySessionLocal);
+	    localItem.setShowTitle(false);
+	    localItem.setLength(16);
+	    localItem.setSelectOnFocus(true);
+	    localItem.addKeyUpHandler(new KeyUpHandler() {
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getKeyName().compareTo("Enter") == 0){
+					event.cancel();
+					String local = localItem.getValueAsString();
+					if (local == null) local = "";
+					ioModule.SendLocal(myUserId, mySessionId, local);
+					form.hide();
+					myEntryBox.setFocus();
+				} else if (event.getKeyName().compareTo("Escape") == 0){
+					event.cancel();
+					form.hide();
+					myEntryBox.setFocus();
+				}
+			}
+		});
+	    form.setHeight(30);
+	    form.setAutoFocus(true);
+	    form.setFields(localItem);
+	    form.hide();
 	    
         LayoutSpacer versionSpacer = new LayoutSpacer();
         versionSpacer.setHeight(52);
@@ -174,6 +214,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         headerStack.addMember(versionStack);
         //headerStack.addMember(buttonsSpacer);
         headerStack.addMember(myLocalButton);
+        headerStack.addMember(form);
         headerStack.addMember(myLogoutButton);
         
         mainvStack.addMember(headerStack);
@@ -290,7 +331,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	}
 
 	@Override
-	public void sessionReceivedCallback(String sessionId, Integer userId, String userNick) {
+	public void sessionReceivedCallback(String sessionId, Integer userId, String userNick, String userLocal) {
 		
 		if(sessionId.compareTo("0") == 0)  // Login failed
 		{
@@ -301,6 +342,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 		{
 			myUserId = userId;
 			mySessionId = sessionId;
+			mySessionLocal = userLocal;
 			
 			// Save sessionId in a cookie so we don't have to re-logon each time we load the app
 			long cookieLifespan = 1000 * 60 * 60 * 24 * 7; // one week
@@ -318,8 +360,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	}
 
 	@Override
-	public void sessionValidReceivedCallback(String sessionId, int userId,
-			boolean valid) {
+	public void sessionValidReceivedCallback(String sessionId, int userId, String local, boolean valid) {
 		if(!valid){
 			// Present the login screen until valid login is performed
 			LoginWin loginWin = new LoginWin(this);
@@ -327,6 +368,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 		} else {
 			myUserId = userId;
 			mySessionId = sessionId;
+			mySessionLocal = local;
 			System.out.println("Session was still active: " + mySessionId);
 			applicationStart();
 		}

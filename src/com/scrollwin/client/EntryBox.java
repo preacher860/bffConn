@@ -37,12 +37,14 @@ public class EntryBox extends HLayout {
         messageItem.setLength(1000);  
         messageItem.setWidth("*");
         messageItem.setHeight("*");
-
+        
         form.setNumCols(1);
         form.setCanDragResize(true);
+        form.setAutoFocus(true);
         form.setWidth100();
         form.setHeight100();
         form.setFields(messageItem);
+        form.focusInItem(messageItem);
         form.setStyleName("blueYellow");
         
         messageItem.addKeyUpHandler(new KeyUpHandler() {
@@ -93,6 +95,11 @@ public class EntryBox extends HLayout {
     	messageItem.setValue(Message);
     }
 
+    public void setFocus()
+    {
+    	form.focusInItem(messageItem);
+    }
+    
     public String filterMessage(String Message)
     {
     	String outputMessage = "";

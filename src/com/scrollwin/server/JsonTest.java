@@ -107,7 +107,7 @@ public JsonTest(){
 		  if(foundUserId < 0)
 			  sendSessionInvalid(out);
 		  else
-			  sendSessionValid(out, sessionId, foundUserId);
+			  sendSessionValid(out, sessionId, foundUserId, getSessionAssociatedLocal(sessionId));
 	  }
 	  
 	  // All commands other than login require a valid userId / sessionId combo
@@ -158,6 +158,11 @@ public JsonTest(){
 			  if(requestMode.contentEquals("perform_logout"))
 			  {
 				  deleteSession(sessionId);
+			  }
+			  
+			  if (requestMode.contentEquals("set_local"))
+			  {
+				  updateSessionLocal(sessionId, local);
 			  }
 		  }
 	  } else
@@ -480,6 +485,34 @@ private int getNewestSeq(Connection conn)
 	  return userId;
   }
   
+  private String getSessionAssociatedLocal(String sessionId) {
+	  String query;
+	  PreparedStatement select;
+	  String local = "";
+	  
+	  try {
+		  Connection conn = this.getConn();
+	      
+    	  query = "SELECT * FROM sessions where id = ?";
+    	  select = conn.prepareStatement(query);
+    	  select.setString(1, sessionId);
+	      ResultSet result = select.executeQuery();
+	      
+	      if(result.next())
+	    	  local = result.getString(4);
+	      if(local == null) local = "";
+	      
+	      select.close();
+	      result.close();
+	      conn.close();
+	  } catch(SQLException e) {
+	      System.err.println("Mysql Statement Error");
+	      e.printStackTrace();
+	  }
+	  
+	  return local;
+  }
+  
   private int saveSession(String sessionId, int userId, String local) {
 	  
 	  String query = "INSERT INTO sessions (id,user,local) values(?, ?, ?)";
@@ -515,6 +548,23 @@ private int getNewestSeq(Connection conn)
 	      e.printStackTrace();
 	  }
   }
+  private void updateSessionLocal(String sessionId, String local) {
+	  
+	  String query = "UPDATE sessions SET local=? where id=?";
+	  try {
+		  Connection conn = this.getConn();
+		  PreparedStatement update = conn.prepareStatement(query);
+    	  update.setString(1, local);
+    	  update.setString(2, sessionId);
+    	  update.executeUpdate();
+	      update.close();
+	      conn.close();
+	  } catch(SQLException e) {
+	      System.err.println("Mysql Statement Error");
+	      e.printStackTrace();
+	  }
+  }
+
   private void deleteSession(String sessionId) {
 	  
 	  String query = "DELETE FROM sessions where id=?";
@@ -541,12 +591,13 @@ private int getNewestSeq(Connection conn)
 	  out.flush();
   }
 
-  private void sendSessionValid(PrintWriter out, String sessionId, Integer userId)
+  private void sendSessionValid(PrintWriter out, String sessionId, Integer userId, String local)
   {
 	  out.println('[');
 	  out.println("  {");
 	  out.println("     \"sessionId\":\"" + sessionId + "\",");
-	  out.println("     \"userId\":\"" + userId + "\"");
+	  out.println("     \"userId\":\"" + userId + "\",");
+	  out.println("     \"local\":\"" + local + "\"");
       out.println("  }");
       out.println(']');
 	  out.flush();
