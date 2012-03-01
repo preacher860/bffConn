@@ -53,6 +53,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	private HTMLPane versionPane = new HTMLPane();
 	private ToolStrip myToolStrip = new ToolStrip();
 	private ImgButton myLogoutButton = new ImgButton();
+	private ImgButton myLocalButton = new ImgButton();
 	
 	private IOModule ioModule = new IOModule(this);
 	private Integer myCurrentMode = MODE_INIT_S1;
@@ -143,7 +144,6 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	    myLogoutButton.setShowHover(true);
 	    myLogoutButton.setShowDown(false);
 	    myLogoutButton.setSrc("logout.png");
-	    //myLogoutButton.setTooltip("Déconnexion");
 	    myLogoutButton.setPrompt("Déconnexion");
 	    myLogoutButton.setHoverStyle("tooltipStyle");
 	    myLogoutButton.addClickHandler(new ClickHandler() {
@@ -153,6 +153,14 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 				
 			}
 		});
+	    
+	    myLocalButton.setSize(32);  
+	    myLocalButton.setShowRollOver(false);
+	    myLocalButton.setShowHover(true);
+	    myLocalButton.setShowDown(false);
+	    myLocalButton.setSrc("local.png");
+	    myLocalButton.setPrompt("Changer localisation");
+	    myLocalButton.setHoverStyle("tooltipStyle");
 	    
         LayoutSpacer versionSpacer = new LayoutSpacer();
         versionSpacer.setHeight(52);
@@ -165,6 +173,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         headerStack.addMember(headerSpacer);
         headerStack.addMember(versionStack);
         //headerStack.addMember(buttonsSpacer);
+        headerStack.addMember(myLocalButton);
         headerStack.addMember(myLogoutButton);
         
         mainvStack.addMember(headerStack);
