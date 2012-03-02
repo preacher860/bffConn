@@ -51,21 +51,15 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	public static final int MSG_INITIAL_RTRV = 200;
+	public static final int MSG_INITIAL_RTRV = 20;
 	
 	private HStack hStack = new HStack();
 	private VStack messageVStack = new VStack();
 	private VStack chatvStack = new VStack();
 	private VLayout mainvStack = new VLayout();
-	private VStack menuBox = new VStack();
 	private HStack headerStack = new HStack();
 	private VStack versionStack = new VStack();
 	private HTMLPane versionPane = new HTMLPane();
-	private ToolStrip myToolStrip = new ToolStrip();
-	private ImgButton myLogoutButton = new ImgButton();
-	private ImgButton myLocalButton = new ImgButton();
-	private DynamicForm form = new DynamicForm();
-	private TextItem localItem = new TextItem();
 	
 	private IOModule ioModule = new IOModule(this);
 	private Integer myCurrentMode = MODE_INIT_S1;
@@ -77,6 +71,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	private boolean myUserDataRcvd = false;
 	private UserTileDisplay myUserTileDisplay = new UserTileDisplay(this);
 	private EntryBox myEntryBox = new EntryBox(this);
+	private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
 	private Integer myUserId = 0;
 	private String mySessionId = "0";
 	private String mySessionLocal = "";
@@ -153,61 +148,6 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         versionPane.setContents(versionLink);
         versionPane.setHeight(15);
         versionPane.setOverflow(Overflow.HIDDEN);
-        
-        myLogoutButton.setSize(32);  
-	    myLogoutButton.setShowRollOver(false);
-	    myLogoutButton.setShowHover(true);
-	    myLogoutButton.setShowDown(false);
-	    myLogoutButton.setSrc("logout.png");
-	    myLogoutButton.setPrompt("Déconnexion");
-	    myLogoutButton.setHoverStyle("tooltipStyle");
-	    myLogoutButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				performLogout();
-				
-			}
-		});
-	    
-	    myLocalButton.setSize(32);  
-	    myLocalButton.setShowRollOver(false);
-	    myLocalButton.setShowHover(true);
-	    myLocalButton.setShowDown(false);
-	    myLocalButton.setSrc("local.png");
-	    myLocalButton.setPrompt("Changer localisation");
-	    myLocalButton.setHoverStyle("tooltipStyle");
-	    myLocalButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				form.show();
-			}
-		});
-
-	    localItem.setValue(mySessionLocal);
-	    localItem.setShowTitle(false);
-	    localItem.setLength(30);
-	    localItem.setSelectOnFocus(true);
-	    localItem.addKeyUpHandler(new KeyUpHandler() {
-			@Override
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getKeyName().compareTo("Enter") == 0){
-					event.cancel();
-					String local = localItem.getValueAsString();
-					if (local == null) local = "";
-					ioModule.SendLocal(myUserId, mySessionId, local);
-					form.hide();
-					myEntryBox.setFocus();
-				} else if (event.getKeyName().compareTo("Escape") == 0){
-					event.cancel();
-					form.hide();
-					myEntryBox.setFocus();
-				}
-			}
-		});
-	    form.setHeight(30);
-	    form.setAutoFocus(true);
-	    form.setFields(localItem);
-	    form.hide();
 	    
         LayoutSpacer versionSpacer = new LayoutSpacer();
         versionSpacer.setHeight(52);
@@ -215,23 +155,18 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         versionStack.addMember(versionSpacer);
         versionStack.addMember(versionPane);
                 
-        //LayoutSpacer buttonsSpacer = new LayoutSpacer();
-        //buttonsSpacer.setWidth(850);
         headerStack.addMember(headerSpacer);
         headerStack.addMember(versionStack);
-        //headerStack.addMember(buttonsSpacer);
-        headerStack.addMember(myLocalButton);
-        headerStack.addMember(form);
-        headerStack.addMember(myLogoutButton);
+        headerStack.addMember(myHeaderButtonBar);
         
         mainvStack.addMember(headerStack);
-        //mainvStack.addMember(myToolStrip);
         mainvStack.addMember(hStack);
         mainvStack.setTop(0);
         
+        myHeaderButtonBar.setLocal(mySessionLocal);
+        
         canvas.addChild(headerImage);
         canvas.addChild(mainvStack); 
-        //canvas.setBackgroundColor("#A0A0A0");
         canvas.draw();  
         
         // This scroll handler sets the flag user to determine if we're at bottom or not.
@@ -379,7 +314,6 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 			System.out.println("Session was still active: " + mySessionId);
 			applicationStart();
 		}
-		
 	}
 
 	@Override
@@ -402,7 +336,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 				case Event.ONKEYDOWN: 
 					if(ne.getCtrlKey() && (ne.getKeyCode()=='l' || ne.getKeyCode()=='L'))
 					{
-						form.show();
+						myHeaderButtonBar.showLocationEntry();
 						event.consume();
 						ne.preventDefault();
 						ne.stopPropagation();
@@ -417,7 +351,6 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 				} 
 			} 
 		}); 
-
 	}
 	
 	@Override
@@ -433,6 +366,23 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	@Override
 	public void logoutComplete() {
 		Window.Location.reload();
+	}
+
+	@Override
+	public void logoutClicked() {
+		performLogout();
+	}
+	
+	public void infoClicked() {
+		Window.open("https://github.com/preacher860/bffConn/wiki/Historique-des-changements", "test", "");
+	}
+
+	@Override
+	public void localEntered(String local) {
+		if (local != null)
+			ioModule.SendLocal(myUserId, mySessionId, local);
+		
+		myEntryBox.setFocus();
 	}
 	
 }
