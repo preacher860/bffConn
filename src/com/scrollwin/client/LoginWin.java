@@ -64,7 +64,7 @@ public class LoginWin extends Window {
 		
 		localItem.setTitle("Localisation");
 		localItem.setRequired(false);
-		localItem.setLength(16);
+		localItem.setLength(30);
 		localItem.setSelectOnFocus(true);
 		
 		rememberItem.setTitle("Retenir nom et localisation");

@@ -185,7 +185,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 
 	    localItem.setValue(mySessionLocal);
 	    localItem.setShowTitle(false);
-	    localItem.setLength(16);
+	    localItem.setLength(30);
 	    localItem.setSelectOnFocus(true);
 	    localItem.addKeyUpHandler(new KeyUpHandler() {
 			@Override

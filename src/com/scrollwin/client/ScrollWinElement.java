@@ -71,7 +71,7 @@ public class ScrollWinElement extends HStack {
 				  					user.getNick() + "  le " + message.getMessageDate() + 
 				  					" à " + message.getMessageTime();
         if(message.getMessageLocal().contentEquals("") != true)
-        	infoLabelContents += " depuis " + message.getMessageLocal();
+        	infoLabelContents += " - " + message.getMessageLocal();
         userInfoLabel.setContents(infoLabelContents);
         						  
         userInfoLabel.setHeight(8);
