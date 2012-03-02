@@ -451,7 +451,7 @@ public class IOModule {
 		String local = "";
 		String userNick = "";
 		Integer userId = 0;
-		System.out.println("handleSessionValid()");
+		
 		if (serverResponse == null)
 			myCallbackInterface.sessionValidReceivedCallback(null, 0, null, false);
 		

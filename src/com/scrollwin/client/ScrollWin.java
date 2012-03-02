@@ -6,12 +6,17 @@ import java.util.Date;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.event.shared.HandlerRegistration;
 
+import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.Cookies;
+
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
@@ -91,6 +96,8 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 
 	public void applicationStart() {
 
+		installShortcuts();
+		
 		Canvas canvas = new Canvas();
 		canvas.setWidth100();
 		canvas.setHeight100();
@@ -385,6 +392,34 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 
 	}
 
+	private void installShortcuts()
+	{
+		Event.addNativePreviewHandler(new Event.NativePreviewHandler() { 
+			@Override 
+			public void onPreviewNativeEvent(NativePreviewEvent event) { 
+				NativeEvent ne = event.getNativeEvent();
+				switch (event.getTypeInt()) { 
+				case Event.ONKEYDOWN: 
+					if(ne.getCtrlKey() && (ne.getKeyCode()=='l' || ne.getKeyCode()=='L'))
+					{
+						form.show();
+						event.consume();
+						ne.preventDefault();
+						ne.stopPropagation();
+					} 
+					else if(ne.getCtrlKey() && (ne.getKeyCode()=='d' || ne.getKeyCode()=='D'))
+					{
+						performLogout();
+						event.consume();
+						ne.preventDefault();
+						ne.stopPropagation();
+					}
+				} 
+			} 
+		}); 
+
+	}
+	
 	@Override
 	public void avatarClicked(String userNick) {
 		myEntryBox.addAddressee(userNick);
