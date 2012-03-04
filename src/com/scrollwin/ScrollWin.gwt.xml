@@ -13,8 +13,10 @@
   <!-- Other module inherits                                      -->
 
   <!-- Specify the app entry point class.                         -->
+  <inherits name='com.google.gwt.visualization.Visualization'/>
   <inherits name='com.smartgwt.SmartGwt'/>
-  <inherits name='com.smartgwt.Drawing'/>
+  <inherits name='com.smartclient.theme.graphite.Graphite'/>
+  <!--inherits name='com.smartgwt.Drawing'/-->
   <inherits name='com.allen_sauer.gwt.log.gwt-log-DEBUG'/>
   <set-property name="log_DivLogger" value="DISABLED" />
   <entry-point class='com.scrollwin.client.ScrollWin'/>

@@ -30,6 +30,9 @@ public class UserTileDisplay extends TileGrid {
 		setOverflow(Overflow.VISIBLE);
 		setAnimateTileChange(true);
 		setTileMargin(2);
+		setBackgroundColor("#ffffff");
+		setEdgeImage("borders/sharpframe_10.png");
+        setEdgeSize(6); 
 		
 		DetailViewerField pictureField = new DetailViewerField("picture");
 		pictureField.setType("image");

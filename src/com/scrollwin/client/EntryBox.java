@@ -27,7 +27,13 @@ public class EntryBox extends HLayout {
     	setMargin(5);
     	setWidth(800);
     	setHeight(75);
-    	
+    	setBackgroundColor("#ffffff");
+    	//setShowShadow(true); 
+		//setShadowSoftness(1);  
+        //setShadowOffset(1); 
+        setEdgeImage("borders/sharpframe_10.png");
+        setEdgeSize(6);
+        
     	imageStack.setWidth(40);
     	imageStack.setAlign(Alignment.CENTER);
     	imageStack.setPadding(8);

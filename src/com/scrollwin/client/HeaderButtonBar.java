@@ -15,7 +15,8 @@ public class HeaderButtonBar extends HStack{
 	private userCallbackInterface myUserCallbackInterface;
 	private ImgButton myLogoutButton = new ImgButton();
 	private ImgButton myLocalButton = new ImgButton();
-	private ImgButton myInfoButton = new ImgButton();
+	private ImgButton myStatsButton = new ImgButton();
+	private ImgButton myOctopusButton = new ImgButton();
 	private DynamicForm form = new DynamicForm();
 	private TextItem localItem = new TextItem();
 	
@@ -41,17 +42,31 @@ public class HeaderButtonBar extends HStack{
 			}
 		});
 	    
-	    myInfoButton.setSize(32);  
-	    myInfoButton.setShowRollOver(false);
-	    myInfoButton.setShowHover(true);
-	    myInfoButton.setShowDown(false);
-	    myInfoButton.setSrc("info.png");
-	    myInfoButton.setPrompt("Info");
-	    myInfoButton.setHoverStyle("tooltipStyle");
-	    myInfoButton.addClickHandler(new ClickHandler() {
+	    myStatsButton.setSize(32);  
+	    myStatsButton.setShowRollOver(false);
+	    myStatsButton.setShowHover(true);
+	    myStatsButton.setShowDown(false);
+	    myStatsButton.setSrc("stats.png");
+	    myStatsButton.setPrompt("Statistiques<br>(Ctrl-S)");
+	    myStatsButton.setHoverStyle("tooltipStyle");
+	    myStatsButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				myUserCallbackInterface.infoClicked();
+				myUserCallbackInterface.statsClicked();
+			}
+		});
+	    
+	    myOctopusButton.setSize(32);  
+	    myOctopusButton.setShowRollOver(false);
+	    myOctopusButton.setShowHover(true);
+	    myOctopusButton.setShowDown(false);
+	    myOctopusButton.setSrc("octopus.png");
+	    myOctopusButton.setPrompt("Mode octo<br>(Ctrl-O)");
+	    myOctopusButton.setHoverStyle("tooltipStyle");
+	    myOctopusButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				myUserCallbackInterface.octopusClicked();
 			}
 		});
 	    
@@ -93,9 +108,10 @@ public class HeaderButtonBar extends HStack{
 	    form.setFields(localItem);
 	    form.hide();
 	    
-	    //addMember(myInfoButton);
 	    addMember(myLocalButton);
         addMember(form);
+        addMember(myStatsButton);
+        addMember(myOctopusButton);
         addMember(myLogoutButton);
 	}
 	

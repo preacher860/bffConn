@@ -51,6 +51,7 @@ public class JsonTest extends HttpServlet {
 			e.printStackTrace();
 		}
 		loadUserInfo();
+		updateUserMessageCount();
 		myRefreshTimer = new Timer();
 		myRefreshTimer.scheduleAtFixedRate(new userCheckTask(), 0 ,5000);
 	}
@@ -63,18 +64,7 @@ public class JsonTest extends HttpServlet {
 	  myServerConfig.setSqlServerPort(prefs.get("sqlserver", "server_port"));
   }
 public JsonTest(){
-	  
-	  
-	  
-	  // Load initial seqID from runtime data table 
-//	  try {
-//	      Connection conn = this.getConn();
-//	      seqId = getNewestSeq(conn);
-//	      conn.close();
-//	  } catch(SQLException e) {
-//          System.err.println("SQL error loading initial seqID");
-//          e.printStackTrace();
-//	  }
+
   }
     
   @Override
@@ -349,7 +339,8 @@ private int getNewestSeq(Connection conn)
 		  out.println("     \"nick\":\"" + currentUser.getNick() + "\",");
 		  out.println("     \"url\":\"" + currentUser.getAvatarURL() + "\",");
 		  out.println("     \"online\":\"" + currentUser.getActiveStatus() + "\",");
-		  out.println("     \"tmo\":\"" + currentUser.getActivityTimeout() + "\"");
+		  out.println("     \"tmo\":\"" + currentUser.getActivityTimeout() + "\",");
+		  out.println("     \"messages\":\"" + currentUser.getNumOfMessages() + "\"");
 		  out.print("  }");
 	  }
 	
@@ -620,7 +611,7 @@ private int getNewestSeq(Connection conn)
 	  try {
 		  Connection conn = this.getConn();
 	      
-    	  query = "SELECT * FROM users";
+    	  query = "SELECT * FROM users ORDER BY id";
     	  select = conn.prepareStatement(query);
 	      
 	      ResultSet result = select.executeQuery();
@@ -688,6 +679,31 @@ private int getNewestSeq(Connection conn)
 	  }
   }
   
+  private void updateUserMessageCount()
+  {
+	  String query ="SELECT userid, COUNT(*) FROM testtable GROUP BY userid ORDER BY userid";
+	  PreparedStatement select;
+	  
+	  try {
+		  Connection conn = this.getConn();
+    	  select = conn.prepareStatement(query);
+	      ResultSet result = select.executeQuery();
+	      while (result.next()) {
+	    	  for(srvUserContainer user:userList)
+	    		  if (user.getId().intValue() == Integer.valueOf(result.getString(1))) {
+	    			  user.setNumOfMessages(Integer.valueOf(result.getString(2)));
+	    			  break;
+	    		  }
+	      }
+	      select.close();
+	      result.close();
+	      conn.close();
+	  } catch(SQLException e) {
+	      System.err.println("Mysql Statement Error");
+	      e.printStackTrace();
+	  }
+  }
+  
   protected Connection getConn() {
 
       Connection conn = null;
@@ -723,6 +739,7 @@ private int getNewestSeq(Connection conn)
 	  private int loops = 0;
 	  public void run() {
 		  decrementUserTimeout();
+		  updateUserMessageCount();
 
 		  if(loops++ % 180 == 0)
 			  garbageCollectSessions();

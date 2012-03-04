@@ -77,3 +77,11 @@ h1 {
     border-radius:6px;
 }
 
+.myGridCell {
+    color:black;
+    background-color:#ffffff;
+}
+.myGridCellDark {
+    color:black;
+    background-color:#f0f0e8;
+}

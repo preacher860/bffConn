@@ -116,6 +116,9 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         messageVStack.setLeaveScrollbarGap(true);
         messageVStack.setMembersMargin(3);  
         messageVStack.setLayoutMargin(4);
+        messageVStack.setBackgroundColor("#ffffff");
+        messageVStack.setEdgeImage("borders/sharpframe_10.png");
+        messageVStack.setEdgeSize(6);
         
         chatvStack.addMember(messageVStack);
         chatvStack.addMember(myEntryBox);
@@ -167,6 +170,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         
         canvas.addChild(headerImage);
         canvas.addChild(mainvStack); 
+        //canvas.setBackgroundColor("#808080");
         canvas.draw();  
         
         // This scroll handler sets the flag user to determine if we're at bottom or not.
@@ -333,20 +337,36 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 			public void onPreviewNativeEvent(NativePreviewEvent event) { 
 				NativeEvent ne = event.getNativeEvent();
 				switch (event.getTypeInt()) { 
-				case Event.ONKEYDOWN: 
-					if(ne.getCtrlKey() && (ne.getKeyCode()=='l' || ne.getKeyCode()=='L'))
-					{
-						myHeaderButtonBar.showLocationEntry();
-						event.consume();
-						ne.preventDefault();
-						ne.stopPropagation();
-					} 
-					else if(ne.getCtrlKey() && (ne.getKeyCode()=='d' || ne.getKeyCode()=='D'))
-					{
-						performLogout();
-						event.consume();
-						ne.preventDefault();
-						ne.stopPropagation();
+				case Event.ONKEYDOWN:
+					if(ne.getCtrlKey()){
+						if(ne.getKeyCode()=='l' || ne.getKeyCode()=='L')
+						{
+							myHeaderButtonBar.showLocationEntry();
+							event.consume();
+							ne.preventDefault();
+							ne.stopPropagation();
+						} 
+						else if(ne.getKeyCode()=='d' || ne.getKeyCode()=='D')
+						{
+							performLogout();
+							event.consume();
+							ne.preventDefault();
+							ne.stopPropagation();
+						}
+						else if(ne.getKeyCode()=='s' || ne.getKeyCode()=='S')
+						{
+							statsClicked();
+							event.consume();
+							ne.preventDefault();
+							ne.stopPropagation();
+						}
+						else if(ne.getKeyCode()=='o' || ne.getKeyCode()=='O')
+						{
+							octopusClicked();
+							event.consume();
+							ne.preventDefault();
+							ne.stopPropagation();
+						}
 					}
 				} 
 			} 
@@ -373,8 +393,9 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 		performLogout();
 	}
 	
-	public void infoClicked() {
-		Window.open("https://github.com/preacher860/bffConn/wiki/Historique-des-changements", "test", "");
+	public void statsClicked() {
+		StatsWin stats = new StatsWin(myUserManager.getUserList());
+		//Window.open("https://github.com/preacher860/bffConn/wiki/Historique-des-changements", "test", "");
 	}
 
 	@Override
@@ -383,6 +404,11 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 			ioModule.SendLocal(myUserId, mySessionId, local);
 		
 		myEntryBox.setFocus();
+	}
+
+	@Override
+	public void octopusClicked() {
+		OctopusWin octo = new OctopusWin();
 	}
 	
 }

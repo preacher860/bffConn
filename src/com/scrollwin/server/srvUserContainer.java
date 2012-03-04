@@ -7,6 +7,7 @@ public class srvUserContainer {
 	private String  myAvatarURL;
 	private String  myPasswordHash;
 	private int 	activityTimeout;
+	private int 	myNumOfMessages;
 	
 	public srvUserContainer() {
 		id = 0;
@@ -76,6 +77,14 @@ public class srvUserContainer {
 
 	public void setPasswordHash(String myPasswordHash) {
 		this.myPasswordHash = myPasswordHash;
+	}
+
+	public int getNumOfMessages() {
+		return myNumOfMessages;
+	}
+
+	public void setNumOfMessages(int myNumOfMessages) {
+		this.myNumOfMessages = myNumOfMessages;
 	}
 	
 }

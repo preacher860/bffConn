@@ -407,8 +407,9 @@ public class IOModule {
 		    	String userNick = obj.get("nick").isString().stringValue();
 		    	String avURL = obj.get("url").isString().stringValue();
 		    	boolean online = Boolean.valueOf(obj.get("online").isString().stringValue());
+		    	Integer messages = Integer.valueOf(obj.get("messages").isString().stringValue());
 		    	
-		    	UserContainer user = new UserContainer(userId, userNick, "", avURL, online);
+		    	UserContainer user = new UserContainer(userId, userNick, "", avURL, online, messages);
 		    	userList.add(user);
 		    }
 		    if(userList.size() > 0)
