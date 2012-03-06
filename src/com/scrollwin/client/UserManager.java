@@ -4,9 +4,14 @@ import java.util.ArrayList;
 
 public class UserManager {
 	
+	private static final UserManager instance = new UserManager();
 	private ArrayList<UserContainer> myUserList = new ArrayList<UserContainer>();
 	private boolean userListReceived = false;
 	private int myDbVersion = 0;
+	
+	public static UserManager getInstance() {
+		return instance;
+	}
 	
 	public void setUser(UserContainer user){
 		// Scan the list to see if we're adding or editing a user

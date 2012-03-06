@@ -59,12 +59,14 @@ public class IOModule {
 		}
 	}
 	
-	public void GetUserMessages(Integer seqId, Integer userId, String sessionId)
+	public void GetUserMessages(Integer seqId, Integer num, Integer userId, String sessionId)
 	{
 		String postData = "dummy=0";
 		
 		String url = urlPrefix + "jsontest?" + "request_mode=get_messages";
 		url += "&start_point=" + seqId;
+		if(num.intValue() > 0)
+			url += "&end_point=" + seqId + num;
 		url += "&user_id=" + userId;
 		url += "&session_id=" + sessionId;
 		url += "&rnd_value=" + Random.nextInt(400000000);

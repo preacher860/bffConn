@@ -266,7 +266,8 @@ private int getNewestSeq(Connection conn)
 	  String query;
 	  PreparedStatement select;
 	  boolean firstEntry = true;
-
+	  //System.out.println("Srv msg from " + seqId + " to " + last);
+	  
 	  out.println('[');
 	  
 	  try {

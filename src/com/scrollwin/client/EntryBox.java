@@ -17,11 +17,13 @@ public class EntryBox extends HLayout {
 	private HStack imageStack = new HStack();
 	private DynamicForm form = new DynamicForm(); 
     private ioCallbackInterface myCallbackInterface;
+    private userCallbackInterface myUserCallbackInterface;
     private boolean myIsShiftDown = false;
     
     
-    public EntryBox(ioCallbackInterface callbackInterface) {
+    public EntryBox(ioCallbackInterface callbackInterface, userCallbackInterface userCB) {
     	myCallbackInterface = callbackInterface;
+    	myUserCallbackInterface = userCB;
     	
     	setShowEdges(true);
     	setMargin(5);
@@ -141,6 +143,7 @@ public class EntryBox extends HLayout {
     		}
     		outputMessage += item + " ";
     	}
+   	
     	return escapeJson(outputMessage);
     }
     

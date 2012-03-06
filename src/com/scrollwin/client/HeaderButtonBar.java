@@ -2,6 +2,7 @@ package com.scrollwin.client;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.ImgButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -10,6 +11,7 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyUpEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyUpHandler;
 import com.smartgwt.client.widgets.layout.HStack;
+import com.smartgwt.client.widgets.layout.LayoutSpacer;
 
 public class HeaderButtonBar extends HStack{
 	private userCallbackInterface myUserCallbackInterface;
@@ -19,6 +21,7 @@ public class HeaderButtonBar extends HStack{
 	private ImgButton myOctopusButton = new ImgButton();
 	private DynamicForm form = new DynamicForm();
 	private TextItem localItem = new TextItem();
+	private Img octopus = new Img("octopus.gif");
 	
 	public HeaderButtonBar(userCallbackInterface callbackInterface){
 		myUserCallbackInterface = callbackInterface;
@@ -28,8 +31,12 @@ public class HeaderButtonBar extends HStack{
         setDefaultLayoutAlign(VerticalAlignment.BOTTOM);
         setHeight(76);
         
+        octopus.setWidth(120);
+        octopus.setHeight(76);
+        octopus.hide();
+        
 		myLogoutButton.setSize(32);  
-	    myLogoutButton.setShowRollOver(false);
+	    myLogoutButton.setShowRollOver(true);
 	    myLogoutButton.setShowHover(true);
 	    myLogoutButton.setShowDown(false);
 	    myLogoutButton.setSrc("logout.png");
@@ -43,7 +50,7 @@ public class HeaderButtonBar extends HStack{
 		});
 	    
 	    myStatsButton.setSize(32);  
-	    myStatsButton.setShowRollOver(false);
+	    myStatsButton.setShowRollOver(true);
 	    myStatsButton.setShowHover(true);
 	    myStatsButton.setShowDown(false);
 	    myStatsButton.setSrc("stats.png");
@@ -57,7 +64,7 @@ public class HeaderButtonBar extends HStack{
 		});
 	    
 	    myOctopusButton.setSize(32);  
-	    myOctopusButton.setShowRollOver(false);
+	    myOctopusButton.setShowRollOver(true);
 	    myOctopusButton.setShowHover(true);
 	    myOctopusButton.setShowDown(false);
 	    myOctopusButton.setSrc("octopus.png");
@@ -71,8 +78,7 @@ public class HeaderButtonBar extends HStack{
 		});
 	    
 	    myLocalButton.setSize(32);  
-	    myLocalButton.setShowRollOver(false);
-	    myLocalButton.setShowHover(true);
+	    myLocalButton.setShowRollOver(true);
 	    myLocalButton.setShowDown(false);
 	    myLocalButton.setSrc("local.png");
 	    myLocalButton.setPrompt("Changer localisation<br>(Ctrl-L)");
@@ -108,11 +114,16 @@ public class HeaderButtonBar extends HStack{
 	    form.setFields(localItem);
 	    form.hide();
 	    
+	    LayoutSpacer spacer = new LayoutSpacer();
+	    spacer.setWidth(50);
+	    
 	    addMember(myLocalButton);
         addMember(form);
         addMember(myStatsButton);
         addMember(myOctopusButton);
         addMember(myLogoutButton);
+        addMember(spacer);
+        addMember(octopus);
 	}
 	
 	public void setLocal(String local){
@@ -123,4 +134,11 @@ public class HeaderButtonBar extends HStack{
 		form.show();
 	}
 	
+	public void showOctopus() {
+		octopus.show();
+	}
+	
+	public void hideOctopus() {
+		octopus.hide();
+	}
 }

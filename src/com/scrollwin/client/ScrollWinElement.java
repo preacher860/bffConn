@@ -27,11 +27,13 @@ public class ScrollWinElement extends HStack {
 	private int seqId = 0;
 	private userCallbackInterface myUserCallbackInterface;
 	private String myMessageOriginatingUser;
+	private MessageContainer myMessage = null;
 	
 	public ScrollWinElement(MessageContainer message, UserContainer user, UserContainer myself, userCallbackInterface cb)
 	{
 		myUserCallbackInterface = cb;
 		myMessageOriginatingUser = user.getNick();
+		myMessage = message;
 		
 		Integer kittenSelect = 48 + message.getMessageUserId();
 		if(user.getAvatarURL().isEmpty())
@@ -43,6 +45,7 @@ public class ScrollWinElement extends HStack {
 		
 		setBorder("1px solid #808080");
 		setBackgroundColor("#E0E0E0");
+		setHoverStyle("messageBoxHover");
 		
 		setWidth100();
 		setHeight(40);
@@ -113,4 +116,9 @@ public class ScrollWinElement extends HStack {
 		
 		return message.getMessage().contains(atUserNick);
 	}
+	
+	public MessageContainer getMessage(){
+		return myMessage;
+	}
+	
 }

@@ -51,33 +51,32 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	public static final int MSG_INITIAL_RTRV = 20;
+	private static final int MSG_INITIAL_RTRV = 100;
+	private static final int MSG_OLD_FETCH_NUM = 50;
 	
 	private HStack hStack = new HStack();
-	private VStack messageVStack = new VStack();
 	private VStack chatvStack = new VStack();
 	private VLayout mainvStack = new VLayout();
 	private HStack headerStack = new HStack();
 	private VStack versionStack = new VStack();
+	private VStack leftToolbarStack = new VStack();
 	private HTMLPane versionPane = new HTMLPane();
 	
 	private IOModule ioModule = new IOModule(this);
 	private Integer myCurrentMode = MODE_INIT_S1;
-	private RuntimeData myRuntimeData = new RuntimeData();
 	private Timer myRefreshTimer;
-	private Timer myCrappyTimer;
-	private UserManager myUserManager = new UserManager();
 	private boolean myRuntimeDataRcvd = false;
 	private boolean myUserDataRcvd = false;
 	private UserTileDisplay myUserTileDisplay = new UserTileDisplay(this);
-	private EntryBox myEntryBox = new EntryBox(this);
+	private WaitBox myWaitBox = new WaitBox();
+	private EntryBox myEntryBox = new EntryBox(this, this);
 	private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
-	private Integer myUserId = 0;
+	private MessageView myMessageManager = new MessageView(this);
+	
 	private String mySessionId = "0";
 	private String mySessionLocal = "";
-	private WaitWindow myWaitWindow = new WaitWindow();
 	private Integer myVersion = VersionInfo.CURRENT_VERSION;
-	private boolean myAtBottom = true;
+	
 	
 	public ScrollWin(){
 		
@@ -105,28 +104,16 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         
         Img headerImage = new Img("http://srv.lanouette.ca/images/bffConnHead2.jpg", 1716, 76);
         headerImage.setOverflow(Overflow.HIDDEN);
-        //mainvStack.addMember(headerImage);
         
-        messageVStack.setShowEdges(true);  
-        messageVStack.setMargin(5);
-        messageVStack.setWidth(800);  
-        messageVStack.setHeight("80%");
-        messageVStack.setCanDragResize(true);
-        messageVStack.setOverflow(Overflow.AUTO);
-        messageVStack.setLeaveScrollbarGap(true);
-        messageVStack.setMembersMargin(3);  
-        messageVStack.setLayoutMargin(4);
-        messageVStack.setBackgroundColor("#ffffff");
-        messageVStack.setEdgeImage("borders/sharpframe_10.png");
-        messageVStack.setEdgeSize(6);
-        
-        chatvStack.addMember(messageVStack);
+        chatvStack.addMember(myMessageManager);
         chatvStack.addMember(myEntryBox);
         
+        leftToolbarStack.addMember(myUserTileDisplay);
+        leftToolbarStack.addMember(myWaitBox);
         LayoutSpacer spacer = new LayoutSpacer();
         spacer.setWidth(10);
         hStack.addMember(spacer);
-        hStack.addMember(myUserTileDisplay);
+        hStack.addMember(leftToolbarStack);
         hStack.addMember(chatvStack);
         hStack.setWidth100();
         
@@ -173,89 +160,65 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         //canvas.setBackgroundColor("#808080");
         canvas.draw();  
         
-        // This scroll handler sets the flag user to determine if we're at bottom or not.
-        // Only if were at bottom do we kick the autoscroll on new messages
-        messageVStack.addScrolledHandler(new ScrolledHandler(){
-			@Override
-			public void onScrolled(ScrolledEvent event) {
-				if(messageVStack.getScrollTop() == messageVStack.getScrollBottom())
-					myAtBottom = true;
-				else
-					myAtBottom = false;
-			}
-        } );
-        
         myRefreshTimer = new Timer() {
 	      @Override
 	      public void run() {
 	      	if (myRuntimeDataRcvd && myUserDataRcvd)
 	  		{
+	      		int start_point = 1;
 	      		if(myCurrentMode == MODE_INIT_S1){
-	      			myEntryBox.setUser(myUserManager.getUser(myUserId));
+	      			myEntryBox.setUser(UserManager.getInstance().getUser(RuntimeData.getInstance().getUserId()));
 	      			myCurrentMode = MODE_RUNNING;
-	      		}
+	      			
+	      			// Initial retrieve
+	      			if (RuntimeData.getInstance().getNewestSeqId() > MSG_INITIAL_RTRV)
+		      			start_point = RuntimeData.getInstance().getNewestSeqId() - MSG_INITIAL_RTRV;
+		      		else
+		      			start_point = 1;
+	      			
+	      			String waitMsg = "Chargement des messages <b>" + start_point + " </b>à<b> ";
+	      			waitMsg += (start_point + MSG_INITIAL_RTRV) + "</b>";
+	      			waitMsg += " Veuillez patienter.";
+	      			myWaitBox.setMessage(waitMsg);
+	      			myWaitBox.show();
+	      		} else if (myCurrentMode == MODE_RUNNING)
+	      			start_point = RuntimeData.getInstance().getNewestSeqId() + 1;
 	      		
-		  		ioModule.GetUserMessages(myRuntimeData.getNewestSeqId()+1, myUserId, mySessionId);
+		  		ioModule.GetUserMessages(start_point, MSG_INITIAL_RTRV, RuntimeData.getInstance().getUserId(), mySessionId);
 		  		
 		  		// Refresh users to get their online status.  This will be gathered in a better way some day
-		  		ioModule.GetUserInfo(myUserId, mySessionId);
+		  		ioModule.GetUserInfo(RuntimeData.getInstance().getUserId(), mySessionId);
 
 		  		// Don't reschedule if shutting down, nothing good can come out of this
 	  			if(myCurrentMode != MODE_SHUTDOWN)
 	  				myRefreshTimer.schedule(3000);
 	  		}
 	      	// Check server version to quickly detect any mismatch
-	      	ioModule.GetServerVersion(myUserId, mySessionId);
+	      	ioModule.GetServerVersion(RuntimeData.getInstance().getUserId(), mySessionId);
 	      }
 	    };
 	    
-	    myCrappyTimer = new Timer() {
-		      @Override
-		      public void run() {
-		    	  messageVStack.scrollToBottom();
-		      }
-		    };
-		    
-		ioModule.GetServerVersion(myUserId, mySessionId);    
-		ioModule.GetUserInfo(myUserId, mySessionId);
-        ioModule.GetRuntimeData(myUserId, mySessionId);
+		ioModule.GetServerVersion(RuntimeData.getInstance().getUserId(), mySessionId);    
+		ioModule.GetUserInfo(RuntimeData.getInstance().getUserId(), mySessionId);
+        ioModule.GetRuntimeData(RuntimeData.getInstance().getUserId(), mySessionId);
         myRefreshTimer.schedule(1000);  //  Check if our init Gets are completed
 	}
 	@Override
 	public void messagesReceivedCallback(final ArrayList<MessageContainer> messages) {
-		for(int msgIndex = 0; msgIndex < messages.size(); msgIndex++){
-			//  Add only messages newer than what we already got
-			if(messages.get(msgIndex).getMessageSeqId() > myRuntimeData.getNewestSeqId())
-			{
-				ScrollWinElement bb = new ScrollWinElement(messages.get(msgIndex), 
-														   myUserManager.getUser(messages.get(msgIndex).getMessageUserId()),
-														   myUserManager.getUser(myUserId),
-														   this);
-				messageVStack.addMember(bb);
-				myRuntimeData.setNewestSeqId(messages.get(msgIndex).getMessageSeqId());
-			}
-		}
-		
-		if(myAtBottom)
-			myCrappyTimer.schedule(200);
+		myMessageManager.newMessages(messages);
 	} 
 	
 	@Override
 	public void runtimeDataReceivedCallback(RuntimeData data) {
-		// The seqId we want to start with for initial window fill
-		if(data.newestSeqId > MSG_INITIAL_RTRV)
-			myRuntimeData.setNewestSeqId(data.newestSeqId - MSG_INITIAL_RTRV);
-		else
-			myRuntimeData.setNewestSeqId(1);
-
+		RuntimeData.getInstance().setNewestSeqId(data.getNewestSeqId());
 		myRuntimeDataRcvd = true;
 	}
 
 	@Override
 	public void usersReceivedCallback(ArrayList<UserContainer> users) {
-		myUserManager.setUserList(users);
+		UserManager.getInstance().setUserList(users);
 		myUserDataRcvd = true;
-		myUserTileDisplay.UpdateOnlineUsers(myUserManager);
+		myUserTileDisplay.UpdateOnlineUsers(UserManager.getInstance());
 	}
 
 	@Override
@@ -286,7 +249,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 		}
 		else
 		{
-			myUserId = userId;
+			RuntimeData.getInstance().setUserId(userId);
 			mySessionId = sessionId;
 			mySessionLocal = userLocal;
 			
@@ -312,7 +275,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 			LoginWin loginWin = new LoginWin(this);
 			loginWin.show();
 		} else {
-			myUserId = userId;
+			RuntimeData.getInstance().setUserId(userId);
 			mySessionId = sessionId;
 			mySessionLocal = local;
 			System.out.println("Session was still active: " + mySessionId);
@@ -322,7 +285,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 
 	@Override
 	public void messageToSendCallback(String message) {
-		ioModule.SendUserMessage(message, myRuntimeData.getNewestSeqId(), myUserId, mySessionId);
+		ioModule.SendUserMessage(message, RuntimeData.getInstance().getNewestSeqId(), RuntimeData.getInstance().getUserId(), mySessionId);
 
 		// Control max number of msg displayed - Disabled for DB debugging
   	  	//if(messageVStack.getMembers().length > 100)
@@ -380,7 +343,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	
 	public void performLogout() {
 		Cookies.removeCookie("bffConnexionSID", "/");
-		ioModule.Logout(myUserId, mySessionId);
+		ioModule.Logout(RuntimeData.getInstance().getUserId(), mySessionId);
 	}
 
 	@Override
@@ -394,14 +357,14 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	}
 	
 	public void statsClicked() {
-		StatsWin stats = new StatsWin(myUserManager.getUserList());
+		StatsWin stats = new StatsWin(UserManager.getInstance().getUserList());
 		//Window.open("https://github.com/preacher860/bffConn/wiki/Historique-des-changements", "test", "");
 	}
 
 	@Override
 	public void localEntered(String local) {
 		if (local != null)
-			ioModule.SendLocal(myUserId, mySessionId, local);
+			ioModule.SendLocal(RuntimeData.getInstance().getUserId(), mySessionId, local);
 		
 		myEntryBox.setFocus();
 	}
@@ -410,5 +373,36 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	public void octopusClicked() {
 		OctopusWin octo = new OctopusWin();
 	}
-	
+
+	@Override
+	public void octopusOnTyped() {
+		myHeaderButtonBar.showOctopus();
+	}
+
+	@Override
+	public void octopusOffTyped() {
+		myHeaderButtonBar.hideOctopus();
+	}
+
+	@Override
+	public void scrollTop(int oldest) {
+		int firstMsgToFetch;
+		if (oldest > MSG_OLD_FETCH_NUM)
+			firstMsgToFetch = oldest - MSG_OLD_FETCH_NUM;
+		else
+			firstMsgToFetch = 1;
+		
+		String waitMsg = "Chargement des messages <b>" + firstMsgToFetch + " </b>à<b> ";
+		waitMsg += (firstMsgToFetch + MSG_OLD_FETCH_NUM) + "</b>";
+		waitMsg += " Veuillez patienter.";
+		myWaitBox.setMessage(waitMsg);
+		myWaitBox.show();
+		
+		ioModule.GetUserMessages(firstMsgToFetch, MSG_OLD_FETCH_NUM, RuntimeData.getInstance().getUserId(), mySessionId);
+	}
+
+	@Override
+	public void messageDisplayComplete() {
+		myWaitBox.hide();
+	}
 }

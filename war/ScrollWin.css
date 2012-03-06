@@ -85,3 +85,8 @@ h1 {
     color:black;
     background-color:#f0f0e8;
 }
+
+.messageBoxHover {
+	border-style:solid;
+	border-color:#B0B0FF;
+}
