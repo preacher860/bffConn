@@ -40,12 +40,12 @@ import com.smartgwt.client.widgets.tile.TileRecord;
 public class StatsWin extends Window {
 	
 	private PieChart pie;
-	private BarChart bar;
 	private PieChart.PieOptions myPieOptions;
 	private HStack hStack = new HStack();
 	private HStack buttonStack = new HStack();
 	private VStack chartStack = new VStack();
 	private ImgButton myMessagesButton = new ImgButton();
+	private ImgButton myDeletedButton = new ImgButton();
 	private Label chartLabel = new Label();
 	private ListGrid statsGrid;
 	private int totalMessages = 0;
@@ -62,7 +62,7 @@ public class StatsWin extends Window {
 		statsGrid = new ListGrid() {
 			@Override  
 	        protected String getCellCSSText(ListGridRecord record, int rowNum, int colNum) {  
-	            if (getFieldName(colNum).equals("messages")) {  
+	            if (getFieldName(colNum).equals("messages") || getFieldName(colNum).equals("deleted")) {  
 	                return "font-size:14px;font-weight:bold";  
 	            } else {  
 	                return super.getCellCSSText(record, rowNum, colNum);  
@@ -82,14 +82,16 @@ public class StatsWin extends Window {
 		statsGrid.setCellHeight(34);
 		statsGrid.setScrollbarSize(0); // There has to be a better way...
 				
-		ListGridField avatarField = new ListGridField("avatarURL", Canvas.imgHTML("people.png"), 80);  
-        ListGridField messagesField = new ListGridField("messages", Canvas.imgHTML("msg.png"), 80);  
+		ListGridField avatarField = new ListGridField("avatarURL", Canvas.imgHTML("people.png"), 50);  
+        ListGridField messagesField = new ListGridField("messages", Canvas.imgHTML("msg.png"), 50); 
+        ListGridField deletedField = new ListGridField("deleted", Canvas.imgHTML("deleted.png"), 50);
         messagesField.setAlign(Alignment.CENTER);
+        deletedField.setAlign(Alignment.CENTER);
         avatarField.setAlign(Alignment.CENTER);
         avatarField.setType(ListGridFieldType.IMAGE);  
         avatarField.setImageSize(30);  
         
-        statsGrid.setFields(avatarField, messagesField);
+        statsGrid.setFields(avatarField, messagesField, deletedField);
         statsGrid.setData(UserStatsData.getNewRecords(users));
 
         myMessagesButton.setWidth(32);
@@ -104,7 +106,25 @@ public class StatsWin extends Window {
 	    myMessagesButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				
+				pie.draw(createTable(users), myPieOptions);
+				chartLabel.setContents("<b>Messages envoyés par usager</b><br>Nombre total: " + computeTotalMessages(users));
+			}
+		});
+	    
+	    myDeletedButton.setWidth(32);
+        myDeletedButton.setHeight(32);
+        myDeletedButton.setMargin(4);
+	    myDeletedButton.setShowRollOver(false);
+	    myDeletedButton.setShowHover(true);
+	    myDeletedButton.setShowDown(false);
+	    myDeletedButton.setSrc("deleted.png");
+	    //myMessagesButton.setPrompt("Messages");
+	    //myMessagesButton.setHoverStyle("tooltipStyle");
+	    myDeletedButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				pie.draw(createDeletedTable(users), myPieOptions);
+				chartLabel.setContents("<b>Messages supprimés par usager</b><br>Nombre total: " + computeTotalDeleted(users));
 			}
 		});
 	    
@@ -117,6 +137,7 @@ public class StatsWin extends Window {
 	    LayoutSpacer spacer = new LayoutSpacer();
 	    spacer.setWidth(5);
 	    buttonStack.addMember(myMessagesButton);
+	    buttonStack.addMember(myDeletedButton);
 	    buttonStack.setHeight(32);
 	    chartStack.setWidth(260);
 	    chartStack.setAlign(Alignment.CENTER);
@@ -183,10 +204,31 @@ public class StatsWin extends Window {
 	    return data;
 	  }
 	
+	private AbstractDataTable createDeletedTable(ArrayList<UserContainer> users) {
+	    DataTable data = DataTable.create();
+	    
+	    data.addColumn(ColumnType.STRING, "Nick");
+	    data.addColumn(ColumnType.NUMBER, "Messages");
+	    data.addRows(users.size());
+	    
+	    for(int index = 0; index < users.size(); index++){
+	    	data.setValue(index,0,users.get(index).getNick());
+	    	data.setValue(index,1,users.get(index).getDeletedMessages());
+	    }
+	    return data;
+	  }
+	
 	private int computeTotalMessages(ArrayList<UserContainer> users) {
 		int totalMsg = 0;
 	    for(UserContainer user:users)
 	    	totalMsg += user.getMessages();
+	    return totalMsg;
+    }
+	
+	private int computeTotalDeleted(ArrayList<UserContainer> users) {
+		int totalMsg = 0;
+	    for(UserContainer user:users)
+	    	totalMsg += user.getDeletedMessages();
 	    return totalMsg;
     }
 }
@@ -197,7 +239,9 @@ class UserStatsData {
 
 		UserStatsRecord [] records = new UserStatsRecord[users.size()];
 		for(UserContainer currentUser:users) { 
-			records[recIndex] = new UserStatsRecord(currentUser.getAvatarURL(), currentUser.getMessages());
+			records[recIndex] = new UserStatsRecord(currentUser.getAvatarURL(), 
+													currentUser.getMessages(),
+													currentUser.getDeletedMessages());
 			recIndex++;
 		}
 		
@@ -210,9 +254,10 @@ class UserStatsRecord extends TileRecord {
 	public UserStatsRecord() {
 	}
 
-	public UserStatsRecord(String avatarURL, int messages) {
+	public UserStatsRecord(String avatarURL, int messages, int deleted) {
 		setAvatarURL(avatarURL);
 		setMessages(messages);
+		setDeleted(deleted);
 	}
 
 	public void setAvatarURL(String avatarURL) {
@@ -221,5 +266,9 @@ class UserStatsRecord extends TileRecord {
 	
 	public void setMessages(int messages) {
 		setAttribute("messages", messages);
+	}
+	
+	public void setDeleted(int deleted) {
+		setAttribute("deleted", deleted);
 	}
 }

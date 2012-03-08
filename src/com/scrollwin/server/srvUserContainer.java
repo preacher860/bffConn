@@ -8,6 +8,7 @@ public class srvUserContainer {
 	private String  myPasswordHash;
 	private int 	activityTimeout;
 	private int 	myNumOfMessages;
+	private int 	myNumOfDeletedMessages;
 	
 	public srvUserContainer() {
 		id = 0;
@@ -85,6 +86,14 @@ public class srvUserContainer {
 
 	public void setNumOfMessages(int myNumOfMessages) {
 		this.myNumOfMessages = myNumOfMessages;
+	}
+
+	public int getNumOfDeletedMessages() {
+		return myNumOfDeletedMessages;
+	}
+
+	public void setNumOfDeletedMessages(int myNumOfDeletedMessages) {
+		this.myNumOfDeletedMessages = myNumOfDeletedMessages;
 	}
 	
 }

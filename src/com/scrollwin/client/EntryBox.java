@@ -139,7 +139,7 @@ public class EntryBox extends HLayout {
     		String item = parts[tok];
     		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
     			if( (item.endsWith(".jpg")) || (item.endsWith(".gif")) || (item.endsWith(".png")) )
-    				item = "<img src=\"" + item + "\" height=200/>";
+    				item = "<br><img src=\"" + item + "\" height=200/><br>";
     			else
     				item = "<a href=\"" + item + "\" target=\"_blank\">lien</a>";
     		}
@@ -160,8 +160,9 @@ public class EntryBox extends HLayout {
 	}
     
     public String convertCrLf(String str) {
-    	str = str.replace("\n", "<br>"); 
-	    str = str.replace("\r", "<br>");
+    	// Add space before so the <br> is processed as a separate token
+    	str = str.replace("\n", " <br> "); 
+	    str = str.replace("\r", " <br> ");
 	    return str;
     }
 }

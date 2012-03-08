@@ -125,10 +125,6 @@ public JsonTest(){
 						  lastMsg = 0;
 					  getNewMessages(Integer.parseInt(firstNewMessage), lastMsg, out);
 				  }
-
-				  // Mark this user as active: reset its online timeout and refresh its session
-				  resetUserTimeout(Integer.parseInt(userId));
-				  touchSession(sessionId);
 			  }
 
 			  if(requestMode.contentEquals("get_messages_by_db")) {
@@ -138,6 +134,10 @@ public JsonTest(){
 			  
 			  if(requestMode.contentEquals("get_runtime_data")) {
 				  getRuntimeData(out);
+				  
+				  // Mark this user as active: reset its online timeout and refresh its session
+				  resetUserTimeout(Integer.parseInt(userId));
+				  touchSession(sessionId);
 			  }
 
 			  if(requestMode.contentEquals("get_user_info")) {
@@ -446,7 +446,8 @@ private int getNewestSeq(Connection conn)
 		  out.println("     \"url\":\"" + currentUser.getAvatarURL() + "\",");
 		  out.println("     \"online\":\"" + currentUser.getActiveStatus() + "\",");
 		  out.println("     \"tmo\":\"" + currentUser.getActivityTimeout() + "\",");
-		  out.println("     \"messages\":\"" + currentUser.getNumOfMessages() + "\"");
+		  out.println("     \"messages\":\"" + currentUser.getNumOfMessages() + "\",");
+		  out.println("     \"deleted\":\"" + currentUser.getNumOfDeletedMessages() + "\"");
 		  out.print("  }");
 	  }
 	
@@ -821,12 +822,14 @@ private int getNewestSeq(Connection conn)
   private void updateUserMessageCount()
   {
 	  String query ="SELECT userid, COUNT(*) FROM testtable GROUP BY userid ORDER BY userid";
+	  String queryDel ="SELECT userid, COUNT(*) FROM testtable where deleted=true GROUP BY userid ORDER BY userid";
 	  PreparedStatement select;
+	  ResultSet result;
 	  
 	  try {
 		  Connection conn = this.getConn();
     	  select = conn.prepareStatement(query);
-	      ResultSet result = select.executeQuery();
+	      result = select.executeQuery();
 	      while (result.next()) {
 	    	  for(srvUserContainer user:userList)
 	    		  if (user.getId().intValue() == Integer.valueOf(result.getString(1))) {
@@ -836,6 +839,19 @@ private int getNewestSeq(Connection conn)
 	      }
 	      select.close();
 	      result.close();
+	      
+	      select = conn.prepareStatement(queryDel);
+	      result = select.executeQuery();
+	      while (result.next()) {
+	    	  for(srvUserContainer user:userList)
+	    		  if (user.getId().intValue() == Integer.valueOf(result.getString(1))) {
+	    			  user.setNumOfDeletedMessages(Integer.valueOf(result.getString(2)));
+	    			  break;
+	    		  }
+	      }
+	      select.close();
+	      result.close();
+	      
 	      conn.close();
 	  } catch(SQLException e) {
 	      System.err.println("Mysql Statement Error");

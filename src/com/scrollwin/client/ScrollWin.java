@@ -51,7 +51,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	private static final int MSG_INITIAL_RTRV = 10;
+	private static final int MSG_INITIAL_RTRV = 100;
 	private static final int MSG_OLD_FETCH_NUM = 50;
 	
 	private HStack hStack = new HStack();
@@ -75,8 +75,6 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	
 	//private String mySessionId = "0";
 	private String mySessionLocal = "";
-	private int myVersion = VersionInfo.CURRENT_VERSION;
-	
 	
 	public ScrollWin(){
 		
@@ -188,14 +186,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	      			ioModule.GetUserMessages(start_point, MSG_INITIAL_RTRV);
 	      		} 
 	      		else if (myCurrentMode == MODE_RUNNING) {
-	      			//	start_point = RuntimeData.getInstance().getNewestSeqId() + 1;
-
-	      			//System.out.println("Last known msg: " + RuntimeData.getInstance().getNewestSeqId() +
-	      			//					" Newest on server: " + RuntimeData.getInstance().getServerSeqId());
-
 	      			if(RuntimeData.getInstance().getDbVersion() < RuntimeData.getInstance().getServerDbVersion()){
-	      				//System.out.println("Local db version is behind. Local: " + RuntimeData.getInstance().getDbVersion() + 
-	      				//		" server: " + RuntimeData.getInstance().getServerDbVersion());
 	      				ioModule.GetUserMessagesByVersion(RuntimeData.getInstance().getDbVersion());
 	      			}
 
@@ -208,7 +199,6 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	  				myRefreshTimer.schedule(3000);
 	  		}
 	      	// Check server version to quickly detect any mismatch
-	      	//ioModule.GetServerVersion(RuntimeData.getInstance().getUserId(), mySessionId);
 	      	ioModule.GetRuntimeData();
 	      }
 	    };
@@ -237,7 +227,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	}
 
 	public void checkServerVersion() {
-		if(RuntimeData.getInstance().getServerVersion() != myVersion) {
+		if(RuntimeData.getInstance().getServerVersion() != VersionInfo.CURRENT_VERSION) {
 			myCurrentMode = MODE_SHUTDOWN;
 			SC.warn("La version de l'application que vous utilisez est antérieure à celle du serveur. " +
 				   "La nouvelle version sera chargée automatiquement lorsque vous fermerez cette fenêtre.", 
@@ -422,12 +412,11 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 
 	@Override
 	public void starClicked(int seqId) {
-		System.out.println("Star clicked on message " + seqId);
+		Window.open("http://www.youtube.com/watch?v=dQw4w9WgXcQ&t=0m43s", "Rick Rolled!", "");
 	}
 
 	@Override
 	public void deleteClicked(int seqId) {
-		System.out.println("Delete clicked on message " + seqId);
 		ioModule.SendDeleteMessage(seqId);
 	}
 }

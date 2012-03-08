@@ -2,8 +2,8 @@ package com.scrollwin.client;
 
 public class MessageContainer {
 	private String Message;
-	private Integer MessageUserId;
-	private Integer MessageSeqId;
+	private int MessageUserId;
+	private int MessageSeqId;
 	private String MessageUserNick;
 	private String MessageDate;
 	private String MessageTime;
@@ -30,16 +30,16 @@ public class MessageContainer {
 	public void setMessage(String message) {
 		Message = message;
 	}
-	public Integer getMessageUserId() {
+	public int getMessageUserId() {
 		return MessageUserId;
 	}
-	public void setMessageUserId(Integer messageUserId) {
+	public void setMessageUserId(int messageUserId) {
 		MessageUserId = messageUserId;
 	}
-	public Integer getMessageSeqId() {
+	public int getMessageSeqId() {
 		return MessageSeqId;
 	}
-	public void setMessageSeqId(Integer messageSeqId) {
+	public void setMessageSeqId(int messageSeqId) {
 		MessageSeqId = messageSeqId;
 	}
 

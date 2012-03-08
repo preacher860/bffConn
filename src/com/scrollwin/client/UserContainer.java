@@ -8,8 +8,9 @@ public class UserContainer {
 	private String  myAvatarURL;
 	private boolean myOnlineStatus;
 	private int 	myMessages;
+	private int 	myDeletedMessages;
 	
-	public UserContainer(Integer Id, String Nick, String Name, String AvatarURL, boolean online, int messages)
+	public UserContainer(Integer Id, String Nick, String Name, String AvatarURL, boolean online, int messages, int deleted)
 	{
 		myId = Id;
 		myNick = Nick;
@@ -17,6 +18,7 @@ public class UserContainer {
 		myAvatarURL = AvatarURL;
 		myOnlineStatus = online;
 		myMessages = messages;
+		myDeletedMessages = deleted;
 	}
 	
 	public UserContainer(UserContainer user)
@@ -27,6 +29,7 @@ public class UserContainer {
 		myAvatarURL = user.getAvatarURL();
 		myOnlineStatus = user.getOnlineStatus();
 		myMessages = user.getMessages();
+		myDeletedMessages = user.getDeletedMessages();
 	}
 	
 	public boolean equals(UserContainer user)
@@ -80,5 +83,13 @@ public class UserContainer {
 
 	public void setMessages(int myMessages) {
 		this.myMessages = myMessages;
+	}
+
+	public int getDeletedMessages() {
+		return myDeletedMessages;
+	}
+
+	public void setDeletedMessages(int myDeletedMessages) {
+		this.myDeletedMessages = myDeletedMessages;
 	}
 }

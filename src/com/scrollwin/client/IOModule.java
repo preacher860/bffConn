@@ -482,8 +482,9 @@ public class IOModule {
 		    	String avURL = obj.get("url").isString().stringValue();
 		    	boolean online = Boolean.valueOf(obj.get("online").isString().stringValue());
 		    	Integer messages = Integer.valueOf(obj.get("messages").isString().stringValue());
+		    	Integer deleted = Integer.valueOf(obj.get("deleted").isString().stringValue());
 		    	
-		    	UserContainer user = new UserContainer(userId, userNick, "", avURL, online, messages);
+		    	UserContainer user = new UserContainer(userId, userNick, "", avURL, online, messages, deleted);
 		    	userList.add(user);
 		    }
 		    if(userList.size() > 0)

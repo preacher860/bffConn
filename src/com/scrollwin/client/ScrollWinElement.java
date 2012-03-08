@@ -9,6 +9,7 @@ import com.smartgwt.client.widgets.events.MouseOutEvent;
 import com.smartgwt.client.widgets.events.MouseOutHandler;
 import com.smartgwt.client.widgets.events.MouseOverEvent;
 import com.smartgwt.client.widgets.events.MouseOverHandler;
+import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.types.ImageStyle;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -30,7 +31,13 @@ public class ScrollWinElement extends HStack {
 	private Label userInfoLabel = new Label();
 	private Img userImage;
 	private Img starIcon = new Img("stargray.png", 16, 16);
+	private Img starOverIcon = new Img("stargray_Over.png", 16, 16);
 	private Img deleteIcon = new Img("deletegray.png", 16, 16);
+	private Img deleteOverIcon = new Img("deletegray_Over.png", 16, 16);
+	private Label starLabel = new Label("Étoiler");
+	private Label deleteLabel = new Label("Effacer");
+	private HStack starStack = new HStack();
+	private HStack deleteStack = new HStack();
 	private int seqId = 0;
 	private userCallbackInterface myUserCallbackInterface;
 	private String myMessageOriginatingUser;
@@ -63,15 +70,32 @@ public class ScrollWinElement extends HStack {
 		setWidth100();
 		setHeight(40);
 		
+		
+		starLabel.setAutoWidth();
+		deleteLabel.setAutoWidth();
+		starOverIcon.hide();
+		deleteOverIcon.hide();
+		LayoutSpacer iconSpacer = new LayoutSpacer();
+		iconSpacer.setWidth(3);
+		starStack.setWidth(60);
+		starStack.addMember(starIcon);
+		starStack.addMember(starOverIcon);
+		starStack.addMember(iconSpacer);
+		starStack.addMember(starLabel);
+		deleteStack.setWidth(60);
+		deleteStack.addMember(deleteIcon);
+		deleteStack.addMember(deleteOverIcon);
+		deleteStack.addMember(iconSpacer);
+		deleteStack.addMember(deleteLabel);
+		
 		iconPane.setBackgroundColor("#B0B0B0");
 		iconPane.setHeight(18);
 		iconPane.setWidth("40%");
-		iconPane.addMember(starIcon);
-		iconPane.addMember(deleteIcon);
+		iconPane.addMember(starStack);
+		iconPane.addMember(deleteStack);
 		iconPane.setOpacity(0);
 		iconPane.setShowHover(true);
-		
-		
+			
 		infoPane.setBackgroundColor("#B0B0B0");
 		infoPane.addMember(userInfoLabel);
 		infoPane.addMember(iconPane);
@@ -86,8 +110,7 @@ public class ScrollWinElement extends HStack {
         if(isMessageForLoggedUser(message, myself))
         	userMessagePane.setBackgroundColor("#88FB9E"); 
         else
-        	userMessagePane.setBackgroundColor("#C3D9FF"); // debug blue
-        //userMessagePane.setBackgroundColor("#E0E0E0"); 
+        	userMessagePane.setBackgroundColor("#C3D9FF"); 
         userMessagePane.setPadding(5);
         userMessagePane.setContents(message.getMessage());
         userMessagePane.setHeight("60%");
@@ -96,8 +119,7 @@ public class ScrollWinElement extends HStack {
         userMessagePane.setOverflow(Overflow.VISIBLE);
                 
         userInfoLabel.setAlign(Alignment.LEFT);  
-        userInfoLabel.setBackgroundColor("#B0B0B0"); // debug gray
-        //userInfoLabel.setBackgroundColor("#E0E0E0");
+        userInfoLabel.setBackgroundColor("#B0B0B0"); 
         userInfoLabel.setPadding(3);
         String infoLabelContents = "Message " + message.getMessageSeqId() + "   envoyé par " + 
 				  					user.getNick() + "  le " + message.getMessageDate() + 
@@ -122,28 +144,58 @@ public class ScrollWinElement extends HStack {
 		imageStack.setPrompt(user.getNick());
 		imageStack.setHoverStyle("tooltipStyle");
 		
-		starIcon.setShowRollOver(true);
-		deleteIcon.setShowRollOver(true);
-		imageStack.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				myUserCallbackInterface.avatarClicked(myMessageOriginatingUser);
-			}
-		});
-		
-		starIcon.addClickHandler(new ClickHandler() {
+		//starIcon.setShowRollOver(true);
+		starStack.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				myUserCallbackInterface.starClicked(myMessage.getMessageSeqId());
 				
 			}});
 		
-		deleteIcon.addClickHandler(new ClickHandler() {
+		starStack.addMouseOverHandler(new MouseOverHandler (){
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				starOverIcon.show();
+				starIcon.hide();
+			}});
+		
+		starStack.addMouseOutHandler(new MouseOutHandler (){
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				starOverIcon.hide();
+				starIcon.show();
+			}});
+		
+		// May only delete own messages
+		if(myMessage.getMessageUserId() == RuntimeData.getInstance().getUserId()) {
+			//deleteIcon.setShowRollOver(true);
+			deleteStack.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					myUserCallbackInterface.deleteClicked(myMessage.getMessageSeqId());
+					
+				}});
+			deleteStack.addMouseOverHandler(new MouseOverHandler (){
+				@Override
+				public void onMouseOver(MouseOverEvent event) {
+					deleteOverIcon.show();
+					deleteIcon.hide();
+				}});
+			
+			deleteStack.addMouseOutHandler(new MouseOutHandler (){
+				@Override
+				public void onMouseOut(MouseOutEvent event) {
+					deleteOverIcon.hide();
+					deleteIcon.show();
+				}});
+		}
+		
+		imageStack.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				myUserCallbackInterface.deleteClicked(myMessage.getMessageSeqId());
-				
-			}});
+				myUserCallbackInterface.avatarClicked(myMessageOriginatingUser);
+			}
+		});
 
 		addMouseOverHandler (new MouseOverHandler(){
 			@Override
