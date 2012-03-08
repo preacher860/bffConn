@@ -178,7 +178,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	      			RuntimeData.getInstance().setDbVersion(RuntimeData.getInstance().getServerDbVersion());
 	      			
 	      			String waitMsg = "Chargement des messages <b>" + start_point + " </b>à<b> ";
-	      			waitMsg += (start_point + MSG_INITIAL_RTRV) + "</b>";
+	      			waitMsg += (start_point + MSG_INITIAL_RTRV) + "</b>.";
 	      			waitMsg += " Veuillez patienter.";
 	      			myWaitBox.setMessage(waitMsg);
 	      			myWaitBox.show();
@@ -343,6 +343,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	@Override
 	public void avatarClicked(String userNick) {
 		myEntryBox.addAddressee(userNick);
+		myEntryBox.setFocus();
 	};
 	
 	public void performLogout() {

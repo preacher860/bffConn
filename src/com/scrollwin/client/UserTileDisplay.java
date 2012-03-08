@@ -1,6 +1,7 @@
 package com.scrollwin.client;
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.DOM;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;

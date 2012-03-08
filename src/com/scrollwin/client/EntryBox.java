@@ -1,5 +1,6 @@
 package com.scrollwin.client;
 
+import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -18,6 +19,7 @@ public class EntryBox extends HLayout {
 	private DynamicForm form = new DynamicForm(); 
     private ioCallbackInterface myCallbackInterface;
     private userCallbackInterface myUserCallbackInterface;
+    private Timer focusTimer;
     private boolean myIsShiftDown = false;
     
     
@@ -79,6 +81,13 @@ public class EntryBox extends HLayout {
 			}
           });
         
+        focusTimer = new Timer() {
+			@Override
+			public void run() {
+				form.focusInItem(messageItem);
+			}
+        };
+        
 		addMember(imageStack);
 		addMember(form);
     }
@@ -105,7 +114,7 @@ public class EntryBox extends HLayout {
 
     public void setFocus()
     {
-    	form.focusInItem(messageItem);
+    	focusTimer.schedule(100);
     }
     
     public String filterMessage(String Message)
