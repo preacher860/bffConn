@@ -114,7 +114,9 @@ public class EntryBox extends HLayout {
     	int token = 0;
     	
     	// Split the message in tokens (separator is space) an try to locate URLs
-    	String [] parts = Message.split("\\s+");
+    	// Convert CrLf to HTML linefeeds before the split because \n\r are considered 
+    	// as whitespace by the regex.
+    	String [] parts = convertCrLf(Message).split("\\s+");
     	
     	// Check if the message is targeted at someone (
     	for(int tok = 0; tok < parts.length; tok++) {
@@ -153,9 +155,13 @@ public class EntryBox extends HLayout {
 	    str = str.replace("/", "\\/");
 	    str = str.replace("\b", "\\b");
 	    str = str.replace("\f", "\\f");
-	    str = str.replace("\n", "<br>"); 
-	    str = str.replace("\r", "<br>");
 	    str = str.replace("\t", "\\t");
 	    return str;
 	}
+    
+    public String convertCrLf(String str) {
+    	str = str.replace("\n", "<br>"); 
+	    str = str.replace("\r", "<br>");
+	    return str;
+    }
 }

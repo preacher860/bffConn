@@ -164,7 +164,7 @@ public class StatsWin extends Window {
 		  
 		  ChartArea chartArea = ChartArea.create();
 		  chartArea.setWidth(width);
-		  chartArea.setLeft(10);
+		  chartArea.setLeft(12);
 		  options.setChartArea(chartArea);
 	      return options;
 	}

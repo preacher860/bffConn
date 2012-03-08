@@ -3,6 +3,12 @@ package com.scrollwin.client;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.HoverEvent;
+import com.smartgwt.client.widgets.events.HoverHandler;
+import com.smartgwt.client.widgets.events.MouseOutEvent;
+import com.smartgwt.client.widgets.events.MouseOutHandler;
+import com.smartgwt.client.widgets.events.MouseOverEvent;
+import com.smartgwt.client.widgets.events.MouseOverHandler;
 import com.smartgwt.client.types.ImageStyle;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -16,14 +22,15 @@ import com.smartgwt.client.widgets.layout.VStack;
 
 public class ScrollWinElement extends HStack {
 
-	//HStack mainStack = new HStack();
 	private VStack messageStack = new VStack();
 	private VStack imageStack = new VStack();
-	private Label userIdLabel = new Label();
-	//Label userMessagePane = new Label();
+	private HStack infoPane	= new HStack();
+	private HStack iconPane = new HStack();
 	private HTMLPane userMessagePane = new HTMLPane();
 	private Label userInfoLabel = new Label();
 	private Img userImage;
+	private Img starIcon = new Img("stargray.png", 16, 16);
+	private Img deleteIcon = new Img("deletegray.png", 16, 16);
 	private int seqId = 0;
 	private userCallbackInterface myUserCallbackInterface;
 	private String myMessageOriginatingUser;
@@ -34,6 +41,12 @@ public class ScrollWinElement extends HStack {
 		myUserCallbackInterface = cb;
 		myMessageOriginatingUser = user.getNick();
 		myMessage = message;
+		
+		// If message hidden (deleted), no need to perform all the stuff, return immediatly
+		if (myMessage.isMessageDeleted()){
+			hide();
+			return;
+		}
 		
 		Integer kittenSelect = 48 + message.getMessageUserId();
 		if(user.getAvatarURL().isEmpty())
@@ -49,8 +62,24 @@ public class ScrollWinElement extends HStack {
 		
 		setWidth100();
 		setHeight(40);
+		
+		iconPane.setBackgroundColor("#B0B0B0");
+		iconPane.setHeight(18);
+		iconPane.setWidth("40%");
+		iconPane.addMember(starIcon);
+		iconPane.addMember(deleteIcon);
+		iconPane.setOpacity(0);
+		iconPane.setShowHover(true);
+		
+		
+		infoPane.setBackgroundColor("#B0B0B0");
+		infoPane.addMember(userInfoLabel);
+		infoPane.addMember(iconPane);
+		infoPane.setWidth100();
+		infoPane.setHeight("40%");
+		
 		messageStack.addMember(userMessagePane);
-		messageStack.addMember(userInfoLabel);
+		messageStack.addMember(infoPane);
 		messageStack.setWidth("94%");
 		
         userMessagePane.setAlign(Alignment.LEFT);
@@ -61,11 +90,11 @@ public class ScrollWinElement extends HStack {
         //userMessagePane.setBackgroundColor("#E0E0E0"); 
         userMessagePane.setPadding(5);
         userMessagePane.setContents(message.getMessage());
-        userMessagePane.setHeight(20);
+        userMessagePane.setHeight("60%");
         userMessagePane.setMaxWidth(80);
         userMessagePane.setStyleName("chatText");
         userMessagePane.setOverflow(Overflow.VISIBLE);
-        
+                
         userInfoLabel.setAlign(Alignment.LEFT);  
         userInfoLabel.setBackgroundColor("#B0B0B0"); // debug gray
         //userInfoLabel.setBackgroundColor("#E0E0E0");
@@ -77,7 +106,7 @@ public class ScrollWinElement extends HStack {
         	infoLabelContents += " - " + message.getMessageLocal();
         userInfoLabel.setContents(infoLabelContents);
         						  
-        userInfoLabel.setHeight(8);
+        userInfoLabel.setWidth("60%");
         userInfoLabel.setStyleName("chatInfo");
         seqId = message.getMessageSeqId();
         
@@ -93,6 +122,8 @@ public class ScrollWinElement extends HStack {
 		imageStack.setPrompt(user.getNick());
 		imageStack.setHoverStyle("tooltipStyle");
 		
+		starIcon.setShowRollOver(true);
+		deleteIcon.setShowRollOver(true);
 		imageStack.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -100,9 +131,38 @@ public class ScrollWinElement extends HStack {
 			}
 		});
 		
+		starIcon.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				myUserCallbackInterface.starClicked(myMessage.getMessageSeqId());
+				
+			}});
+		
+		deleteIcon.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				myUserCallbackInterface.deleteClicked(myMessage.getMessageSeqId());
+				
+			}});
+
+		addMouseOverHandler (new MouseOverHandler(){
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				iconPane.setOpacity(100);
+			}
+		});
+		
+		addMouseOutHandler(new MouseOutHandler(){
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				iconPane.setOpacity(0);
+			}
+		});
+		
 		addMember(imageStack);
 		addMember(messageStack);
 	}
+	
 	
 	public void adjustForContents()
 	{
@@ -121,4 +181,9 @@ public class ScrollWinElement extends HStack {
 		return myMessage;
 	}
 	
+	public void updateMessage(MessageContainer message){
+		myMessage = message;
+		if (myMessage.isMessageDeleted())
+			hide();
+	}
 }

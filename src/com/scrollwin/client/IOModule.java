@@ -25,15 +25,15 @@ public class IOModule {
 		myCallbackInterface = theCallbackInterface;
 	}
 	
-	public void SendUserMessage(String MessageText, Integer seqId, Integer userId, String sessionId)
+	public void SendUserMessage(String MessageText, Integer seqId)
 	{
 		String postData = "dummy=0";
 		
 		String url = urlPrefix + "jsontest?" + "request_mode=get_messages";
 		url += "&message_text=" + URL.encodePathSegment(MessageText);
 		url += "&start_point=" + (seqId + 1);
-		url += "&user_id=" + userId;
-		url += "&session_id=" + sessionId;
+		url += "&user_id=" + RuntimeData.getInstance().getUserId();
+		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&rnd_value=" + Random.nextInt(400000000);
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -59,7 +59,40 @@ public class IOModule {
 		}
 	}
 	
-	public void GetUserMessages(Integer seqId, Integer num, Integer userId, String sessionId)
+	public void SendDeleteMessage(Integer seqId)
+	{
+		String postData = "dummy=0";
+		
+		String url = urlPrefix + "jsontest?" + "request_mode=delete_message";
+		url += "&message_id=" + seqId;
+		url += "&user_id=" + RuntimeData.getInstance().getUserId();
+		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
+		url += "&rnd_value=" + Random.nextInt(400000000);
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		try {
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			Request request = builder.sendRequest(postData, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
+				}
+	
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode())
+						handleNewMessages(response.getText());
+					else if (403 == response.getStatusCode())
+						handleAccessForbidden();
+					else 
+						System.out.println("Request response error: " + response.getStatusCode());
+				}
+			});
+		} catch (RequestException e) {
+			Window.alert("Server error: " + e);
+			// Couldn't connect to server        
+		}
+	}
+	
+	public void GetUserMessages(Integer seqId, Integer num)
 	{
 		String postData = "dummy=0";
 		
@@ -67,8 +100,8 @@ public class IOModule {
 		url += "&start_point=" + seqId;
 		if(num.intValue() > 0)
 			url += "&end_point=" + seqId + num;
-		url += "&user_id=" + userId;
-		url += "&session_id=" + sessionId;
+		url += "&user_id=" + RuntimeData.getInstance().getUserId();
+		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&rnd_value=" + Random.nextInt(400000000);
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
@@ -94,13 +127,46 @@ public class IOModule {
 		}
 	}
 
-	public void GetUserInfo(Integer userId, String sessionId)
+	public void GetUserMessagesByVersion(int dbVersion)
+	{
+		String postData = "dummy=0";
+		
+		String url = urlPrefix + "jsontest?" + "request_mode=get_messages_by_db";
+		url += "&db_version=" + dbVersion;
+		url += "&user_id=" + RuntimeData.getInstance().getUserId();
+		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
+		url += "&rnd_value=" + Random.nextInt(400000000);
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
+		try {
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			Request request = builder.sendRequest(postData, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
+				}
+	
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode()) 
+						handleNewMessages(response.getText());
+					else if (403 == response.getStatusCode())
+						handleAccessForbidden();
+					else 
+						System.out.println("Request response error: " + response.getStatusCode());
+				}
+			});
+		} catch (RequestException e) {
+			Window.alert("Server error: " + e);
+			// Couldn't connect to server        
+		}
+	}
+	
+	public void GetUserInfo()
 	{
 		String postData = "dummy=0";
 		
 		String url = urlPrefix + "jsontest?" + "request_mode=get_user_info";
-		url += "&user_id=" + userId;
-		url += "&session_id=" + sessionId;
+		url += "&user_id=" + RuntimeData.getInstance().getUserId();
+		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&rnd_value=" + Random.nextInt(400000000);
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
@@ -127,13 +193,13 @@ public class IOModule {
 		}
 	}
 
-	public void GetRuntimeData(Integer userId, String sessionId)
+	public void GetRuntimeData()
 	{
 		String postData = "dummy=0";
 		
 		String url = urlPrefix + "jsontest?" + "request_mode=get_runtime_data";
-		url += "&user_id=" + userId;
-		url += "&session_id=" + sessionId;
+		url += "&user_id=" + RuntimeData.getInstance().getUserId();
+		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&rnd_value=" + Random.nextInt(400000000);
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
@@ -160,13 +226,13 @@ public class IOModule {
 		}
 	}
 	
-	public void GetServerVersion(Integer userId, String sessionId)
+	public void GetServerVersion()
 	{
 		String postData = "dummy=0";
 		
 		String url = urlPrefix + "jsontest?" + "request_mode=get_server_version";
-		url += "&user_id=" + userId;
-		url += "&session_id=" + sessionId;
+		url += "&user_id=" + RuntimeData.getInstance().getUserId();
+		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&rnd_value=" + Random.nextInt(400000000);
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
@@ -265,13 +331,13 @@ public class IOModule {
 		}
 	}
 	
-	public void SendLocal(Integer userId, String sessionId, String local)
+	public void SendLocal(String local)
 	{
 		String postData = "dummy=0";
 		
 		String url = urlPrefix + "jsontest?" + "request_mode=set_local";
-		url += "&user_id=" + userId;
-		url += "&session_id=" + sessionId;
+		url += "&user_id=" + RuntimeData.getInstance().getUserId();
+		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&local=" + URL.encodePathSegment(local);
 		url += "&rnd_value=" + Random.nextInt(400000000);
 		
@@ -317,11 +383,13 @@ public class IOModule {
 		    	String dateStamp = obj.get("date").isString().stringValue();
 		    	String timeStamp = obj.get("time").isString().stringValue();
 		    	String local = obj.get("local").isString().stringValue();
+		    	boolean deleted = Boolean.valueOf(obj.get("deleted").isString().stringValue());
+		    	int dbVersion = Integer.valueOf(obj.get("dbversion").isString().stringValue());
 		    	
 		    	MessageContainer message = new MessageContainer(messageId, userId, messageText, 
-		    													dateStamp, timeStamp, local);
+		    													dateStamp, timeStamp, local,
+		    													deleted, dbVersion);
 		    	messageList.add(message);
-		    	//myWaitWindow.setBarPos((Index * 1000) / jsonArray.size());
 		    }
 		    if(messageList.size() > 0)
 		    	myCallbackInterface.messagesReceivedCallback(messageList);
@@ -330,13 +398,13 @@ public class IOModule {
 		}
 	}
 	
-	public void Logout(Integer userId, String sessionId)
+	public void Logout()
 	{
 		String postData = "dummy=0";
 		
 		String url = urlPrefix + "jsontest?" + "request_mode=perform_logout";
-		url += "&user_id=" + userId;
-		url += "&session_id=" + sessionId;
+		url += "&user_id=" + RuntimeData.getInstance().getUserId();
+		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&rnd_value=" + Random.nextInt(400000000);
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
@@ -367,9 +435,13 @@ public class IOModule {
 		    
 		    obj = jsonArray.get(0).isObject();
 		    Integer seqId = Integer.valueOf(obj.get("newestSeq").isString().stringValue());
+		    Integer serverDbVersion = Integer.valueOf(obj.get("dbVersion").isString().stringValue());
+		    Integer serverVersion = Integer.valueOf(obj.get("serverVersion").isString().stringValue());
 
-		    RuntimeData data = new RuntimeData(seqId);
-		    myCallbackInterface.runtimeDataReceivedCallback(data);
+		    RuntimeData.getInstance().setServerVersion(serverVersion);
+		    RuntimeData.getInstance().setServerDbVersion(serverDbVersion);
+		    RuntimeData.getInstance().setServerSeqId(seqId);
+		    myCallbackInterface.runtimeDataReceivedCallback();
 		} catch (Exception e) {
 			System.out.println("JSON exception: " + e.toString());
 		}
@@ -386,7 +458,7 @@ public class IOModule {
 		    obj = jsonArray.get(0).isObject();
 		    Integer version = Integer.valueOf(obj.get("serverVersion").isString().stringValue());
 		    
-		    myCallbackInterface.serverVersionReceivedCallback(version);
+		    //myCallbackInterface.serverVersionReceivedCallback(version);
 		} catch (Exception e) {
 			System.out.println("JSON exception: " + e.toString());
 		}

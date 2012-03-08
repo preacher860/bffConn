@@ -8,8 +8,10 @@ public class MessageContainer {
 	private String MessageDate;
 	private String MessageTime;
 	private String MessageLocal;
+	private boolean MessageDeleted;
+	private int MessageDbVersion;
 	
-	public MessageContainer(Integer seqId, Integer userId, String msg, String date, String time, String local)
+	public MessageContainer(Integer seqId, Integer userId, String msg, String date, String time, String local, boolean deleted, int dbVersion)
 	{
 		MessageSeqId = seqId;
 		MessageUserId = userId;
@@ -18,6 +20,8 @@ public class MessageContainer {
 		MessageDate = date;
 		MessageTime = time;
 		MessageLocal = local;
+		MessageDeleted = deleted;
+		MessageDbVersion = dbVersion;
 	}
 	
 	public String getMessage() {
@@ -69,6 +73,22 @@ public class MessageContainer {
 
 	public void setMessageLocal(String messageLocal) {
 		MessageLocal = messageLocal;
+	}
+
+	public boolean isMessageDeleted() {
+		return MessageDeleted;
+	}
+
+	public void setMessageDeleted(boolean messageDeleted) {
+		MessageDeleted = messageDeleted;
+	}
+
+	public int getMessageDbVersion() {
+		return MessageDbVersion;
+	}
+
+	public void setMessageDbVersion(int messageDbVersion) {
+		MessageDbVersion = messageDbVersion;
 	}
 	
 }

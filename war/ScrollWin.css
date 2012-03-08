@@ -90,3 +90,11 @@ h1 {
 	border-style:solid;
 	border-color:#B0B0FF;
 }
+
+.transparent {
+	opacity:0.0;
+}
+
+.opaque {
+	opacity:1.0;
+}

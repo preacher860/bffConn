@@ -11,6 +11,7 @@ import com.smartgwt.client.widgets.layout.VStack;
 public class MessageView extends VStack {
 	private int myOldestDisplayedSeq = 0;
 	private int myNewestDisplayedSeq = 0;
+	private int myNewestDisplayedDb  = 0;
 	private int myNumOfMessagesDisplayed = 0;
 	private userCallbackInterface myCallbackInterface;
 	private Timer myScrollTimer;
@@ -81,6 +82,7 @@ public class MessageView extends VStack {
 		for(int msgIndex = 0; msgIndex < messages.size(); msgIndex++) {
 
 			MessageContainer currentMessage = messages.get(msgIndex);
+			checkOcto(currentMessage);
 
 			ScrollWinElement element = new ScrollWinElement(currentMessage, 
 					UserManager.getInstance().getUser(currentMessage.getMessageUserId()),
@@ -108,6 +110,7 @@ public class MessageView extends VStack {
 					//System.out.println("current: " + currentSeq + " previous: " + previousSeq);
 
 					if (currentSeq == currentMessage.getMessageSeqId()){
+						((ScrollWinElement)getMember(elementIndex)).updateMessage(currentMessage);
 						//System.out.println("Editing not supported yet. Seq: " + currentSeq);
 						break;
 					}
@@ -120,12 +123,14 @@ public class MessageView extends VStack {
 				}
 			}
 			//System.out.println("  In queue: " + messageList.size());
+			if(currentMessage.getMessageDbVersion() > myNewestDisplayedDb)
+				myNewestDisplayedDb = currentMessage.getMessageDbVersion(); 
 		}
 		myNewestDisplayedSeq = ((ScrollWinElement)getMember(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
 		myOldestDisplayedSeq = ((ScrollWinElement)getMember(0)).getMessage().getMessageSeqId();
 		
 		RuntimeData.getInstance().setNewestSeqId(myNewestDisplayedSeq);
-		//System.out.println("  In queue: " + messageList.size() + " newest: " + myNewestDisplayedSeq);
+		RuntimeData.getInstance().setDbVersion(myNewestDisplayedDb);
 		
 		if(myAtBottom)
 			myScrollTimer.schedule(200);
@@ -134,8 +139,6 @@ public class MessageView extends VStack {
 			myFetchingOld = false;
 			myPositionTimer.schedule(200);
 		}
-		
-		checkOcto(((ScrollWinElement)getMember(myNumOfMessagesDisplayed - 1)).getMessage());
 		
 		myCallbackInterface.messageDisplayComplete();
 	}

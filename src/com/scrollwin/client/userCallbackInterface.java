@@ -10,4 +10,6 @@ public interface userCallbackInterface {
 	public void messageDisplayComplete();
 	public void octopusOnTyped();
 	public void octopusOffTyped();
+	public void starClicked(int seqId);
+	public void deleteClicked(int seqId);
 }

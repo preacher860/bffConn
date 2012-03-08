@@ -83,6 +83,8 @@ public JsonTest(){
 	  String login = req.getParameter("login");
 	  String password = req.getParameter("password");
 	  String local = req.getParameter("local");
+	  String message_id = req.getParameter("message_id");
+	  String db_version = req.getParameter("db_version");
 
 	  // Login can be performed without active session ID
 	  if((requestMode != null) && requestMode.contentEquals("perform_login"))
@@ -111,8 +113,7 @@ public JsonTest(){
 			  resp.sendError(403);
 		  } else {
 			  // userId / sessionId match ok, fulfill request
-			  if(requestMode.contentEquals("get_messages"))
-			  {
+			  if(requestMode.contentEquals("get_messages")) {
 				  if(userMessage != null)
 					  processNewMessage(userMessage, Integer.parseInt(userId), sessionId);
 
@@ -130,29 +131,35 @@ public JsonTest(){
 				  touchSession(sessionId);
 			  }
 
-			  if(requestMode.contentEquals("get_runtime_data"))
-			  {
+			  if(requestMode.contentEquals("get_messages_by_db")) {
+				  if(db_version != null)
+					  getMessagesByDb(out, Integer.parseInt(db_version));
+			  }
+			  
+			  if(requestMode.contentEquals("get_runtime_data")) {
 				  getRuntimeData(out);
 			  }
 
-			  if(requestMode.contentEquals("get_user_info"))
-			  {
+			  if(requestMode.contentEquals("get_user_info")) {
 				  getUserInfo(out);
 			  }
 
-			  if(requestMode.contentEquals("get_server_version"))
-			  {
+			  if(requestMode.contentEquals("get_server_version")) {
 				  getServerVersion(out);
 			  }
 			  
-			  if(requestMode.contentEquals("perform_logout"))
-			  {
+			  if(requestMode.contentEquals("perform_logout")) {
 				  deleteSession(sessionId);
 			  }
 			  
-			  if (requestMode.contentEquals("set_local"))
-			  {
+			  if (requestMode.contentEquals("set_local")) {
 				  updateSessionLocal(sessionId, local);
+			  }
+			  
+			  if (requestMode.contentEquals("delete_message"))
+			  {
+				  if(message_id != null)
+					  deleteMessage(out, message_id);
 			  }
 		  }
 	  } else
@@ -201,7 +208,7 @@ public JsonTest(){
 
 private int getNewestSeq(Connection conn)
   {
-	  String query = "SELECT * FROM runtimedata";
+	  String query = "SELECT seq FROM runtimedata";
 	  try {
 	      Statement select = conn.createStatement();
 	      ResultSet result = select.executeQuery(query);
@@ -231,10 +238,42 @@ private int getNewestSeq(Connection conn)
 	  }
   }
   
-  private void setNewMessage(Connection conn, String Message, int seqId, Integer userId, String sessionId)
+  private int getDbVersion(Connection conn)
+  {
+	  String query = "SELECT dbversion FROM runtimedata";
+	  try {
+	      Statement select = conn.createStatement();
+	      ResultSet result = select.executeQuery(query);
+	      result.next();
+          int id = result.getInt(1);
+	      select.close();
+	      result.close();
+	      return id;
+	  } catch(SQLException e) {
+          System.err.println("Mysql Statement Error: " + query);
+          e.printStackTrace();
+          return -1;
+	  }
+  }
+  
+  private void setDbVersion(Connection conn, int dbVersion)
+  {
+	  String query = "UPDATE runtimedata SET dbversion=?";
+	  try {
+	      PreparedStatement update = conn.prepareStatement(query);
+	      update.setInt(1, dbVersion);
+	      update.executeUpdate();
+	      update.close();
+	  } catch(SQLException e) {
+          System.err.println("Mysql Statement Error: " + query);
+          e.printStackTrace();
+	  }
+  }
+  
+  private void setNewMessage(Connection conn, String Message, int seqId, int dbVersion, Integer userId, String sessionId)
   {
 	  PreparedStatement sessionSelect;
-	  String query = "INSERT into testtable (seq,userid,text,local) values(?, ?, ?, ?);";
+	  String query = "INSERT into testtable (seq,userid,text,local,dbversion) values(?, ?, ?, ?, ?);";
 	  String sessionQuery = "SELECT * FROM sessions where id = ?";
 	  String local;
 	  
@@ -253,6 +292,7 @@ private int getNewestSeq(Connection conn)
 	      update.setInt(2, userId);
 	      update.setString(3, Message);
 	      update.setString(4, local);
+	      update.setInt(5, dbVersion);
 	      update.executeUpdate();
 	      update.close();
 	  } catch(SQLException e) {
@@ -298,6 +338,9 @@ private int getNewestSeq(Connection conn)
 	    	  String dateStamp = result.getDate(4).toString();
 	    	  String timeStamp = result.getTime(4).toString();
 	    	  String local = result.getString(5);
+	    	  boolean deleted = result.getBoolean(7);
+	    	  int dbVersion = result.getInt(8);
+	    	  
 	    	  if(local == null)
 	    		  local = "";
 	    	  
@@ -306,7 +349,69 @@ private int getNewestSeq(Connection conn)
 	    	  out.println("     \"value\":\"" + value + "\",");
 	    	  out.println("     \"date\":\"" + dateStamp + "\",");
 	    	  out.println("     \"time\":\"" + timeStamp + "\",");
-	    	  out.println("     \"local\":\"" + local + "\"");
+	    	  out.println("     \"local\":\"" + local + "\",");
+	    	  out.println("     \"deleted\":\"" + deleted + "\",");
+	    	  out.println("     \"dbversion\":\"" + dbVersion + "\"");
+	          out.print("  }");
+	      }
+	      select.close();
+	      result.close();
+	      
+	      conn.close();
+	  } catch(SQLException e) {
+	      System.err.println("Mysql Statement Error");
+	      e.printStackTrace();
+	  }
+	  
+	  out.println("");
+      out.println(']');
+	  out.flush();
+
+  }
+  
+  private void getMessagesByDb(PrintWriter out, int dbVersion)
+  {
+	  String query;
+	  PreparedStatement select;
+	  boolean firstEntry = true;
+	  
+	  out.println('[');
+	  
+	  try {
+		  Connection conn = this.getConn();
+	      
+    	  query = "SELECT * FROM testtable WHERE dbversion >= ? order by seq";
+    	  select = conn.prepareStatement(query);
+    	  select.setInt(1, dbVersion);
+	      
+	      ResultSet result = select.executeQuery();
+	      
+	      while (result.next()) {
+	    	  if(!firstEntry)  // Take care to leave no trailing comma on last entry, JSON is picky
+	    		  out.println(",");
+	    	  firstEntry = false;
+	    	  
+	    	  out.println("  {");
+	    	  String seq = result.getString(1);
+	    	  String user = result.getString(2);
+	    	  String value = result.getString(3);
+	    	  String dateStamp = result.getDate(4).toString();
+	    	  String timeStamp = result.getTime(4).toString();
+	    	  String local = result.getString(5);
+	    	  boolean deleted = result.getBoolean(7);
+	    	  int version = result.getInt(8);
+	    	  
+	    	  if(local == null)
+	    		  local = "";
+	    	  
+	    	  out.println("     \"id\":\"" + seq + "\",");
+	    	  out.println("     \"user\":\"" + user + "\",");
+	    	  out.println("     \"value\":\"" + value + "\",");
+	    	  out.println("     \"date\":\"" + dateStamp + "\",");
+	    	  out.println("     \"time\":\"" + timeStamp + "\",");
+	    	  out.println("     \"local\":\"" + local + "\",");
+	    	  out.println("     \"deleted\":\"" + deleted + "\",");
+	    	  out.println("     \"dbversion\":\"" + version + "\"");
 	          out.print("  }");
 	      }
 	      select.close();
@@ -352,7 +457,8 @@ private int getNewestSeq(Connection conn)
   
   private void processNewMessage(String Message, Integer userId, String sessionId)
   {
-	  Integer seqId;
+	  int seqId;
+	  int dbVersion;
 	  // Enforce max msg len to avoid SQL errors
 	  if (Message.length() > 1000)
 	  	Message = Message.substring(0, 999);
@@ -360,15 +466,16 @@ private int getNewestSeq(Connection conn)
 	  Message = filterMessage(Message);
 	  try {
 		  
-		  // Don't autocommit, we want to save message and update seqId in a single transaction
+		  // Don't autocommit, we want to save message and update seqId/dbVersion in a single transaction
 	      Connection conn = this.getConn();
 	      conn.setAutoCommit(false);
 	      
-	      // For now we won't save using the in-ram seqId as the DB might have been
-	      // tampered with manually.  Perform RMW on seqId instead.
-	      seqId = getNewestSeq(conn);
-	      setNewMessage(conn, Message, seqId + 1, userId, sessionId);
-	      setNewestSeq(conn, seqId + 1);
+	      seqId = getNewestSeq(conn) + 1;
+	      dbVersion = getDbVersion(conn) + 1;
+	      setNewMessage(conn, Message, seqId, dbVersion, userId, sessionId);
+	      setNewestSeq(conn, seqId);
+	      setDbVersion(conn, dbVersion);
+	      
 	      conn.commit();
 	      conn.close();
 	      //seqId++;
@@ -376,6 +483,34 @@ private int getNewestSeq(Connection conn)
           System.err.println("Mysql Statement Error in ProcessNewMessage");
           e.printStackTrace();
 	  }
+  }
+  
+  private void deleteMessage(PrintWriter out, String message_id)
+  {
+	  int seqId = Integer.parseInt(message_id);
+	  String query = "UPDATE testtable SET deleted=?,dbversion=? where seq=?";
+	  try {
+		  Connection conn = this.getConn();
+		  conn.setAutoCommit(false);
+		  
+		  int dbVersion = getDbVersion(conn) + 1;
+		  PreparedStatement update = conn.prepareStatement(query);
+    	  update.setBoolean(1, true);
+    	  update.setInt(2, dbVersion);
+    	  update.setInt(3, seqId);
+    	  update.executeUpdate();
+    	  setDbVersion(conn, dbVersion);
+	      update.close();
+	      
+	      conn.commit();
+	      conn.close();
+	  } catch(SQLException e) {
+	      System.err.println("Mysql Statement Error");
+	      e.printStackTrace();
+	  }
+	  
+	  // Send back the newly modified message so the client will refresh it
+	  getNewMessages(seqId, seqId, out);
   }
   
   private String filterMessage(String message)
@@ -433,8 +568,11 @@ private int getNewestSeq(Connection conn)
 	      result.next();
     	  out.println("  {");
     	  String seq = result.getString(1);
+    	  String dbVersion = result.getString(2);
     	  
-    	  out.println("     \"newestSeq\":\"" + seq + "\"");
+    	  out.println("     \"serverVersion\":\"" + myVersion + "\",");
+    	  out.println("     \"newestSeq\":\"" + seq + "\",");
+    	  out.println("     \"dbVersion\":\"" + dbVersion + "\"");
           out.println("  }");
 
 	      select.close();

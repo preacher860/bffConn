@@ -51,7 +51,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	private static final int MSG_INITIAL_RTRV = 100;
+	private static final int MSG_INITIAL_RTRV = 10;
 	private static final int MSG_OLD_FETCH_NUM = 50;
 	
 	private HStack hStack = new HStack();
@@ -73,9 +73,9 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
 	private MessageView myMessageManager = new MessageView(this);
 	
-	private String mySessionId = "0";
+	//private String mySessionId = "0";
 	private String mySessionLocal = "";
-	private Integer myVersion = VersionInfo.CURRENT_VERSION;
+	private int myVersion = VersionInfo.CURRENT_VERSION;
 	
 	
 	public ScrollWin(){
@@ -171,36 +171,51 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	      			myCurrentMode = MODE_RUNNING;
 	      			
 	      			// Initial retrieve
-	      			if (RuntimeData.getInstance().getNewestSeqId() > MSG_INITIAL_RTRV)
-		      			start_point = RuntimeData.getInstance().getNewestSeqId() - MSG_INITIAL_RTRV;
+	      			if (RuntimeData.getInstance().getServerSeqId() > MSG_INITIAL_RTRV)
+		      			start_point = RuntimeData.getInstance().getServerSeqId() - MSG_INITIAL_RTRV;
 		      		else
 		      			start_point = 1;
+	      			
+	      			// Consider DB versions aligned after first retrieve is performed
+	      			RuntimeData.getInstance().setDbVersion(RuntimeData.getInstance().getServerDbVersion());
 	      			
 	      			String waitMsg = "Chargement des messages <b>" + start_point + " </b>à<b> ";
 	      			waitMsg += (start_point + MSG_INITIAL_RTRV) + "</b>";
 	      			waitMsg += " Veuillez patienter.";
 	      			myWaitBox.setMessage(waitMsg);
 	      			myWaitBox.show();
-	      		} else if (myCurrentMode == MODE_RUNNING)
-	      			start_point = RuntimeData.getInstance().getNewestSeqId() + 1;
-	      		
-		  		ioModule.GetUserMessages(start_point, MSG_INITIAL_RTRV, RuntimeData.getInstance().getUserId(), mySessionId);
-		  		
-		  		// Refresh users to get their online status.  This will be gathered in a better way some day
-		  		ioModule.GetUserInfo(RuntimeData.getInstance().getUserId(), mySessionId);
+	      			
+	      			ioModule.GetUserMessages(start_point, MSG_INITIAL_RTRV);
+	      		} 
+	      		else if (myCurrentMode == MODE_RUNNING) {
+	      			//	start_point = RuntimeData.getInstance().getNewestSeqId() + 1;
 
+	      			//System.out.println("Last known msg: " + RuntimeData.getInstance().getNewestSeqId() +
+	      			//					" Newest on server: " + RuntimeData.getInstance().getServerSeqId());
+
+	      			if(RuntimeData.getInstance().getDbVersion() < RuntimeData.getInstance().getServerDbVersion()){
+	      				//System.out.println("Local db version is behind. Local: " + RuntimeData.getInstance().getDbVersion() + 
+	      				//		" server: " + RuntimeData.getInstance().getServerDbVersion());
+	      				ioModule.GetUserMessagesByVersion(RuntimeData.getInstance().getDbVersion());
+	      			}
+
+	      			// Refresh users to get their online status.  This will be gathered in a better way some day
+	      			ioModule.GetUserInfo();
+	      		}
+	      		
 		  		// Don't reschedule if shutting down, nothing good can come out of this
 	  			if(myCurrentMode != MODE_SHUTDOWN)
 	  				myRefreshTimer.schedule(3000);
 	  		}
 	      	// Check server version to quickly detect any mismatch
-	      	ioModule.GetServerVersion(RuntimeData.getInstance().getUserId(), mySessionId);
+	      	//ioModule.GetServerVersion(RuntimeData.getInstance().getUserId(), mySessionId);
+	      	ioModule.GetRuntimeData();
 	      }
 	    };
 	    
-		ioModule.GetServerVersion(RuntimeData.getInstance().getUserId(), mySessionId);    
-		ioModule.GetUserInfo(RuntimeData.getInstance().getUserId(), mySessionId);
-        ioModule.GetRuntimeData(RuntimeData.getInstance().getUserId(), mySessionId);
+		ioModule.GetServerVersion();    
+		ioModule.GetUserInfo();
+        ioModule.GetRuntimeData();
         myRefreshTimer.schedule(1000);  //  Check if our init Gets are completed
 	}
 	@Override
@@ -209,9 +224,9 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	} 
 	
 	@Override
-	public void runtimeDataReceivedCallback(RuntimeData data) {
-		RuntimeData.getInstance().setNewestSeqId(data.getNewestSeqId());
+	public void runtimeDataReceivedCallback() {
 		myRuntimeDataRcvd = true;
+		checkServerVersion();
 	}
 
 	@Override
@@ -221,9 +236,8 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 		myUserTileDisplay.UpdateOnlineUsers(UserManager.getInstance());
 	}
 
-	@Override
-	public void serverVersionReceivedCallback(Integer version) {
-		if(version.intValue() != myVersion.intValue()) {
+	public void checkServerVersion() {
+		if(RuntimeData.getInstance().getServerVersion() != myVersion) {
 			myCurrentMode = MODE_SHUTDOWN;
 			SC.warn("La version de l'application que vous utilisez est antérieure à celle du serveur. " +
 				   "La nouvelle version sera chargée automatiquement lorsque vous fermerez cette fenêtre.", 
@@ -250,7 +264,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 		else
 		{
 			RuntimeData.getInstance().setUserId(userId);
-			mySessionId = sessionId;
+			RuntimeData.getInstance().setSessionId(sessionId);
 			mySessionLocal = userLocal;
 			
 			// Save sessionId in a cookie so we don't have to re-logon each time we load the app
@@ -276,16 +290,16 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 			loginWin.show();
 		} else {
 			RuntimeData.getInstance().setUserId(userId);
-			mySessionId = sessionId;
+			RuntimeData.getInstance().setSessionId(sessionId);
 			mySessionLocal = local;
-			System.out.println("Session was still active: " + mySessionId);
+			System.out.println("Session was still active: " + RuntimeData.getInstance().getSessionId());
 			applicationStart();
 		}
 	}
 
 	@Override
 	public void messageToSendCallback(String message) {
-		ioModule.SendUserMessage(message, RuntimeData.getInstance().getNewestSeqId(), RuntimeData.getInstance().getUserId(), mySessionId);
+		ioModule.SendUserMessage(message, RuntimeData.getInstance().getNewestSeqId());
 
 		// Control max number of msg displayed - Disabled for DB debugging
   	  	//if(messageVStack.getMembers().length > 100)
@@ -343,7 +357,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	
 	public void performLogout() {
 		Cookies.removeCookie("bffConnexionSID", "/");
-		ioModule.Logout(RuntimeData.getInstance().getUserId(), mySessionId);
+		ioModule.Logout();
 	}
 
 	@Override
@@ -364,7 +378,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	@Override
 	public void localEntered(String local) {
 		if (local != null)
-			ioModule.SendLocal(RuntimeData.getInstance().getUserId(), mySessionId, local);
+			ioModule.SendLocal(local);
 		
 		myEntryBox.setFocus();
 	}
@@ -398,11 +412,22 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 		myWaitBox.setMessage(waitMsg);
 		myWaitBox.show();
 		
-		ioModule.GetUserMessages(firstMsgToFetch, MSG_OLD_FETCH_NUM, RuntimeData.getInstance().getUserId(), mySessionId);
+		ioModule.GetUserMessages(firstMsgToFetch, MSG_OLD_FETCH_NUM);
 	}
 
 	@Override
 	public void messageDisplayComplete() {
 		myWaitBox.hide();
+	}
+
+	@Override
+	public void starClicked(int seqId) {
+		System.out.println("Star clicked on message " + seqId);
+	}
+
+	@Override
+	public void deleteClicked(int seqId) {
+		System.out.println("Delete clicked on message " + seqId);
+		ioModule.SendDeleteMessage(seqId);
 	}
 }
