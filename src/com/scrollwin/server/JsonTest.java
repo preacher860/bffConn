@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.lang.Math;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
@@ -160,6 +161,12 @@ public JsonTest(){
 			  {
 				  if(message_id != null)
 					  deleteMessage(out, message_id);
+			  }
+			  
+			  if (requestMode.contentEquals("star_message"))
+			  {
+				  if(message_id != null)
+					  starMessage(out, message_id, userId);
 			  }
 		  }
 	  } else
@@ -338,6 +345,7 @@ private int getNewestSeq(Connection conn)
 	    	  String dateStamp = result.getDate(4).toString();
 	    	  String timeStamp = result.getTime(4).toString();
 	    	  String local = result.getString(5);
+	    	  String stars = result.getString(6);
 	    	  boolean deleted = result.getBoolean(7);
 	    	  int dbVersion = result.getInt(8);
 	    	  
@@ -351,7 +359,8 @@ private int getNewestSeq(Connection conn)
 	    	  out.println("     \"time\":\"" + timeStamp + "\",");
 	    	  out.println("     \"local\":\"" + local + "\",");
 	    	  out.println("     \"deleted\":\"" + deleted + "\",");
-	    	  out.println("     \"dbversion\":\"" + dbVersion + "\"");
+	    	  out.println("     \"dbversion\":\"" + dbVersion + "\",");
+	    	  out.println("     \"stars\":\"" + stars + "\"");
 	          out.print("  }");
 	      }
 	      select.close();
@@ -398,6 +407,7 @@ private int getNewestSeq(Connection conn)
 	    	  String dateStamp = result.getDate(4).toString();
 	    	  String timeStamp = result.getTime(4).toString();
 	    	  String local = result.getString(5);
+	    	  String stars = result.getString(6);
 	    	  boolean deleted = result.getBoolean(7);
 	    	  int version = result.getInt(8);
 	    	  
@@ -411,7 +421,8 @@ private int getNewestSeq(Connection conn)
 	    	  out.println("     \"time\":\"" + timeStamp + "\",");
 	    	  out.println("     \"local\":\"" + local + "\",");
 	    	  out.println("     \"deleted\":\"" + deleted + "\",");
-	    	  out.println("     \"dbversion\":\"" + version + "\"");
+	    	  out.println("     \"dbversion\":\"" + version + "\",");
+	    	  out.println("     \"stars\":\"" + stars + "\"");
 	          out.print("  }");
 	      }
 	      select.close();
@@ -447,7 +458,9 @@ private int getNewestSeq(Connection conn)
 		  out.println("     \"online\":\"" + currentUser.getActiveStatus() + "\",");
 		  out.println("     \"tmo\":\"" + currentUser.getActivityTimeout() + "\",");
 		  out.println("     \"messages\":\"" + currentUser.getNumOfMessages() + "\",");
-		  out.println("     \"deleted\":\"" + currentUser.getNumOfDeletedMessages() + "\"");
+		  out.println("     \"deleted\":\"" + currentUser.getNumOfDeletedMessages() + "\",");
+		  out.println("     \"starssent\":\"" + currentUser.getNumOfStarsSent() + "\",");
+		  out.println("     \"starsreceived\":\"" + currentUser.getNumOfStarsReceived() + "\"");
 		  out.print("  }");
 	  }
 	
@@ -497,6 +510,38 @@ private int getNewestSeq(Connection conn)
 		  int dbVersion = getDbVersion(conn) + 1;
 		  PreparedStatement update = conn.prepareStatement(query);
     	  update.setBoolean(1, true);
+    	  update.setInt(2, dbVersion);
+    	  update.setInt(3, seqId);
+    	  update.executeUpdate();
+    	  setDbVersion(conn, dbVersion);
+	      update.close();
+	      
+	      conn.commit();
+	      conn.close();
+	  } catch(SQLException e) {
+	      System.err.println("Mysql Statement Error");
+	      e.printStackTrace();
+	  }
+	  
+	  // Send back the newly modified message so the client will refresh it
+	  getNewMessages(seqId, seqId, out);
+  }
+  
+  private void starMessage(PrintWriter out, String message_id, String user_id)
+  {
+	  System.out.println("Request for starring message " + message_id + " by " + user_id);
+	  
+	  int elementBitPos = (int) Math.pow(2,Integer.valueOf(user_id));
+	  
+	  int seqId = Integer.parseInt(message_id);
+	  String query = "UPDATE testtable SET stars=(stars ^ ?),dbversion=? where seq=?";
+	  try {
+		  Connection conn = this.getConn();
+		  conn.setAutoCommit(false);
+		  
+		  int dbVersion = getDbVersion(conn) + 1;
+		  PreparedStatement update = conn.prepareStatement(query);
+    	  update.setInt(1, elementBitPos);
     	  update.setInt(2, dbVersion);
     	  update.setInt(3, seqId);
     	  update.executeUpdate();
@@ -823,6 +868,9 @@ private int getNewestSeq(Connection conn)
   {
 	  String query ="SELECT userid, COUNT(*) FROM testtable GROUP BY userid ORDER BY userid";
 	  String queryDel ="SELECT userid, COUNT(*) FROM testtable where deleted=true GROUP BY userid ORDER BY userid";
+	  String queryStarsSent = "SELECT count(*) FROM testtable WHERE find_in_set(?, stars) AND deleted=false";
+	  String queryStarsRcvd = "SELECT SUM(BIT_COUNT(stars+0)) FROM testtable WHERE userid=? AND deleted=false";
+	  
 	  PreparedStatement select;
 	  ResultSet result;
 	  
@@ -848,6 +896,23 @@ private int getNewestSeq(Connection conn)
 	    			  user.setNumOfDeletedMessages(Integer.valueOf(result.getString(2)));
 	    			  break;
 	    		  }
+	      }
+	      select.close();
+	      result.close();
+	      
+	      String value = "";
+	      for(int userIndex = 0; userIndex < userList.size(); userIndex++){
+	    	  select = conn.prepareStatement(queryStarsSent);
+	    	  select.setInt(1, userIndex); 
+		      result = select.executeQuery();
+		      if(result.next() && ((value = result.getString(1)) != null ) )
+		    	  userList.get(userIndex).setNumOfStarsSent(Integer.valueOf(value));
+		      
+		      select = conn.prepareStatement(queryStarsRcvd);
+	    	  select.setInt(1, userIndex); 
+		      result = select.executeQuery();
+		      if(result.next() && ((value = result.getString(1)) != null ) )
+		    	  userList.get(userIndex).setNumOfStarsReceived(Integer.valueOf(value));
 	      }
 	      select.close();
 	      result.close();

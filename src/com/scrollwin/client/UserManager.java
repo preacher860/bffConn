@@ -30,7 +30,7 @@ public class UserManager {
 			if(currentUser.getId().intValue() == userId.intValue()) 
 				return currentUser;
 
-		return new UserContainer(0, "dummy", "dummy", "dummy", false, 0, 0);
+		return new UserContainer(0, "dummy", "dummy", "dummy", false, 0, 0, 0, 0);
 	}
 	
 	public void setUserList(ArrayList<UserContainer> userList){
@@ -45,6 +45,25 @@ public class UserManager {
 				}
 		myUserList = userList;		
 		userListReceived = true;
+	}
+	
+	public String getNickFromId(int id){
+		for(UserContainer user:myUserList)
+			if(user.getId() == id)
+				return user.getNick();
+		return null;
+	}
+	
+	public ArrayList<String> idListToArray(String idList){
+		//ArrayList<String> userArray = new ArrayList<String>();
+		String [] userIds = idList.split("[,]");
+		ArrayList<String> nickArray = new ArrayList<String>();
+		
+		String nick;
+		for(int index = 0; index < userIds.length; index++)
+			if ( (nick = getNickFromId(Integer.valueOf(userIds[index]))) != null )
+				nickArray.add(nick);
+		return nickArray;
 	}
 	
 	// Make this nicer eventually so we can iterate through users without 

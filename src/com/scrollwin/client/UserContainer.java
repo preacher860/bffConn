@@ -9,8 +9,10 @@ public class UserContainer {
 	private boolean myOnlineStatus;
 	private int 	myMessages;
 	private int 	myDeletedMessages;
+	private int 	myStarsSent;
+	private int		myStarsRcvd;
 	
-	public UserContainer(Integer Id, String Nick, String Name, String AvatarURL, boolean online, int messages, int deleted)
+	public UserContainer(Integer Id, String Nick, String Name, String AvatarURL, boolean online, int messages, int deleted, int starsSent, int starsRcvd)
 	{
 		myId = Id;
 		myNick = Nick;
@@ -19,6 +21,8 @@ public class UserContainer {
 		myOnlineStatus = online;
 		myMessages = messages;
 		myDeletedMessages = deleted;
+		myStarsSent = starsSent;
+		myStarsRcvd = starsRcvd;
 	}
 	
 	public UserContainer(UserContainer user)
@@ -30,10 +34,13 @@ public class UserContainer {
 		myOnlineStatus = user.getOnlineStatus();
 		myMessages = user.getMessages();
 		myDeletedMessages = user.getDeletedMessages();
+		myStarsSent = user.getStarsSent();
+		myStarsRcvd = user.getStarsRcvd();
 	}
 	
 	public boolean equals(UserContainer user)
 	{
+		// Equality excludes statistics. Not so nice but so much simpler...
 		if(myId.equals(user.getId()) &&
 		   (myNick.compareTo(user.getNick()) == 0) &&
 		   (myName.compareTo(user.getName()) == 0) &&
@@ -91,5 +98,21 @@ public class UserContainer {
 
 	public void setDeletedMessages(int myDeletedMessages) {
 		this.myDeletedMessages = myDeletedMessages;
+	}
+
+	public int getStarsSent() {
+		return myStarsSent;
+	}
+
+	public int getStarsRcvd() {
+		return myStarsRcvd;
+	}
+
+	public void setStarsSent(int myStarsSent) {
+		this.myStarsSent = myStarsSent;
+	}
+
+	public void setStarsRcvd(int myStarsRcvd) {
+		this.myStarsRcvd = myStarsRcvd;
 	}
 }

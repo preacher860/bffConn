@@ -1,5 +1,7 @@
 package com.scrollwin.client;
 
+import java.util.ArrayList;
+
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -42,6 +44,7 @@ public class ScrollWinElement extends HStack {
 	private userCallbackInterface myUserCallbackInterface;
 	private String myMessageOriginatingUser;
 	private MessageContainer myMessage = null;
+	private boolean starred = false;
 	
 	public ScrollWinElement(MessageContainer message, UserContainer user, UserContainer myself, userCallbackInterface cb)
 	{
@@ -54,6 +57,8 @@ public class ScrollWinElement extends HStack {
 			hide();
 			return;
 		}
+		
+		setupStarred(myMessage);
 		
 		Integer kittenSelect = 48 + message.getMessageUserId();
 		if(user.getAvatarURL().isEmpty())
@@ -72,8 +77,9 @@ public class ScrollWinElement extends HStack {
 		
 		
 		starLabel.setAutoWidth();
+		starLabel.setHoverStyle("tooltipStyle");
 		deleteLabel.setAutoWidth();
-		starOverIcon.hide();
+		starOverIcon.setShowHover(true);
 		deleteOverIcon.hide();
 		LayoutSpacer iconSpacer = new LayoutSpacer();
 		iconSpacer.setWidth(3);
@@ -82,18 +88,26 @@ public class ScrollWinElement extends HStack {
 		starStack.addMember(starOverIcon);
 		starStack.addMember(iconSpacer);
 		starStack.addMember(starLabel);
+		if(!starred){
+			starStack.setOpacity(0);
+			starOverIcon.hide();
+		} else {
+			starOverIcon.show();
+			starIcon.hide();
+		}
+		
 		deleteStack.setWidth(60);
 		deleteStack.addMember(deleteIcon);
 		deleteStack.addMember(deleteOverIcon);
 		deleteStack.addMember(iconSpacer);
 		deleteStack.addMember(deleteLabel);
+		deleteStack.setOpacity(0);
 		
 		iconPane.setBackgroundColor("#B0B0B0");
 		iconPane.setHeight(18);
 		iconPane.setWidth("40%");
 		iconPane.addMember(starStack);
 		iconPane.addMember(deleteStack);
-		iconPane.setOpacity(0);
 		iconPane.setShowHover(true);
 			
 		infoPane.setBackgroundColor("#B0B0B0");
@@ -155,15 +169,19 @@ public class ScrollWinElement extends HStack {
 		starStack.addMouseOverHandler(new MouseOverHandler (){
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-				starOverIcon.show();
-				starIcon.hide();
+				if(!starred){
+					starOverIcon.show();
+					starIcon.hide();
+				}
 			}});
 		
 		starStack.addMouseOutHandler(new MouseOutHandler (){
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
-				starOverIcon.hide();
-				starIcon.show();
+				if(!starred){
+					starOverIcon.hide();
+					starIcon.show();
+				}
 			}});
 		
 		// May only delete own messages
@@ -200,14 +218,17 @@ public class ScrollWinElement extends HStack {
 		addMouseOverHandler (new MouseOverHandler(){
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-				iconPane.setOpacity(100);
+				starStack.setOpacity(100);
+				deleteStack.setOpacity(100);
 			}
 		});
 		
 		addMouseOutHandler(new MouseOutHandler(){
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
-				iconPane.setOpacity(0);
+				if(!starred)
+					starStack.setOpacity(0);
+				deleteStack.setOpacity(0);
 			}
 		});
 		
@@ -235,7 +256,37 @@ public class ScrollWinElement extends HStack {
 	
 	public void updateMessage(MessageContainer message){
 		myMessage = message;
+		
 		if (myMessage.isMessageDeleted())
 			hide();
+		
+		setupStarred(myMessage);
+	}
+	
+	private void setupStarred(MessageContainer message)
+	{
+		if(myMessage.getMessageStars().length() > 0){
+			String prompt = "";
+			ArrayList<String> nickList= UserManager.getInstance().idListToArray(myMessage.getMessageStars()); 
+			for(String nick:nickList)
+				prompt += nick + "<br>";
+			starStack.setPrompt(prompt);
+			starStack.setShowHover(true);
+			starStack.setHoverStyle("tooltipStyle");
+			starLabel.setContents("x" + nickList.size());
+			starLabel.setHoverStyle("tooltipStyle");
+			starStack.setOpacity(100);
+			starIcon.hide();
+			starOverIcon.show();
+			starred = true;
+		} else{
+			starStack.setPrompt("");
+			starStack.setShowHover(false);
+			starLabel.setContents("Étoiler");
+			starStack.setOpacity(0);
+			starIcon.show();
+			starOverIcon.hide();
+			starred = false;
+		}
 	}
 }

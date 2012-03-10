@@ -85,6 +85,7 @@ public class EntryBox extends HLayout {
 			@Override
 			public void run() {
 				form.focusInItem(messageItem);
+				messageItem.setSelectionRange(messageItem.getLength(), messageItem.getLength());
 			}
         };
         
@@ -110,6 +111,7 @@ public class EntryBox extends HLayout {
     		Message = "@" + userNick + " ";
     	
     	messageItem.setValue(Message);
+		setFocus();
     }
 
     public void setFocus()
@@ -147,7 +149,8 @@ public class EntryBox extends HLayout {
     	{
     		String item = parts[tok];
     		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
-    			if( (item.endsWith(".jpg")) || (item.endsWith(".gif")) || (item.endsWith(".png")) )
+    			if( (item.endsWith(".jpg")) || (item.endsWith(".gif")) || (item.endsWith(".png")) ||
+    				(item.endsWith(".JPG")) || (item.endsWith(".GIF")) || (item.endsWith(".PNG")))
     				item = "<br><img src=\"" + item + "\" height=200/><br>";
     			else
     				item = "<a href=\"" + item + "\" target=\"_blank\">lien</a>";

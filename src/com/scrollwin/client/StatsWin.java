@@ -46,6 +46,8 @@ public class StatsWin extends Window {
 	private VStack chartStack = new VStack();
 	private ImgButton myMessagesButton = new ImgButton();
 	private ImgButton myDeletedButton = new ImgButton();
+	private ImgButton myStarsSentButton = new ImgButton();
+	private ImgButton myStarsRcvdButton = new ImgButton();
 	private Label chartLabel = new Label();
 	private ListGrid statsGrid;
 	private int totalMessages = 0;
@@ -62,7 +64,8 @@ public class StatsWin extends Window {
 		statsGrid = new ListGrid() {
 			@Override  
 	        protected String getCellCSSText(ListGridRecord record, int rowNum, int colNum) {  
-	            if (getFieldName(colNum).equals("messages") || getFieldName(colNum).equals("deleted")) {  
+	            if (getFieldName(colNum).equals("messages") || getFieldName(colNum).equals("deleted") ||
+	                getFieldName(colNum).equals("starssent") || getFieldName(colNum).equals("starsrcvd")) {  
 	                return "font-size:14px;font-weight:bold";  
 	            } else {  
 	                return super.getCellCSSText(record, rowNum, colNum);  
@@ -85,13 +88,17 @@ public class StatsWin extends Window {
 		ListGridField avatarField = new ListGridField("avatarURL", Canvas.imgHTML("people.png"), 50);  
         ListGridField messagesField = new ListGridField("messages", Canvas.imgHTML("msg.png"), 50); 
         ListGridField deletedField = new ListGridField("deleted", Canvas.imgHTML("deleted.png"), 50);
+        ListGridField starsSentField = new ListGridField("starssent", Canvas.imgHTML("star_up_20.png"), 50);
+        ListGridField starsRcvdField = new ListGridField("starsrcvd", Canvas.imgHTML("star_down_20.png"), 50);
         messagesField.setAlign(Alignment.CENTER);
         deletedField.setAlign(Alignment.CENTER);
+        starsSentField.setAlign(Alignment.CENTER);
+        starsRcvdField.setAlign(Alignment.CENTER);
         avatarField.setAlign(Alignment.CENTER);
         avatarField.setType(ListGridFieldType.IMAGE);  
         avatarField.setImageSize(30);  
         
-        statsGrid.setFields(avatarField, messagesField, deletedField);
+        statsGrid.setFields(avatarField, messagesField, deletedField, starsSentField, starsRcvdField);
         statsGrid.setData(UserStatsData.getNewRecords(users));
 
         myMessagesButton.setWidth(32);
@@ -101,8 +108,8 @@ public class StatsWin extends Window {
 	    myMessagesButton.setShowHover(true);
 	    myMessagesButton.setShowDown(false);
 	    myMessagesButton.setSrc("msg.png");
-	    //myMessagesButton.setPrompt("Messages");
-	    //myMessagesButton.setHoverStyle("tooltipStyle");
+	    myMessagesButton.setPrompt("Messages envoyés");
+	    myMessagesButton.setHoverStyle("tooltipStyle");
 	    myMessagesButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -111,15 +118,15 @@ public class StatsWin extends Window {
 			}
 		});
 	    
-	    myDeletedButton.setWidth(32);
-        myDeletedButton.setHeight(32);
+	    myDeletedButton.setWidth(28);
+        myDeletedButton.setHeight(28);
         myDeletedButton.setMargin(4);
 	    myDeletedButton.setShowRollOver(false);
 	    myDeletedButton.setShowHover(true);
 	    myDeletedButton.setShowDown(false);
 	    myDeletedButton.setSrc("deleted.png");
-	    //myMessagesButton.setPrompt("Messages");
-	    //myMessagesButton.setHoverStyle("tooltipStyle");
+	    myDeletedButton.setPrompt("Messages supprimés");
+	    myDeletedButton.setHoverStyle("tooltipStyle");
 	    myDeletedButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -128,9 +135,43 @@ public class StatsWin extends Window {
 			}
 		});
 	    
+	    myStarsSentButton.setWidth(28);
+        myStarsSentButton.setHeight(28);
+        myStarsSentButton.setMargin(4);
+	    myStarsSentButton.setShowRollOver(false);
+	    myStarsSentButton.setShowHover(true);
+	    myStarsSentButton.setShowDown(false);
+	    myStarsSentButton.setSrc("star_up_20.png");
+	    myStarsSentButton.setPrompt("Étoiles envoyées");
+	    myStarsSentButton.setHoverStyle("tooltipStyle");
+	    myStarsSentButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				pie.draw(createStarsSentTable(users), myPieOptions);
+				chartLabel.setContents("<b>Étoiles envoyées par usager</b><br>Nombre total: " + computeTotalStarsSent(users));
+			}
+		});
+	    
+	    myStarsRcvdButton.setWidth(28);
+        myStarsRcvdButton.setHeight(28);
+        myStarsRcvdButton.setMargin(4);
+	    myStarsRcvdButton.setShowRollOver(false);
+	    myStarsRcvdButton.setShowHover(true);
+	    myStarsRcvdButton.setShowDown(false);
+	    myStarsRcvdButton.setSrc("star_down_20.png");
+	    myStarsRcvdButton.setPrompt("Étoiles reçues");
+	    myStarsRcvdButton.setHoverStyle("tooltipStyle");
+	    myStarsRcvdButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				pie.draw(createStarsRcvdTable(users), myPieOptions);
+				chartLabel.setContents("<b>Étoiles reçues par usager</b><br>Nombre total: " + computeTotalStarsRcvd(users));
+			}
+		});
 	    
 	    chartLabel.setAutoHeight();
 	    chartLabel.setWidth100();
+	    chartLabel.setPadding(4);
 	    chartLabel.setAlign(Alignment.CENTER);
 	    chartLabel.setContents("<b>Messages envoyés par usager</b><br>Nombre total: " + computeTotalMessages(users));
 	    
@@ -138,6 +179,8 @@ public class StatsWin extends Window {
 	    spacer.setWidth(5);
 	    buttonStack.addMember(myMessagesButton);
 	    buttonStack.addMember(myDeletedButton);
+	    buttonStack.addMember(myStarsSentButton);
+	    buttonStack.addMember(myStarsRcvdButton);
 	    buttonStack.setHeight(32);
 	    chartStack.setWidth(260);
 	    chartStack.setAlign(Alignment.CENTER);
@@ -218,6 +261,34 @@ public class StatsWin extends Window {
 	    return data;
 	  }
 	
+	private AbstractDataTable createStarsRcvdTable(ArrayList<UserContainer> users) {
+	    DataTable data = DataTable.create();
+	    
+	    data.addColumn(ColumnType.STRING, "Nick");
+	    data.addColumn(ColumnType.NUMBER, "Messages");
+	    data.addRows(users.size());
+	    
+	    for(int index = 0; index < users.size(); index++){
+	    	data.setValue(index,0,users.get(index).getNick());
+	    	data.setValue(index,1,users.get(index).getStarsRcvd());
+	    }
+	    return data;
+	  }
+	
+	private AbstractDataTable createStarsSentTable(ArrayList<UserContainer> users) {
+	    DataTable data = DataTable.create();
+	    
+	    data.addColumn(ColumnType.STRING, "Nick");
+	    data.addColumn(ColumnType.NUMBER, "Messages");
+	    data.addRows(users.size());
+	    
+	    for(int index = 0; index < users.size(); index++){
+	    	data.setValue(index,0,users.get(index).getNick());
+	    	data.setValue(index,1,users.get(index).getStarsSent());
+	    }
+	    return data;
+	  }
+	
 	private int computeTotalMessages(ArrayList<UserContainer> users) {
 		int totalMsg = 0;
 	    for(UserContainer user:users)
@@ -231,6 +302,20 @@ public class StatsWin extends Window {
 	    	totalMsg += user.getDeletedMessages();
 	    return totalMsg;
     }
+	
+	private int computeTotalStarsSent(ArrayList<UserContainer> users) {
+		int totalMsg = 0;
+	    for(UserContainer user:users)
+	    	totalMsg += user.getStarsSent();
+	    return totalMsg;
+    }
+	
+	private int computeTotalStarsRcvd(ArrayList<UserContainer> users) {
+		int totalMsg = 0;
+	    for(UserContainer user:users)
+	    	totalMsg += user.getStarsRcvd();
+	    return totalMsg;
+    }
 }
 
 class UserStatsData {
@@ -241,7 +326,9 @@ class UserStatsData {
 		for(UserContainer currentUser:users) { 
 			records[recIndex] = new UserStatsRecord(currentUser.getAvatarURL(), 
 													currentUser.getMessages(),
-													currentUser.getDeletedMessages());
+													currentUser.getDeletedMessages(),
+													currentUser.getStarsSent(),
+													currentUser.getStarsRcvd());
 			recIndex++;
 		}
 		
@@ -254,10 +341,12 @@ class UserStatsRecord extends TileRecord {
 	public UserStatsRecord() {
 	}
 
-	public UserStatsRecord(String avatarURL, int messages, int deleted) {
+	public UserStatsRecord(String avatarURL, int messages, int deleted, int starsSent, int starsRcvd) {
 		setAvatarURL(avatarURL);
 		setMessages(messages);
 		setDeleted(deleted);
+		setStarsSent(starsSent);
+		setStarsRcvd(starsRcvd);
 	}
 
 	public void setAvatarURL(String avatarURL) {
@@ -270,5 +359,13 @@ class UserStatsRecord extends TileRecord {
 	
 	public void setDeleted(int deleted) {
 		setAttribute("deleted", deleted);
+	}
+	
+	public void setStarsRcvd(int stars) {
+		setAttribute("starsrcvd", stars);
+	}
+	
+	public void setStarsSent(int stars) {
+		setAttribute("starssent", stars);
 	}
 }

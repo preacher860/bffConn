@@ -343,7 +343,6 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	@Override
 	public void avatarClicked(String userNick) {
 		myEntryBox.addAddressee(userNick);
-		myEntryBox.setFocus();
 	};
 	
 	public void performLogout() {
@@ -363,7 +362,6 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	
 	public void statsClicked() {
 		StatsWin stats = new StatsWin(UserManager.getInstance().getUserList());
-		//Window.open("https://github.com/preacher860/bffConn/wiki/Historique-des-changements", "test", "");
 	}
 
 	@Override
@@ -413,7 +411,8 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 
 	@Override
 	public void starClicked(int seqId) {
-		Window.open("http://www.youtube.com/watch?v=dQw4w9WgXcQ&t=0m43s", "Rick Rolled!", "");
+		ioModule.SendStarMessage(seqId);
+		//Window.open("http://www.youtube.com/watch?v=dQw4w9WgXcQ&t=0m43s", "Rick Rolled!", "");
 	}
 
 	@Override

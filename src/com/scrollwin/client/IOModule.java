@@ -92,6 +92,39 @@ public class IOModule {
 		}
 	}
 	
+	public void SendStarMessage(Integer seqId)
+	{
+		String postData = "dummy=0";
+		
+		String url = urlPrefix + "jsontest?" + "request_mode=star_message";
+		url += "&message_id=" + seqId;
+		url += "&user_id=" + RuntimeData.getInstance().getUserId();
+		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
+		url += "&rnd_value=" + Random.nextInt(400000000);
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		try {
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			Request request = builder.sendRequest(postData, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
+				}
+	
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode())
+						handleNewMessages(response.getText());
+					else if (403 == response.getStatusCode())
+						handleAccessForbidden();
+					else 
+						System.out.println("Request response error: " + response.getStatusCode());
+				}
+			});
+		} catch (RequestException e) {
+			Window.alert("Server error: " + e);
+			// Couldn't connect to server        
+		}
+	}
+	
 	public void GetUserMessages(Integer seqId, Integer num)
 	{
 		String postData = "dummy=0";
@@ -379,16 +412,16 @@ public class IOModule {
 		    	Integer messageId = Integer.valueOf(obj.get("id").isString().stringValue());
 		    	Integer userId = Integer.valueOf(obj.get("user").isString().stringValue());
 		    	String messageText = obj.get("value").isString().stringValue();
-		    	//String userNick = obj.get("user_nick").isString().stringValue();
 		    	String dateStamp = obj.get("date").isString().stringValue();
 		    	String timeStamp = obj.get("time").isString().stringValue();
 		    	String local = obj.get("local").isString().stringValue();
 		    	boolean deleted = Boolean.valueOf(obj.get("deleted").isString().stringValue());
 		    	int dbVersion = Integer.valueOf(obj.get("dbversion").isString().stringValue());
+		    	String stars = obj.get("stars").isString().stringValue();
 		    	
 		    	MessageContainer message = new MessageContainer(messageId, userId, messageText, 
 		    													dateStamp, timeStamp, local,
-		    													deleted, dbVersion);
+		    													deleted, dbVersion, stars);
 		    	messageList.add(message);
 		    }
 		    if(messageList.size() > 0)
@@ -483,8 +516,10 @@ public class IOModule {
 		    	boolean online = Boolean.valueOf(obj.get("online").isString().stringValue());
 		    	Integer messages = Integer.valueOf(obj.get("messages").isString().stringValue());
 		    	Integer deleted = Integer.valueOf(obj.get("deleted").isString().stringValue());
+		    	Integer starsSent = Integer.valueOf(obj.get("starssent").isString().stringValue());
+		    	Integer starsRcvd = Integer.valueOf(obj.get("starsreceived").isString().stringValue());
 		    	
-		    	UserContainer user = new UserContainer(userId, userNick, "", avURL, online, messages, deleted);
+		    	UserContainer user = new UserContainer(userId, userNick, "", avURL, online, messages, deleted, starsSent, starsRcvd);
 		    	userList.add(user);
 		    }
 		    if(userList.size() > 0)

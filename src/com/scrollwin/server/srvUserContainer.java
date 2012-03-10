@@ -6,9 +6,11 @@ public class srvUserContainer {
 	private String  myName;
 	private String  myAvatarURL;
 	private String  myPasswordHash;
-	private int 	activityTimeout;
-	private int 	myNumOfMessages;
-	private int 	myNumOfDeletedMessages;
+	private int 	activityTimeout = 0;
+	private int 	myNumOfMessages = 0;
+	private int 	myNumOfDeletedMessages = 0;
+	private int 	myNumOfStarsSent = 0;
+	private int 	myNumOfStarsReceived = 0;
 	
 	public srvUserContainer() {
 		id = 0;
@@ -94,6 +96,22 @@ public class srvUserContainer {
 
 	public void setNumOfDeletedMessages(int myNumOfDeletedMessages) {
 		this.myNumOfDeletedMessages = myNumOfDeletedMessages;
+	}
+
+	public int getNumOfStarsSent() {
+		return myNumOfStarsSent;
+	}
+
+	public int getNumOfStarsReceived() {
+		return myNumOfStarsReceived;
+	}
+
+	public void setNumOfStarsSent(int myNumOfStarsSent) {
+		this.myNumOfStarsSent = myNumOfStarsSent;
+	}
+
+	public void setNumOfStarsReceived(int myNumOfStarsReceived) {
+		this.myNumOfStarsReceived = myNumOfStarsReceived;
 	}
 	
 }
