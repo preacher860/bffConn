@@ -1,5 +1,6 @@
 package com.scrollwin.client;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Img;
@@ -200,7 +201,8 @@ public class EntryBox extends HLayout {
     
     public void editMessage(MessageContainer message)
     {
-    	messageItem.setValue(deconvertCrLf(message.getMessage()));
+    	String decodedMessage = URL.decode(message.getMessage());
+    	messageItem.setValue(deconvertCrLf(decodedMessage));
     	myIsEditing = true;
     	myEditingMessageSeq = message.getMessageSeqId();
     	infoItem.setContents("Édition du message <b>" + myEditingMessageSeq + "</b>. ESC pour annuler");

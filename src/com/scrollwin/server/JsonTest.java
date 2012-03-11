@@ -3,8 +3,6 @@ package com.scrollwin.server;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,9 +15,11 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.lang.Math;
+
+//import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
-import org.ini4j.Wini;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -574,7 +574,7 @@ private int getNewestSeq(Connection conn)
 		  
 		  int dbVersion = getDbVersion(conn) + 1;
 		  PreparedStatement update = conn.prepareStatement(query);
-    	  update.setString(1, message);
+    	  update.setString(1, filterMessage(message));
     	  update.setInt(2, dbVersion);
     	  update.setInt(3, seqId);
     	  update.executeUpdate();
@@ -598,7 +598,9 @@ private int getNewestSeq(Connection conn)
 	
 	String unescapedMessage = unescapeJson(message);
   	String cleanedMessage = Jsoup.clean(unescapedMessage, localWhitelist);
-  	String escapedMessage = escapeJson(cleanedMessage);
+  	String unescapedHTML = StringEscapeUtils.unescapeHtml3(cleanedMessage);
+  	String escapedMessage = escapeJson(unescapedHTML);
+  	
   	
 //  	System.out.println("Evil: " + message);
 //  	System.out.println("Unesc: " + unescapedMessage);
