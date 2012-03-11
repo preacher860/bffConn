@@ -17,7 +17,6 @@ public class MessageContainer {
 		MessageSeqId = seqId;
 		MessageUserId = userId;
 		Message = msg;
-		//MessageUserNick = nick;
 		MessageDate = date;
 		MessageTime = time;
 		MessageLocal = local;

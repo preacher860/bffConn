@@ -10,6 +10,6 @@ public interface ioCallbackInterface {
 		public void sessionReceivedCallback(String sessionId, Integer userId, String userNick, String userLocal);
 		public void sessionValidReceivedCallback(String sessionId, int userId, String local, boolean valid);
 		public void accessForbiddenCallback();
-		public void messageToSendCallback(String Message);
+		public void messageToSendCallback(String Message, boolean edit, int messageSeq);
 		public void logoutComplete();
 }

@@ -168,6 +168,12 @@ public JsonTest(){
 				  if(message_id != null)
 					  starMessage(out, message_id, userId);
 			  }
+			  
+			  if (requestMode.contentEquals("edit_message"))
+			  {
+				  if((message_id != null) && (userMessage != null))
+					  editMessage(out, message_id, userMessage);
+			  }
 		  }
 	  } else
 	  {
@@ -459,6 +465,7 @@ private int getNewestSeq(Connection conn)
 		  out.println("     \"tmo\":\"" + currentUser.getActivityTimeout() + "\",");
 		  out.println("     \"messages\":\"" + currentUser.getNumOfMessages() + "\",");
 		  out.println("     \"deleted\":\"" + currentUser.getNumOfDeletedMessages() + "\",");
+		  out.println("     \"edited\":\"" + currentUser.getNumOfEditedMessages() + "\",");
 		  out.println("     \"starssent\":\"" + currentUser.getNumOfStarsSent() + "\",");
 		  out.println("     \"starsreceived\":\"" + currentUser.getNumOfStarsReceived() + "\"");
 		  out.print("  }");
@@ -529,8 +536,6 @@ private int getNewestSeq(Connection conn)
   
   private void starMessage(PrintWriter out, String message_id, String user_id)
   {
-	  System.out.println("Request for starring message " + message_id + " by " + user_id);
-	  
 	  int elementBitPos = (int) Math.pow(2,Integer.valueOf(user_id));
 	  
 	  int seqId = Integer.parseInt(message_id);
@@ -542,6 +547,34 @@ private int getNewestSeq(Connection conn)
 		  int dbVersion = getDbVersion(conn) + 1;
 		  PreparedStatement update = conn.prepareStatement(query);
     	  update.setInt(1, elementBitPos);
+    	  update.setInt(2, dbVersion);
+    	  update.setInt(3, seqId);
+    	  update.executeUpdate();
+    	  setDbVersion(conn, dbVersion);
+	      update.close();
+	      
+	      conn.commit();
+	      conn.close();
+	  } catch(SQLException e) {
+	      System.err.println("Mysql Statement Error");
+	      e.printStackTrace();
+	  }
+	  
+	  // Send back the newly modified message so the client will refresh it
+	  getNewMessages(seqId, seqId, out);
+  }
+  
+  private void editMessage(PrintWriter out, String message_id, String message)
+  {
+	  int seqId = Integer.parseInt(message_id);
+	  String query = "UPDATE testtable SET text=(?),dbversion=?,edited=edited+1 where seq=?";
+	  try {
+		  Connection conn = this.getConn();
+		  conn.setAutoCommit(false);
+		  
+		  int dbVersion = getDbVersion(conn) + 1;
+		  PreparedStatement update = conn.prepareStatement(query);
+    	  update.setString(1, message);
     	  update.setInt(2, dbVersion);
     	  update.setInt(3, seqId);
     	  update.executeUpdate();
@@ -868,6 +901,7 @@ private int getNewestSeq(Connection conn)
   {
 	  String query ="SELECT userid, COUNT(*) FROM testtable GROUP BY userid ORDER BY userid";
 	  String queryDel ="SELECT userid, COUNT(*) FROM testtable where deleted=true GROUP BY userid ORDER BY userid";
+	  String queryEdit ="SELECT userid,sum(edited) FROM testtable WHERE deleted=false GROUP BY userid ORDER BY userid";
 	  String queryStarsSent = "SELECT count(*) FROM testtable WHERE find_in_set(?, stars) AND deleted=false";
 	  String queryStarsRcvd = "SELECT SUM(BIT_COUNT(stars+0)) FROM testtable WHERE userid=? AND deleted=false";
 	  
@@ -894,6 +928,18 @@ private int getNewestSeq(Connection conn)
 	    	  for(srvUserContainer user:userList)
 	    		  if (user.getId().intValue() == Integer.valueOf(result.getString(1))) {
 	    			  user.setNumOfDeletedMessages(Integer.valueOf(result.getString(2)));
+	    			  break;
+	    		  }
+	      }
+	      select.close();
+	      result.close();
+	      
+	      select = conn.prepareStatement(queryEdit);
+	      result = select.executeQuery();
+	      while (result.next()) {
+	    	  for(srvUserContainer user:userList)
+	    		  if (user.getId().intValue() == Integer.valueOf(result.getString(1))) {
+	    			  user.setNumOfEditedMessages(Integer.valueOf(result.getString(2)));
 	    			  break;
 	    		  }
 	      }

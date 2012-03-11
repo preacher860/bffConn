@@ -46,6 +46,7 @@ public class StatsWin extends Window {
 	private VStack chartStack = new VStack();
 	private ImgButton myMessagesButton = new ImgButton();
 	private ImgButton myDeletedButton = new ImgButton();
+	private ImgButton myEditedButton = new ImgButton();
 	private ImgButton myStarsSentButton = new ImgButton();
 	private ImgButton myStarsRcvdButton = new ImgButton();
 	private Label chartLabel = new Label();
@@ -64,12 +65,7 @@ public class StatsWin extends Window {
 		statsGrid = new ListGrid() {
 			@Override  
 	        protected String getCellCSSText(ListGridRecord record, int rowNum, int colNum) {  
-	            if (getFieldName(colNum).equals("messages") || getFieldName(colNum).equals("deleted") ||
-	                getFieldName(colNum).equals("starssent") || getFieldName(colNum).equals("starsrcvd")) {  
 	                return "font-size:14px;font-weight:bold";  
-	            } else {  
-	                return super.getCellCSSText(record, rowNum, colNum);  
-	            }  
 	        }
 		};
 		
@@ -87,10 +83,12 @@ public class StatsWin extends Window {
 				
 		ListGridField avatarField = new ListGridField("avatarURL", Canvas.imgHTML("people.png"), 50);  
         ListGridField messagesField = new ListGridField("messages", Canvas.imgHTML("msg.png"), 50); 
+        ListGridField editedField = new ListGridField("edited", Canvas.imgHTML("edited.png"), 50);
         ListGridField deletedField = new ListGridField("deleted", Canvas.imgHTML("deleted.png"), 50);
         ListGridField starsSentField = new ListGridField("starssent", Canvas.imgHTML("star_up_20.png"), 50);
         ListGridField starsRcvdField = new ListGridField("starsrcvd", Canvas.imgHTML("star_down_20.png"), 50);
         messagesField.setAlign(Alignment.CENTER);
+        editedField.setAlign(Alignment.CENTER);
         deletedField.setAlign(Alignment.CENTER);
         starsSentField.setAlign(Alignment.CENTER);
         starsRcvdField.setAlign(Alignment.CENTER);
@@ -98,7 +96,7 @@ public class StatsWin extends Window {
         avatarField.setType(ListGridFieldType.IMAGE);  
         avatarField.setImageSize(30);  
         
-        statsGrid.setFields(avatarField, messagesField, deletedField, starsSentField, starsRcvdField);
+        statsGrid.setFields(avatarField, messagesField, editedField, deletedField, starsSentField, starsRcvdField);
         statsGrid.setData(UserStatsData.getNewRecords(users));
 
         myMessagesButton.setWidth(32);
@@ -132,6 +130,23 @@ public class StatsWin extends Window {
 			public void onClick(ClickEvent event) {
 				pie.draw(createDeletedTable(users), myPieOptions);
 				chartLabel.setContents("<b>Messages supprimés par usager</b><br>Nombre total: " + computeTotalDeleted(users));
+			}
+		});
+	    
+	    myEditedButton.setWidth(28);
+        myEditedButton.setHeight(28);
+        myEditedButton.setMargin(4);
+	    myEditedButton.setShowRollOver(false);
+	    myEditedButton.setShowHover(true);
+	    myEditedButton.setShowDown(false);
+	    myEditedButton.setSrc("edited.png");
+	    myEditedButton.setPrompt("Messages édités");
+	    myEditedButton.setHoverStyle("tooltipStyle");
+	    myEditedButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				pie.draw(createEditedTable(users), myPieOptions);
+				chartLabel.setContents("<b>Messages édités par usager</b><br>Nombre total: " + computeTotalEdited(users));
 			}
 		});
 	    
@@ -178,6 +193,7 @@ public class StatsWin extends Window {
 	    LayoutSpacer spacer = new LayoutSpacer();
 	    spacer.setWidth(5);
 	    buttonStack.addMember(myMessagesButton);
+	    buttonStack.addMember(myEditedButton);
 	    buttonStack.addMember(myDeletedButton);
 	    buttonStack.addMember(myStarsSentButton);
 	    buttonStack.addMember(myStarsRcvdButton);
@@ -260,6 +276,21 @@ public class StatsWin extends Window {
 	    }
 	    return data;
 	  }
+
+	private AbstractDataTable createEditedTable(ArrayList<UserContainer> users) {
+	    DataTable data = DataTable.create();
+	    
+	    data.addColumn(ColumnType.STRING, "Nick");
+	    data.addColumn(ColumnType.NUMBER, "Messages");
+	    data.addRows(users.size());
+	    
+	    for(int index = 0; index < users.size(); index++){
+	    	data.setValue(index,0,users.get(index).getNick());
+	    	data.setValue(index,1,users.get(index).getEditedMessages());
+	    }
+	    return data;
+	  }
+
 	
 	private AbstractDataTable createStarsRcvdTable(ArrayList<UserContainer> users) {
 	    DataTable data = DataTable.create();
@@ -303,6 +334,13 @@ public class StatsWin extends Window {
 	    return totalMsg;
     }
 	
+	private int computeTotalEdited(ArrayList<UserContainer> users) {
+		int totalMsg = 0;
+	    for(UserContainer user:users)
+	    	totalMsg += user.getEditedMessages();
+	    return totalMsg;
+    }
+	
 	private int computeTotalStarsSent(ArrayList<UserContainer> users) {
 		int totalMsg = 0;
 	    for(UserContainer user:users)
@@ -326,6 +364,7 @@ class UserStatsData {
 		for(UserContainer currentUser:users) { 
 			records[recIndex] = new UserStatsRecord(currentUser.getAvatarURL(), 
 													currentUser.getMessages(),
+													currentUser.getEditedMessages(),
 													currentUser.getDeletedMessages(),
 													currentUser.getStarsSent(),
 													currentUser.getStarsRcvd());
@@ -341,9 +380,10 @@ class UserStatsRecord extends TileRecord {
 	public UserStatsRecord() {
 	}
 
-	public UserStatsRecord(String avatarURL, int messages, int deleted, int starsSent, int starsRcvd) {
+	public UserStatsRecord(String avatarURL, int messages, int edited, int deleted, int starsSent, int starsRcvd) {
 		setAvatarURL(avatarURL);
 		setMessages(messages);
+		setEdited(edited);
 		setDeleted(deleted);
 		setStarsSent(starsSent);
 		setStarsRcvd(starsRcvd);
@@ -355,6 +395,10 @@ class UserStatsRecord extends TileRecord {
 	
 	public void setMessages(int messages) {
 		setAttribute("messages", messages);
+	}
+	
+	public void setEdited(int deleted) {
+		setAttribute("edited", deleted);
 	}
 	
 	public void setDeleted(int deleted) {

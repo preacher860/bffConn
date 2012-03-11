@@ -9,10 +9,11 @@ public class UserContainer {
 	private boolean myOnlineStatus;
 	private int 	myMessages;
 	private int 	myDeletedMessages;
+	private int		myEditedMessages;
 	private int 	myStarsSent;
 	private int		myStarsRcvd;
 	
-	public UserContainer(Integer Id, String Nick, String Name, String AvatarURL, boolean online, int messages, int deleted, int starsSent, int starsRcvd)
+	public UserContainer(Integer Id, String Nick, String Name, String AvatarURL, boolean online, int messages, int deleted, int edited, int starsSent, int starsRcvd)
 	{
 		myId = Id;
 		myNick = Nick;
@@ -21,6 +22,7 @@ public class UserContainer {
 		myOnlineStatus = online;
 		myMessages = messages;
 		myDeletedMessages = deleted;
+		myEditedMessages = edited;
 		myStarsSent = starsSent;
 		myStarsRcvd = starsRcvd;
 	}
@@ -34,6 +36,7 @@ public class UserContainer {
 		myOnlineStatus = user.getOnlineStatus();
 		myMessages = user.getMessages();
 		myDeletedMessages = user.getDeletedMessages();
+		myEditedMessages = user.getEditedMessages();
 		myStarsSent = user.getStarsSent();
 		myStarsRcvd = user.getStarsRcvd();
 	}
@@ -100,6 +103,14 @@ public class UserContainer {
 		this.myDeletedMessages = myDeletedMessages;
 	}
 
+	public int getEditedMessages() {
+		return myEditedMessages;
+	}
+
+	public void setEditedMessages(int myEditedMessages) {
+		this.myEditedMessages = myEditedMessages;
+	}
+	
 	public int getStarsSent() {
 		return myStarsSent;
 	}

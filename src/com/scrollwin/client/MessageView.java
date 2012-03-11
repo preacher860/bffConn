@@ -2,6 +2,8 @@ package com.scrollwin.client;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ScrolledEvent;
@@ -74,15 +76,23 @@ public class MessageView extends VStack {
 	}
 	
 	public void newMessages(ArrayList<MessageContainer> messages) {
+		boolean listWasEmtpy;
+		boolean messagesNotOwn = false;
+		boolean myNewestUpdated = false;
+		
 		if(myNumOfMessagesDisplayed > 0){
 			myNewestDisplayedSeq = ((ScrollWinElement)getMember(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
 			myOldestDisplayedSeq = ((ScrollWinElement)getMember(0)).getMessage().getMessageSeqId();
-		}
+			listWasEmtpy = false;
+		} else
+			listWasEmtpy = true;
 	
 		for(int msgIndex = 0; msgIndex < messages.size(); msgIndex++) {
 
 			MessageContainer currentMessage = messages.get(msgIndex);
 			checkOcto(currentMessage);
+			if(currentMessage.getMessageUserId() != RuntimeData.getInstance().getUserId())
+				messagesNotOwn = true;
 
 			ScrollWinElement element = new ScrollWinElement(currentMessage, 
 					UserManager.getInstance().getUser(currentMessage.getMessageUserId()),
@@ -96,6 +106,7 @@ public class MessageView extends VStack {
 				addMember(element);
 				myNewestDisplayedSeq = currentMessage.getMessageSeqId();
 				myNumOfMessagesDisplayed++;
+				myNewestUpdated = true;
 			}
 			else if (currentMessage.getMessageSeqId() < myOldestDisplayedSeq) {
 				//System.out.println(" inserting " + currentMessage.getMessageSeqId() + " at top");
@@ -111,7 +122,6 @@ public class MessageView extends VStack {
 
 					if (currentSeq == currentMessage.getMessageSeqId()){
 						((ScrollWinElement)getMember(elementIndex)).updateMessage(currentMessage);
-						//System.out.println("Editing not supported yet. Seq: " + currentSeq);
 						break;
 					}
 					if((currentMessage.getMessageSeqId() < currentSeq) && (currentMessage.getMessageSeqId() > previousSeq)){
@@ -124,7 +134,7 @@ public class MessageView extends VStack {
 			}
 			//System.out.println("  In queue: " + messageList.size());
 			if(currentMessage.getMessageDbVersion() > myNewestDisplayedDb)
-				myNewestDisplayedDb = currentMessage.getMessageDbVersion(); 
+				myNewestDisplayedDb = currentMessage.getMessageDbVersion();
 		}
 		myNewestDisplayedSeq = ((ScrollWinElement)getMember(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
 		myOldestDisplayedSeq = ((ScrollWinElement)getMember(0)).getMessage().getMessageSeqId();
@@ -139,6 +149,11 @@ public class MessageView extends VStack {
 			myFetchingOld = false;
 			myPositionTimer.schedule(200);
 		}
+		
+		if (myNewestUpdated && !listWasEmtpy && messagesNotOwn){
+			myCallbackInterface.newestUpdated();
+		}
+			
 		
 		myCallbackInterface.messageDisplayComplete();
 	}

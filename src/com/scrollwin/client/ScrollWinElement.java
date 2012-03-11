@@ -36,10 +36,17 @@ public class ScrollWinElement extends HStack {
 	private Img starOverIcon = new Img("stargray_Over.png", 16, 16);
 	private Img deleteIcon = new Img("deletegray.png", 16, 16);
 	private Img deleteOverIcon = new Img("deletegray_Over.png", 16, 16);
+	private Img editIcon = new Img("editgray.png", 16, 16);
+	private Img editOverIcon = new Img("edit.png", 16, 16);
 	private Label starLabel = new Label("Étoiler");
 	private Label deleteLabel = new Label("Effacer");
+	private Label editLabel = new Label("Éditer");
 	private HStack starStack = new HStack();
 	private HStack deleteStack = new HStack();
+	private HStack editStack = new HStack();
+	private LayoutSpacer starIconSpacer = new LayoutSpacer();
+	private LayoutSpacer deleteIconSpacer = new LayoutSpacer();
+	private LayoutSpacer editIconSpacer = new LayoutSpacer();
 	private int seqId = 0;
 	private userCallbackInterface myUserCallbackInterface;
 	private String myMessageOriginatingUser;
@@ -52,7 +59,7 @@ public class ScrollWinElement extends HStack {
 		myMessageOriginatingUser = user.getNick();
 		myMessage = message;
 		
-		// If message hidden (deleted), no need to perform all the stuff, return immediatly
+		// If message hidden (deleted), no need to perform all the stuff, return immediately
 		if (myMessage.isMessageDeleted()){
 			hide();
 			return;
@@ -75,18 +82,20 @@ public class ScrollWinElement extends HStack {
 		setWidth100();
 		setHeight(40);
 		
-		
 		starLabel.setAutoWidth();
 		starLabel.setHoverStyle("tooltipStyle");
 		deleteLabel.setAutoWidth();
 		starOverIcon.setShowHover(true);
 		deleteOverIcon.hide();
-		LayoutSpacer iconSpacer = new LayoutSpacer();
-		iconSpacer.setWidth(3);
+		editOverIcon.hide();
+		
+		starIconSpacer.setWidth(3);
+		deleteIconSpacer.setWidth(3);
+		editIconSpacer.setWidth(3);
 		starStack.setWidth(60);
 		starStack.addMember(starIcon);
 		starStack.addMember(starOverIcon);
-		starStack.addMember(iconSpacer);
+		starStack.addMember(starIconSpacer);
 		starStack.addMember(starLabel);
 		if(!starred){
 			starStack.setOpacity(0);
@@ -99,15 +108,23 @@ public class ScrollWinElement extends HStack {
 		deleteStack.setWidth(60);
 		deleteStack.addMember(deleteIcon);
 		deleteStack.addMember(deleteOverIcon);
-		deleteStack.addMember(iconSpacer);
+		deleteStack.addMember(deleteIconSpacer);
 		deleteStack.addMember(deleteLabel);
 		deleteStack.setOpacity(0);
+		
+		editStack.setWidth(60);
+		editStack.addMember(editIcon);
+		editStack.addMember(editOverIcon);
+		editStack.addMember(editIconSpacer);
+		editStack.addMember(editLabel);
+		editStack.setOpacity(0);
 		
 		iconPane.setBackgroundColor("#B0B0B0");
 		iconPane.setHeight(18);
 		iconPane.setWidth("40%");
 		iconPane.addMember(starStack);
 		iconPane.addMember(deleteStack);
+		iconPane.addMember(editStack);
 		iconPane.setShowHover(true);
 			
 		infoPane.setBackgroundColor("#B0B0B0");
@@ -184,9 +201,8 @@ public class ScrollWinElement extends HStack {
 				}
 			}});
 		
-		// May only delete own messages
+		// May only delete/edit own messages
 		if(myMessage.getMessageUserId() == RuntimeData.getInstance().getUserId()) {
-			//deleteIcon.setShowRollOver(true);
 			deleteStack.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -206,6 +222,25 @@ public class ScrollWinElement extends HStack {
 					deleteOverIcon.hide();
 					deleteIcon.show();
 				}});
+			
+			editStack.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					myUserCallbackInterface.editMessageClicked(myMessage);
+				}});
+			editStack.addMouseOverHandler(new MouseOverHandler (){
+				@Override
+				public void onMouseOver(MouseOverEvent event) {
+					editOverIcon.show();
+					editIcon.hide();
+				}});
+			
+			editStack.addMouseOutHandler(new MouseOutHandler (){
+				@Override
+				public void onMouseOut(MouseOutEvent event) {
+					editOverIcon.hide();
+					editIcon.show();
+				}});
 		}
 		
 		imageStack.addClickHandler(new ClickHandler() {
@@ -220,6 +255,7 @@ public class ScrollWinElement extends HStack {
 			public void onMouseOver(MouseOverEvent event) {
 				starStack.setOpacity(100);
 				deleteStack.setOpacity(100);
+				editStack.setOpacity(100);
 			}
 		});
 		
@@ -229,6 +265,7 @@ public class ScrollWinElement extends HStack {
 				if(!starred)
 					starStack.setOpacity(0);
 				deleteStack.setOpacity(0);
+				editStack.setOpacity(0);
 			}
 		});
 		
@@ -256,6 +293,8 @@ public class ScrollWinElement extends HStack {
 	
 	public void updateMessage(MessageContainer message){
 		myMessage = message;
+		
+		userMessagePane.setContents(message.getMessage());
 		
 		if (myMessage.isMessageDeleted())
 			hide();

@@ -12,4 +12,7 @@ public interface userCallbackInterface {
 	public void octopusOffTyped();
 	public void starClicked(int seqId);
 	public void deleteClicked(int seqId);
+	public void newestUpdated();
+	public void userEntry();
+	public void editMessageClicked(MessageContainer message);
 }

@@ -30,7 +30,7 @@ public class UserManager {
 			if(currentUser.getId().intValue() == userId.intValue()) 
 				return currentUser;
 
-		return new UserContainer(0, "dummy", "dummy", "dummy", false, 0, 0, 0, 0);
+		return new UserContainer(0, "dummy", "dummy", "dummy", false, 0, 0, 0, 0, 0);
 	}
 	
 	public void setUserList(ArrayList<UserContainer> userList){

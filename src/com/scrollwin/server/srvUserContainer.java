@@ -11,6 +11,7 @@ public class srvUserContainer {
 	private int 	myNumOfDeletedMessages = 0;
 	private int 	myNumOfStarsSent = 0;
 	private int 	myNumOfStarsReceived = 0;
+	private int		myNumOfEditedMessages = 0;
 	
 	public srvUserContainer() {
 		id = 0;
@@ -112,6 +113,14 @@ public class srvUserContainer {
 
 	public void setNumOfStarsReceived(int myNumOfStarsReceived) {
 		this.myNumOfStarsReceived = myNumOfStarsReceived;
+	}
+
+	public int getNumOfEditedMessages() {
+		return myNumOfEditedMessages;
+	}
+
+	public void setNumOfEditedMessages(int myNumOfEditedMessages) {
+		this.myNumOfEditedMessages = myNumOfEditedMessages;
 	}
 	
 }

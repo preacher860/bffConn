@@ -5,10 +5,13 @@ import java.util.Date;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyPressHandler;//
+//import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Timer;
@@ -73,7 +76,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
 	private MessageView myMessageManager = new MessageView(this);
 	
-	//private String mySessionId = "0";
+	private boolean faviconAlert = false;
 	private String mySessionLocal = "";
 	
 	public ScrollWin(){
@@ -288,8 +291,11 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	}
 
 	@Override
-	public void messageToSendCallback(String message) {
-		ioModule.SendUserMessage(message, RuntimeData.getInstance().getNewestSeqId());
+	public void messageToSendCallback(String message, boolean edit, int seqId) {
+		if(!edit)
+			ioModule.SendUserMessage(message, RuntimeData.getInstance().getNewestSeqId());
+		else
+			ioModule.SendMessageEdit(message, seqId);
 
 		// Control max number of msg displayed - Disabled for DB debugging
   	  	//if(messageVStack.getMembers().length > 100)
@@ -418,5 +424,28 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	@Override
 	public void deleteClicked(int seqId) {
 		ioModule.SendDeleteMessage(seqId);
+	}
+
+	@Override
+	public void newestUpdated() {
+		if(myCurrentMode == MODE_RUNNING && !faviconAlert) {
+			Element element = DOM.getElementById("favicon");
+			element.setAttribute("href", "images/favicon_red.ico");
+			faviconAlert = true;
+		}
+	}
+
+	@Override
+	public void userEntry() {
+		if(faviconAlert){
+			Element element = DOM.getElementById("favicon");
+			element.setAttribute("href", "images/favicon.ico");
+			faviconAlert = false;
+		}
+	}
+
+	@Override
+	public void editMessageClicked(MessageContainer message) {
+		myEntryBox.editMessage(message);
 	}
 }
