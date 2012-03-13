@@ -20,6 +20,7 @@ public class IOModule {
 
 	private ioCallbackInterface myCallbackInterface;
 	private static final String urlPrefix = GWT.getModuleBaseURL();
+	private static final String servletName = "bffconnserver";
 	
 	public IOModule(ioCallbackInterface theCallbackInterface) {
 		myCallbackInterface = theCallbackInterface;
@@ -29,7 +30,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=get_messages";
+		String url = urlPrefix + servletName + "?" + "request_mode=get_messages";
 		url += "&message_text=" + URL.encodePathSegment(MessageText);
 		url += "&start_point=" + (seqId + 1);
 		url += "&user_id=" + RuntimeData.getInstance().getUserId();
@@ -63,7 +64,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=edit_message";
+		String url = urlPrefix + servletName + "?" + "request_mode=edit_message";
 		url += "&message_text=" + URL.encodePathSegment(MessageText);
 		url += "&message_id=" + seqId;
 		url += "&user_id=" + RuntimeData.getInstance().getUserId();
@@ -97,7 +98,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=delete_message";
+		String url = urlPrefix + servletName + "?" + "request_mode=delete_message";
 		url += "&message_id=" + seqId;
 		url += "&user_id=" + RuntimeData.getInstance().getUserId();
 		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
@@ -130,7 +131,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=star_message";
+		String url = urlPrefix + servletName + "?" + "request_mode=star_message";
 		url += "&message_id=" + seqId;
 		url += "&user_id=" + RuntimeData.getInstance().getUserId();
 		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
@@ -163,7 +164,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=get_messages";
+		String url = urlPrefix + servletName + "?" + "request_mode=get_messages";
 		url += "&start_point=" + seqId;
 		if(num.intValue() > 0)
 			url += "&end_point=" + seqId + num;
@@ -198,7 +199,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=get_messages_by_db";
+		String url = urlPrefix + servletName + "?" + "request_mode=get_messages_by_db";
 		url += "&db_version=" + dbVersion;
 		url += "&user_id=" + RuntimeData.getInstance().getUserId();
 		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
@@ -231,7 +232,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=get_user_info";
+		String url = urlPrefix + servletName + "?" + "request_mode=get_user_info";
 		url += "&user_id=" + RuntimeData.getInstance().getUserId();
 		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&rnd_value=" + Random.nextInt(400000000);
@@ -264,7 +265,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=get_runtime_data";
+		String url = urlPrefix + servletName + "?" + "request_mode=get_runtime_data";
 		url += "&user_id=" + RuntimeData.getInstance().getUserId();
 		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&rnd_value=" + Random.nextInt(400000000);
@@ -297,7 +298,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=get_server_version";
+		String url = urlPrefix + servletName + "?" + "request_mode=get_server_version";
 		url += "&user_id=" + RuntimeData.getInstance().getUserId();
 		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&rnd_value=" + Random.nextInt(400000000);
@@ -338,7 +339,7 @@ public class IOModule {
 		
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=get_server_session_valid";
+		String url = urlPrefix + servletName + "?" + "request_mode=get_server_session_valid";
 		url += "&session_id=" + sessionId;
 		url += "&rnd_value=" + Random.nextInt(400000000);
 		
@@ -369,7 +370,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=perform_login";
+		String url = urlPrefix + servletName + "?" + "request_mode=perform_login";
 		url += "&login=" + URL.encodePathSegment(login);
 		url += "&password=" + URL.encodePathSegment(password);
 		url += "&local=" + URL.encodePathSegment(local);
@@ -402,7 +403,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=set_local";
+		String url = urlPrefix + servletName + "?" + "request_mode=set_local";
 		url += "&user_id=" + RuntimeData.getInstance().getUserId();
 		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&local=" + URL.encodePathSegment(local);
@@ -469,7 +470,7 @@ public class IOModule {
 	{
 		String postData = "dummy=0";
 		
-		String url = urlPrefix + "jsontest?" + "request_mode=perform_logout";
+		String url = urlPrefix + servletName + "?" + "request_mode=perform_logout";
 		url += "&user_id=" + RuntimeData.getInstance().getUserId();
 		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		url += "&rnd_value=" + Random.nextInt(400000000);

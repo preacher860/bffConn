@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class JsonTest extends HttpServlet {
+public class BffConnServer extends HttpServlet {
 
 	private final static int ACTIVITY_TIMEOUT = 60;
 	private final static int SESSION_TIMEOUT  = 7 * 24 * 3600; // 7 days for demanding users
@@ -43,7 +43,7 @@ public class JsonTest extends HttpServlet {
   
 	 
 	public void init(ServletConfig config) throws ServletException { 
-		System.out.println("** JsonTest servlet started");
+		System.out.println("** BffConnServer servlet started");
 		try {
 			loadConfig();
 		} catch (InvalidFileFormatException e) {
@@ -64,7 +64,7 @@ public class JsonTest extends HttpServlet {
 	  myServerConfig.setSqlServerIp(prefs.get("sqlserver", "server_ip"));
 	  myServerConfig.setSqlServerPort(prefs.get("sqlserver", "server_port"));
   }
-public JsonTest(){
+public BffConnServer(){
 
   }
     

@@ -7,13 +7,13 @@
   
   <!-- Servlets -->
   <servlet>
-    <servlet-name>jsonTest</servlet-name>
-    <servlet-class>com.scrollwin.server.JsonTest</servlet-class>
+    <servlet-name>bffConnServer</servlet-name>
+    <servlet-class>com.scrollwin.server.BffConnServer</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>jsonTest</servlet-name>
-    <url-pattern>/scrollwin/jsontest</url-pattern>
+    <servlet-name>bffConnServer</servlet-name>
+    <url-pattern>/scrollwin/bffconnserver</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
