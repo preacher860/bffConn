@@ -26,7 +26,7 @@ public class HeaderButtonBar extends HStack{
 	public HeaderButtonBar(userCallbackInterface callbackInterface){
 		myUserCallbackInterface = callbackInterface;
 		
-		setWidth100();
+		setWidth(200);
         setDefaultLayoutAlign(Alignment.CENTER);
         setDefaultLayoutAlign(VerticalAlignment.BOTTOM);
         setHeight(76);

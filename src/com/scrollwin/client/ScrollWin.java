@@ -9,6 +9,8 @@ import com.google.gwt.event.dom.client.KeyPressHandler;//
 //import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -22,6 +24,7 @@ import com.google.gwt.user.client.Cookies;
 
 
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.BkgndRepeat;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.BooleanCallback;
@@ -63,6 +66,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	private HStack headerStack = new HStack();
 	private VStack versionStack = new VStack();
 	private VStack leftToolbarStack = new VStack();
+	private VStack headerShadow = new VStack();
 	private HTMLPane versionPane = new HTMLPane();
 	
 	private IOModule ioModule = new IOModule(this);
@@ -93,37 +97,58 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 
 		installShortcuts();
 		
-		Canvas canvas = new Canvas();
+		final Canvas canvas = new Canvas();
 		canvas.setWidth100();
+		//canvas.set
 		canvas.setHeight100();
 		canvas.setAlign(Alignment.CENTER);
-	
 		canvas.setLayoutAlign(Alignment.CENTER);
+		canvas.setBackgroundImage("backgrounds/convore.jpg");
+		canvas.setBackgroundRepeat(BkgndRepeat.REPEAT);
         mainvStack.setAlign(Alignment.CENTER);
         mainvStack.setHeight100();
         mainvStack.setWidth100();
         
-        Img headerImage = new Img("http://srv.lanouette.ca/images/bffConnHead2.jpg", 1716, 76);
-        headerImage.setOverflow(Overflow.HIDDEN);
+        //Img headerImage = new Img("http://srv.lanouette.ca/images/bffConnHead2.jpg", 1716, 76);
+        Img headerImage = new Img("bffConnLogo4.png", 200, 76);
+        //headerImage.setOverflow(Overflow.HIDDEN);
         
+        //headerShadow.setBackgroundColor("#000000");
+        //headerShadow.setOpacity(30);
+        headerShadow.setHeight(76);
+        headerShadow.setWidth100();
+        headerShadow.setBackgroundImage("top2.png");
+        headerShadow.setBackgroundRepeat(BkgndRepeat.REPEAT_X);
+        headerShadow.addMember(headerImage);
+        
+        LayoutSpacer chatvSpacer = new LayoutSpacer();
+        chatvSpacer.setHeight(10);
         chatvStack.addMember(myMessageManager);
+        chatvStack.addMember(chatvSpacer);
         chatvStack.addMember(myEntryBox);
         
+        LayoutSpacer toolbarSpacer = new LayoutSpacer();
+        toolbarSpacer.setHeight(15);
         leftToolbarStack.addMember(myUserTileDisplay);
+        leftToolbarStack.addMember(toolbarSpacer);
         leftToolbarStack.addMember(myWaitBox);
         LayoutSpacer spacer = new LayoutSpacer();
         spacer.setWidth(10);
+        LayoutSpacer spacer2 = new LayoutSpacer();
+        spacer2.setWidth(10);
         hStack.addMember(spacer);
         hStack.addMember(leftToolbarStack);
+        hStack.addMember(spacer2);
         hStack.addMember(chatvStack);
         hStack.setWidth100();
         
         LayoutSpacer headerSpacer = new LayoutSpacer();
-        headerSpacer.setWidth(210);
+        headerSpacer.setWidth(200);
         headerStack.setWidth100();
         headerStack.setDefaultLayoutAlign(Alignment.CENTER);
         headerStack.setDefaultLayoutAlign(VerticalAlignment.BOTTOM);
-        headerStack.setHeight(76);
+        headerStack.setHeight(74);
+        
         
         String versionLink ="";
         String versionString = "<font size=\"2\">Version ";
@@ -141,7 +166,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         versionPane.setOverflow(Overflow.HIDDEN);
 	    
         LayoutSpacer versionSpacer = new LayoutSpacer();
-        versionSpacer.setHeight(52);
+        versionSpacer.setHeight(56);
         versionStack.setHeight(76);
         versionStack.addMember(versionSpacer);
         versionStack.addMember(versionPane);
@@ -150,13 +175,17 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
         headerStack.addMember(versionStack);
         headerStack.addMember(myHeaderButtonBar);
         
+        LayoutSpacer vSpacer = new LayoutSpacer();
+        vSpacer.setHeight(5);
         mainvStack.addMember(headerStack);
+        mainvStack.addMember(vSpacer);
         mainvStack.addMember(hStack);
         mainvStack.setTop(0);
         
         myHeaderButtonBar.setLocal(mySessionLocal);
         
-        canvas.addChild(headerImage);
+        //canvas.addChild(headerImage);
+        canvas.addChild(headerShadow);
         canvas.addChild(mainvStack); 
         //canvas.setBackgroundColor("#808080");
         canvas.draw();  
@@ -205,6 +234,13 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	      	ioModule.GetRuntimeData();
 	      }
 	    };
+	    
+	    Window.addResizeHandler(new ResizeHandler() {
+	    	@Override
+			public void onResize(ResizeEvent event) {
+	    		//canvas.setWidth(event.getWidth());
+			}
+	    	});
 	    
 		ioModule.GetServerVersion();    
 		ioModule.GetUserInfo();

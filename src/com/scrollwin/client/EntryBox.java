@@ -38,14 +38,19 @@ public class EntryBox extends HLayout {
     	myUserCallbackInterface = userCB;
     	
     	setShowEdges(true);
-    	setMargin(5);
+    	//setMargin(5);
     	setWidth(800);
-    	setHeight(75);
-    	setBackgroundColor("#ffffff");
-    	setEdgeImage("borders/sharpframe_10.png");
-        setEdgeSize(6);
+    	setHeight(60);
+    	setBackgroundColor("#E0E0E0");
+    	//setEdgeImage("borders/sharpframe_10.png");
+        //setEdgeSize(6);
+    	setEdgeSize(3);
+        setShowShadow(true);
+		setShadowSoftness(3);
+		setShadowOffset(4);
         
     	imageStack.setWidth(40);
+    	//imageStack.setHeight100();
     	imageStack.setAlign(Alignment.CENTER);
     	imageStack.setPadding(8);
     	imageStack.setBackgroundColor("#E0E0E0");

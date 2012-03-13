@@ -27,7 +27,7 @@ public class MessageView extends VStack {
 		//myMessageVStack = messageStack;
 		myCallbackInterface = callbackInterface;
 		setShowEdges(true);  
-        setMargin(5);
+        //setMargin(5);
         setWidth(800);  
         setHeight("80%");
         setCanDragResize(true);
@@ -36,8 +36,12 @@ public class MessageView extends VStack {
         setMembersMargin(3);  
         setLayoutMargin(4);
         setBackgroundColor("#ffffff");
-        setEdgeImage("borders/sharpframe_10.png");
-        setEdgeSize(6);
+        //setEdgeImage("borders/sharpframe_10.png");
+        //setEdgeSize(6);
+        setEdgeSize(3);
+        setShowShadow(true);
+		setShadowSoftness(3);
+		setShadowOffset(4);
         
         // This scroll handler sets the flag used to determine if we're at bottom or not.
         // Only if were at bottom do we kick the autoscroll on new messages
