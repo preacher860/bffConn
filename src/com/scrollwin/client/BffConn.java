@@ -50,7 +50,7 @@ import com.smartgwt.client.widgets.layout.VStack;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 
-public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackInterface {
+public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInterface {
 	
 	public static final int MODE_INIT_S1  = 1;
 	public static final int MODE_INIT_S2  = 2;
@@ -83,7 +83,7 @@ public class ScrollWin implements EntryPoint, ioCallbackInterface, userCallbackI
 	private boolean faviconAlert = false;
 	private String mySessionLocal = "";
 	
-	public ScrollWin(){
+	public BffConn(){
 		
 	}
 

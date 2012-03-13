@@ -19,7 +19,7 @@
   <!--inherits name='com.smartgwt.Drawing'/-->
   <inherits name='com.allen_sauer.gwt.log.gwt-log-DEBUG'/>
   <set-property name="log_DivLogger" value="DISABLED" />
-  <entry-point class='com.scrollwin.client.ScrollWin'/>
+  <entry-point class='com.scrollwin.client.BffConn'/>
 
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>

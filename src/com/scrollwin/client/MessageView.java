@@ -72,7 +72,7 @@ public class MessageView extends VStack {
 	    myPositionTimer = new Timer() {
 			@Override
 			public void run() {
-				ScrollWinElement element;
+				MessageViewElement element;
 				if ( (element = locateElement(myLastKnownOldest)) != null)
 					scrollTo(0, element.getTop());
 			}
@@ -85,8 +85,8 @@ public class MessageView extends VStack {
 		boolean myNewestUpdated = false;
 		
 		if(myNumOfMessagesDisplayed > 0){
-			myNewestDisplayedSeq = ((ScrollWinElement)getMember(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
-			myOldestDisplayedSeq = ((ScrollWinElement)getMember(0)).getMessage().getMessageSeqId();
+			myNewestDisplayedSeq = ((MessageViewElement)getMember(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
+			myOldestDisplayedSeq = ((MessageViewElement)getMember(0)).getMessage().getMessageSeqId();
 			listWasEmtpy = false;
 		} else
 			listWasEmtpy = true;
@@ -98,7 +98,7 @@ public class MessageView extends VStack {
 			if(currentMessage.getMessageUserId() != RuntimeData.getInstance().getUserId())
 				messagesNotOwn = true;
 
-			ScrollWinElement element = new ScrollWinElement(currentMessage, 
+			MessageViewElement element = new MessageViewElement(currentMessage, 
 					UserManager.getInstance().getUser(currentMessage.getMessageUserId()),
 					UserManager.getInstance().getUser(RuntimeData.getInstance().getUserId()),
 					myCallbackInterface);
@@ -120,12 +120,12 @@ public class MessageView extends VStack {
 			}
 			else {  //somewhere in-between.  Find appropriate insertion point
 				for(int elementIndex = myNumOfMessagesDisplayed - 1; elementIndex > 0; elementIndex--) {
-					int currentSeq = ((ScrollWinElement)getMember(elementIndex)).getMessage().getMessageSeqId();
-					int previousSeq = ((ScrollWinElement)getMember(elementIndex - 1)).getMessage().getMessageSeqId();
+					int currentSeq = ((MessageViewElement)getMember(elementIndex)).getMessage().getMessageSeqId();
+					int previousSeq = ((MessageViewElement)getMember(elementIndex - 1)).getMessage().getMessageSeqId();
 					//System.out.println("current: " + currentSeq + " previous: " + previousSeq);
 
 					if (currentSeq == currentMessage.getMessageSeqId()){
-						((ScrollWinElement)getMember(elementIndex)).updateMessage(currentMessage);
+						((MessageViewElement)getMember(elementIndex)).updateMessage(currentMessage);
 						break;
 					}
 					if((currentMessage.getMessageSeqId() < currentSeq) && (currentMessage.getMessageSeqId() > previousSeq)){
@@ -140,8 +140,8 @@ public class MessageView extends VStack {
 			if(currentMessage.getMessageDbVersion() > myNewestDisplayedDb)
 				myNewestDisplayedDb = currentMessage.getMessageDbVersion();
 		}
-		myNewestDisplayedSeq = ((ScrollWinElement)getMember(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
-		myOldestDisplayedSeq = ((ScrollWinElement)getMember(0)).getMessage().getMessageSeqId();
+		myNewestDisplayedSeq = ((MessageViewElement)getMember(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
+		myOldestDisplayedSeq = ((MessageViewElement)getMember(0)).getMessage().getMessageSeqId();
 		
 		RuntimeData.getInstance().setNewestSeqId(myNewestDisplayedSeq);
 		RuntimeData.getInstance().setDbVersion(myNewestDisplayedDb);
@@ -162,11 +162,11 @@ public class MessageView extends VStack {
 		myCallbackInterface.messageDisplayComplete();
 	}
 	
-	public ScrollWinElement locateElement(int seqId)
+	public MessageViewElement locateElement(int seqId)
 	{
 		for(int elementIndex = myNumOfMessagesDisplayed - 1; elementIndex > 0; elementIndex--)
-			if (((ScrollWinElement)getMember(elementIndex)).getMessage().getMessageSeqId() == seqId)
-				return ((ScrollWinElement)getMember(elementIndex));
+			if (((MessageViewElement)getMember(elementIndex)).getMessage().getMessageSeqId() == seqId)
+				return ((MessageViewElement)getMember(elementIndex));
 		return null;
 	}
 	

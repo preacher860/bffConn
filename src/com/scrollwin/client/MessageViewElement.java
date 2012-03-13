@@ -23,7 +23,7 @@ import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VStack;
 
-public class ScrollWinElement extends HStack {
+public class MessageViewElement extends HStack {
 
 	private VStack messageStack = new VStack();
 	private VStack imageStack = new VStack();
@@ -53,7 +53,7 @@ public class ScrollWinElement extends HStack {
 	private MessageContainer myMessage = null;
 	private boolean starred = false;
 	
-	public ScrollWinElement(MessageContainer message, UserContainer user, UserContainer myself, userCallbackInterface cb)
+	public MessageViewElement(MessageContainer message, UserContainer user, UserContainer myself, userCallbackInterface cb)
 	{
 		myUserCallbackInterface = cb;
 		myMessageOriginatingUser = user.getNick();
