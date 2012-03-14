@@ -28,19 +28,19 @@ public class IOModule {
 	
 	public void SendUserMessage(String MessageText, Integer seqId)
 	{
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=get_messages";
-		url += "&message_text=" + URL.encodePathSegment(MessageText);
-		url += "&start_point=" + (seqId + 1);
-		url += "&user_id=" + RuntimeData.getInstance().getUserId();
-		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		url += "&rnd_value=" + Random.nextInt(400000000);
+		String postData = "request_mode=get_messages";
+		postData += "&message_text=" + URL.encodePathSegment(MessageText);
+		postData += "&start_point=" + (seqId + 1);
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
 				}
@@ -62,19 +62,19 @@ public class IOModule {
 	
 	public void SendMessageEdit(String MessageText, Integer seqId)
 	{
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=edit_message";
-		url += "&message_text=" + URL.encodePathSegment(MessageText);
-		url += "&message_id=" + seqId;
-		url += "&user_id=" + RuntimeData.getInstance().getUserId();
-		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		url += "&rnd_value=" + Random.nextInt(400000000);
+		String postData = "request_mode=edit_message";
+		postData += "&message_text=" + URL.encodePathSegment(MessageText);
+		postData += "&message_id=" + seqId;
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
 				}
@@ -96,18 +96,19 @@ public class IOModule {
 	
 	public void SendDeleteMessage(Integer seqId)
 	{
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=delete_message";
-		url += "&message_id=" + seqId;
-		url += "&user_id=" + RuntimeData.getInstance().getUserId();
-		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		url += "&rnd_value=" + Random.nextInt(400000000);
+		String postData = "request_mode=delete_message";
+		postData += "&message_id=" + seqId;
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
 				}
@@ -129,18 +130,18 @@ public class IOModule {
 	
 	public void SendStarMessage(Integer seqId)
 	{
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=star_message";
-		url += "&message_id=" + seqId;
-		url += "&user_id=" + RuntimeData.getInstance().getUserId();
-		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		url += "&rnd_value=" + Random.nextInt(400000000);
+		String postData = "request_mode=star_message";
+		postData += "&message_id=" + seqId;
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
 				}
@@ -162,20 +163,21 @@ public class IOModule {
 	
 	public void GetUserMessages(Integer seqId, Integer num)
 	{
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=get_messages";
-		url += "&start_point=" + seqId;
+		String postData = "request_mode=get_messages";
+		postData += "&start_point=" + seqId;
 		if(num.intValue() > 0)
-			url += "&end_point=" + seqId + num;
-		url += "&user_id=" + RuntimeData.getInstance().getUserId();
-		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		url += "&rnd_value=" + Random.nextInt(400000000);
+			postData += "&end_point=" + seqId + num;
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
 				}
@@ -197,18 +199,18 @@ public class IOModule {
 
 	public void GetUserMessagesByVersion(int dbVersion)
 	{
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName; 
+		url += "?rnd_value=" + Random.nextInt(400000000);
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=get_messages_by_db";
-		url += "&db_version=" + dbVersion;
-		url += "&user_id=" + RuntimeData.getInstance().getUserId();
-		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		url += "&rnd_value=" + Random.nextInt(400000000);
+		String postData = "request_mode=get_messages_by_db";
+		postData += "&db_version=" + dbVersion;
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
 				}
@@ -230,17 +232,18 @@ public class IOModule {
 	
 	public void GetUserInfo()
 	{
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
+
+		String postData = "request_mode=get_user_info";
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=get_user_info";
-		url += "&user_id=" + RuntimeData.getInstance().getUserId();
-		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		url += "&rnd_value=" + Random.nextInt(400000000);
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
 				}
@@ -263,17 +266,18 @@ public class IOModule {
 
 	public void GetRuntimeData()
 	{
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=get_runtime_data";
-		url += "&user_id=" + RuntimeData.getInstance().getUserId();
-		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		url += "&rnd_value=" + Random.nextInt(400000000);
+		String postData = "request_mode=get_runtime_data";
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					System.out.println("Request error: inventoryconfig_send");
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
@@ -282,38 +286,6 @@ public class IOModule {
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode())
 						handleRuntimeData(response.getText());
-					else if (403 == response.getStatusCode())
-						handleAccessForbidden();
-					else
-						System.out.println("Request response error: " + response.getStatusCode());
-				}
-			});
-		} catch (RequestException e) {
-			Window.alert("Server error: " + e);
-			// Couldn't connect to server        
-		}
-	}
-	
-	public void GetServerVersion()
-	{
-		String postData = "dummy=0";
-		
-		String url = urlPrefix + servletName + "?" + "request_mode=get_server_version";
-		url += "&user_id=" + RuntimeData.getInstance().getUserId();
-		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		url += "&rnd_value=" + Random.nextInt(400000000);
-		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
-		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
-				public void onError(Request request, Throwable exception) {
-					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
-				}
-	
-				public void onResponseReceived(Request request, Response response) {
-					if (200 == response.getStatusCode()) 
-						handleServerVersion(response.getText());
 					else if (403 == response.getStatusCode())
 						handleAccessForbidden();
 					else
@@ -337,16 +309,16 @@ public class IOModule {
 			return;
 		}
 		
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=get_server_session_valid";
-		url += "&session_id=" + sessionId;
-		url += "&rnd_value=" + Random.nextInt(400000000);
+		String postData = "request_mode=get_server_session_valid";
+		postData += "&session_id=" + sessionId;
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
 				}
@@ -368,18 +340,18 @@ public class IOModule {
 	
 	public void GetNewSession(String login, String password, String local)
 	{
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=perform_login";
-		url += "&login=" + URL.encodePathSegment(login);
-		url += "&password=" + URL.encodePathSegment(password);
-		url += "&local=" + URL.encodePathSegment(local);
-		url += "&rnd_value=" + Random.nextInt(400000000);
-		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		String postData = "request_mode=perform_login";
+		postData += "&login=" + URL.encodePathSegment(login);
+		postData += "&password=" + URL.encodePathSegment(password);
+		postData += "&local=" + URL.encodePathSegment(local);
+				
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
 				}
@@ -401,18 +373,18 @@ public class IOModule {
 	
 	public void SendLocal(String local)
 	{
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=set_local";
-		url += "&user_id=" + RuntimeData.getInstance().getUserId();
-		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		url += "&local=" + URL.encodePathSegment(local);
-		url += "&rnd_value=" + Random.nextInt(400000000);
+		String postData = "request_mode=set_local";
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
+		postData += "&local=" + URL.encodePathSegment(local);
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
 				}
@@ -468,17 +440,17 @@ public class IOModule {
 	
 	public void Logout()
 	{
-		String postData = "dummy=0";
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
 		
-		String url = urlPrefix + servletName + "?" + "request_mode=perform_logout";
-		url += "&user_id=" + RuntimeData.getInstance().getUserId();
-		url += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		url += "&rnd_value=" + Random.nextInt(400000000);
-		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
+		String postData = "request_mode=perform_logout";
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
+			
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
 			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			Request request = builder.sendRequest(postData, new RequestCallback() {
+			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
 				}
@@ -510,23 +482,6 @@ public class IOModule {
 		    RuntimeData.getInstance().setServerDbVersion(serverDbVersion);
 		    RuntimeData.getInstance().setServerSeqId(seqId);
 		    myCallbackInterface.runtimeDataReceivedCallback();
-		} catch (Exception e) {
-			System.out.println("JSON exception: " + e.toString());
-		}
-	}
-	
-	private void handleServerVersion(String serverResponse)
-	{
-		try
-		{
-			JSONObject obj;
-		    JSONValue jsonValue = JSONParser.parseStrict(serverResponse);
-		    JSONArray jsonArray = jsonValue.isArray();
-		    
-		    obj = jsonArray.get(0).isObject();
-		    Integer version = Integer.valueOf(obj.get("serverVersion").isString().stringValue());
-		    
-		    //myCallbackInterface.serverVersionReceivedCallback(version);
 		} catch (Exception e) {
 			System.out.println("JSON exception: " + e.toString());
 		}
@@ -596,7 +551,7 @@ public class IOModule {
 	{
 		String sessionId = "";
 		String local = "";
-		String userNick = "";
+		
 		Integer userId = 0;
 		
 		if (serverResponse == null)

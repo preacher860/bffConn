@@ -67,9 +67,10 @@ public class BffConnServer extends HttpServlet {
 public BffConnServer(){
 
   }
-    
+
+   
   @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 	    
 	  resp.setContentType("application/json;charset=UTF-8");

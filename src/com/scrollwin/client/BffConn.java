@@ -242,7 +242,6 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 			}
 	    	});
 	    
-		ioModule.GetServerVersion();    
 		ioModule.GetUserInfo();
         ioModule.GetRuntimeData();
         myRefreshTimer.schedule(1000);  //  Check if our init Gets are completed
