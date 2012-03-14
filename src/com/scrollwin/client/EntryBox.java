@@ -59,7 +59,7 @@ public class EntryBox extends HLayout {
     	infoItem.setPadding(2);
     	infoItem.hide();
     	messageItem.setShowTitle(false);  
-        messageItem.setLength(1000);  
+        messageItem.setLength(4000);  
         messageItem.setWidth("*");
         messageItem.setHeight("*");
         

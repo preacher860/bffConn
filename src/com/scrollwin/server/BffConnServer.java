@@ -486,8 +486,8 @@ private int getNewestSeq(Connection conn)
 	  int seqId;
 	  int dbVersion;
 	  // Enforce max msg len to avoid SQL errors
-	  if (Message.length() > 1000)
-	  	Message = Message.substring(0, 999);
+	  if (Message.length() > 4000 )
+	  	Message = Message.substring(0, 4000);
 
 	  Message = filterMessage(Message);
 	  try {

@@ -39,7 +39,7 @@ public class IOModule {
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
@@ -73,7 +73,7 @@ public class IOModule {
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
@@ -107,7 +107,7 @@ public class IOModule {
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
@@ -140,7 +140,7 @@ public class IOModule {
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
@@ -176,7 +176,7 @@ public class IOModule {
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
@@ -209,7 +209,7 @@ public class IOModule {
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
@@ -242,7 +242,7 @@ public class IOModule {
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
@@ -276,7 +276,7 @@ public class IOModule {
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					System.out.println("Request error: inventoryconfig_send");
@@ -317,7 +317,7 @@ public class IOModule {
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
@@ -350,7 +350,7 @@ public class IOModule {
 				
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
@@ -383,7 +383,7 @@ public class IOModule {
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
@@ -449,7 +449,7 @@ public class IOModule {
 			
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
-			builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					// Couldn't connect to server (could be timeout, SOP violation, etc.)     

@@ -82,7 +82,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 		
 		final Canvas canvas = new Canvas();
 		canvas.setWidth100();
-		//canvas.set
+
 		canvas.setHeight100();
 		canvas.setAlign(Alignment.CENTER);
 		canvas.setLayoutAlign(Alignment.CENTER);
@@ -92,12 +92,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         mainvStack.setHeight100();
         mainvStack.setWidth100();
         
-        //Img headerImage = new Img("http://srv.lanouette.ca/images/bffConnHead2.jpg", 1716, 76);
         Img headerImage = new Img("bffConnLogo4.png", 200, 76);
-        //headerImage.setOverflow(Overflow.HIDDEN);
-        
-        //headerShadow.setBackgroundColor("#000000");
-        //headerShadow.setOpacity(30);
         headerShadow.setHeight(76);
         headerShadow.setWidth100();
         headerShadow.setBackgroundImage("top2.png");
