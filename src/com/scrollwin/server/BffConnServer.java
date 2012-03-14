@@ -33,6 +33,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class BffConnServer extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final static int ACTIVITY_TIMEOUT = 60;
 	private final static int SESSION_TIMEOUT  = 7 * 24 * 3600; // 7 days for demanding users
 	
@@ -636,8 +640,7 @@ private int getNewestSeq(Connection conn)
   {
 	  String query;
 	  PreparedStatement select;
-	  boolean firstEntry = true;
-
+	  
 	  out.println('[');
 	  
 	  try {
@@ -827,8 +830,7 @@ private int getNewestSeq(Connection conn)
   private void loadUserInfo() {
 	  String query;
 	  PreparedStatement select;
-	  boolean firstEntry = true;
-
+	
 	  try {
 		  Connection conn = this.getConn();
 	      

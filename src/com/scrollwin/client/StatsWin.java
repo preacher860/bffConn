@@ -2,17 +2,11 @@ package com.scrollwin.client;
 
 import java.util.ArrayList;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.visualization.client.AbstractDataTable;
 import com.google.gwt.visualization.client.ChartArea;
 import com.google.gwt.visualization.client.DataTable;
-import com.google.gwt.visualization.client.Selection;
 import com.google.gwt.visualization.client.VisualizationUtils;
 import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
-import com.google.gwt.visualization.client.events.SelectHandler;
-import com.google.gwt.visualization.client.visualizations.corechart.BarChart;
 import com.google.gwt.visualization.client.visualizations.corechart.PieChart;
 import com.google.gwt.visualization.client.visualizations.corechart.TextStyle;
 import com.smartgwt.client.types.Alignment;
@@ -20,8 +14,6 @@ import com.smartgwt.client.types.AutoFitWidthApproach;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.ImgButton;
 import com.smartgwt.client.widgets.Label;
@@ -51,7 +43,6 @@ public class StatsWin extends Window {
 	private ImgButton myStarsRcvdButton = new ImgButton();
 	private Label chartLabel = new Label();
 	private ListGrid statsGrid;
-	private int totalMessages = 0;
 	
 	public StatsWin(final ArrayList<UserContainer> users) {
 		setTitle("Statistiques");

@@ -1,7 +1,6 @@
 package com.scrollwin.client;
 
 import com.smartgwt.client.widgets.Img;
-import com.smartgwt.client.widgets.Progressbar;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.layout.VLayout;
 

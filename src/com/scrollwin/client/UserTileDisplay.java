@@ -1,14 +1,9 @@
 package com.scrollwin.client;
 import java.util.ArrayList;
 
-import com.google.gwt.user.client.DOM;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.BkgndRepeat;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.VStack;
 import com.smartgwt.client.widgets.tile.TileGrid;
 import com.smartgwt.client.widgets.tile.TileRecord;
@@ -20,7 +15,6 @@ import com.smartgwt.client.widgets.viewer.DetailViewerField;
 public class UserTileDisplay extends VStack {
 	private TileGrid usersGrid = new TileGrid();
 	private Label titleLabel = new Label();
-	private ArrayList<UserContainer> knownUsers = new ArrayList<UserContainer>();
 	private userCallbackInterface myUserCallbackInterface;
 	int myUserDbVersion = 0;
 	

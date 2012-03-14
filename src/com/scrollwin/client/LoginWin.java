@@ -1,7 +1,6 @@
 package com.scrollwin.client;
 import java.util.Date;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Cookies;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -17,7 +16,6 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.form.fields.events.KeyUpEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyUpHandler;
-import com.allen_sauer.gwt.log.client.Log;
 
 public class LoginWin extends Window {
 	
@@ -29,7 +27,6 @@ public class LoginWin extends Window {
 	private CheckboxItem rememberItem = new CheckboxItem("rememberItem");
 	
 	public LoginWin(ioCallbackInterface theCallbackInterface) {
-		boolean rememberValues = false;
 		myCallbackInterface = theCallbackInterface;
 		
 		setTitle("Connexion");  
@@ -149,11 +146,5 @@ public class LoginWin extends Window {
 	
 	public void setLocal(String local) {
 		
-	}
-	
-	private String removeCrLf(String str) {
-	    str = str.replace("\n", "");
-	    str = str.replace("\r", "");
-	    return str;
 	}
 }

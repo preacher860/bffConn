@@ -91,6 +91,6 @@ public class UserManager {
 	}
 
 	public void setDbVersion(int dbVersion) {
-		this.myDbVersion = myDbVersion;
+		this.myDbVersion = dbVersion;
 	}
 }
