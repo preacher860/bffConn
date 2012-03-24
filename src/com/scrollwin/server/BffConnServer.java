@@ -291,7 +291,7 @@ private int getNewestSeq(Connection conn)
   private void setNewMessage(Connection conn, String Message, int seqId, int dbVersion, Integer userId, String sessionId)
   {
 	  PreparedStatement sessionSelect;
-	  String query = "INSERT into testtable (seq,userid,text,local,dbversion) values(?, ?, ?, ?, ?);";
+	  String query = "INSERT into messagetable (seq,userid,text,local,dbversion) values(?, ?, ?, ?, ?);";
 	  String sessionQuery = "SELECT * FROM sessions where id = ?";
 	  String local;
 	  
@@ -332,12 +332,12 @@ private int getNewestSeq(Connection conn)
 		  Connection conn = this.getConn();
 	      
 	      if(last != 0) {
-	    	  query = "SELECT * FROM testtable where seq >= ? and seq <= ? order by seq";
+	    	  query = "SELECT * FROM messagetable where seq >= ? and seq <= ? order by seq";
 	    	  select = conn.prepareStatement(query);
 	    	  select.setInt(1, seqId);
 	    	  select.setInt(2, last);
 	      } else {
-	    	  query = "SELECT * FROM testtable where seq >= ? order by seq";
+	    	  query = "SELECT * FROM messagetable where seq >= ? order by seq";
 	    	  select = conn.prepareStatement(query);
 	    	  select.setInt(1, seqId);
 	      }
@@ -400,7 +400,7 @@ private int getNewestSeq(Connection conn)
 	  try {
 		  Connection conn = this.getConn();
 	      
-    	  query = "SELECT * FROM testtable WHERE dbversion >= ? order by seq";
+    	  query = "SELECT * FROM messagetable WHERE dbversion >= ? order by seq";
     	  select = conn.prepareStatement(query);
     	  select.setInt(1, dbVersion);
 	      
@@ -514,7 +514,7 @@ private int getNewestSeq(Connection conn)
   private void deleteMessage(PrintWriter out, String message_id)
   {
 	  int seqId = Integer.parseInt(message_id);
-	  String query = "UPDATE testtable SET deleted=?,dbversion=? where seq=?";
+	  String query = "UPDATE messagetable SET deleted=?,dbversion=? where seq=?";
 	  try {
 		  Connection conn = this.getConn();
 		  conn.setAutoCommit(false);
@@ -544,7 +544,7 @@ private int getNewestSeq(Connection conn)
 	  int elementBitPos = (int) Math.pow(2,Integer.valueOf(user_id));
 	  
 	  int seqId = Integer.parseInt(message_id);
-	  String query = "UPDATE testtable SET stars=(stars ^ ?),dbversion=? where seq=?";
+	  String query = "UPDATE messagetable SET stars=(stars ^ ?),dbversion=? where seq=?";
 	  try {
 		  Connection conn = this.getConn();
 		  conn.setAutoCommit(false);
@@ -572,7 +572,7 @@ private int getNewestSeq(Connection conn)
   private void editMessage(PrintWriter out, String message_id, String message)
   {
 	  int seqId = Integer.parseInt(message_id);
-	  String query = "UPDATE testtable SET text=(?),dbversion=?,edited=edited+1 where seq=?";
+	  String query = "UPDATE messagetable SET text=(?),dbversion=?,edited=edited+1 where seq=?";
 	  try {
 		  Connection conn = this.getConn();
 		  conn.setAutoCommit(false);
@@ -904,11 +904,11 @@ private int getNewestSeq(Connection conn)
   
   private void updateUserMessageCount()
   {
-	  String query ="SELECT userid, COUNT(*) FROM testtable GROUP BY userid ORDER BY userid";
-	  String queryDel ="SELECT userid, COUNT(*) FROM testtable where deleted=true GROUP BY userid ORDER BY userid";
-	  String queryEdit ="SELECT userid,sum(edited) FROM testtable WHERE deleted=false GROUP BY userid ORDER BY userid";
-	  String queryStarsSent = "SELECT count(*) FROM testtable WHERE find_in_set(?, stars) AND deleted=false";
-	  String queryStarsRcvd = "SELECT SUM(BIT_COUNT(stars+0)) FROM testtable WHERE userid=? AND deleted=false";
+	  String query ="SELECT userid, COUNT(*) FROM messagetable GROUP BY userid ORDER BY userid";
+	  String queryDel ="SELECT userid, COUNT(*) FROM messagetable where deleted=true GROUP BY userid ORDER BY userid";
+	  String queryEdit ="SELECT userid,sum(edited) FROM messagetable WHERE deleted=false GROUP BY userid ORDER BY userid";
+	  String queryStarsSent = "SELECT count(*) FROM messagetable WHERE find_in_set(?, stars) AND deleted=false";
+	  String queryStarsRcvd = "SELECT SUM(BIT_COUNT(stars+0)) FROM messagetable WHERE userid=? AND deleted=false";
 	  
 	  PreparedStatement select;
 	  ResultSet result;

@@ -19,6 +19,7 @@ public class HeaderButtonBar extends HStack{
 	private ImgButton myLocalButton = new ImgButton();
 	private ImgButton myStatsButton = new ImgButton();
 	private ImgButton myOctopusButton = new ImgButton();
+	private ImgButton myInfoButton = new ImgButton();
 	private DynamicForm form = new DynamicForm();
 	private TextItem localItem = new TextItem();
 	private Img octopus = new Img("octopus.gif");
@@ -60,6 +61,20 @@ public class HeaderButtonBar extends HStack{
 			@Override
 			public void onClick(ClickEvent event) {
 				myUserCallbackInterface.statsClicked();
+			}
+		});
+	    
+	    myInfoButton.setSize(32);  
+	    myInfoButton.setShowRollOver(true);
+	    myInfoButton.setShowHover(true);
+	    myInfoButton.setShowDown(false);
+	    myInfoButton.setSrc("info.png");
+	    myInfoButton.setPrompt("Info (Ctrl-I)<br>Version " + VersionInfo.CURRENT_MAJOR + "." + VersionInfo.CURRENT_VERSION);
+	    myInfoButton.setHoverStyle("tooltipStyle");
+	    myInfoButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				myUserCallbackInterface.infoClicked();
 			}
 		});
 	    
@@ -117,6 +132,7 @@ public class HeaderButtonBar extends HStack{
 	    LayoutSpacer spacer = new LayoutSpacer();
 	    spacer.setWidth(50);
 	    
+	    addMember(myInfoButton);
 	    addMember(myLocalButton);
         addMember(form);
         addMember(myStatsButton);

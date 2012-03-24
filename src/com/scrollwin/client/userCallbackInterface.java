@@ -4,6 +4,7 @@ public interface userCallbackInterface {
 	public void avatarClicked(String userNick);
 	public void logoutClicked();
 	public void statsClicked();
+	public void infoClicked();
 	public void octopusClicked();
 	public void localEntered(String local);
 	public void scrollTop(int oldest);

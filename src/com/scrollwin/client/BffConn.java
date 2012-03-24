@@ -121,7 +121,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         hStack.setWidth100();
         
         LayoutSpacer headerSpacer = new LayoutSpacer();
-        headerSpacer.setWidth(200);
+        headerSpacer.setWidth(240);
         headerStack.setWidth100();
         headerStack.setDefaultLayoutAlign(Alignment.CENTER);
         headerStack.setDefaultLayoutAlign(VerticalAlignment.BOTTOM);
@@ -150,7 +150,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         versionStack.addMember(versionPane);
                 
         headerStack.addMember(headerSpacer);
-        headerStack.addMember(versionStack);
+        //headerStack.addMember(versionStack);
         headerStack.addMember(myHeaderButtonBar);
         
         LayoutSpacer vSpacer = new LayoutSpacer();
@@ -353,6 +353,13 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 							ne.preventDefault();
 							ne.stopPropagation();
 						}
+						else if(ne.getKeyCode()=='i' || ne.getKeyCode()=='I')
+						{
+							infoClicked();
+							event.consume();
+							ne.preventDefault();
+							ne.stopPropagation();
+						}
 					}
 				} 
 			} 
@@ -460,5 +467,10 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	@Override
 	public void editMessageClicked(MessageContainer message) {
 		myEntryBox.editMessage(message);
+	}
+
+	@Override
+	public void infoClicked() {
+		Window.open("https://github.com/preacher860/bffConn/wiki/Historique-des-changements", "Historique", "");
 	}
 }

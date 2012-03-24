@@ -12,10 +12,10 @@ import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.VStack;
+import com.smartgwt.client.widgets.form.fields.events.KeyDownEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyDownHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyUpEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyUpHandler;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 
 public class EntryBox extends HLayout {
 
@@ -37,19 +37,15 @@ public class EntryBox extends HLayout {
     	myUserCallbackInterface = userCB;
     	
     	setShowEdges(true);
-    	//setMargin(5);
     	setWidth(800);
     	setHeight(60);
     	setBackgroundColor("#E0E0E0");
-    	//setEdgeImage("borders/sharpframe_10.png");
-        //setEdgeSize(6);
     	setEdgeSize(3);
         setShowShadow(true);
 		setShadowSoftness(3);
 		setShadowOffset(4);
         
     	imageStack.setWidth(40);
-    	//imageStack.setHeight100();
     	imageStack.setAlign(Alignment.CENTER);
     	imageStack.setPadding(8);
     	imageStack.setBackgroundColor("#E0E0E0");
@@ -84,10 +80,20 @@ public class EntryBox extends HLayout {
         	public void onKeyUp(KeyUpEvent event) {
         		if(event.getKeyName().compareTo("Shift") == 0)
 					myIsShiftDown= false;
-        		
-	        	if (event.getKeyName().compareTo("Enter") == 0){
+        	}
+        });
+        
+        messageItem.addKeyDownHandler(new KeyDownHandler() {
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				if(event.getKeyName().compareTo("Shift") == 0)
+					myIsShiftDown = true;
+				myUserCallbackInterface.userEntry();
+				
+				if (event.getKeyName().compareTo("Enter") == 0){
 	        		if(!myIsShiftDown){
 						event.cancel();
+						messageItem.setSelectionRange(messageItem.getLength(), messageItem.getLength()); // Cursor at end
 						myCallbackInterface.messageToSendCallback(filterMessage(messageItem.getValueAsString()), myIsEditing, myEditingMessageSeq);
 						myIsEditing = false;
 						infoItem.hide();
@@ -104,15 +110,6 @@ public class EntryBox extends HLayout {
 						messageItem.clearValue();
 	        		}
 	        	}
-        	}
-        });
-        
-        messageItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if(event.getKeyName().compareTo("Shift") == 0)
-					myIsShiftDown = true;
-				myUserCallbackInterface.userEntry();
 			}
           });
         

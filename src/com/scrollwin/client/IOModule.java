@@ -16,6 +16,7 @@ import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 
+
 public class IOModule {
 
 	private ioCallbackInterface myCallbackInterface;
@@ -26,6 +27,7 @@ public class IOModule {
 		myCallbackInterface = theCallbackInterface;
 	}
 	
+	//private void postToServer()
 	public void SendUserMessage(String MessageText, Integer seqId)
 	{
 		String url = urlPrefix + servletName;
@@ -469,6 +471,8 @@ public class IOModule {
 	{
 		try
 		{
+			//jsonRuntimeDataReader rd = jsonRuntimeDataReader.JSON.read(serverResponse);
+			
 			JSONObject obj;
 		    JSONValue jsonValue = JSONParser.parseStrict(serverResponse);
 		    JSONArray jsonArray = jsonValue.isArray();
@@ -582,3 +586,4 @@ public class IOModule {
 		myCallbackInterface.accessForbiddenCallback();	
 	}
 }
+
