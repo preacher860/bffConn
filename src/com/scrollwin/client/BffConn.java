@@ -9,6 +9,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Element;
 
 import com.google.gwt.user.client.Event.NativePreviewEvent;
@@ -64,11 +65,9 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private MessageView myMessageManager = new MessageView(this);
 	
 	private boolean faviconAlert = false;
+	private int newestDisplayedWhenLostVisibility = 0;
 	private String mySessionLocal = "";
 	
-	public BffConn(){
-		
-	}
 
 	@Override
 	public void onModuleLoad() {
@@ -76,9 +75,18 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 		ioModule.GetServerSessionValid(sessionIdCookie);
 	}
 
+	public BffConn(){
+		installShortcuts();
+		try {
+			registerVisibilityChangeCallback();
+		} catch (Exception e) {
+			
+		}
+	}
+	
 	public void applicationStart() {
 
-		installShortcuts();
+		
 		
 		final Canvas canvas = new Canvas();
 		canvas.setWidth100();
@@ -224,6 +232,8 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         ioModule.GetRuntimeData();
         myRefreshTimer.schedule(1000);  //  Check if our init Gets are completed
 	}
+	
+	
 	@Override
 	public void messagesReceivedCallback(final ArrayList<MessageContainer> messages) {
 		myMessageManager.newMessages(messages);
@@ -365,6 +375,36 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 			} 
 		}); 
 	}
+
+	public native void registerVisibilityChangeCallback() /*-{ 
+		var that = this;
+		document.addEventListener("webkitvisibilitychange", 
+								  function() {that.@com.scrollwin.client.BffConn::visibilityChanged()();},
+		 						  false); 
+	}-*/; 
+	
+	public final native boolean isTabHidden() /*-{
+		return document.webkitHidden;
+	}-*/;
+
+	private void visibilityChanged() { 
+		// Reset new message indicator octo when switching to visible
+		try {
+			if(!isTabHidden()){
+				if(faviconAlert){
+					Element element = DOM.getElementById("favicon");
+					element.setAttribute("href", "images/favicon.ico");
+					faviconAlert = false;
+				}
+				myMessageManager.setInvisibleMode(false);
+			} else {
+				newestDisplayedWhenLostVisibility = myMessageManager.getNewestDisplayedSeq();
+				myMessageManager.setInvisibleMode(true);
+			}
+		} catch (Exception e) {
+			
+		}
+	}
 	
 	@Override
 	public void avatarClicked(String userNick) {
@@ -448,7 +488,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 	@Override
 	public void newestUpdated() {
-		if(myCurrentMode == MODE_RUNNING && !faviconAlert) {
+		if(myCurrentMode == MODE_RUNNING && !faviconAlert && isTabHidden()) {
 			Element element = DOM.getElementById("favicon");
 			element.setAttribute("href", "images/favicon_red.ico");
 			faviconAlert = true;
@@ -457,11 +497,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 	@Override
 	public void userEntry() {
-		if(faviconAlert){
-			Element element = DOM.getElementById("favicon");
-			element.setAttribute("href", "images/favicon.ico");
-			faviconAlert = false;
-		}
+		myMessageManager.ClearUnreadAll();
 	}
 
 	@Override

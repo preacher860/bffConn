@@ -47,12 +47,16 @@ public class MessageViewElement extends HStack {
 	private String myMessageOriginatingUser;
 	private MessageContainer myMessage = null;
 	private boolean starred = false;
+	private boolean myUnread = false;
+	private boolean forMe = false;
+	private UserContainer myUser = null;
 	
 	public MessageViewElement(MessageContainer message, UserContainer user, UserContainer myself, userCallbackInterface cb)
 	{
 		myUserCallbackInterface = cb;
 		myMessageOriginatingUser = user.getNick();
 		myMessage = message;
+		myUser = myself;
 		
 		// If message hidden (deleted), no need to perform all the stuff, return immediately
 		if (myMessage.isMessageDeleted()){
@@ -61,6 +65,7 @@ public class MessageViewElement extends HStack {
 		}
 		
 		setupStarred(myMessage);
+		forMe = isMessageForLoggedUser(message, myself);
 		
 		Integer kittenSelect = 48 + message.getMessageUserId();
 		if(user.getAvatarURL().isEmpty())
@@ -133,16 +138,13 @@ public class MessageViewElement extends HStack {
 		messageStack.setWidth("94%");
 		
         userMessagePane.setAlign(Alignment.LEFT);
-        if(isMessageForLoggedUser(message, myself))
-        	userMessagePane.setBackgroundColor("#88FB9E"); 
-        else
-        	userMessagePane.setBackgroundColor("#C3D9FF"); 
         userMessagePane.setPadding(5);
         userMessagePane.setContents(message.getMessage());
         userMessagePane.setHeight("60%");
         userMessagePane.setMaxWidth(80);
         userMessagePane.setStyleName("chatText");
         userMessagePane.setOverflow(Overflow.VISIBLE);
+        setUserPaneColor();
                 
         userInfoLabel.setAlign(Alignment.LEFT);  
         userInfoLabel.setBackgroundColor("#B0B0B0"); 
@@ -268,6 +270,17 @@ public class MessageViewElement extends HStack {
 		addMember(messageStack);
 	}
 	
+
+	private void setUserPaneColor() {
+		if(forMe && myUnread)
+			userMessagePane.setBackgroundColor("#eaa9f8"); // Addressee + unread purple
+		else if(forMe)
+        	userMessagePane.setBackgroundColor("#88FB9E"); // Addressee green
+        else if(myUnread)
+        	userMessagePane.setBackgroundColor("#f4b58c"); // Unread orange
+        else
+        	userMessagePane.setBackgroundColor("#C3D9FF"); // Normal blue
+	}
 	
 	public void adjustForContents()
 	{
@@ -294,6 +307,8 @@ public class MessageViewElement extends HStack {
 		if (myMessage.isMessageDeleted())
 			hide();
 		
+		forMe = isMessageForLoggedUser(message, myUser);
+		setUserPaneColor();
 		setupStarred(myMessage);
 	}
 	
@@ -322,5 +337,10 @@ public class MessageViewElement extends HStack {
 			starOverIcon.hide();
 			starred = false;
 		}
+	}
+	
+	public void setUnread(boolean state) {
+		myUnread = state;
+		setUserPaneColor();
 	}
 }

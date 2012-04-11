@@ -48,6 +48,7 @@ public class BffConnServer extends HttpServlet {
 	 
 	public void init(ServletConfig config) throws ServletException { 
 		System.out.println("** BffConnServer servlet started");
+		//System.out.println("SB: " + BCrypt.hashpw("st1234", BCrypt.gensalt()));
 		try {
 			loadConfig();
 		} catch (InvalidFileFormatException e) {

@@ -20,6 +20,9 @@ public class MessageView extends VStack {
 	private boolean myAtBottom = true;
 	private boolean myFetchingOld = false;
 	private int	myLastKnownOldest = 0; 
+	private int myUnreadLowest = 0;
+	private int myUnreadHighest = 0;
+	private boolean myInvisibleMode = false;
 	
 	public MessageView(userCallbackInterface callbackInterface){
 		//myMessageVStack = messageStack;
@@ -101,6 +104,15 @@ public class MessageView extends VStack {
 					UserManager.getInstance().getUser(RuntimeData.getInstance().getUserId()),
 					myCallbackInterface);
 
+			// When in invisible mode, all new messages are flagged unread
+			if (myInvisibleMode) {
+				element.setUnread(true);
+				if((myUnreadLowest == 0) || (myUnreadLowest > currentMessage.getMessageSeqId()))
+					myUnreadLowest = currentMessage.getMessageSeqId();
+				if((myUnreadHighest == 0) || (myUnreadHighest < currentMessage.getMessageSeqId()))
+					myUnreadHighest = currentMessage.getMessageSeqId();
+			}
+			
 			// Locate the position we want to insert this new element at (will refine this later)
 			//System.out.println(" Newest: " + myNewestDisplayedSeq + " oldest: " + myOldestDisplayedSeq);
 			if(currentMessage.getMessageSeqId() > myNewestDisplayedSeq){
@@ -174,5 +186,41 @@ public class MessageView extends VStack {
 	    	myCallbackInterface.octopusOnTyped();
     	if(message.getMessage().contains("!!!octo"))
 	    	myCallbackInterface.octopusOffTyped();
+	}
+
+	public void setUnreadRange(int low, int high) {
+		myUnreadLowest = low;
+		myUnreadHighest = high;
+		
+		for (int messageId = low; messageId <= high; messageId++)
+		{
+			MessageViewElement currentElement = locateElement(messageId);
+			if (currentElement != null)
+				currentElement.setUnread(true);
+		}
+	}
+	
+	public void ClearUnreadAll() {
+		for (int messageId = myUnreadLowest; messageId <= myUnreadHighest; messageId++)
+		{
+			MessageViewElement currentElement = locateElement(messageId);
+			if (currentElement != null)
+				currentElement.setUnread(false);
+		}
+		myUnreadLowest = 0;
+		myUnreadHighest = 0;
+	}
+	
+	public int getOldestDisplayedSeq() {
+		return myOldestDisplayedSeq;
+	}
+
+	public int getNewestDisplayedSeq() {
+		return myNewestDisplayedSeq;
+	}
+	
+	public void setInvisibleMode(boolean mode) {
+		myInvisibleMode = mode;
+		System.out.println("Invisible mode set to " + myInvisibleMode);
 	}
 }

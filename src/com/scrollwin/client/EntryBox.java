@@ -33,6 +33,7 @@ public class EntryBox extends HLayout {
     
     
     public EntryBox(ioCallbackInterface callbackInterface, userCallbackInterface userCB) {
+    	
     	myCallbackInterface = callbackInterface;
     	myUserCallbackInterface = userCB;
     	
@@ -74,6 +75,7 @@ public class EntryBox extends HLayout {
 				myUserCallbackInterface.userEntry();
 			}
         });
+        
         
         messageItem.addKeyUpHandler(new KeyUpHandler() {
         	@Override
@@ -128,6 +130,8 @@ public class EntryBox extends HLayout {
 		addMember(editStack);
     }
     
+    
+
 	public void setUser(UserContainer user)
     {
     	Img userImage = new Img(user.getAvatarURL(), 36, 36);
