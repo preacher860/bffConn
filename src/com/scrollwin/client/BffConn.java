@@ -488,10 +488,14 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 	@Override
 	public void newestUpdated() {
-		if(myCurrentMode == MODE_RUNNING && !faviconAlert && isTabHidden()) {
-			Element element = DOM.getElementById("favicon");
-			element.setAttribute("href", "images/favicon_red.ico");
-			faviconAlert = true;
+		try {
+			if(myCurrentMode == MODE_RUNNING && !faviconAlert && isTabHidden()) {
+				Element element = DOM.getElementById("favicon");
+				element.setAttribute("href", "images/favicon_red.ico");
+				faviconAlert = true;
+			}
+		} catch (Exception e) {
+			
 		}
 	}
 
