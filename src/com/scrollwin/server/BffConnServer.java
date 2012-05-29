@@ -209,7 +209,7 @@ public BffConnServer(){
 	  
 	  if(local == null)
 		  local = "";
-	  
+	  System.out.println("Userlogin: " + foundUser.getId());
 	  out.println('[');
 	  out.println("  {");
 	  if(foundUser != null)
@@ -223,6 +223,8 @@ public BffConnServer(){
 	  out.println("  }");
 	  out.println(']');
 	  out.flush();
+	  
+	  incrementUserDbVersion();  // New login means updated user info
   }
 
 private int getNewestSeq(Connection conn)
@@ -285,6 +287,51 @@ private int getNewestSeq(Connection conn)
 	      update.close();
 	  } catch(SQLException e) {
           System.err.println("Mysql Statement Error: " + query);
+          e.printStackTrace();
+	  }
+  }
+  
+  private int getUserDbVersion(Connection conn)
+  {
+	  String query = "SELECT userdbversion FROM runtimedata";
+	  try {
+	      Statement select = conn.createStatement();
+	      ResultSet result = select.executeQuery(query);
+	      result.next();
+          int id = result.getInt(1);
+	      select.close();
+	      result.close();
+	      return id;
+	  } catch(SQLException e) {
+          System.err.println("Mysql Statement Error: " + query);
+          e.printStackTrace();
+          return -1;
+	  }
+  }
+  
+  private void setUserDbVersion(Connection conn, int dbVersion)
+  {
+	  String query = "UPDATE runtimedata SET userdbversion=?";
+	  try {
+	      PreparedStatement update = conn.prepareStatement(query);
+	      update.setInt(1, dbVersion);
+	      update.executeUpdate();
+	      update.close();
+	  } catch(SQLException e) {
+          System.err.println("Mysql Statement Error: " + query);
+          e.printStackTrace();
+	  }
+  }
+  
+  private void incrementUserDbVersion()
+  {
+	  try {
+		  Connection conn = this.getConn();
+		  int userDbVersion = getUserDbVersion(conn);
+		  setUserDbVersion(conn, userDbVersion + 1);
+		  System.out.println("Incrementing user dbversion to " + (userDbVersion + 1));
+	  } catch(Exception e) {
+          System.err.println("Error in incrementUserDbVersion: " + e);
           e.printStackTrace();
 	  }
   }
@@ -505,7 +552,8 @@ private int getNewestSeq(Connection conn)
 	      
 	      conn.commit();
 	      conn.close();
-	      //seqId++;
+	      
+	      incrementUserDbVersion();  // New msg means updated user stats
 	  } catch(SQLException e) {
           System.err.println("Mysql Statement Error in ProcessNewMessage");
           e.printStackTrace();
@@ -531,6 +579,8 @@ private int getNewestSeq(Connection conn)
 	      
 	      conn.commit();
 	      conn.close();
+	      
+	      incrementUserDbVersion();  // Deleted msg means updated user stats
 	  } catch(SQLException e) {
 	      System.err.println("Mysql Statement Error");
 	      e.printStackTrace();
@@ -561,6 +611,8 @@ private int getNewestSeq(Connection conn)
 	      
 	      conn.commit();
 	      conn.close();
+	      
+	      incrementUserDbVersion();  // Starred msg means updated user stats
 	  } catch(SQLException e) {
 	      System.err.println("Mysql Statement Error");
 	      e.printStackTrace();
@@ -589,6 +641,8 @@ private int getNewestSeq(Connection conn)
 	      
 	      conn.commit();
 	      conn.close();
+	      
+	      incrementUserDbVersion();  // Edited msg means updated user stats
 	  } catch(SQLException e) {
 	      System.err.println("Mysql Statement Error");
 	      e.printStackTrace();
@@ -655,10 +709,12 @@ private int getNewestSeq(Connection conn)
     	  out.println("  {");
     	  String seq = result.getString(1);
     	  String dbVersion = result.getString(2);
+    	  String dbVersionUsers = result.getString(3);
     	  
     	  out.println("     \"serverVersion\":\"" + myVersion + "\",");
     	  out.println("     \"newestSeq\":\"" + seq + "\",");
-    	  out.println("     \"dbVersion\":\"" + dbVersion + "\"");
+    	  out.println("     \"dbVersion\":\"" + dbVersion + "\",");
+    	  out.println("     \"dbVersionUsers\":\"" + dbVersionUsers + "\"");
           out.println("  }");
 
 	      select.close();
@@ -871,6 +927,8 @@ private int getNewestSeq(Connection conn)
 	  
 	for(srvUserContainer user:userList)
 		if(user.getId() == userId) {
+			if(user.getActivityTimeout() == 0)
+				incrementUserDbVersion();
 			user.setActivityTimeout(ACTIVITY_TIMEOUT);
 			break;
 		}
@@ -880,8 +938,10 @@ private int getNewestSeq(Connection conn)
 	  for(srvUserContainer user:userList)
 		  if(user.getActivityTimeout() > 5) 
 			  user.setActivityTimeout(user.getActivityTimeout() - 5);
-		  else
+		  else if(user.getActivityTimeout() > 0) {
 			  user.setActivityTimeout(0);
+			  incrementUserDbVersion();
+		  }
 }
   
   private void garbageCollectSessions()

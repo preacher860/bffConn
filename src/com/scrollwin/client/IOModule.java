@@ -480,10 +480,12 @@ public class IOModule {
 		    obj = jsonArray.get(0).isObject();
 		    Integer seqId = Integer.valueOf(obj.get("newestSeq").isString().stringValue());
 		    Integer serverDbVersion = Integer.valueOf(obj.get("dbVersion").isString().stringValue());
+		    Integer serverDbVersionUsers = Integer.valueOf(obj.get("dbVersionUsers").isString().stringValue());
 		    Integer serverVersion = Integer.valueOf(obj.get("serverVersion").isString().stringValue());
 
 		    RuntimeData.getInstance().setServerVersion(serverVersion);
 		    RuntimeData.getInstance().setServerDbVersion(serverDbVersion);
+		    RuntimeData.getInstance().setServerDbVersionUsers(serverDbVersionUsers);
 		    RuntimeData.getInstance().setServerSeqId(seqId);
 		    myCallbackInterface.runtimeDataReceivedCallback();
 		} catch (Exception e) {

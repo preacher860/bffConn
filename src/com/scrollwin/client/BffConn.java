@@ -3,13 +3,11 @@ package com.scrollwin.client;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Element;
 
 import com.google.gwt.user.client.Event.NativePreviewEvent;
@@ -36,6 +34,14 @@ import com.smartgwt.client.widgets.layout.VStack;
 
 public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInterface {
 	
+	static {
+    //    init();
+    }
+
+    private static native void init()/*-{
+        $wnd.isc.setAutoDraw(false);
+    }-*/;
+    
 	public static final int MODE_INIT_S1  = 1;
 	public static final int MODE_INIT_S2  = 2;
 	public static final int MODE_RUNNING  = 3;
@@ -56,6 +62,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private IOModule ioModule = new IOModule(this);
 	private Integer myCurrentMode = MODE_INIT_S1;
 	private Timer myRefreshTimer;
+	private Timer myFaviconTimer;
 	private boolean myRuntimeDataRcvd = false;
 	private boolean myUserDataRcvd = false;
 	private UserTileDisplay myUserTileDisplay = new UserTileDisplay(this);
@@ -68,9 +75,12 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private int newestDisplayedWhenLostVisibility = 0;
 	private String mySessionLocal = "";
 	
-
+	private Timer myOctoTimer;
+	private OctoObject OctoArray[] = new OctoObject[5];
+	
 	@Override
 	public void onModuleLoad() {
+		Log.debug("Logger in 'DEBUG' mode");
 		String sessionIdCookie = Cookies.getCookie("bffConnexionSID");
 		ioModule.GetServerSessionValid(sessionIdCookie);
 	}
@@ -87,10 +97,8 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	public void applicationStart() {
 
 		
-		
 		final Canvas canvas = new Canvas();
 		canvas.setWidth100();
-
 		canvas.setHeight100();
 		canvas.setAlign(Alignment.CENTER);
 		canvas.setLayoutAlign(Alignment.CENTER);
@@ -100,6 +108,12 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         mainvStack.setHeight100();
         mainvStack.setWidth100();
         
+        OctoArray[0] = (new OctoObject(240,152,100,100,2,-2,85));
+    	OctoArray[1] = (new OctoObject(200,122,200,300,4,4,85));
+    	OctoArray[2] = (new OctoObject(100,61,400,200,-3,3,75));
+    	OctoArray[3] = (new OctoObject(300,170,50,400,1,-1,80));
+    	OctoArray[4] = (new OctoObject(150,90,300,100,7,-2,70));
+      
         Img headerImage = new Img("bffConnLogo4.png", 200, 76);
         headerShadow.setHeight(76);
         headerShadow.setWidth100();
@@ -170,11 +184,38 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         
         myHeaderButtonBar.setLocal(mySessionLocal);
         
-        //canvas.addChild(headerImage);
+        canvas.addChild(OctoArray[0].getImage());
+        canvas.addChild(OctoArray[3].getImage());
         canvas.addChild(headerShadow);
         canvas.addChild(mainvStack); 
-        //canvas.setBackgroundColor("#808080");
+        canvas.addChild(OctoArray[1].getImage());
+        canvas.addChild(OctoArray[2].getImage());
+        canvas.addChild(OctoArray[4].getImage());
         canvas.draw();  
+        
+        myOctoTimer = new Timer() {
+        	@Override
+			public void run() {
+        		for (int octoIndex = 0; octoIndex < OctoArray.length; octoIndex++) {
+        			OctoArray[octoIndex].MoveOcto(canvas.getWidth(), canvas.getHeight());
+        		}
+        	}
+        };
+        //myOctoTimer.scheduleRepeating(50);
+        
+        myFaviconTimer = new Timer() {
+			@Override
+			public void run() {
+				Element element = DOM.getElementById("favicon");
+				if(faviconAlert) {
+					Log.debug("Setting favicon to alert (red)");
+					element.setAttribute("href", "images/favicon_red.ico");
+				} else {
+					Log.debug("Setting favicon to normal (blue)");
+					element.setAttribute("href", "images/favicon.ico");
+				}
+			}
+        };
         
         myRefreshTimer = new Timer() {
 	      @Override
@@ -194,6 +235,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	      			
 	      			// Consider DB versions aligned after first retrieve is performed
 	      			RuntimeData.getInstance().setDbVersion(RuntimeData.getInstance().getServerDbVersion());
+	      			RuntimeData.getInstance().setDbVersionUsers(RuntimeData.getInstance().getServerDbVersionUsers());
 	      			
 	      			String waitMsg = "Chargement des messages <b>" + start_point + " </b>à<b> ";
 	      			waitMsg += (start_point + MSG_INITIAL_RTRV) + "</b>.";
@@ -207,9 +249,11 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	      			if(RuntimeData.getInstance().getDbVersion() < RuntimeData.getInstance().getServerDbVersion()){
 	      				ioModule.GetUserMessagesByVersion(RuntimeData.getInstance().getDbVersion());
 	      			}
-
-	      			// Refresh users to get their online status.  This will be gathered in a better way some day
-	      			ioModule.GetUserInfo();
+	      			
+	      			if(RuntimeData.getInstance().getDbVersionUsers() < RuntimeData.getInstance().getServerDbVersionUsers()) {
+	      				RuntimeData.getInstance().setRequestedDbVersionUsers(RuntimeData.getInstance().getServerDbVersionUsers());
+	      				ioModule.GetUserInfo();
+	      			}
 	      		}
 	      		
 		  		// Don't reschedule if shutting down, nothing good can come out of this
@@ -220,13 +264,6 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	      	ioModule.GetRuntimeData();
 	      }
 	    };
-	    
-	    Window.addResizeHandler(new ResizeHandler() {
-	    	@Override
-			public void onResize(ResizeEvent event) {
-	    		//canvas.setWidth(event.getWidth());
-			}
-	    	});
 	    
 		ioModule.GetUserInfo();
         ioModule.GetRuntimeData();
@@ -250,6 +287,8 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 		UserManager.getInstance().setUserList(users);
 		myUserDataRcvd = true;
 		myUserTileDisplay.UpdateOnlineUsers(UserManager.getInstance());
+		RuntimeData.getInstance().setDbVersionUsers(RuntimeData.getInstance().getRequestedDbVersionUsers());
+		System.out.println("Users updated up to db version " + RuntimeData.getInstance().getDbVersionUsers());
 	}
 
 	public void checkServerVersion() {
@@ -334,7 +373,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 				NativeEvent ne = event.getNativeEvent();
 				switch (event.getTypeInt()) { 
 				case Event.ONKEYDOWN:
-					if(ne.getCtrlKey()){
+					if(ne.getCtrlKey() && !ne.getShiftKey()){
 						if(ne.getKeyCode()=='l' || ne.getKeyCode()=='L')
 						{
 							myHeaderButtonBar.showLocationEntry();
@@ -389,20 +428,25 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 	private void visibilityChanged() { 
 		// Reset new message indicator octo when switching to visible
+		Log.debug("Visibility changed to " + !isTabHidden());
 		try {
 			if(!isTabHidden()){
+				Log.debug("Tab is VISIBLE");
 				if(faviconAlert){
-					Element element = DOM.getElementById("favicon");
-					element.setAttribute("href", "images/favicon.ico");
+					Log.debug("Starting favicon timer");
 					faviconAlert = false;
+					myFaviconTimer.schedule(300);
 				}
+				Log.debug("Setting message manager mode to visible");
 				myMessageManager.setInvisibleMode(false);
 			} else {
+				Log.debug("Tab is HIDDEN");
 				newestDisplayedWhenLostVisibility = myMessageManager.getNewestDisplayedSeq();
+				Log.debug("Setting message manager mode to invisible");
 				myMessageManager.setInvisibleMode(true);
 			}
 		} catch (Exception e) {
-			
+			Log.debug("Exception in visibilityChanged");
 		}
 	}
 	
@@ -489,13 +533,14 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	@Override
 	public void newestUpdated() {
 		try {
+			Log.debug("newestUpdated called");
 			if(myCurrentMode == MODE_RUNNING && !faviconAlert && isTabHidden()) {
-				Element element = DOM.getElementById("favicon");
-				element.setAttribute("href", "images/favicon_red.ico");
+				Log.debug("Starting favicon timer");
 				faviconAlert = true;
+				myFaviconTimer.schedule(300);
 			}
 		} catch (Exception e) {
-			
+			Log.debug("Exception in newestUpdated");
 		}
 	}
 
@@ -511,6 +556,25 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 	@Override
 	public void infoClicked() {
+		//SC.showConsole();
 		Window.open("https://github.com/preacher860/bffConn/wiki/Historique-des-changements", "Historique", "");
+	}
+
+	@Override
+	public void superOctopusOnTyped() {
+		for(OctoObject octo:OctoArray){
+			octo.showOcto();
+		}
+		myOctoTimer.scheduleRepeating(50);
+	}
+
+	@Override
+	public void superOctopusOffTyped() {
+		for(OctoObject octo:OctoArray){
+			octo.hideOcto();
+		}
+		myOctoTimer.cancel();
+
+		
 	}
 }

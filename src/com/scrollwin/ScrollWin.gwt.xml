@@ -16,6 +16,7 @@
   <inherits name='com.google.gwt.visualization.Visualization'/>
   <inherits name='com.smartgwt.SmartGwt'/>
   <inherits name='com.smartclient.theme.graphite.Graphite'/>
+  <!--inherits name='com.smartgwt.tools.SmartGwtTools'/-->
   <!--inherits name='com.smartgwt.Drawing'/-->
   <inherits name='com.allen_sauer.gwt.log.gwt-log-DEBUG'/>
   <set-property name="log_DivLogger" value="DISABLED" />

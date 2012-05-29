@@ -268,6 +268,7 @@ public class MessageViewElement extends HStack {
 		
 		addMember(imageStack);
 		addMember(messageStack);
+		
 	}
 	
 
