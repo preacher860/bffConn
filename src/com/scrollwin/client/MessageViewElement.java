@@ -283,11 +283,6 @@ public class MessageViewElement extends HStack {
         	userMessagePane.setBackgroundColor("#C3D9FF"); // Normal blue
 	}
 	
-	public void adjustForContents()
-	{
-		System.out.println("Adjusting for contents: " + seqId);
-		userMessagePane.adjustForContent(true);
-	}
 	
 	public boolean isMessageForLoggedUser(MessageContainer message, UserContainer myself)
 	{

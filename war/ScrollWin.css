@@ -103,3 +103,165 @@ h1 {
 .opaque {
 	opacity:1.0;
 }
+
+.messageViewElementBoxNormal {
+	font-size:12px;
+	background-color: #C3D9FF;
+	padding: 5px;
+}
+
+.messageViewElementBoxUnread {
+	font-size:12px;
+	background-color: #f4b58c;
+	padding: 5px;
+}
+
+.messageViewElementBoxAdressee {
+	font-size:12px;
+	background-color: #88FB9E;
+	padding: 5px;
+}
+
+.messageViewElementBoxAdresseeUnread {
+	font-size:12px;
+	background-color: #eaa9f8;
+	padding: 5px;
+}
+
+.messageViewPic {
+	;background-color: #B0B0B0;
+	padding: 0px;
+	border: 2px groove #808080;
+}
+
+.messageViewPicBox {
+	background-color: #E0E0E0;
+	padding: 5px;
+	width: 50px;
+}
+
+.messageStatusBar {
+	background-color:  #B0B0B0;
+	/*width: 400px;*/
+	height: 20px;
+	vertical-align: middle;
+	padding: 0;
+}
+
+.messageViewElement {
+	background-color: #E0E0E0;
+	border: 1px solid #808080;
+	width: 100%;
+	margin: 1px;
+}
+
+.userInfo {
+	background-color:  #B0B0B0;
+	padding: 3px;
+	width: 400px;
+	display: block;
+  	font-size: 7pt;
+}
+
+.iconPane {
+	background-color:  #B0B0B0;
+	width: auto;
+	table-layout: fixed;
+}
+
+.messageView {
+	overflow:auto;
+	height: 600px;
+	width: 784px;
+	background-color: #ffffff;
+	border: 3px solid #455469;
+	padding: 4px;
+	box-shadow: 4px 4px 5px #888888;
+}
+
+.messageViewVpanel {
+	height: 100%;
+	width: 100%;
+	background-color: #ffffff;
+}
+
+.messagePane {
+	background-color:  #B0B0B0;
+	width: 100%;
+	height: 30px;
+}
+
+.starIcon {
+	width: 16px;
+	height: 16px;	
+	padding-top: 1px;
+	padding-right: 2px;
+	padding-left: 8px;
+}
+
+.starLabel {
+	font-size:12px;
+	padding: 2px;	
+	width: 40px;
+}
+
+.deleteIcon {
+	width: 16px;
+	height: 16px;	
+	padding-top: 1px;
+	padding-right: 2px;
+	padding-left: 8px;
+}
+
+.deleteLabel {
+	font-size:12px;
+	padding: 2px;
+	width: 40px;	
+}
+
+.editIcon {
+	width: 16px;
+	height: 16px;
+	padding-top: 1px;	
+	padding-right: 2px;
+	padding-left: 8px;
+}
+
+.editLabel {
+	font-size:12px;
+	padding: 2px;
+	width: 40px;	
+}
+
+.userAvatar {
+	width: 34px;
+	height: 34px;	
+	padding: 0px;
+	border: 2px groove #808080;
+}
+
+.starStack {
+	width: 60px;
+}
+
+.editStack {
+	width: 60px;
+}
+
+.deleteStack {
+	width: 60px;
+}
+
+.tooltipStyle {
+    font-family:Verdana,Bitstream Vera Sans,sans-serif;
+    font-size:11px;
+    border:1px solid #808080;
+    padding:4px;
+    background-color:black;
+    color:white;
+    opacity:0.75;
+    width:auto;
+    overflow:hidden;
+    text-align:center;
+    border-radius:6px;
+}

@@ -2,13 +2,19 @@ package com.scrollwin.client;
 
 import java.util.ArrayList;
 
+import com.google.gwt.event.dom.client.ScrollEvent;
+import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.ScrolledEvent;
 import com.smartgwt.client.widgets.events.ScrolledHandler;
 import com.smartgwt.client.widgets.layout.VStack;
 
-public class MessageView extends VStack {
+public class MessageView extends ScrollPanel {
+	
+	private VerticalPanel mainVPanel = new VerticalPanel();
 	private int myOldestDisplayedSeq = 0;
 	private int myNewestDisplayedSeq = 0;
 	private int myNewestDisplayedDb  = 0;
@@ -25,36 +31,39 @@ public class MessageView extends VStack {
 	private boolean myInvisibleMode = false;
 	
 	public MessageView(userCallbackInterface callbackInterface){
-		//myMessageVStack = messageStack;
+
 		myCallbackInterface = callbackInterface;
-		setShowEdges(true);  
-        //setMargin(5);
-        setWidth(800);  
-        setHeight("80%");
-        setCanDragResize(true);
-        setOverflow(Overflow.AUTO);
-        setLeaveScrollbarGap(true);
-        setMembersMargin(3);  
-        setLayoutMargin(4);
-        setBackgroundColor("#ffffff");
-        //setEdgeImage("borders/sharpframe_10.png");
-        //setEdgeSize(6);
-        setEdgeSize(3);
-        setShowShadow(true);
-		setShadowSoftness(3);
-		setShadowOffset(4);
+		
+		mainVPanel.setStyleName("messageViewVpanel");
+		add(mainVPanel);
+		//setShowEdges(true);  
+
+		setStyleName("messageView");
+        //setWidth(800);  
+        //setHeight("80%");
+        //setCanDragResize(false);
+        //setOverflow(Overflow.AUTO);
+        //setLeaveScrollbarGap(true);
+        //setMembersMargin(3);  
+        //setLayoutMargin(4);
+        //setBackgroundColor("#ffffff");
+        //setEdgeSize(3);
+        //setShowShadow(true);
+		//setShadowSoftness(3);
+		//setShadowOffset(4);
         
         // This scroll handler sets the flag used to determine if we're at bottom or not.
         // Only if were at bottom do we kick the autoscroll on new messages
-        addScrolledHandler(new ScrolledHandler(){
+        addScrollHandler(new ScrollHandler(){
 			@Override
-			public void onScrolled(ScrolledEvent event) {
-				if(getScrollTop() == getScrollBottom())
+			public void onScroll(ScrollEvent event) {
+				if(getVerticalScrollPosition() == getMaximumVerticalScrollPosition()){
 					myAtBottom = true;
+				}
 				else
 					myAtBottom = false;
 				
-				if(getScrollTop() == 0)	{
+				if(getVerticalScrollPosition() == 0)	{
 					// Autofetch old message when scrolling to top
 					myLastKnownOldest = myOldestDisplayedSeq;
 					myFetchingOld = true;
@@ -73,9 +82,11 @@ public class MessageView extends VStack {
 	    myPositionTimer = new Timer() {
 			@Override
 			public void run() {
-				MessageViewElement element;
-				if ( (element = locateElement(myLastKnownOldest)) != null)
-					scrollTo(0, element.getTop());
+				MessageViewElementNative element;				
+				if ( (element = locateElement(myLastKnownOldest)) != null) {
+					System.out.println("Setting scrollpos to " + element.getElement().getOffsetTop());
+					setVerticalScrollPosition(element.getElement().getOffsetTop());
+				}
 			}
 	    };
 	}
@@ -86,8 +97,8 @@ public class MessageView extends VStack {
 		boolean myNewestUpdated = false;
 		
 		if(myNumOfMessagesDisplayed > 0){
-			myNewestDisplayedSeq = ((MessageViewElement)getMember(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
-			myOldestDisplayedSeq = ((MessageViewElement)getMember(0)).getMessage().getMessageSeqId();
+			myNewestDisplayedSeq = ((MessageViewElementNative)mainVPanel.getWidget(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
+			myOldestDisplayedSeq = ((MessageViewElementNative)mainVPanel.getWidget(0)).getMessage().getMessageSeqId();
 			listWasEmtpy = false;
 		} else
 			listWasEmtpy = true;
@@ -99,7 +110,7 @@ public class MessageView extends VStack {
 			if(currentMessage.getMessageUserId() != RuntimeData.getInstance().getUserId())
 				messagesNotOwn = true;
 
-			MessageViewElement element = new MessageViewElement(currentMessage, 
+			MessageViewElementNative element = new MessageViewElementNative(currentMessage, 
 					UserManager.getInstance().getUser(currentMessage.getMessageUserId()),
 					UserManager.getInstance().getUser(RuntimeData.getInstance().getUserId()),
 					myCallbackInterface);
@@ -117,30 +128,30 @@ public class MessageView extends VStack {
 			//System.out.println(" Newest: " + myNewestDisplayedSeq + " oldest: " + myOldestDisplayedSeq);
 			if(currentMessage.getMessageSeqId() > myNewestDisplayedSeq){
 				//System.out.println(" inserting " + currentMessage.getMessageSeqId() + " at bottom");
-				addMember(element);
+				mainVPanel.add(element);
 				myNewestDisplayedSeq = currentMessage.getMessageSeqId();
 				myNumOfMessagesDisplayed++;
 				myNewestUpdated = true;
 			}
 			else if (currentMessage.getMessageSeqId() < myOldestDisplayedSeq) {
 				//System.out.println(" inserting " + currentMessage.getMessageSeqId() + " at top");
-				addMember(element, 0);
+				mainVPanel.insert(element, 0);
 				myOldestDisplayedSeq = currentMessage.getMessageSeqId();
 				myNumOfMessagesDisplayed++;
 			}
 			else {  //somewhere in-between.  Find appropriate insertion point
 				for(int elementIndex = myNumOfMessagesDisplayed - 1; elementIndex > 0; elementIndex--) {
-					int currentSeq = ((MessageViewElement)getMember(elementIndex)).getMessage().getMessageSeqId();
-					int previousSeq = ((MessageViewElement)getMember(elementIndex - 1)).getMessage().getMessageSeqId();
+					int currentSeq = ((MessageViewElementNative)mainVPanel.getWidget(elementIndex)).getMessage().getMessageSeqId();
+					int previousSeq = ((MessageViewElementNative)mainVPanel.getWidget(elementIndex - 1)).getMessage().getMessageSeqId();
 					//System.out.println("current: " + currentSeq + " previous: " + previousSeq);
 
 					if (currentSeq == currentMessage.getMessageSeqId()){
-						((MessageViewElement)getMember(elementIndex)).updateMessage(currentMessage);
+						((MessageViewElementNative)mainVPanel.getWidget(elementIndex)).updateMessage(currentMessage);
 						break;
 					}
 					if((currentMessage.getMessageSeqId() < currentSeq) && (currentMessage.getMessageSeqId() > previousSeq)){
 						//System.out.println(" inserting " + currentMessage.getMessageSeqId() + " before " + currentSeq);
-						addMember(element, elementIndex);
+						mainVPanel.insert(element, elementIndex);
 						myNumOfMessagesDisplayed++;
 						break;
 					}
@@ -150,8 +161,8 @@ public class MessageView extends VStack {
 			if(currentMessage.getMessageDbVersion() > myNewestDisplayedDb)
 				myNewestDisplayedDb = currentMessage.getMessageDbVersion();
 		}
-		myNewestDisplayedSeq = ((MessageViewElement)getMember(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
-		myOldestDisplayedSeq = ((MessageViewElement)getMember(0)).getMessage().getMessageSeqId();
+		myNewestDisplayedSeq = ((MessageViewElementNative)mainVPanel.getWidget(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
+		myOldestDisplayedSeq = ((MessageViewElementNative)mainVPanel.getWidget(0)).getMessage().getMessageSeqId();
 		
 		RuntimeData.getInstance().setNewestSeqId(myNewestDisplayedSeq);
 		RuntimeData.getInstance().setDbVersion(myNewestDisplayedDb);
@@ -172,11 +183,11 @@ public class MessageView extends VStack {
 		myCallbackInterface.messageDisplayComplete();
 	}
 	
-	public MessageViewElement locateElement(int seqId)
+	public MessageViewElementNative locateElement(int seqId)
 	{
 		for(int elementIndex = myNumOfMessagesDisplayed - 1; elementIndex > 0; elementIndex--)
-			if (((MessageViewElement)getMember(elementIndex)).getMessage().getMessageSeqId() == seqId)
-				return ((MessageViewElement)getMember(elementIndex));
+			if (((MessageViewElementNative)mainVPanel.getWidget(elementIndex)).getMessage().getMessageSeqId() == seqId)
+				return ((MessageViewElementNative)mainVPanel.getWidget(elementIndex));
 		return null;
 	}
 	
@@ -198,7 +209,7 @@ public class MessageView extends VStack {
 		
 		for (int messageId = low; messageId <= high; messageId++)
 		{
-			MessageViewElement currentElement = locateElement(messageId);
+			MessageViewElementNative currentElement = locateElement(messageId);
 			if (currentElement != null)
 				currentElement.setUnread(true);
 		}
@@ -207,7 +218,7 @@ public class MessageView extends VStack {
 	public void ClearUnreadAll() {
 		for (int messageId = myUnreadLowest; messageId <= myUnreadHighest; messageId++)
 		{
-			MessageViewElement currentElement = locateElement(messageId);
+			MessageViewElementNative currentElement = locateElement(messageId);
 			if (currentElement != null)
 				currentElement.setUnread(false);
 		}
