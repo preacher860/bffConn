@@ -171,8 +171,9 @@ h1 {
 
 .messageView {
 	overflow:auto;
-	height: 600px;
+	height: 500px;
 	width: 784px;
+	position: absolute;
 	background-color: #ffffff;
 	border: 3px solid #455469;
 	padding: 4px;

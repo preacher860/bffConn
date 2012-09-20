@@ -6,6 +6,9 @@ import java.util.Date;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -14,6 +17,7 @@ import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 
 
 import com.smartgwt.client.types.Alignment;
@@ -47,17 +51,18 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	private static final int MSG_INITIAL_RTRV = 30;
-	private static final int MSG_OLD_FETCH_NUM = 50;
+	private static final int MSG_INITIAL_RTRV = 200;
+	private static final int MSG_OLD_FETCH_NUM = 100;
 	
 	private HStack hStack = new HStack();
-	private VStack chatvStack = new VStack();
+	private VLayout chatvStack = new VLayout();
 	private VLayout mainvStack = new VLayout();
 	private HStack headerStack = new HStack();
 	private VStack versionStack = new VStack();
 	private VStack leftToolbarStack = new VStack();
 	private VStack headerShadow = new VStack();
 	private HTMLPane versionPane = new HTMLPane();
+	private DockLayoutPanel chatDockPanel = new DockLayoutPanel(Unit.EM);
 	
 	private IOModule ioModule = new IOModule(this);
 	private Integer myCurrentMode = MODE_INIT_S1;
@@ -193,6 +198,17 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         canvas.addChild(OctoArray[4].getImage());
         canvas.draw();  
         
+        Window.enableScrolling(false);
+        adjustComponentsSize(Window.getClientHeight());
+        
+        Window.addResizeHandler(new ResizeHandler() {
+
+			 public void onResize(ResizeEvent event) {
+			   int height = event.getHeight();
+			   adjustComponentsSize(height);
+			 }
+			});
+        
         myOctoTimer = new Timer() {
         	@Override
 			public void run() {
@@ -270,6 +286,15 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         myRefreshTimer.schedule(1000);  //  Check if our init Gets are completed
 	}
 	
+	private void adjustComponentsSize(int height)
+	{
+	   int freeSpace = height - headerStack.getHeight() - myEntryBox.getHeight() - 40;
+	   chatvStack.setHeight(height - headerStack.getHeight());
+	   myMessageManager.setHeight(Integer.toString(freeSpace) + "px");
+	   myEntryBox.setTop(height - myEntryBox.getHeight() - chatvStack.getAbsoluteTop() - 10);
+	   
+	   myMessageManager.toBottom(false);
+	}
 	
 	@Override
 	public void messagesReceivedCallback(final ArrayList<MessageContainer> messages) {

@@ -321,7 +321,6 @@ public class MessageViewElementNative extends HorizontalPanel{
 			starIcon.setVisible(false);
 			starOverIcon.setVisible(true);
 			starred = true;
-			System.out.println("Message got starred: " + myMessage.getMessageSeqId());
 		} else{
 			starStack.setTitle("");
 			starStack.setVisible(false);

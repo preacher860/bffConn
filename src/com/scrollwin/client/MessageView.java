@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.Overflow;
@@ -51,7 +54,7 @@ public class MessageView extends ScrollPanel {
         //setShowShadow(true);
 		//setShadowSoftness(3);
 		//setShadowOffset(4);
-        
+		
         // This scroll handler sets the flag used to determine if we're at bottom or not.
         // Only if were at bottom do we kick the autoscroll on new messages
         addScrollHandler(new ScrollHandler(){
@@ -237,5 +240,10 @@ public class MessageView extends ScrollPanel {
 	public void setInvisibleMode(boolean mode) {
 		myInvisibleMode = mode;
 		System.out.println("Invisible mode set to " + myInvisibleMode);
+	}
+	
+	public void toBottom(boolean forced){
+		if (myAtBottom || forced)
+			scrollToBottom();
 	}
 }
