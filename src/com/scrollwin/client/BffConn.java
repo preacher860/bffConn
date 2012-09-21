@@ -198,14 +198,14 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         canvas.addChild(OctoArray[4].getImage());
         canvas.draw();  
         
-        Window.enableScrolling(false);
-        adjustComponentsSize(Window.getClientHeight());
+        //Window.enableScrolling(false);
+        //adjustComponentsSize(Window.getClientHeight());
         
         Window.addResizeHandler(new ResizeHandler() {
 
 			 public void onResize(ResizeEvent event) {
 			   int height = event.getHeight();
-			   adjustComponentsSize(height);
+			   //adjustComponentsSize(height);
 			 }
 			});
         
@@ -288,12 +288,12 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	
 	private void adjustComponentsSize(int height)
 	{
-	   int freeSpace = height - headerStack.getHeight() - myEntryBox.getHeight() - 40;
-	   chatvStack.setHeight(height - headerStack.getHeight());
-	   myMessageManager.setHeight(Integer.toString(freeSpace) + "px");
-	   myEntryBox.setTop(height - myEntryBox.getHeight() - chatvStack.getAbsoluteTop() - 10);
+	   //int freeSpace = height - headerStack.getHeight() - myEntryBox.getHeight() - 40;
+	   //chatvStack.setHeight(height - headerStack.getHeight());
+	   //myMessageManager.setHeight(Integer.toString(freeSpace) + "px");
+	   //myEntryBox.setTop(height - myEntryBox.getHeight() - chatvStack.getAbsoluteTop() - 10);
 	   
-	   myMessageManager.toBottom(false);
+	   //myMessageManager.toBottom(false);
 	}
 	
 	@Override
