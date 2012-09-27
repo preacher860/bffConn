@@ -18,6 +18,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 
 import com.smartgwt.client.types.Alignment;
@@ -54,14 +55,11 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private static final int MSG_INITIAL_RTRV = 200;
 	private static final int MSG_OLD_FETCH_NUM = 100;
 	
-	private HStack hStack = new HStack();
+	DockLayoutPanel mainDockPanel = new DockLayoutPanel(Unit.PX);
 	private VLayout chatvStack = new VLayout();
-	private VLayout mainvStack = new VLayout();
 	private HStack headerStack = new HStack();
-	private VStack versionStack = new VStack();
 	private VStack leftToolbarStack = new VStack();
 	private VStack headerShadow = new VStack();
-	private HTMLPane versionPane = new HTMLPane();
 	private DockLayoutPanel chatDockPanel = new DockLayoutPanel(Unit.EM);
 	
 	private IOModule ioModule = new IOModule(this);
@@ -101,24 +99,8 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	
 	public void applicationStart() {
 
+		mainDockPanel.setStyleName("mainPanel");
 		
-		final Canvas canvas = new Canvas();
-		canvas.setWidth100();
-		canvas.setHeight100();
-		canvas.setAlign(Alignment.CENTER);
-		canvas.setLayoutAlign(Alignment.CENTER);
-		canvas.setBackgroundImage("backgrounds/convore.jpg");
-		canvas.setBackgroundRepeat(BkgndRepeat.REPEAT);
-        mainvStack.setAlign(Alignment.CENTER);
-        mainvStack.setHeight100();
-        mainvStack.setWidth100();
-        
-        OctoArray[0] = (new OctoObject(240,152,100,100,2,-2,85));
-    	OctoArray[1] = (new OctoObject(200,122,200,300,4,4,85));
-    	OctoArray[2] = (new OctoObject(100,61,400,200,-3,3,75));
-    	OctoArray[3] = (new OctoObject(300,170,50,400,1,-1,80));
-    	OctoArray[4] = (new OctoObject(150,90,300,100,7,-2,70));
-      
         Img headerImage = new Img("bffConnLogo4.png", 200, 76);
         headerShadow.setHeight(76);
         headerShadow.setWidth100();
@@ -126,77 +108,35 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         headerShadow.setBackgroundRepeat(BkgndRepeat.REPEAT_X);
         headerShadow.addMember(headerImage);
         
-        LayoutSpacer chatvSpacer = new LayoutSpacer();
-        chatvSpacer.setHeight(10);
-        chatvStack.addMember(myMessageManager);
-        chatvStack.addMember(chatvSpacer);
-        chatvStack.addMember(myEntryBox);
-        
         LayoutSpacer toolbarSpacer = new LayoutSpacer();
         toolbarSpacer.setHeight(15);
+        leftToolbarStack.setStyleName("leftToolbar");
         leftToolbarStack.addMember(myUserTileDisplay);
         leftToolbarStack.addMember(toolbarSpacer);
         leftToolbarStack.addMember(myWaitBox);
-        LayoutSpacer spacer = new LayoutSpacer();
-        spacer.setWidth(10);
-        LayoutSpacer spacer2 = new LayoutSpacer();
-        spacer2.setWidth(10);
-        hStack.addMember(spacer);
-        hStack.addMember(leftToolbarStack);
-        hStack.addMember(spacer2);
-        hStack.addMember(chatvStack);
-        hStack.setWidth100();
         
         LayoutSpacer headerSpacer = new LayoutSpacer();
-        headerSpacer.setWidth(240);
+        headerSpacer.setWidth(40);
         headerStack.setWidth100();
         headerStack.setDefaultLayoutAlign(Alignment.CENTER);
         headerStack.setDefaultLayoutAlign(VerticalAlignment.BOTTOM);
         headerStack.setHeight(74);
+        headerStack.setBackgroundImage("top2.png");
+        headerStack.setBackgroundRepeat(BkgndRepeat.REPEAT_X);
         
-        
-        String versionLink ="";
-        String versionString = "<font size=\"2\">Version ";
-        versionString += VersionInfo.CURRENT_MAJOR + "." + VersionInfo.CURRENT_VERSION;
-        versionLink += "<style type=\"text/css\">";
-        versionLink += "a.one:link {color:#000000;text-decoration:none}";
-        versionLink += "a.one:visited {color:#000000;text-decoration:none}";
-        versionLink += "a.one:hover {color:#0000FF;text-decoration:none}";
-        versionLink += "</style>";
-        versionLink += "<a class=\"one\" href=\"https://github.com/preacher860/bffConn/wiki/Historique-des-changements\" target=\"_blank\"><b>";
-        versionLink += versionString;
-        versionLink += "</b></a></font>";
-        versionPane.setContents(versionLink);
-        versionPane.setHeight(15);
-        versionPane.setOverflow(Overflow.HIDDEN);
-	    
-        LayoutSpacer versionSpacer = new LayoutSpacer();
-        versionSpacer.setHeight(56);
-        versionStack.setHeight(76);
-        versionStack.addMember(versionSpacer);
-        versionStack.addMember(versionPane);
-                
+        headerStack.addMember(headerImage);
         headerStack.addMember(headerSpacer);
-        //headerStack.addMember(versionStack);
         headerStack.addMember(myHeaderButtonBar);
-        
-        LayoutSpacer vSpacer = new LayoutSpacer();
-        vSpacer.setHeight(5);
-        mainvStack.addMember(headerStack);
-        mainvStack.addMember(vSpacer);
-        mainvStack.addMember(hStack);
-        mainvStack.setTop(0);
         
         myHeaderButtonBar.setLocal(mySessionLocal);
         
-        canvas.addChild(OctoArray[0].getImage());
-        canvas.addChild(OctoArray[3].getImage());
-        canvas.addChild(headerShadow);
-        canvas.addChild(mainvStack); 
-        canvas.addChild(OctoArray[1].getImage());
-        canvas.addChild(OctoArray[2].getImage());
-        canvas.addChild(OctoArray[4].getImage());
-        canvas.draw();  
+        mainDockPanel.addNorth(headerStack, 80);
+        mainDockPanel.addWest(leftToolbarStack, 240);
+        mainDockPanel.addSouth(myEntryBox,110);
+        mainDockPanel.add(myMessageManager);
+        
+        RootLayoutPanel.get().add(mainDockPanel);
+        RootLayoutPanel.get().setStyleName("mainPanel");
         
         //Window.enableScrolling(false);
         //adjustComponentsSize(Window.getClientHeight());
@@ -204,17 +144,16 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         Window.addResizeHandler(new ResizeHandler() {
 
 			 public void onResize(ResizeEvent event) {
-			   int height = event.getHeight();
-			   //adjustComponentsSize(height);
+		
 			 }
 			});
         
         myOctoTimer = new Timer() {
         	@Override
 			public void run() {
-        		for (int octoIndex = 0; octoIndex < OctoArray.length; octoIndex++) {
-        			OctoArray[octoIndex].MoveOcto(canvas.getWidth(), canvas.getHeight());
-        		}
+        		//for (int octoIndex = 0; octoIndex < OctoArray.length; octoIndex++) {
+        		//	OctoArray[octoIndex].MoveOcto(canvas.getWidth(), canvas.getHeight());
+        		//}
         	}
         };
         //myOctoTimer.scheduleRepeating(50);
@@ -284,16 +223,6 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 		ioModule.GetUserInfo();
         ioModule.GetRuntimeData();
         myRefreshTimer.schedule(1000);  //  Check if our init Gets are completed
-	}
-	
-	private void adjustComponentsSize(int height)
-	{
-	   //int freeSpace = height - headerStack.getHeight() - myEntryBox.getHeight() - 40;
-	   //chatvStack.setHeight(height - headerStack.getHeight());
-	   //myMessageManager.setHeight(Integer.toString(freeSpace) + "px");
-	   //myEntryBox.setTop(height - myEntryBox.getHeight() - chatvStack.getAbsoluteTop() - 10);
-	   
-	   //myMessageManager.toBottom(false);
 	}
 	
 	@Override
@@ -571,6 +500,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 	@Override
 	public void userEntry() {
+		System.out.println("Clearing all unread");
 		myMessageManager.ClearUnreadAll();
 	}
 

@@ -1,12 +1,16 @@
 package com.scrollwin.client;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -17,12 +21,12 @@ import com.smartgwt.client.widgets.form.fields.events.KeyDownHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyUpEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyUpHandler;
 
-public class EntryBox extends HLayout {
+public class EntryBox extends HorizontalPanel {
 
 	private TextAreaItem messageItem = new TextAreaItem();
-	private Label infoItem = new Label();
-	private HStack imageStack = new HStack();
-	private VStack editStack = new VStack();
+	private HTML infoItem = new HTML();
+	private VerticalPanel imageStack = new VerticalPanel();
+	private VerticalPanel editStack = new VerticalPanel();
 	private DynamicForm form = new DynamicForm(); 
     private ioCallbackInterface myCallbackInterface;
     private userCallbackInterface myUserCallbackInterface;
@@ -37,46 +41,35 @@ public class EntryBox extends HLayout {
     	myCallbackInterface = callbackInterface;
     	myUserCallbackInterface = userCB;
     	
-    	setShowEdges(true);
-    	setWidth(800);
-    	setHeight(60);
-    	setBackgroundColor("#E0E0E0");
-    	setEdgeSize(3);
-        setShowShadow(true);
-		setShadowSoftness(3);
-		setShadowOffset(4);
+    	setStyleName("entryBox");
         
-    	imageStack.setWidth(40);
-    	imageStack.setAlign(Alignment.CENTER);
-    	imageStack.setPadding(8);
-    	imageStack.setBackgroundColor("#E0E0E0");
+    	imageStack.setStyleName("entryBoxPicBox");
     	
-    	infoItem.setContents("Editing message 222");
-    	infoItem.setAutoHeight();
-    	infoItem.setPadding(2);
-    	infoItem.hide();
+    	infoItem.setHTML("Editing message 222222");
+    	infoItem.setStyleName("entryBoxInfoItem");
+    	infoItem.setVisible(false);
     	messageItem.setShowTitle(false);  
         messageItem.setLength(4000);  
         messageItem.setWidth("*");
-        messageItem.setHeight("*");
+        messageItem.setHeight(45);
         
         form.setNumCols(1);
         form.setCanDragResize(true);
         form.setAutoFocus(true);
-        form.setWidth100();
-        form.setHeight100();
+        form.setWidth(744);
+        form.setHeight(50);
         form.setFields(messageItem);
         form.focusInItem(messageItem);
         form.setStyleName("blueYellow");
-        
-        addClickHandler(new ClickHandler(){
+
+        ClickHandler entryBoxClickHandler = new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				myUserCallbackInterface.userEntry();
 			}
-        });
-        
-        
+		};
+		addDomHandler(entryBoxClickHandler, ClickEvent.getType());
+		
         messageItem.addKeyUpHandler(new KeyUpHandler() {
         	@Override
         	public void onKeyUp(KeyUpEvent event) {
@@ -98,7 +91,7 @@ public class EntryBox extends HLayout {
 						messageItem.setSelectionRange(messageItem.getLength(), messageItem.getLength()); // Cursor at end
 						myCallbackInterface.messageToSendCallback(filterMessage(messageItem.getValueAsString()), myIsEditing, myEditingMessageSeq);
 						myIsEditing = false;
-						infoItem.hide();
+						infoItem.setVisible(false);
 						myEditingMessageSeq = 0;
 						messageItem.clearValue();
 	        		}
@@ -107,7 +100,7 @@ public class EntryBox extends HLayout {
 	        	if (event.getKeyName().compareTo("Escape") == 0){
 	        		if(myIsEditing){
 	        			myIsEditing = false;
-						infoItem.hide();
+						infoItem.setVisible(false);
 						myEditingMessageSeq = 0;
 						messageItem.clearValue();
 	        		}
@@ -123,20 +116,20 @@ public class EntryBox extends HLayout {
 			}
         };
         
-        editStack.addMember(infoItem);
-        editStack.addMember(form);
+        editStack.add(infoItem);
+        editStack.add(form);
         
-		addMember(imageStack);
-		addMember(editStack);
+		add(imageStack);
+		add(editStack);
     }
     
     
 
 	public void setUser(UserContainer user)
     {
-    	Img userImage = new Img(user.getAvatarURL(), 36, 36);
-    	userImage.setBorder("2px groove #808080");
-    	imageStack.addMember(userImage, 0);
+    	Image userImage = new Image(user.getAvatarURL());
+    	userImage.setStyleName("userAvatar");
+    	imageStack.add(userImage);
     }
     
     public void addAddressee(String userNick)
@@ -210,8 +203,8 @@ public class EntryBox extends HLayout {
     	messageItem.setValue(deconvertCrLf(decodedMessage));
     	myIsEditing = true;
     	myEditingMessageSeq = message.getMessageSeqId();
-    	infoItem.setContents("Édition du message <b>" + myEditingMessageSeq + "</b>. ESC pour annuler");
-    	infoItem.show();
+    	infoItem.setHTML("Édition du message <b>" + myEditingMessageSeq + "</b>. ESC pour annuler");
+    	infoItem.setVisible(true);
     	setFocus();
     }
     

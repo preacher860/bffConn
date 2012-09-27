@@ -171,8 +171,8 @@ h1 {
 
 .messageView {
 	overflow:auto;
-	height: 500px;
-	width: 784px;
+	/*height: 500px;*/
+	width: 785px;
 	position: absolute;
 	background-color: #ffffff;
 	border: 3px solid #455469;
@@ -253,6 +253,43 @@ h1 {
 	width: 60px;
 }
 
+.entryBox {
+	width: 800px;
+	height: 40px;
+	background-color: #E0E0E0;
+	border: 3px solid #455469;
+    box-shadow: 4px 4px 5px #888888;    
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.leftToolbar {
+	margin-left: 10px;
+}
+.mainPanel {
+	background-image: url('images/backgrounds/convore.jpg');
+	background-repeat: repeat;
+	min-width: 1000px;
+	min-height: 300px;
+}
+
+.entryBoxInfoItem {
+	height: auto;
+	padding: 2px;
+	font-size:11px;
+}
+
+.entryBoxPic {
+	;background-color: #B0B0B0;
+	padding: 0px;
+	border: 2px groove #808080;
+}
+
+.entryBoxPicBox {
+	background-color: #E0E0E0;
+	padding: 5px;
+	width: 50px;
+}
 .tooltipStyle {
     font-family:Verdana,Bitstream Vera Sans,sans-serif;
     font-size:11px;
