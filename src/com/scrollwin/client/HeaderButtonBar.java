@@ -20,6 +20,8 @@ public class HeaderButtonBar extends HStack{
 	private ImgButton myStatsButton = new ImgButton();
 	private ImgButton myOctopusButton = new ImgButton();
 	private ImgButton myInfoButton = new ImgButton();
+	private ImgButton myHideButton = new ImgButton();
+	private ImgButton myShowButton = new ImgButton();
 	private DynamicForm form = new DynamicForm();
 	private TextItem localItem = new TextItem();
 	private Img octopus = new Img("octopus.gif");
@@ -92,6 +94,37 @@ public class HeaderButtonBar extends HStack{
 			}
 		});
 	    
+	    myHideButton.setSize(32);  
+	    myHideButton.setShowRollOver(true);
+	    myHideButton.setShowHover(true);
+	    myHideButton.setShowDown(false);
+	    myHideButton.setSrc("back2r.png");
+	    myHideButton.setPrompt("Mode compact<br>(Ctrl-1)");
+	    myHideButton.setHoverStyle("tooltipStyle");
+	    myHideButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				myUserCallbackInterface.hideBarClicked();
+				setCompactView();
+			}
+		});
+	    
+	    myShowButton.setSize(32);  
+	    myShowButton.setShowRollOver(true);
+	    myShowButton.setShowHover(true);
+	    myShowButton.setShowDown(false);
+	    myShowButton.setSrc("fwd2r.png");
+	    myShowButton.setPrompt("Mode normal<br>(Ctrl-2)");
+	    myShowButton.setHoverStyle("tooltipStyle");
+	    myShowButton.hide();
+	    myShowButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				myUserCallbackInterface.showBarClicked();
+				setNormalView();
+			}
+		});
+	    
 	    myLocalButton.setSize(32);  
 	    myLocalButton.setShowRollOver(true);
 	    myLocalButton.setShowDown(false);
@@ -132,6 +165,8 @@ public class HeaderButtonBar extends HStack{
 	    LayoutSpacer spacer = new LayoutSpacer();
 	    spacer.setWidth(50);
 	    
+	    addMember(myHideButton);
+        addMember(myShowButton);
 	    addMember(myInfoButton);
 	    addMember(myLocalButton);
         addMember(form);
@@ -156,5 +191,15 @@ public class HeaderButtonBar extends HStack{
 	
 	public void hideOctopus() {
 		octopus.hide();
+	}
+	
+	public void setCompactView () {
+		myShowButton.show();
+		myHideButton.hide();
+	}
+	
+	public void setNormalView () {
+		myShowButton.hide();
+		myHideButton.show();
 	}
 }

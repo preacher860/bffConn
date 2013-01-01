@@ -408,6 +408,7 @@ public class IOModule {
 	
 	private void handleNewMessages(String serverResponse)
 	{
+		int Index = 0;
 		try
 		{
 			JSONObject obj;
@@ -415,28 +416,32 @@ public class IOModule {
 		    JSONArray jsonArray = jsonValue.isArray();
 		    ArrayList<MessageContainer> messageList = new ArrayList<MessageContainer>();
 		    
-		    for (int Index = 0; Index < jsonArray.size(); Index++)
+		    for (Index = 0; Index < jsonArray.size(); Index++)
 		    {
-		    	obj = jsonArray.get(Index).isObject();
-		    	Integer messageId = Integer.valueOf(obj.get("id").isString().stringValue());
-		    	Integer userId = Integer.valueOf(obj.get("user").isString().stringValue());
-		    	String messageText = obj.get("value").isString().stringValue();
-		    	String dateStamp = obj.get("date").isString().stringValue();
-		    	String timeStamp = obj.get("time").isString().stringValue();
-		    	String local = obj.get("local").isString().stringValue();
-		    	boolean deleted = Boolean.valueOf(obj.get("deleted").isString().stringValue());
-		    	int dbVersion = Integer.valueOf(obj.get("dbversion").isString().stringValue());
-		    	String stars = obj.get("stars").isString().stringValue();
-		    	
-		    	MessageContainer message = new MessageContainer(messageId, userId, messageText, 
-		    													dateStamp, timeStamp, local,
-		    													deleted, dbVersion, stars);
-		    	messageList.add(message);
+		    	try {
+			    	obj = jsonArray.get(Index).isObject();
+			    	Integer messageId = Integer.valueOf(obj.get("id").isString().stringValue());
+			    	Integer userId = Integer.valueOf(obj.get("user").isString().stringValue());
+			    	String messageText = obj.get("value").isString().stringValue();
+			    	String dateStamp = obj.get("date").isString().stringValue();
+			    	String timeStamp = obj.get("time").isString().stringValue();
+			    	String local = obj.get("local").isString().stringValue();
+			    	boolean deleted = Boolean.valueOf(obj.get("deleted").isString().stringValue());
+			    	int dbVersion = Integer.valueOf(obj.get("dbversion").isString().stringValue());
+			    	String stars = obj.get("stars").isString().stringValue();
+			    	
+			    	MessageContainer message = new MessageContainer(messageId, userId, messageText, 
+			    													dateStamp, timeStamp, local,
+			    													deleted, dbVersion, stars);
+			    	messageList.add(message);
+		    	} catch (Exception e) {
+					System.out.println("JSON exception for message at index " + Index + ": "+ e.toString());
+				}
 		    }
 		    if(messageList.size() > 0)
 		    	myCallbackInterface.messagesReceivedCallback(messageList);
 		} catch (Exception e) {
-			System.out.println("JSON exception: " + e.toString());
+			System.out.println("JSON exception at index " + Index + ": " + e.toString());
 		}
 	}
 	

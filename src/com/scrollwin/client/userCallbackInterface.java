@@ -6,6 +6,8 @@ public interface userCallbackInterface {
 	public void statsClicked();
 	public void infoClicked();
 	public void octopusClicked();
+	public void hideBarClicked();
+	public void showBarClicked();
 	public void localEntered(String local);
 	public void scrollTop(int oldest);
 	public void messageDisplayComplete();

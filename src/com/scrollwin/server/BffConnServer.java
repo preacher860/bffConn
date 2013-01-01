@@ -654,7 +654,11 @@ private int getNewestSeq(Connection conn)
   
   private String filterMessage(String message)
   {
-	Whitelist localWhitelist = Whitelist.basicWithImages().addTags("a").addAttributes("a", "href", "rel", "target");
+	Whitelist localWhitelist = Whitelist.basicWithImages();
+	
+	localWhitelist.addTags("a", "img");
+	localWhitelist.addAttributes("a", "href", "rel", "target");
+	localWhitelist.addAttributes("img", "class");
 	
 	String unescapedMessage = unescapeJson(message);
   	String cleanedMessage = Jsoup.clean(unescapedMessage, localWhitelist);
@@ -663,8 +667,8 @@ private int getNewestSeq(Connection conn)
   	
   	
 //  	System.out.println("Evil: " + message);
-//  	System.out.println("Unesc: " + unescapedMessage);
-//  	System.out.println("Clean: " + cleanedMessage);
+  	System.out.println("Unesc: " + unescapedMessage);
+  	System.out.println("Clean: " + cleanedMessage);
 //  	System.out.println("Escaped: " + escapedMessage);
   	return escapedMessage;
   }

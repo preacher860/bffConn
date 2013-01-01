@@ -187,7 +187,7 @@ public class EntryBox extends HorizontalPanel {
     		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
     			if( (item.endsWith(".jpg")) || (item.endsWith(".gif")) || (item.endsWith(".png")) ||
     				(item.endsWith(".JPG")) || (item.endsWith(".GIF")) || (item.endsWith(".PNG")))
-    				item = "<br><a href=\"" + item + "\" target=\"_blank\"><img src=\"" + item + "\" height=200/></a><br>";
+    				item = "<br><a href=\"" + item + "\" target=\"_blank\"><img class=\"embeddedimage\" src=\"" + item + "\" /></a><br>";
     			else
     				item = "<a href=\"" + item + "\" target=\"_blank\">lien</a>";
     		}

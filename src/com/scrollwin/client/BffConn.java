@@ -52,7 +52,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	private static final int MSG_INITIAL_RTRV = 200;
+	private static final int MSG_INITIAL_RTRV = 20;
 	private static final int MSG_OLD_FETCH_NUM = 100;
 	
 	DockLayoutPanel mainDockPanel = new DockLayoutPanel(Unit.PX);
@@ -66,6 +66,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private Integer myCurrentMode = MODE_INIT_S1;
 	private Timer myRefreshTimer;
 	private Timer myFaviconTimer;
+	private Timer myResizeTimer;
 	private boolean myRuntimeDataRcvd = false;
 	private boolean myUserDataRcvd = false;
 	private UserTileDisplay myUserTileDisplay = new UserTileDisplay(this);
@@ -73,10 +74,11 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private EntryBox myEntryBox = new EntryBox(this, this);
 	private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
 	private MessageView myMessageManager = new MessageView(this);
-	
+	private Img headerImage;
 	private boolean faviconAlert = false;
 	private int newestDisplayedWhenLostVisibility = 0;
 	private String mySessionLocal = "";
+	private boolean wideView = true;
 	
 	private Timer myOctoTimer;
 	private OctoObject OctoArray[] = new OctoObject[5];
@@ -101,13 +103,13 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 		mainDockPanel.setStyleName("mainPanel");
 		
-        Img headerImage = new Img("bffConnLogo4.png", 200, 76);
+        headerImage = new Img("bffConnLogo4.png", 200, 76);
         headerShadow.setHeight(76);
         headerShadow.setWidth100();
         headerShadow.setBackgroundImage("top2.png");
         headerShadow.setBackgroundRepeat(BkgndRepeat.REPEAT_X);
         headerShadow.addMember(headerImage);
-        
+                
         LayoutSpacer toolbarSpacer = new LayoutSpacer();
         toolbarSpacer.setHeight(15);
         leftToolbarStack.setStyleName("leftToolbar");
@@ -139,15 +141,20 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         RootLayoutPanel.get().setStyleName("mainPanel");
         
         //Window.enableScrolling(false);
-        //adjustComponentsSize(Window.getClientHeight());
         
         Window.addResizeHandler(new ResizeHandler() {
-
 			 public void onResize(ResizeEvent event) {
-		
+				 myResizeTimer.schedule(500);
 			 }
-			});
+		});
         
+        myResizeTimer = new Timer() {
+        	@Override
+			public void run() {
+        		myMessageManager.toBottom(false);
+        	}
+        };
+        	
         myOctoTimer = new Timer() {
         	@Override
 			public void run() {
@@ -363,6 +370,20 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 							ne.preventDefault();
 							ne.stopPropagation();
 						}
+						else if(ne.getKeyCode()=='1')
+						{
+							hideBarClicked();
+							event.consume();
+							ne.preventDefault();
+							ne.stopPropagation();
+						}
+						else if(ne.getKeyCode()=='2')
+						{
+							showBarClicked();
+							event.consume();
+							ne.preventDefault();
+							ne.stopPropagation();
+						}
 					}
 				} 
 			} 
@@ -500,7 +521,6 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 	@Override
 	public void userEntry() {
-		System.out.println("Clearing all unread");
 		myMessageManager.ClearUnreadAll();
 	}
 
@@ -517,19 +537,35 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 	@Override
 	public void superOctopusOnTyped() {
-		for(OctoObject octo:OctoArray){
-			octo.showOcto();
-		}
-		myOctoTimer.scheduleRepeating(50);
+		//for(OctoObject octo:OctoArray){
+		//	octo.showOcto();
+		//}
+		//myOctoTimer.scheduleRepeating(50);
 	}
 
 	@Override
 	public void superOctopusOffTyped() {
-		for(OctoObject octo:OctoArray){
-			octo.hideOcto();
-		}
-		myOctoTimer.cancel();
+		//for(OctoObject octo:OctoArray){
+		//	octo.hideOcto();
+		//}
+		//myOctoTimer.cancel();
 
 		
+	}
+
+	@Override
+	public void hideBarClicked() {
+		mainDockPanel.setWidgetSize(leftToolbarStack, 35);
+		leftToolbarStack.setVisible(false);
+		headerImage.hide();
+		myHeaderButtonBar.setCompactView();
+	}
+
+	@Override
+	public void showBarClicked() {
+		mainDockPanel.setWidgetSize(leftToolbarStack, 240);
+		leftToolbarStack.setVisible(true);
+		headerImage.show();
+		myHeaderButtonBar.setNormalView();
 	}
 }
