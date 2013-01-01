@@ -51,6 +51,7 @@ public class MessageViewElementNative extends HorizontalPanel{
 		myMessageOriginatingUser = user.getNick();
 		myMessage = message;
 		myUser = myself;
+		String myEnhancedMessage = "";
 		
 		// If message hidden (deleted), no need to perform all the stuff, return immediately
 		if (myMessage.isMessageDeleted()){
@@ -60,6 +61,7 @@ public class MessageViewElementNative extends HorizontalPanel{
 		
 		setupStarred(myMessage);
 		forMe = isMessageForLoggedUser(message, myself);
+		myEnhancedMessage = enhanceMessage(myMessage.getMessage());
 		
 		setStyleName("messageViewElement");
 
@@ -121,7 +123,7 @@ public class MessageViewElementNative extends HorizontalPanel{
 			infoLabelContents += " - " + message.getMessageLocal();
 		userInfoLabel.setHTML(infoLabelContents);
 
-		userMessagePane.setHTML(message.getMessage());
+		userMessagePane.setHTML(myEnhancedMessage);
 		
 		infoPane.add(userInfoLabel);
 		infoPane.add(iconPane);
@@ -283,11 +285,11 @@ public class MessageViewElementNative extends HorizontalPanel{
 	}
 	
 	public void updateMessage(MessageContainer message){
-		myMessage = message;
+		String enhancedMessage = enhanceMessage(message.getMessage());
+		System.out.println("Updating message " + message.getMessageSeqId());
+		userMessagePane.setHTML(enhancedMessage);
 		
-		userMessagePane.setHTML(message.getMessage());
-		
-		if (myMessage.isMessageDeleted())
+		if (message.isMessageDeleted())
 			setVisible(false);
 		
 		forMe = isMessageForLoggedUser(message, myUser);
@@ -322,4 +324,55 @@ public class MessageViewElementNative extends HorizontalPanel{
 		myUnread = state;
 		setUserPaneColor();
 	}
+	
+	public String enhanceMessage(String Message)
+    {
+    	String outputMessage = "";
+    	int token = 0;
+    	
+    	// Split the message in tokens (separator is space) an try to locate URLs
+    	String [] parts = Message.split("\\s+");
+    	
+    	// Check if the message is targeted at someone (
+    	for(int tok = 0; tok < parts.length; tok++) {
+    		if(parts[token].startsWith("@")){
+    			if(token > 0)
+    				outputMessage +=", ";
+
+    			outputMessage += "<b>" + parts[token] + "</b>";
+    			token++;
+    		} else {
+    			if(token > 0)
+    				outputMessage += "<b> > </b>";
+    			break;
+    		}
+    	}
+    	
+    	// Look for URLs and encapsulate them to img or href
+    	for(int tok = token; tok < parts.length; tok++)
+    	{
+    		String item = parts[tok];
+    		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
+    			if( (item.endsWith(".jpg")) || (item.endsWith(".gif")) || (item.endsWith(".png")) ||
+    				(item.endsWith(".JPG")) || (item.endsWith(".GIF")) || (item.endsWith(".PNG")))
+    				item = "<br><a href=\"" + item + "\" target=\"_blank\"><img class=\"embeddedimage\" src=\"" + item + "\" /></a><br>";
+    			else if(item.contains("www.youtube.com")){
+    				int paramIndex = item.indexOf("v=") + 2;
+    				String videoId = item.substring(paramIndex, item.length());
+    				System.out.println("Youtube embed detected, param is " + item.substring(paramIndex, item.length()));
+    				item = "<iframe class=\"youtube-player\" type=\"text/html\" width=\"480\" height=\"285\" " +
+    						"src=\"https://www.youtube.com/embed/" + videoId + "\" frameborder=\"0\"></iframe>";
+    				System.out.println("Embedded youtube is " + item);
+
+    			}
+    			else{
+    				item = "<a href=\"" + item + "\" target=\"_blank\">lien</a>";
+    				System.out.println("Found a link, encapsulated to " + item);
+    			}
+    		}
+    		outputMessage += item + " ";
+    	}
+   	
+    	return outputMessage;
+    }
 }

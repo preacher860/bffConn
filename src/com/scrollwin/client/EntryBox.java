@@ -160,40 +160,9 @@ public class EntryBox extends HorizontalPanel {
     	if(Message.endsWith("\n"))
     		Message = Message.substring(0, Message.length() - 1);
     	
-    	// Split the message in tokens (separator is space) an try to locate URLs
     	// Convert CrLf to HTML linefeeds before the split because \n\r are considered 
     	// as whitespace by the regex.
-    	String [] parts = convertCrLf(Message).split("\\s+");
-    	
-    	// Check if the message is targeted at someone (
-    	for(int tok = 0; tok < parts.length; tok++) {
-    		if(parts[token].startsWith("@")){
-    			if(token > 0)
-    				outputMessage +=", ";
-
-    			outputMessage += "<b>" + parts[token] + "</b>";
-    			token++;
-    		} else {
-    			if(token > 0)
-    				outputMessage += "<b> > </b>";
-    			break;
-    		}
-    	}
-    	
-    	// Look for URLs and encapsulate them to img or href
-    	for(int tok = token; tok < parts.length; tok++)
-    	{
-    		String item = parts[tok];
-    		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
-    			if( (item.endsWith(".jpg")) || (item.endsWith(".gif")) || (item.endsWith(".png")) ||
-    				(item.endsWith(".JPG")) || (item.endsWith(".GIF")) || (item.endsWith(".PNG")))
-    				item = "<br><a href=\"" + item + "\" target=\"_blank\"><img class=\"embeddedimage\" src=\"" + item + "\" /></a><br>";
-    			else
-    				item = "<a href=\"" + item + "\" target=\"_blank\">lien</a>";
-    		}
-    		outputMessage += item + " ";
-    	}
-   	
+    	outputMessage = convertCrLf(Message);
     	return escapeJson(outputMessage);
     }
     
