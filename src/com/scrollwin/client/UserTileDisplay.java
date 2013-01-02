@@ -56,7 +56,7 @@ public class UserTileDisplay extends VStack {
 		
 		titleLabel.setWidth100();
 		titleLabel.setHeight(30);
-		titleLabel.setContents("<b>En ligne<b>");
+		titleLabel.setContents("En ligne");
 		//titleLabel.setAlign(Alignment.CENTER);
 		titleLabel.setPadding(5);
 		titleLabel.setStyleName("myTitleBox");

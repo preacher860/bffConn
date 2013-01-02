@@ -171,10 +171,9 @@ public class IOModule {
 		String postData = "request_mode=get_messages";
 		postData += "&start_point=" + seqId;
 		if(num.intValue() > 0)
-			postData += "&end_point=" + seqId + num;
+			postData += "&end_point=" + (seqId + num);
 		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
 		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
-		
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		try {
@@ -203,7 +202,8 @@ public class IOModule {
 	{
 		String url = urlPrefix + servletName; 
 		url += "?rnd_value=" + Random.nextInt(400000000);
-		
+	
+		System.out.println("Requesting messages by DB version " + dbVersion);
 		String postData = "request_mode=get_messages_by_db";
 		postData += "&db_version=" + dbVersion;
 		postData += "&user_id=" + RuntimeData.getInstance().getUserId();

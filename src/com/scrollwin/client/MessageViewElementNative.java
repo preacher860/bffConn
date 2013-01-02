@@ -40,6 +40,7 @@ public class MessageViewElementNative extends HorizontalPanel{
 	private boolean starred = false;
 	private boolean myUnread = false;
 	private boolean forMe = false;
+	private boolean myIconBarHovered = false; 
 	private userCallbackInterface myUserCallbackInterface;
 	private String myMessageOriginatingUser;
 	private MessageContainer myMessage = null;
@@ -162,20 +163,20 @@ public class MessageViewElementNative extends HorizontalPanel{
 		MouseOverHandler starMouseOverHandler = new MouseOverHandler(){ 
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-			if(!starred){
-				starOverIcon.setVisible(true);
-				starIcon.setVisible(false);
-			}
+				if(!starred){
+					starOverIcon.setVisible(true);
+					starIcon.setVisible(false);
+				}
 		} };
 		starStack.addDomHandler(starMouseOverHandler, MouseOverEvent.getType());
 		
 		MouseOutHandler starMouseOutHandler = new MouseOutHandler(){ 
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
-			if(!starred){
-				starOverIcon.setVisible(false);
-				starIcon.setVisible(true);
-			}
+				if(!starred){
+					starOverIcon.setVisible(false);
+					starIcon.setVisible(true);
+				}
 		} };
 		starStack.addDomHandler(starMouseOutHandler, MouseOutEvent.getType());
 		
@@ -240,6 +241,7 @@ public class MessageViewElementNative extends HorizontalPanel{
 		MouseOverHandler messageMouseOverHandler = new MouseOverHandler(){
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
+				myIconBarHovered = true;
 				starStack.setVisible(true);
 				deleteStack.setVisible(true);
 				editStack.setVisible(true);
@@ -251,6 +253,7 @@ public class MessageViewElementNative extends HorizontalPanel{
 		MouseOutHandler messageMouseOutHandler = new MouseOutHandler(){
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
+				myIconBarHovered = false;
 				if(!starred)
 					starStack.setVisible(false);
 				deleteStack.setVisible(false);
@@ -285,23 +288,21 @@ public class MessageViewElementNative extends HorizontalPanel{
 	}
 	
 	public void updateMessage(MessageContainer message){
-		String enhancedMessage = enhanceMessage(message.getMessage());
-		System.out.println("Updating message " + message.getMessageSeqId());
-		userMessagePane.setHTML(enhancedMessage);
-		
+		myMessage = message;
+		userMessagePane.setHTML(enhanceMessage(message.getMessage()));
 		if (message.isMessageDeleted())
 			setVisible(false);
 		
 		forMe = isMessageForLoggedUser(message, myUser);
 		setUserPaneColor();
-		setupStarred(myMessage);
+		setupStarred(message);
 	}
 	
 	private void setupStarred(MessageContainer message)
 	{
-		if(myMessage.getMessageStars().length() > 0){
+		if(message.getMessageStars().length() > 0){
 			String prompt = "";
-			ArrayList<String> nickList= UserManager.getInstance().idListToArray(myMessage.getMessageStars()); 
+			ArrayList<String> nickList= UserManager.getInstance().idListToArray(message.getMessageStars()); 
 			for(String nick:nickList)
 				prompt += nick + "\n";
 			starStack.setTitle(prompt.substring(0, prompt.length() - 1)); // Crappy hack to remove trailing newline
@@ -312,7 +313,10 @@ public class MessageViewElementNative extends HorizontalPanel{
 			starred = true;
 		} else{
 			starStack.setTitle("");
-			starStack.setVisible(false);
+			if (myIconBarHovered)
+				starStack.setVisible(true);
+			else
+				starStack.setVisible(false);
 			starLabel.setText("Étoiler");
 			starIcon.setVisible(true);
 			starOverIcon.setVisible(false);
@@ -359,10 +363,10 @@ public class MessageViewElementNative extends HorizontalPanel{
     			else if(item.contains("www.youtube.com")){
     				int paramIndex = item.indexOf("v=") + 2;
     				String videoId = item.substring(paramIndex, item.length());
-    				System.out.println("Youtube embed detected, param is " + item.substring(paramIndex, item.length()));
+    				//System.out.println("Youtube embed detected, param is " + item.substring(paramIndex, item.length()));
     				item = "<iframe class=\"youtube-player\" type=\"text/html\" width=\"480\" height=\"285\" " +
     						"src=\"https://www.youtube.com/embed/" + videoId + "\" frameborder=\"0\"></iframe>";
-    				System.out.println("Embedded youtube is " + item);
+    				//System.out.println("Embedded youtube is " + item);
 
     			}
     			else{

@@ -90,6 +90,7 @@ h1 {
 	font-family:Verdana,Bitstream Vera Sans,sans-serif;
     color:black;
     font-size:14px;
+    font-weight: bold;
 }
 .messageBoxHover {
 	border-style:solid;
@@ -295,6 +296,10 @@ h1 {
   max-height: 200px;
   width: expression(this.width > 600 ? "600px" : true);
   height: expression(this.height > 200 ? "200px" : true);
+}
+
+.motd {
+	font-size:16px;	
 }
 
 .tooltipStyle {

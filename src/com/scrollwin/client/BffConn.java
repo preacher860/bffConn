@@ -52,8 +52,8 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	private static final int MSG_INITIAL_RTRV = 20;
-	private static final int MSG_OLD_FETCH_NUM = 100;
+	private static final int MSG_INITIAL_RTRV = 200;
+	private static final int MSG_OLD_FETCH_NUM = 200;
 	
 	DockLayoutPanel mainDockPanel = new DockLayoutPanel(Unit.PX);
 	private VLayout chatvStack = new VLayout();
@@ -75,6 +75,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
 	private MessageView myMessageManager = new MessageView(this);
 	private Img headerImage;
+	private motd myMotd = new motd();
 	private boolean faviconAlert = false;
 	private int newestDisplayedWhenLostVisibility = 0;
 	private String mySessionLocal = "";
@@ -128,6 +129,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         
         headerStack.addMember(headerImage);
         headerStack.addMember(headerSpacer);
+        //headerStack.addMember(myMotd);
         headerStack.addMember(myHeaderButtonBar);
         
         myHeaderButtonBar.setLocal(mySessionLocal);
@@ -208,8 +210,10 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	      			ioModule.GetUserMessages(start_point, MSG_INITIAL_RTRV);
 	      		} 
 	      		else if (myCurrentMode == MODE_RUNNING) {
+	      			//System.out.println("Db version: " + RuntimeData.getInstance().getDbVersion() + "  Srv Db version: " + RuntimeData.getInstance().getServerDbVersion());
 	      			if(RuntimeData.getInstance().getDbVersion() < RuntimeData.getInstance().getServerDbVersion()){
-	      				ioModule.GetUserMessagesByVersion(RuntimeData.getInstance().getDbVersion());
+	      				System.out.println("DB version behind, updating to " + RuntimeData.getInstance().getServerDbVersion());
+	      				ioModule.GetUserMessagesByVersion(RuntimeData.getInstance().getServerDbVersion());
 	      			}
 	      			
 	      			if(RuntimeData.getInstance().getDbVersionUsers() < RuntimeData.getInstance().getServerDbVersionUsers()) {
@@ -249,7 +253,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 		myUserDataRcvd = true;
 		myUserTileDisplay.UpdateOnlineUsers(UserManager.getInstance());
 		RuntimeData.getInstance().setDbVersionUsers(RuntimeData.getInstance().getRequestedDbVersionUsers());
-		System.out.println("Users updated up to db version " + RuntimeData.getInstance().getDbVersionUsers());
+		//System.out.println("Users updated up to db version " + RuntimeData.getInstance().getDbVersionUsers());
 	}
 
 	public void checkServerVersion() {
