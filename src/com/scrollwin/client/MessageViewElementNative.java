@@ -8,6 +8,14 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -289,10 +297,11 @@ public class MessageViewElementNative extends HorizontalPanel{
 	
 	public void updateMessage(MessageContainer message){
 		myMessage = message;
-		userMessagePane.setHTML(enhanceMessage(message.getMessage()));
+		
 		if (message.isMessageDeleted())
 			setVisible(false);
 		
+		userMessagePane.setHTML(enhanceMessage(message.getMessage()));
 		forMe = isMessageForLoggedUser(message, myUser);
 		setUserPaneColor();
 		setupStarred(message);
@@ -329,7 +338,7 @@ public class MessageViewElementNative extends HorizontalPanel{
 		setUserPaneColor();
 	}
 	
-	public String enhanceMessage(String Message)
+	private String enhanceMessage(String Message)
     {
     	String outputMessage = "";
     	int token = 0;
@@ -361,17 +370,21 @@ public class MessageViewElementNative extends HorizontalPanel{
     				(item.endsWith(".JPG")) || (item.endsWith(".GIF")) || (item.endsWith(".PNG")))
     				item = "<br><a href=\"" + item + "\" target=\"_blank\"><img class=\"embeddedimage\" src=\"" + item + "\" /></a><br>";
     			else if(item.contains("www.youtube.com")){
-    				int paramIndex = item.indexOf("v=") + 2;
-    				String videoId = item.substring(paramIndex, item.length());
-    				//System.out.println("Youtube embed detected, param is " + item.substring(paramIndex, item.length()));
-    				item = "<iframe class=\"youtube-player\" type=\"text/html\" width=\"480\" height=\"285\" " +
-    						"src=\"https://www.youtube.com/embed/" + videoId + "\" frameborder=\"0\"></iframe>";
-    				//System.out.println("Embedded youtube is " + item);
-
+    				int paramIndex = item.indexOf("v=");
+    				if(paramIndex >= 0) {
+    					// Youtube video (has v=)
+    					String videoId = item.substring(paramIndex + 2, item.length());
+    					item = "<br><iframe class=\"youtube-player\" type=\"text/html\" width=\"384\" height=\"231\" " +
+    						   "src=\"https://www.youtube.com/embed/" + videoId + "\" frameborder=\"0\"></iframe><br>";
+    				} else {
+    					// Link to youtube but not an embeddable video
+    					item = encapsulateLink(item);
+    				}
     			}
-    			else{
-    				item = "<a href=\"" + item + "\" target=\"_blank\">lien</a>";
-    				System.out.println("Found a link, encapsulated to " + item);
+    			else {
+    				// It's a link to some random site
+    				//GetPage(item);
+    				item = encapsulateLink(item);
     			}
     		}
     		outputMessage += item + " ";
@@ -379,4 +392,52 @@ public class MessageViewElementNative extends HorizontalPanel{
    	
     	return outputMessage;
     }
+	
+	private String encapsulateLink(String link)
+	{
+		String encapsulatedLink;
+		
+		// Cool-looking but does not quite work cross-browser...
+		//encapsulatedLink  = "<div class=\"linkdiv\">";
+		//encapsulatedLink += "<iframe class=\"linkiframe\" scrolling=\"no\" src=\"" + link + "\"></iframe>";
+	    //encapsulatedLink += "<a class=\"linkanchor\" href=\"http://www.src.ca\"></a>";
+	    //encapsulatedLink += "</div>";
+	    
+		RegExp regExp = RegExp.compile("https?://([a-zA-Z0-9.]+)");
+		MatchResult matcher = regExp.exec(link);
+		boolean matchFound = (matcher != null);
+
+		// Matched regex in group0, subex in group one (the hostname)
+		if(matchFound && matcher.getGroupCount() == 2) {
+			encapsulatedLink = "<a href=\"" + link + "\" target=\"_blank\">" + matcher.getGroup(1) + "</a>";
+		} else
+			encapsulatedLink = "<a href=\"" + link + "\" target=\"_blank\">lien</a>";
+	    return encapsulatedLink;
+	}
+	
+	private void GetPage(String pageUrl)
+	{
+		String postData = "dummy";
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, pageUrl);
+		try {
+			//builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+			builder.sendRequest(postData, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					// Couldn't connect to server (could be timeout, SOP violation, etc.)
+				}
+	
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode()) {
+							System.out.println("GetPage successful, data size: " + response.getText().length());
+					} 
+					else
+						System.out.println("GetPage request response error: " + response.getStatusCode());
+				}
+			});
+		} catch (RequestException e) {
+			Window.alert("Server error: " + e);
+			// Couldn't connect to server        
+		}
+	}
 }

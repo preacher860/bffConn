@@ -363,8 +363,10 @@ public class IOModule {
 						handleSessionReceived(response.getText());
 					else if (302 == response.getStatusCode())
 						System.out.println("Request response 302. Text: " + response.getText());
-					else
+					else {
 						System.out.println("Request response error: " + response.getStatusCode());
+						handleAccessForbidden();
+					}
 				}
 			});
 		} catch (RequestException e) {

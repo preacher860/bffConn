@@ -14,6 +14,7 @@ import com.smartgwt.client.types.AutoFitWidthApproach;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.SortDirection;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.ImgButton;
 import com.smartgwt.client.widgets.Label;
@@ -71,6 +72,8 @@ public class StatsWin extends Window {
 		statsGrid.setWrapCells(true);
 		statsGrid.setCellHeight(34);
 		statsGrid.setScrollbarSize(0); // There has to be a better way...
+		statsGrid.setSortField(1); // Default sort by num of messages
+		statsGrid.setSortDirection(SortDirection.DESCENDING);
 				
 		ListGridField avatarField = new ListGridField("avatarURL", Canvas.imgHTML("people.png"), 50);  
         ListGridField messagesField = new ListGridField("messages", Canvas.imgHTML("msg.png"), 50); 

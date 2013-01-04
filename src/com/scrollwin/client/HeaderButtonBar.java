@@ -32,11 +32,11 @@ public class HeaderButtonBar extends HStack{
 		setWidth(200);
         setDefaultLayoutAlign(Alignment.CENTER);
         setDefaultLayoutAlign(VerticalAlignment.BOTTOM);
-        setHeight(76);
+        setHeight(26);
         
-        octopus.setWidth(120);
-        octopus.setHeight(76);
-        octopus.hide();
+        //octopus.setWidth(120);
+        //octopus.setHeight(76);
+        //octopus.hide();
         
 		myLogoutButton.setSize(32);  
 	    myLogoutButton.setShowRollOver(true);
@@ -174,7 +174,7 @@ public class HeaderButtonBar extends HStack{
         addMember(myOctopusButton);
         addMember(myLogoutButton);
         addMember(spacer);
-        addMember(octopus);
+        //addMember(octopus);
 	}
 	
 	public void setLocal(String local){

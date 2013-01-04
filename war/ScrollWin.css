@@ -302,6 +302,36 @@ h1 {
 	font-size:16px;	
 }
 
+.linkiframe {
+	width:800px;
+	height:520px;
+	border:none;
+	overflow:hidden;
+}
+.linkdiv {
+	width:800px;
+	height:520px;
+	position:relative;
+	display:table;
+	border:solid;
+	overflow:hidden;
+	-moz-transform:scale(0.2);
+	-moz-transform-origin:0 0;
+	-o-transform:scale(0.2);
+	-o-transform-origin:0 0;
+	-webkit-transform:scale(0.2);
+	-webkit-transform-origin:0 0;
+}
+
+.linkanchor {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow:hidden;
+}
+    
 .tooltipStyle {
     font-family:Verdana,Bitstream Vera Sans,sans-serif;
     font-size:11px;
