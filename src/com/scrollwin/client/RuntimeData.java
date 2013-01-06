@@ -11,6 +11,7 @@ public class RuntimeData {
 	private int serverSeqId = 0;
 	private int userId;
 	private String sessionId;
+	private String motd;
 	
 	
 	private static final RuntimeData instance = new RuntimeData();
@@ -27,8 +28,15 @@ public class RuntimeData {
 		newestSeqId = seqId;
 		dbVersion = dbVer;
 		serverVersion = serverVer;
+		motd = "";
 	}
 
+	public String getMotd() {
+		return motd;
+	}
+	public void setMotd(String motd) {
+		this.motd = motd;
+	}
 	public Integer getNewestSeqId() {
 		return newestSeqId;
 	}

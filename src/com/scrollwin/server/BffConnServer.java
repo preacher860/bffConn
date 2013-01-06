@@ -553,6 +553,10 @@ private int getNewestSeq(Connection conn)
 	      conn.commit();
 	      conn.close();
 	      
+	      // Check if this message is an MOTD 
+	      if(Message.toLowerCase().startsWith("@mdj"))
+	    	  setMOTD(Message.substring(4, Message.length()).trim());
+	      
 	      incrementUserDbVersion();  // New msg means updated user stats
 	  } catch(SQLException e) {
           System.err.println("Mysql Statement Error in ProcessNewMessage");
@@ -714,11 +718,13 @@ private int getNewestSeq(Connection conn)
     	  String seq = result.getString(1);
     	  String dbVersion = result.getString(2);
     	  String dbVersionUsers = result.getString(3);
+    	  String motd = result.getString(4);
     	  
     	  out.println("     \"serverVersion\":\"" + myVersion + "\",");
     	  out.println("     \"newestSeq\":\"" + seq + "\",");
     	  out.println("     \"dbVersion\":\"" + dbVersion + "\",");
-    	  out.println("     \"dbVersionUsers\":\"" + dbVersionUsers + "\"");
+    	  out.println("     \"dbVersionUsers\":\"" + dbVersionUsers + "\",");
+    	  out.println("     \"motd\":\"" + motd + "\"");
           out.println("  }");
 
 	      select.close();
@@ -827,6 +833,7 @@ private int getNewestSeq(Connection conn)
   private void updateSessionLocal(String sessionId, String local) {
 	  
 	  String query = "UPDATE sessions SET local=? where id=?";
+	  local = filterMessage(local);
 	  try {
 		  Connection conn = this.getConn();
 		  PreparedStatement update = conn.prepareStatement(query);
@@ -1037,6 +1044,25 @@ private int getNewestSeq(Connection conn)
 	  } catch(SQLException e) {
 	      System.err.println("Mysql Statement Error");
 	      e.printStackTrace();
+	  }
+  }
+ 
+  private void setMOTD(String Motd)
+  {
+	  if (Motd.length() > 255 )
+		  	Motd = Motd.substring(0, 255);
+	  
+	  String query = "UPDATE runtimedata SET motd=?";
+	  try {
+		  Connection conn = this.getConn();
+	      PreparedStatement update = conn.prepareStatement(query);
+	      update.setString(1, Motd);
+	      update.executeUpdate();
+	      update.close();
+	      conn.close();
+	  } catch(SQLException e) {
+          System.err.println("Mysql Statement Error: " + query);
+          e.printStackTrace();
 	  }
   }
   

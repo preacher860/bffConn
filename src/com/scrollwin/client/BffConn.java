@@ -18,17 +18,18 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
-
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.BkgndRepeat;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.Img;
 
 import com.smartgwt.client.widgets.layout.HStack;
@@ -57,9 +58,11 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	
 	DockLayoutPanel mainDockPanel = new DockLayoutPanel(Unit.PX);
 	private VLayout chatvStack = new VLayout();
-	private HStack headerStack = new HStack();
+	//private HStack headerStack = new HStack();
+	private HorizontalPanel headerStack = new HorizontalPanel();
 	private VStack leftToolbarStack = new VStack();
-	private VStack headerShadow = new VStack();
+	//private VStack headerShadow = new VStack();
+	private VerticalPanel topToolbarStack = new VerticalPanel();
 	private DockLayoutPanel chatDockPanel = new DockLayoutPanel(Unit.EM);
 	
 	private IOModule ioModule = new IOModule(this);
@@ -74,13 +77,13 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private EntryBox myEntryBox = new EntryBox(this, this);
 	private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
 	private MessageView myMessageManager = new MessageView(this);
-	private Img headerImage;
+	private Image headerImage = new Image();
 	private motd myMotd = new motd();
 	private boolean faviconAlert = false;
 	private int newestDisplayedWhenLostVisibility = 0;
 	private String mySessionLocal = "";
 	private boolean wideView = true;
-	
+	private Label motdLabel= new Label("Message of the day");
 	private Timer myOctoTimer;
 	private OctoObject OctoArray[] = new OctoObject[5];
 	
@@ -104,37 +107,30 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 		mainDockPanel.setStyleName("mainPanel");
 		
-        headerImage = new Img("bffConnLogo4.png", 200, 76);
-        headerShadow.setHeight(76);
-        headerShadow.setWidth100();
-        headerShadow.setBackgroundImage("top2.png");
-        headerShadow.setBackgroundRepeat(BkgndRepeat.REPEAT_X);
-        headerShadow.addMember(headerImage);
-                
+		headerImage.setUrl("images/bffConnLogo4.png");
+        
         LayoutSpacer toolbarSpacer = new LayoutSpacer();
         toolbarSpacer.setHeight(15);
         leftToolbarStack.setStyleName("leftToolbar");
         leftToolbarStack.addMember(myUserTileDisplay);
         leftToolbarStack.addMember(toolbarSpacer);
         leftToolbarStack.addMember(myWaitBox);
+
+        motdLabel.setHeight(50);
+        motdLabel.setWidth(150);
+        topToolbarStack.add(myMotd);
+        topToolbarStack.add(myHeaderButtonBar);
+        topToolbarStack.setCellHeight(myMotd, "40px");
+        topToolbarStack.setCellHeight(myHeaderButtonBar, "32px");
+        topToolbarStack.setCellVerticalAlignment(myMotd, HasVerticalAlignment.ALIGN_BOTTOM);
         
-        LayoutSpacer headerSpacer = new LayoutSpacer();
-        headerSpacer.setWidth(40);
-        headerStack.setWidth100();
-        headerStack.setDefaultLayoutAlign(Alignment.CENTER);
-        headerStack.setDefaultLayoutAlign(VerticalAlignment.BOTTOM);
-        headerStack.setHeight(74);
-        headerStack.setBackgroundImage("top2.png");
-        headerStack.setBackgroundRepeat(BkgndRepeat.REPEAT_X);
-        
-        headerStack.addMember(headerImage);
-        headerStack.addMember(headerSpacer);
-        //headerStack.addMember(myMotd);
-        headerStack.addMember(myHeaderButtonBar);
-        
+        headerStack.setStyleName("headerStack");
+        headerStack.add(headerImage);
+        headerStack.add(topToolbarStack);
+        headerStack.setCellWidth(headerImage, "240px");
         myHeaderButtonBar.setLocal(mySessionLocal);
         
-        mainDockPanel.addNorth(headerStack, 80);
+        mainDockPanel.addNorth(headerStack, 76);
         mainDockPanel.addWest(leftToolbarStack, 240);
         mainDockPanel.addSouth(myEntryBox,110);
         mainDockPanel.add(myMessageManager);
@@ -245,6 +241,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	public void runtimeDataReceivedCallback() {
 		myRuntimeDataRcvd = true;
 		checkServerVersion();
+		myMotd.updateMotd(RuntimeData.getInstance().getMotd());
 	}
 
 	@Override
@@ -561,7 +558,8 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	public void hideBarClicked() {
 		mainDockPanel.setWidgetSize(leftToolbarStack, 35);
 		leftToolbarStack.setVisible(false);
-		headerImage.hide();
+		headerImage.setVisible(false);
+		headerStack.setCellWidth(headerImage, "40px");
 		myHeaderButtonBar.setCompactView();
 	}
 
@@ -569,7 +567,8 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	public void showBarClicked() {
 		mainDockPanel.setWidgetSize(leftToolbarStack, 240);
 		leftToolbarStack.setVisible(true);
-		headerImage.show();
+		headerImage.setVisible(true);
+		headerStack.setCellWidth(headerImage, "240px");
 		myHeaderButtonBar.setNormalView();
 	}
 }

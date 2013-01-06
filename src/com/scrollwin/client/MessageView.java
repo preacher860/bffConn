@@ -4,16 +4,9 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.widgets.events.ScrolledEvent;
-import com.smartgwt.client.widgets.events.ScrolledHandler;
-import com.smartgwt.client.widgets.layout.VStack;
 
 public class MessageView extends ScrollPanel {
 	

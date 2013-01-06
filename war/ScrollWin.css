@@ -299,7 +299,11 @@ h1 {
 }
 
 .motd {
-	font-size:16px;	
+	font-size:20px;
+	height: 24px;
+	width: 800px;
+	text-align:center;
+	overflow: hidden;
 }
 
 .linkiframe {
@@ -332,6 +336,15 @@ h1 {
 	overflow:hidden;
 }
     
+.headerStack {
+	background-image: url('images/top.png');
+	background-repeat: repeat;
+	width: 100%;
+	height: 90px;
+	border: none;
+}
+
+
 .tooltipStyle {
     font-family:Verdana,Bitstream Vera Sans,sans-serif;
     font-size:11px;
