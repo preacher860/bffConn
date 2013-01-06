@@ -25,7 +25,16 @@ public class HeaderButtonBar extends HStack{
 	private DynamicForm form = new DynamicForm();
 	private TextItem localItem = new TextItem();
 	private Img octopus = new Img("octopus.gif");
+	private boolean allowCompactMode = true;
 	
+	public boolean isAllowCompactMode() {
+		return allowCompactMode;
+	}
+
+	public void setAllowCompactMode(boolean allowCompactMode) {
+		this.allowCompactMode = allowCompactMode;
+	}
+
 	public HeaderButtonBar(userCallbackInterface callbackInterface){
 		myUserCallbackInterface = callbackInterface;
 		
@@ -194,8 +203,10 @@ public class HeaderButtonBar extends HStack{
 	}
 	
 	public void setCompactView () {
-		myShowButton.show();
-		myHideButton.hide();
+		if(allowCompactMode) {
+			myShowButton.show();
+			myHideButton.hide();
+		}
 	}
 	
 	public void setNormalView () {

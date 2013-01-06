@@ -148,7 +148,6 @@ public class EntryBox extends HorizontalPanel {
     public String filterMessage(String Message)
     {
     	String outputMessage = "";
-    	int token = 0;
     	
     	// remove trailing crlf "submit", it's not part of the message
     	if(Message.endsWith("\n"))

@@ -25,16 +25,10 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.BkgndRepeat;
-import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Img;
 
-import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
-import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.layout.VStack;
 
 
@@ -57,11 +51,8 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private static final int MSG_OLD_FETCH_NUM = 200;
 	
 	DockLayoutPanel mainDockPanel = new DockLayoutPanel(Unit.PX);
-	private VLayout chatvStack = new VLayout();
-	//private HStack headerStack = new HStack();
 	private HorizontalPanel headerStack = new HorizontalPanel();
 	private VStack leftToolbarStack = new VStack();
-	//private VStack headerShadow = new VStack();
 	private VerticalPanel topToolbarStack = new VerticalPanel();
 	private DockLayoutPanel chatDockPanel = new DockLayoutPanel(Unit.EM);
 	
@@ -74,6 +65,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private boolean myUserDataRcvd = false;
 	private UserTileDisplay myUserTileDisplay = new UserTileDisplay(this);
 	private WaitBox myWaitBox = new WaitBox();
+	private octoBox myOctoBox = new octoBox();
 	private EntryBox myEntryBox = new EntryBox(this, this);
 	private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
 	private MessageView myMessageManager = new MessageView(this);
@@ -86,6 +78,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private Label motdLabel= new Label("Message of the day");
 	private Timer myOctoTimer;
 	private OctoObject OctoArray[] = new OctoObject[5];
+	private boolean toolbarHideable = true;
 	
 	@Override
 	public void onModuleLoad() {
@@ -110,11 +103,15 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 		headerImage.setUrl("images/bffConnLogo4.png");
         
         LayoutSpacer toolbarSpacer = new LayoutSpacer();
+        LayoutSpacer toolbarSpacer2 = new LayoutSpacer();
         toolbarSpacer.setHeight(15);
+        toolbarSpacer2.setHeight(15);
         leftToolbarStack.setStyleName("leftToolbar");
         leftToolbarStack.addMember(myUserTileDisplay);
         leftToolbarStack.addMember(toolbarSpacer);
         leftToolbarStack.addMember(myWaitBox);
+        leftToolbarStack.addMember(toolbarSpacer2);
+        leftToolbarStack.addMember(myOctoBox);
 
         motdLabel.setHeight(50);
         motdLabel.setWidth(150);
@@ -465,12 +462,17 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 	@Override
 	public void octopusOnTyped() {
-		myHeaderButtonBar.showOctopus();
+		myOctoBox.show();
+		toolbarHideable = false;
+		myHeaderButtonBar.setAllowCompactMode(false);
+		showBarClicked();
 	}
 
 	@Override
 	public void octopusOffTyped() {
-		myHeaderButtonBar.hideOctopus();
+		myOctoBox.hide();
+		myHeaderButtonBar.setAllowCompactMode(true);
+		toolbarHideable = true;
 	}
 
 	@Override
@@ -556,11 +558,13 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 	@Override
 	public void hideBarClicked() {
-		mainDockPanel.setWidgetSize(leftToolbarStack, 35);
-		leftToolbarStack.setVisible(false);
-		headerImage.setVisible(false);
-		headerStack.setCellWidth(headerImage, "40px");
-		myHeaderButtonBar.setCompactView();
+		if(toolbarHideable) {
+			mainDockPanel.setWidgetSize(leftToolbarStack, 35);
+			leftToolbarStack.setVisible(false);
+			headerImage.setVisible(false);
+			headerStack.setCellWidth(headerImage, "40px");
+			myHeaderButtonBar.setCompactView();
+		}
 	}
 
 	@Override

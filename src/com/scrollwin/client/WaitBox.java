@@ -15,11 +15,8 @@ public class WaitBox extends VStack{
 		 setWidth(216);
 		 setHeight(80);
 		 setOverflow(Overflow.VISIBLE);
-		 //setMargin(5);
 		 setBackgroundColor("#FFFFFF");
 		 setShowEdges(true);  
-		 //setEdgeImage("borders/sharpframe_10.png");
-	     //setEdgeSize(6);
 		 setEdgeSize(3);
 	     setShowShadow(true);
 		 setShadowSoftness(3);

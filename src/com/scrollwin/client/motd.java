@@ -3,8 +3,6 @@ package com.scrollwin.client;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.smartgwt.client.widgets.HTMLPane;
 
 public class motd extends HTML  {
 
