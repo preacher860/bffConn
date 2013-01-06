@@ -363,21 +363,16 @@ public class MessageViewElementNative extends HorizontalPanel{
     			if( (item.endsWith(".jpg")) || (item.endsWith(".gif")) || (item.endsWith(".png")) ||
     				(item.endsWith(".JPG")) || (item.endsWith(".GIF")) || (item.endsWith(".PNG")))
     				item = "<br><a href=\"" + item + "\" target=\"_blank\"><img class=\"embeddedimage\" src=\"" + item + "\" /></a><br>";
-    			else if(item.contains("www.youtube.com")){
-    				int paramIndex = item.indexOf("v=");
-    				if(paramIndex >= 0) {
-    					// Youtube video (has v=)
-    					String videoId = item.substring(paramIndex + 2, item.length());
-    					item = "<br><iframe class=\"youtube-player\" type=\"text/html\" width=\"384\" height=\"231\" " +
-    						   "src=\"https://www.youtube.com/embed/" + videoId + "\" frameborder=\"0\"></iframe><br>";
-    				} else {
-    					// Link to youtube but not an embeddable video
-    					item = encapsulateLink(item);
-    				}
+    			else if(item.contains("www.youtube.com/user")) {
+    				// Handle this as a normal link, it's not a video
+    				// (except that we'll miss the http://www.youtube.com/user/UserName#p/u/1/1p3vcRhsYGo format)
+    				item = encapsulateLink(item);
+    			}
+    			else if(item.contains("www.youtube.com") || item.contains("youtu.be")){
+    				item = encapsulateYoutube(item);
     			}
     			else {
     				// It's a link to some random site
-    				//GetPage(item);
     				item = encapsulateLink(item);
     			}
     		}
@@ -401,5 +396,23 @@ public class MessageViewElementNative extends HorizontalPanel{
 		} else
 			encapsulatedLink = "<a href=\"" + link + "\" target=\"_blank\">lien</a>";
 	    return encapsulatedLink;
+	}
+	
+	private String encapsulateYoutube(String link)
+	{
+		String encapsulatedLink;
+		
+		RegExp regExp = RegExp.compile("(v=|\\/)([\\w-]+)(&.+)?$");
+		MatchResult matcher = regExp.exec(link);
+		boolean matchFound = (matcher != null);
+		
+		if(matchFound && matcher.getGroupCount() >= 3) {
+			encapsulatedLink = "<br><iframe class=\"youtube-player\" type=\"text/html\" width=\"384\" height=\"231\" " +
+				   "src=\"https://www.youtube.com/embed/" + matcher.getGroup(2) + "\" frameborder=\"0\"></iframe><br>";
+		} else {
+			// Link to youtube but not an embeddable video
+			encapsulatedLink = encapsulateLink(link);
+		}
+		return encapsulatedLink;
 	}
 }

@@ -47,7 +47,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	private static final int MSG_INITIAL_RTRV = 40;
+	private static final int MSG_INITIAL_RTRV = 200;
 	private static final int MSG_OLD_FETCH_NUM = 200;
 	
 	DockLayoutPanel mainDockPanel = new DockLayoutPanel(Unit.PX);
