@@ -12,6 +12,9 @@ public class RuntimeData {
 	private int userId;
 	private String sessionId;
 	private String motd;
+	private String motdDate;
+	private String motdTime;
+	private int motdUserId;
 	
 	
 	private static final RuntimeData instance = new RuntimeData();
@@ -100,5 +103,25 @@ public class RuntimeData {
 	public void setRequestedDbVersionUsers(int requestedDbVersionUsers) {
 		this.requestedDbVersionUsers = requestedDbVersionUsers;
 	}
-	
+	public String getMotdDate() {
+		return motdDate;
+	}
+	public String getMotdTime() {
+		return motdTime;
+	}
+	public int getMotdUserId() {
+		return motdUserId;
+	}
+	public void setNewestSeqId(int newestSeqId) {
+		this.newestSeqId = newestSeqId;
+	}
+	public void setMotdDate(String motd_date) {
+		this.motdDate = motd_date;
+	}
+	public void setMotdTime(String motd_time) {
+		this.motdTime = motd_time;
+	}
+	public void setMotdUserId(int motd_userid) {
+		this.motdUserId = motd_userid;
+	}
 }

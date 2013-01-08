@@ -555,7 +555,7 @@ private int getNewestSeq(Connection conn)
 	      
 	      // Check if this message is an MOTD 
 	      if(Message.toLowerCase().startsWith("@mdj"))
-	    	  setMOTD(Message.substring(4, Message.length()).trim());
+	    	  setMOTD(Message.substring(4, Message.length()).trim(), userId);
 	      
 	      incrementUserDbVersion();  // New msg means updated user stats
 	  } catch(SQLException e) {
@@ -719,12 +719,18 @@ private int getNewestSeq(Connection conn)
     	  String dbVersion = result.getString(2);
     	  String dbVersionUsers = result.getString(3);
     	  String motd = result.getString(4);
+    	  String motd_date = result.getDate(5).toString();
+    	  String motd_time = result.getTime(5).toString();
+    	  int motd_userid = result.getInt(6);
     	  
     	  out.println("     \"serverVersion\":\"" + myVersion + "\",");
     	  out.println("     \"newestSeq\":\"" + seq + "\",");
     	  out.println("     \"dbVersion\":\"" + dbVersion + "\",");
     	  out.println("     \"dbVersionUsers\":\"" + dbVersionUsers + "\",");
-    	  out.println("     \"motd\":\"" + motd + "\"");
+    	  out.println("     \"motd\":\"" + motd + "\",");
+    	  out.println("     \"motd_date\":\"" + motd_date + "\",");
+    	  out.println("     \"motd_time\":\"" + motd_time + "\",");
+    	  out.println("     \"motd_userid\":\"" + motd_userid + "\"");
           out.println("  }");
 
 	      select.close();
@@ -1047,16 +1053,17 @@ private int getNewestSeq(Connection conn)
 	  }
   }
  
-  private void setMOTD(String Motd)
+  private void setMOTD(String Motd, int userId)
   {
 	  if (Motd.length() > 255 )
 		  	Motd = Motd.substring(0, 255);
 	  
-	  String query = "UPDATE runtimedata SET motd=?";
+	  String query = "UPDATE runtimedata SET motd=?, motd_ts=CURRENT_TIMESTAMP, motd_userid=?";
 	  try {
 		  Connection conn = this.getConn();
 	      PreparedStatement update = conn.prepareStatement(query);
 	      update.setString(1, Motd);
+	      update.setInt(2, userId);
 	      update.executeUpdate();
 	      update.close();
 	      conn.close();

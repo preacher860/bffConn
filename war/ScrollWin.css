@@ -306,6 +306,13 @@ h1 {
 	overflow: hidden;
 }
 
+.motdInfo {
+	font-size:10px;
+	width: 100%;
+	text-align:right;
+	overflow: hidden;
+}
+
 .linkiframe {
 	width:800px;
 	height:520px;

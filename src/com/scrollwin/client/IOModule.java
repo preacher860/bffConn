@@ -490,12 +490,19 @@ public class IOModule {
 		    Integer serverDbVersionUsers = Integer.valueOf(obj.get("dbVersionUsers").isString().stringValue());
 		    Integer serverVersion = Integer.valueOf(obj.get("serverVersion").isString().stringValue());
 		    String  serverMotd = obj.get("motd").isString().stringValue();
+		    String  serverMotd_date = obj.get("motd_date").isString().stringValue();
+		    String  serverMotd_time = obj.get("motd_time").isString().stringValue();
+		    int     serverMotd_usedid = Integer.valueOf(obj.get("motd_userid").isString().stringValue());
+		    
 
 		    RuntimeData.getInstance().setServerVersion(serverVersion);
 		    RuntimeData.getInstance().setServerDbVersion(serverDbVersion);
 		    RuntimeData.getInstance().setServerDbVersionUsers(serverDbVersionUsers);
 		    RuntimeData.getInstance().setServerSeqId(seqId);
 		    RuntimeData.getInstance().setMotd(serverMotd);
+		    RuntimeData.getInstance().setMotdDate(serverMotd_date);
+		    RuntimeData.getInstance().setMotdTime(serverMotd_time);
+		    RuntimeData.getInstance().setMotdUserId(serverMotd_usedid);
 		    myCallbackInterface.runtimeDataReceivedCallback();
 		} catch (Exception e) {
 			System.out.println("JSON exception: " + e.toString());

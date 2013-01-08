@@ -391,7 +391,7 @@ public class MessageViewElementNative extends HorizontalPanel{
 		boolean matchFound = (matcher != null);
 
 		// Matched regex in group0, subex in group one (the hostname)
-		if(matchFound && matcher.getGroupCount() == 2) {
+	 	if(matchFound && matcher.getGroupCount() == 2) {
 			encapsulatedLink = "<a href=\"" + link + "\" target=\"_blank\">" + matcher.getGroup(1) + "</a>";
 		} else
 			encapsulatedLink = "<a href=\"" + link + "\" target=\"_blank\">lien</a>";

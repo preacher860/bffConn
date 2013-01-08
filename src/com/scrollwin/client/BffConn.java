@@ -18,6 +18,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -52,6 +53,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	
 	DockLayoutPanel mainDockPanel = new DockLayoutPanel(Unit.PX);
 	private HorizontalPanel headerStack = new HorizontalPanel();
+	private HorizontalPanel topToolbarLowerStack = new HorizontalPanel();
 	private VStack leftToolbarStack = new VStack();
 	private VerticalPanel topToolbarStack = new VerticalPanel();
 	private DockLayoutPanel chatDockPanel = new DockLayoutPanel(Unit.EM);
@@ -71,11 +73,11 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private MessageView myMessageManager = new MessageView(this);
 	private Image headerImage = new Image();
 	private motd myMotd = new motd();
+	private MotdInfo myMotdInfo = new MotdInfo();
 	private boolean faviconAlert = false;
 	private int newestDisplayedWhenLostVisibility = 0;
 	private String mySessionLocal = "";
 	private boolean wideView = true;
-	private Label motdLabel= new Label("Message of the day");
 	private Timer myOctoTimer;
 	private OctoObject OctoArray[] = new OctoObject[5];
 	private boolean toolbarHideable = true;
@@ -113,10 +115,13 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         leftToolbarStack.addMember(toolbarSpacer2);
         leftToolbarStack.addMember(myOctoBox);
 
-        motdLabel.setHeight(50);
-        motdLabel.setWidth(150);
+        topToolbarLowerStack.add(myHeaderButtonBar);
+        topToolbarLowerStack.add(myMotdInfo);
+        topToolbarLowerStack.setCellHorizontalAlignment(myMotdInfo, HasHorizontalAlignment.ALIGN_RIGHT);
+        topToolbarLowerStack.setCellWidth(myMotdInfo, "550px");
+        
         topToolbarStack.add(myMotd);
-        topToolbarStack.add(myHeaderButtonBar);
+        topToolbarStack.add(topToolbarLowerStack);
         topToolbarStack.setCellHeight(myMotd, "40px");
         topToolbarStack.setCellHeight(myHeaderButtonBar, "32px");
         topToolbarStack.setCellVerticalAlignment(myMotd, HasVerticalAlignment.ALIGN_BOTTOM);
@@ -238,7 +243,14 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	public void runtimeDataReceivedCallback() {
 		myRuntimeDataRcvd = true;
 		checkServerVersion();
-		myMotd.updateMotd(RuntimeData.getInstance().getMotd());
+		if (myMotd.hasChanged(RuntimeData.getInstance().getMotd()))
+		{
+			myMotd.update(RuntimeData.getInstance().getMotd());
+			myMotdInfo.update(RuntimeData.getInstance().getMotd(),
+							  RuntimeData.getInstance().getMotdDate(),
+					      	  RuntimeData.getInstance().getMotdTime(),
+					      	  UserManager.getInstance().getUser(RuntimeData.getInstance().getMotdUserId()).getNick());
+		}
 	}
 
 	@Override

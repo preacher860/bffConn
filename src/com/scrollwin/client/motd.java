@@ -13,27 +13,30 @@ public class motd extends HTML  {
 		myMotd = "";
 	}
 	
-	public void updateMotd(String motd)
+	public void update(String motd)
 	{
 		String displayedMotd = "";
-		if (!motd.equals(myMotd)) {
-			myMotd = motd;
-			
-			// Split the message in tokens (separator is space) an try to locate URLs
-	    	String [] parts = myMotd.split("\\s+");
-	    	
-	    	for(int tok = 0; tok < parts.length; tok++)
-	    	{
-	    		String item = parts[tok];
-	    		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
-	    			// It's a link to some random site
-	    			item = encapsulateLink(item);
-	    		}
-	    		displayedMotd += item + " ";
-	    	}
-	    	
-			setHTML(displayedMotd);
-		}
+		myMotd = motd;
+
+		// Split the message in tokens (separator is space) an try to locate URLs
+    	String [] parts = myMotd.split("\\s+");
+    	
+    	for(int tok = 0; tok < parts.length; tok++)
+    	{
+    		String item = parts[tok];
+    		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
+    			// It's a link to some random site
+    			item = encapsulateLink(item);
+    		}
+    		displayedMotd += item + " ";
+    	}
+    	
+		setHTML(displayedMotd);
+	}
+	
+	public boolean hasChanged(String motd)
+	{
+		return !motd.equals(myMotd);
 	}
 	
 	// Shameless duplication from MessageViewElementNative, tsk
