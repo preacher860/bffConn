@@ -4,9 +4,11 @@ public class RuntimeData {
 	private int newestSeqId = 0;
 	private int dbVersion = 0;
 	private int dbVersionUsers = 0;
+	private int dbVersionMotd = 0;
 	private int requestedDbVersionUsers = 0;
 	private int serverDbVersion = 0;
 	private int serverDbVersionUsers = 0;
+	private int serverDbVersionMotd = 0;
 	private int serverVersion = 0;
 	private int serverSeqId = 0;
 	private int userId;
@@ -123,5 +125,17 @@ public class RuntimeData {
 	}
 	public void setMotdUserId(int motd_userid) {
 		this.motdUserId = motd_userid;
+	}
+	public int getDbVersionMotd() {
+		return dbVersionMotd;
+	}
+	public void setDbVersionMotd(int dbVersionMotd) {
+		this.dbVersionMotd = dbVersionMotd;
+	}
+	public int getServerDbVersionMotd() {
+		return serverDbVersionMotd;
+	}
+	public void setServerDbVersionMotd(int serverDbVersionMotd) {
+		this.serverDbVersionMotd = serverDbVersionMotd;
 	}
 }

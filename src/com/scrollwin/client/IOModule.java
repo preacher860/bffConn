@@ -300,6 +300,39 @@ public class IOModule {
 		}
 	}
 	
+	public void GetMotd()
+	{
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
+		
+		String postData = "request_mode=get_motd";
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
+		try {
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+			builder.sendRequest(postData, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					System.out.println("Request error: inventoryconfig_send");
+					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
+				}
+	
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode())
+						handleMotd(response.getText());
+					else if (403 == response.getStatusCode())
+						handleAccessForbidden();
+					else
+						System.out.println("Request response error: " + response.getStatusCode());
+				}
+			});
+		} catch (RequestException e) {
+			Window.alert("Server error: " + e);
+			// Couldn't connect to server        
+		}
+	}
+	
 	public void GetServerSessionValid(String sessionId)
 	{
 		
@@ -407,6 +440,103 @@ public class IOModule {
 			// Couldn't connect to server        
 		}
 	}
+
+	public void SendMOTD(String MessageText)
+	{
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
+		
+		String postData = "request_mode=set_motd";
+		postData += "&message_text=" + URL.encodePathSegment(MessageText);
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
+		try {
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+			builder.sendRequest(postData, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
+				}
+	
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode())
+						handleMotd(response.getText());
+					else if (403 == response.getStatusCode())
+						handleAccessForbidden();
+					else 
+						System.out.println("Request response error: " + response.getStatusCode());
+				}
+			});
+		} catch (RequestException e) {
+			Window.alert("Server error: " + e);
+			// Couldn't connect to server        
+		}
+	}
+	
+	public void DeleteMOTD()
+	{
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
+		
+		String postData = "request_mode=delete_motd";
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
+		try {
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+			builder.sendRequest(postData, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
+				}
+	
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode())
+						handleMotd(response.getText());
+					else if (403 == response.getStatusCode())
+						handleAccessForbidden();
+					else 
+						System.out.println("Request response error: " + response.getStatusCode());
+				}
+			});
+		} catch (RequestException e) {
+			Window.alert("Server error: " + e);
+			// Couldn't connect to server        
+		}
+	}
+	
+	public void SendStarMOTD()
+	{
+		String url = urlPrefix + servletName;
+		url += "?rnd_value=" + Random.nextInt(400000000);
+		
+		String postData = "request_mode=star_motd";
+		postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+		postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
+		try {
+			builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+			builder.sendRequest(postData, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					// Couldn't connect to server (could be timeout, SOP violation, etc.)     
+				}
+	
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode())
+						handleMotd(response.getText());
+					else if (403 == response.getStatusCode())
+						handleAccessForbidden();
+					else 
+						System.out.println("Request response error: " + response.getStatusCode());
+				}
+			});
+		} catch (RequestException e) {
+			Window.alert("Server error: " + e);
+			// Couldn't connect to server        
+		}
+	}
 	
 	private void handleNewMessages(String serverResponse)
 	{
@@ -488,22 +618,46 @@ public class IOModule {
 		    Integer seqId = Integer.valueOf(obj.get("newestSeq").isString().stringValue());
 		    Integer serverDbVersion = Integer.valueOf(obj.get("dbVersion").isString().stringValue());
 		    Integer serverDbVersionUsers = Integer.valueOf(obj.get("dbVersionUsers").isString().stringValue());
+		    Integer serverDbVersionMotd = Integer.valueOf(obj.get("dbVersionMotd").isString().stringValue());
 		    Integer serverVersion = Integer.valueOf(obj.get("serverVersion").isString().stringValue());
-		    String  serverMotd = obj.get("motd").isString().stringValue();
-		    String  serverMotd_date = obj.get("motd_date").isString().stringValue();
-		    String  serverMotd_time = obj.get("motd_time").isString().stringValue();
-		    int     serverMotd_usedid = Integer.valueOf(obj.get("motd_userid").isString().stringValue());
 		    
-
 		    RuntimeData.getInstance().setServerVersion(serverVersion);
 		    RuntimeData.getInstance().setServerDbVersion(serverDbVersion);
 		    RuntimeData.getInstance().setServerDbVersionUsers(serverDbVersionUsers);
+		    RuntimeData.getInstance().setServerDbVersionMotd(serverDbVersionMotd);
 		    RuntimeData.getInstance().setServerSeqId(seqId);
-		    RuntimeData.getInstance().setMotd(serverMotd);
-		    RuntimeData.getInstance().setMotdDate(serverMotd_date);
-		    RuntimeData.getInstance().setMotdTime(serverMotd_time);
-		    RuntimeData.getInstance().setMotdUserId(serverMotd_usedid);
 		    myCallbackInterface.runtimeDataReceivedCallback();
+		} catch (Exception e) {
+			System.out.println("JSON exception: " + e.toString());
+		}
+	}
+	
+	private void handleMotd(String serverResponse)
+	{
+		try
+		{
+			JSONObject obj;
+		    JSONValue jsonValue = JSONParser.parseStrict(serverResponse);
+		    JSONArray jsonArray = jsonValue.isArray();
+		    motdData motd = new motdData();
+		    
+		    obj = jsonArray.get(0).isObject();
+		    String  serverMotd = obj.get("text").isString().stringValue();
+		    String  serverMotd_date = obj.get("date").isString().stringValue();
+		    String  serverMotd_time = obj.get("time").isString().stringValue();
+		    int     serverMotd_usedid = Integer.valueOf(obj.get("userid").isString().stringValue());
+		    int     serverMotd_dbVersion = Integer.valueOf(obj.get("dbversion").isString().stringValue());
+		    int     serverMotd_deleted = Integer.valueOf(obj.get("deleted").isString().stringValue());
+		    String  serverMotd_stars = obj.get("stars").isString().stringValue();
+		    
+		    motd.text = serverMotd;
+		    motd.date = serverMotd_date;
+		    motd.time = serverMotd_time;
+		    motd.userId = serverMotd_usedid;
+		    motd.dbVersion = serverMotd_dbVersion;
+		    motd.deleted = serverMotd_deleted;
+		    motd.stars = serverMotd_stars;
+		    myCallbackInterface.motdReceivedCallback(motd);
 		} catch (Exception e) {
 			System.out.println("JSON exception: " + e.toString());
 		}

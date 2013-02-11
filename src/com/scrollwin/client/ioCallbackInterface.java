@@ -12,4 +12,5 @@ public interface ioCallbackInterface {
 		public void accessForbiddenCallback();
 		public void messageToSendCallback(String Message, boolean edit, int messageSeq);
 		public void logoutComplete();
+		public void motdReceivedCallback(motdData data);
 }

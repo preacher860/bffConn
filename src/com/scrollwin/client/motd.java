@@ -7,36 +7,41 @@ import com.google.gwt.user.client.ui.HTML;
 public class motd extends HTML  {
 
 	private String myMotd;
+	private String myStars;
 	
 	public motd() {
 		setStyleName("motd");
 		myMotd = "";
+		myStars = "";
 	}
 	
-	public void update(String motd)
+	public void update(motdData motd)
 	{
 		String displayedMotd = "";
-		myMotd = motd;
-
-		// Split the message in tokens (separator is space) an try to locate URLs
-    	String [] parts = myMotd.split("\\s+");
-    	
-    	for(int tok = 0; tok < parts.length; tok++)
-    	{
-    		String item = parts[tok];
-    		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
-    			// It's a link to some random site
-    			item = encapsulateLink(item);
-    		}
-    		displayedMotd += item + " ";
-    	}
+		if(motd.deleted == 0) {
+			myMotd = motd.text;
+			myStars = motd.stars;
+	
+			// Split the message in tokens (separator is space) an try to locate URLs
+	    	String [] parts = myMotd.split("\\s+");
+	    	
+	    	for(int tok = 0; tok < parts.length; tok++)
+	    	{
+	    		String item = parts[tok];
+	    		if ((item.startsWith("http://")) || (item.startsWith("https://")) ){
+	    			// It's a link to some random site
+	    			item = encapsulateLink(item);
+	    		}
+	    		displayedMotd += item + " ";
+	    	}
+		} 
     	
 		setHTML(displayedMotd);
 	}
 	
-	public boolean hasChanged(String motd)
+	public boolean hasChanged(motdData motd)
 	{
-		return !motd.equals(myMotd);
+		return !(motd.text.equals(myMotd)) || !(motd.stars.equals(myStars));
 	}
 	
 	// Shameless duplication from MessageViewElementNative, tsk

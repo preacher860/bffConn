@@ -20,4 +20,6 @@ public interface userCallbackInterface {
 	public void newestUpdated();
 	public void userEntry();
 	public void editMessageClicked(MessageContainer message);
+	public void motdStarClicked();
+	public void motdDeleteClicked();
 }

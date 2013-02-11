@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class MessageView extends ScrollPanel {
 	
+	private static final int KEEP_AT_BOTTOM_RETRIES = 3;
+	
 	private VerticalPanel mainVPanel = new VerticalPanel();
 	private int myOldestDisplayedSeq = 0;
 	private int myNewestDisplayedSeq = 0;
@@ -24,6 +26,7 @@ public class MessageView extends ScrollPanel {
 	private int	myLastKnownOldest = 0; 
 	private int myUnreadLowest = 0;
 	private int myUnreadHighest = 0;
+	private int myKeepAtBottom = 0;
 	private boolean myInvisibleMode = false;
 	
 	public MessageView(userCallbackInterface callbackInterface){
@@ -32,21 +35,8 @@ public class MessageView extends ScrollPanel {
 		
 		mainVPanel.setStyleName("messageViewVpanel");
 		add(mainVPanel);
-		//setShowEdges(true);  
 
 		setStyleName("messageView");
-        //setWidth(800);  
-        //setHeight("80%");
-        //setCanDragResize(false);
-        //setOverflow(Overflow.AUTO);
-        //setLeaveScrollbarGap(true);
-        //setMembersMargin(3);  
-        //setLayoutMargin(4);
-        //setBackgroundColor("#ffffff");
-        //setEdgeSize(3);
-        //setShowShadow(true);
-		//setShadowSoftness(3);
-		//setShadowOffset(4);
 		
         // This scroll handler sets the flag used to determine if we're at bottom or not.
         // Only if were at bottom do we kick the autoscroll on new messages
@@ -56,8 +46,9 @@ public class MessageView extends ScrollPanel {
 				if(getVerticalScrollPosition() == getMaximumVerticalScrollPosition()){
 					myAtBottom = true;
 				}
-				else
+				else {
 					myAtBottom = false;
+				}
 				
 				if(getVerticalScrollPosition() == 0)	{
 					// Autofetch old message when scrolling to top
@@ -72,6 +63,11 @@ public class MessageView extends ScrollPanel {
 		      @Override
 		      public void run() {
 		    	  scrollToBottom();
+		    	  if(myKeepAtBottom < KEEP_AT_BOTTOM_RETRIES) {
+		    		  System.out.println("Forcing at bottom ret: " + myKeepAtBottom);
+		    		  myScrollTimer.schedule(1000);
+		    		  myKeepAtBottom++;
+		    	  }
 		      }
 		    };
 		    
@@ -163,8 +159,10 @@ public class MessageView extends ScrollPanel {
 		RuntimeData.getInstance().setNewestSeqId(myNewestDisplayedSeq);
 		RuntimeData.getInstance().setDbVersion(myNewestDisplayedDb);
 		
-		if(myAtBottom)
+		if(myAtBottom) {
+			myKeepAtBottom = 0;
 			myScrollTimer.schedule(200);
+		}
 		
 		if(myFetchingOld){
 			myFetchingOld = false;

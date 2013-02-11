@@ -48,7 +48,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	public static final int MODE_RUNNING  = 3;
 	public static final int MODE_SHUTDOWN = 4;
 	
-	private static final int MSG_INITIAL_RTRV = 200;
+	private static final int MSG_INITIAL_RTRV = 400;
 	private static final int MSG_OLD_FETCH_NUM = 200;
 	
 	DockLayoutPanel mainDockPanel = new DockLayoutPanel(Unit.PX);
@@ -65,6 +65,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private Timer myResizeTimer;
 	private boolean myRuntimeDataRcvd = false;
 	private boolean myUserDataRcvd = false;
+	private boolean myMotdRcvd = false;
 	private UserTileDisplay myUserTileDisplay = new UserTileDisplay(this);
 	private WaitBox myWaitBox = new WaitBox();
 	private octoBox myOctoBox = new octoBox();
@@ -73,7 +74,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	private MessageView myMessageManager = new MessageView(this);
 	private Image headerImage = new Image();
 	private motd myMotd = new motd();
-	private MotdInfo myMotdInfo = new MotdInfo();
+	private MotdInfo myMotdInfo = new MotdInfo(this);
 	private boolean faviconAlert = false;
 	private int newestDisplayedWhenLostVisibility = 0;
 	private String mySessionLocal = "";
@@ -210,13 +211,18 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	      		else if (myCurrentMode == MODE_RUNNING) {
 	      			//System.out.println("Db version: " + RuntimeData.getInstance().getDbVersion() + "  Srv Db version: " + RuntimeData.getInstance().getServerDbVersion());
 	      			if(RuntimeData.getInstance().getDbVersion() < RuntimeData.getInstance().getServerDbVersion()){
-	      				System.out.println("DB version behind, updating to " + RuntimeData.getInstance().getServerDbVersion());
-	      				ioModule.GetUserMessagesByVersion(RuntimeData.getInstance().getServerDbVersion());
+	      				System.out.println("DB version behind, updating to " + RuntimeData.getInstance().getDbVersion() + 1);
+	      				ioModule.GetUserMessagesByVersion(RuntimeData.getInstance().getDbVersion() + 1);
 	      			}
 	      			
 	      			if(RuntimeData.getInstance().getDbVersionUsers() < RuntimeData.getInstance().getServerDbVersionUsers()) {
 	      				RuntimeData.getInstance().setRequestedDbVersionUsers(RuntimeData.getInstance().getServerDbVersionUsers());
 	      				ioModule.GetUserInfo();
+	      			}
+	      			
+	      			if(RuntimeData.getInstance().getDbVersionMotd() < RuntimeData.getInstance().getServerDbVersionMotd()) {
+	      				System.out.println("MOTD version behind, updating to " + RuntimeData.getInstance().getServerDbVersionMotd());
+	      				ioModule.GetMotd();
 	      			}
 	      		}
 	      		
@@ -231,6 +237,7 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	    
 		ioModule.GetUserInfo();
         ioModule.GetRuntimeData();
+        ioModule.GetMotd();
         myRefreshTimer.schedule(1000);  //  Check if our init Gets are completed
 	}
 	
@@ -243,14 +250,6 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	public void runtimeDataReceivedCallback() {
 		myRuntimeDataRcvd = true;
 		checkServerVersion();
-		if (myMotd.hasChanged(RuntimeData.getInstance().getMotd()))
-		{
-			myMotd.update(RuntimeData.getInstance().getMotd());
-			myMotdInfo.update(RuntimeData.getInstance().getMotd(),
-							  RuntimeData.getInstance().getMotdDate(),
-					      	  RuntimeData.getInstance().getMotdTime(),
-					      	  UserManager.getInstance().getUser(RuntimeData.getInstance().getMotdUserId()).getNick());
-		}
 	}
 
 	@Override
@@ -325,10 +324,18 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
 	@Override
 	public void messageToSendCallback(String message, boolean edit, int seqId) {
-		if(!edit)
-			ioModule.SendUserMessage(message, RuntimeData.getInstance().getNewestSeqId());
-		else
-			ioModule.SendMessageEdit(message, seqId);
+		if(message.startsWith("@mdj")) {
+			if(message.equals("@mdj")) {
+				ioModule.DeleteMOTD();
+			} else {
+				ioModule.SendMOTD(message);
+			}
+		} else {
+			if(!edit)
+				ioModule.SendUserMessage(message, RuntimeData.getInstance().getNewestSeqId());
+			else
+				ioModule.SendMessageEdit(message, seqId);
+		}
 
 		// Control max number of msg displayed - Disabled for DB debugging
   	  	//if(messageVStack.getMembers().length > 100)
@@ -512,7 +519,6 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 	@Override
 	public void starClicked(int seqId) {
 		ioModule.SendStarMessage(seqId);
-		//Window.open("http://www.youtube.com/watch?v=dQw4w9WgXcQ&t=0m43s", "Rick Rolled!", "");
 	}
 
 	@Override
@@ -586,5 +592,26 @@ public class BffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 		headerImage.setVisible(true);
 		headerStack.setCellWidth(headerImage, "240px");
 		myHeaderButtonBar.setNormalView();
+	}
+
+	@Override
+	public void motdReceivedCallback(motdData motd) {
+		myMotdRcvd = true;
+		RuntimeData.getInstance().setDbVersionMotd(motd.dbVersion);
+		if (myMotd.hasChanged(motd) || motd.deleted == 1)
+		{
+			myMotd.update(motd);
+			myMotdInfo.update(motd, UserManager.getInstance().getUser(motd.userId).getNick());
+		}
+	}
+
+	@Override
+	public void motdStarClicked() {
+		ioModule.SendStarMOTD();
+	}
+
+	@Override
+	public void motdDeleteClicked() {
+		ioModule.DeleteMOTD();
 	}
 }
