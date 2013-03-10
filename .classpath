@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" output="test-classes" path="test"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/mathieu/Files/Dev/Gwt/smartgwt-3.0/smartgwt.jar"/>
+	<classpathentry kind="lib" path="/home/mathieu/Files/Dev/Gwt/mysql-connector-java-5.1.18/mysql-connector-java-5.1.18-bin.jar"/>
+	<classpathentry kind="lib" path="/home/mathieu/Files/Dev/Gwt/ini4j-0.5.2/ini4j-0.5.2.jar"/>
+	<classpathentry kind="lib" path="/home/mathieu/Files/Dev/Gwt/jsoup-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/home/mathieu/Files/Dev/Gwt/gwt-log-3.1.8.jar"/>
+	<classpathentry kind="lib" path="/home/mathieu/Files/Dev/Gwt/gwt-visualization-1.1.2/gwt-visualization.jar"/>
+	<classpathentry kind="lib" path="/home/mathieu/Files/Dev/Gwt/smartgwt-3.0/smartgwt-skins.jar"/>
+	<classpathentry kind="lib" path="/home/mathieu/Files/Dev/Gwt/gwt-voices-2.1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="/home/mathieu/Files/Dev/Gwt/commons-lang3-3.1/commons-lang3-3.1.jar"/>
+	<classpathentry kind="output" path="war/WEB-INF/classes"/>
+</classpath>
