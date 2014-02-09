@@ -1,0 +1,418 @@
+/** Add css rules here for your application. */
+
+
+/** Example rules used by the template application (remove for your app) */
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+  color: #777777;
+  margin: 40px 0px 70px;
+  text-align: center;
+}
+
+.sendButton {
+  display: block;
+  font-size: 16pt;
+}
+
+/** Most GWT widgets already have a style name defined */
+.gwt-DialogBox {
+  width: 400px;
+}
+
+.dialogVPanel {
+  margin: 5px;
+}
+
+.serverResponseLabelError {
+  color: red;
+}
+
+/** Set ids using widget.getElement().setId("idOfElement") */
+#closeButton {
+  margin: 15px 6px 6px;
+}
+
+/** Add css rules here for your application. */
+
+
+/** Example rules used by the template application (remove for your app) */
+h1 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #777777;
+    margin: 40px 0px 70px;
+    text-align: center;
+}
+
+.sendButton {
+    display: block;
+    font-size: 16pt;
+}
+
+/** Most GWT widgets already have a style name defined */
+.gwt-DialogBox {
+    width: 400px;
+}
+
+.dialogVPanel {
+    margin: 5px;
+}
+
+.serverResponseLabelError {
+    color: red;
+}
+
+/** Set ids using widget.getElement().setId("idOfElement") */
+#closeButton {
+    margin: 15px 6px 6px;
+}
+
+.chatText {
+    display: block;
+    font-size: 10pt;
+}
+
+.chatInfo {
+    display: block;
+    font-size: 7pt;
+}
+
+.chatEntryBox {
+    display: block;
+    font-size: 10pt;
+}
+
+.blueYellow {
+    font-family: "Arial";
+    font-size: 15pt;
+}
+
+.userTile {
+    font-size: 10px;
+}
+
+.userPicTile {
+    border-style: groove;
+    border-width: 2px;
+    color: #808080
+}
+
+.tooltipStyle {
+    font-family:Verdana,Bitstream Vera Sans,sans-serif;
+    font-size:11px;
+    border:1px solid #808080;
+    padding:4px;
+    background-color:black;
+    color:white;
+    opacity:0.75;
+    width:auto;
+    overflow:hidden;
+    text-align:center;
+    border-radius:6px;
+}
+
+.myGridCell {
+    color:black;
+    background-color:#ffffff;
+}
+.myGridCellDark {
+    color:black;
+    background-color:#f0f0e8;
+}
+
+.myTitleBox {
+    font-family:Verdana,Bitstream Vera Sans,sans-serif;
+    color:black;
+    font-size:14px;
+    font-weight: bold;
+}
+.messageBoxHover {
+    border-style:solid;
+    border-color:#B0B0FF;
+}
+
+.transparent {
+    opacity:0.0;
+}
+
+.opaque {
+    opacity:1.0;
+}
+
+.messageViewElementBoxNormal {
+    font-size:12px;
+    background-color: #C3D9FF;
+    padding: 5px;
+    /*height: 16px;*/
+}
+
+.messageViewElementBoxUnread {
+    font-size:12px;
+    background-color: #f4b58c;
+    padding: 5px;
+}
+
+.messageViewElementBoxAdressee {
+    font-size:12px;
+    background-color: #88FB9E;
+    padding: 5px;
+}
+
+.messageViewElementBoxAdresseeUnread {
+    font-size:12px;
+    background-color: #eaa9f8;
+    padding: 5px;
+}
+
+.messageViewPic {
+;background-color: #B0B0B0;
+    margin: 2px;
+    border: 2px groove #808080;
+}
+
+.messageViewPicBox {
+    background-color: #E0E0E0;
+}
+
+.messageStatusBar {
+    background-color:  #B0B0B0;
+    height: 21px;
+    vertical-align: middle;
+    padding: 0;
+}
+
+.messageViewElement {
+    background-color: #E0E0E0;
+    border: 1px solid #808080;
+    width: 100%;
+    margin: 1px;
+}
+
+.userInfo {
+    background-color:  #B0B0B0;
+    padding: 3px;
+    width: 400px;
+    display: block;
+    font-size: 7pt;
+}
+
+.iconPane {
+    background-color:  #B0B0B0;
+    width: auto;
+    table-layout: fixed;
+}
+
+.messageView {
+    overflow:auto;
+    /*height: 500px;*/
+    width: 785px;
+    position: absolute;
+    background-color: #ffffff;
+    border: 3px solid #455469;
+    padding: 4px;
+    margin-bottom: 5px;
+    box-shadow: 4px 4px 5px #888888;
+}
+
+.messageViewVpanel {
+    height: 100%;
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.messagePane {
+    background-color:  #B0B0B0;
+    width: 100%;
+    height: 30px;
+}
+
+.starIcon {
+    width: 16px;
+    height: 16px;
+    padding-top: 1px;
+    padding-right: 2px;
+    padding-left: 8px;
+}
+
+.starLabel {
+    font-size:12px;
+    padding: 2px;
+    width: 40px;
+}
+
+.deleteIcon {
+    width: 16px;
+    height: 16px;
+    padding-top: 1px;
+    padding-right: 2px;
+    padding-left: 8px;
+}
+
+.deleteLabel {
+    font-size:12px;
+    padding: 2px;
+    width: 40px;
+}
+
+.editIcon {
+    width: 16px;
+    height: 16px;
+    padding-top: 1px;
+    padding-right: 2px;
+    padding-left: 8px;
+}
+
+.editLabel {
+    font-size:12px;
+    padding: 2px;
+    width: 40px;
+}
+
+.userAvatar {
+    width: 34px;
+    height: 34px;
+    margin-top: 4px;
+    margin-left: 5px;
+    border: 2px groove #808080;
+}
+
+.starStack {
+    width: 60px;
+}
+
+.editStack {
+    width: 60px;
+}
+
+.deleteStack {
+    width: 60px;
+}
+
+.entryBox {
+    width: 800px;
+    height: 40px;
+    background-color: #E0E0E0;
+    border: 3px solid #455469;
+    box-shadow: 4px 4px 5px #888888;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.leftToolbar {
+    margin-left: 10px;
+}
+.mainPanel {
+    background-image: url('images/backgrounds/convore.jpg');
+    background-repeat: repeat;
+    min-width: 1000px;
+    min-height: 300px;
+}
+
+.entryBoxInfoItem {
+    height: auto;
+    padding: 2px;
+    font-size:11px;
+}
+
+.entryBoxPic {
+;background-color: #B0B0B0;
+    padding: 0px;
+    border: 2px groove #808080;
+}
+
+.entryBoxPicBox {
+    background-color: #E0E0E0;
+    padding: 5px;
+    width: 50px;
+}
+
+.embeddedimage {
+    max-width: 600px;
+    max-height: 200px;
+    width: expression(this.width > 600 ? "600px" : true);
+    height: expression(this.height > 200 ? "200px" : true);
+}
+
+.motd {
+    font-size:20px;
+    height: 24px;
+    width: 800px;
+    text-align:center;
+    overflow: hidden;
+}
+
+.motdInfo {
+    font-size:10px;
+    width: 100%;
+    height: 15px;
+    text-align:right;
+    overflow: hidden;
+}
+
+.motdIconPane {
+    width: auto;
+    height: 20px;
+    table-layout: fixed;
+}
+
+.motdStarIcon {
+    width: 16px;
+    height: 16px;
+    padding-top: 1px;
+    padding-right: 2px;
+    padding-left: 1px;
+}
+
+.linkiframe {
+    width:800px;
+    height:520px;
+    border:none;
+    overflow:hidden;
+}
+.linkdiv {
+    width:800px;
+    height:520px;
+    position:relative;
+    display:table;
+    border:solid;
+    overflow:hidden;
+    -moz-transform:scale(0.2);
+    -moz-transform-origin:0 0;
+    -o-transform:scale(0.2);
+    -o-transform-origin:0 0;
+    -webkit-transform:scale(0.2);
+    -webkit-transform-origin:0 0;
+}
+
+.linkanchor {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow:hidden;
+}
+
+.headerStack {
+    background-image: url('images/top.png');
+    background-repeat: repeat;
+    width: 100%;
+    height: 90px;
+    border: none;
+}
+
+
+.tooltipStyle {
+    font-family:Verdana,Bitstream Vera Sans,sans-serif;
+    font-size:11px;
+    border:1px solid #808080;
+    padding:4px;
+    background-color:black;
+    color:white;
+    opacity:0.75;
+    width:auto;
+    overflow:hidden;
+    text-align:center;
+    border-radius:6px;
+}

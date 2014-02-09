@@ -1,0 +1,25 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/gin-1.5-post-gwt-2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/gwt-log-3.1.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/gwt-visualization.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/gwt-servlet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/jsoup-1.6.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/commons-lang3-3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/ini4j-0.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/smartgwt-skins.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/piriti-restlet-0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/piriti-user-0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/gwt-voices-2.1.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/velocity-1.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/piriti-dev-0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/guice-3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/scrollwin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/totoe-0.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/mysql-connector-java-5.1.18-bin.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

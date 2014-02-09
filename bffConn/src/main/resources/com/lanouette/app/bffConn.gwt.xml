@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='bffConn'>
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User' />
+
+    <!-- Inherit the default GWT style sheet.  You can change       -->
+  <!-- the theme of your GWT application by uncommenting          -->
+  <!-- any one of the following lines.                            -->
+  <inherits name='com.google.gwt.user.theme.standard.Standard' />
+
+    <inherits name='com.google.gwt.visualization.Visualization'/>
+    <inherits name='com.smartgwt.SmartGwt'/>
+    <inherits name='com.smartclient.theme.graphite.Graphite'/>
+    <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+  <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+
+  <!-- Other module inherits                                      -->
+    <inherits name='com.allen_sauer.gwt.log.gwt-log-DEBUG'/>
+    <inherits name="com.google.gwt.json.JSON"/>
+    <set-property name="log_DivLogger" value="DISABLED" />
+
+  <!-- Specify the app entry point class.                         -->
+  <entry-point class='com.lanouette.app.client.bffConn' />
+
+  <!-- Specify the paths for translatable code                    -->
+  <source path='client' />
+  <source path='shared' />
+
+</module>
