@@ -4,7 +4,7 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-  <!-- Servlets -->
+   Servlets
   <servlet>
     <servlet-name>bffConnServer</servlet-name>
     <servlet-class>com.lanouette.app.server.BffConnServer</servlet-class>
@@ -15,7 +15,27 @@
     <url-pattern>/bffConn/bffconnserver</url-pattern>
   </servlet-mapping>
 
-  <!-- Default page to serve -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>rest</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>WEB-INF/applicationContext.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>rest</servlet-name>
+        <url-pattern>/bffConn/rest/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>bffConn.html</welcome-file>
   </welcome-file-list>

@@ -11,8 +11,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class MessageView extends ScrollPanel {
 	
 	private static final int KEEP_AT_BOTTOM_RETRIES = 3;
-	
-	private VerticalPanel mainVPanel = new VerticalPanel();
+
+    private final boolean isMobile;
+
+    private String mobileMessageBoxStyle = "";
+    private VerticalPanel mainVPanel = new VerticalPanel();
 	private int myOldestDisplayedSeq = 0;
 	private int myNewestDisplayedSeq = 0;
 	private int myNewestDisplayedDb  = 0;
@@ -29,19 +32,24 @@ public class MessageView extends ScrollPanel {
 	private int myKeepAtBottom = 0;
 	private boolean myInvisibleMode = false;
 	
-	public MessageView(userCallbackInterface callbackInterface){
-
+	public MessageView(userCallbackInterface callbackInterface,
+                       boolean isMobile){
 		myCallbackInterface = callbackInterface;
-		
+        this.isMobile = isMobile;
+
 		mainVPanel.setStyleName("messageViewVpanel");
 		add(mainVPanel);
 
 		setStyleName("messageView");
+        if(isMobile) {
+            addStyleName("messageViewMobile");
+        } else {
+            addStyleName("messageViewDesktop");
+        }
 		
         // This scroll handler sets the flag used to determine if we're at bottom or not.
         // Only if were at bottom do we kick the autoscroll on new messages
         addScrollHandler(new ScrollHandler(){
-			@Override
 			public void onScroll(ScrollEvent event) {
 				if(getVerticalScrollPosition() == getMaximumVerticalScrollPosition()){
 					myAtBottom = true;
@@ -82,8 +90,8 @@ public class MessageView extends ScrollPanel {
 			}
 	    };
 	}
-	
-	public void newMessages(ArrayList<MessageContainer> messages) {
+
+    public void newMessages(ArrayList<MessageContainer> messages) {
 		boolean listWasEmtpy;
 		boolean messagesNotOwn = false;
 		boolean myNewestUpdated = false;
@@ -105,7 +113,7 @@ public class MessageView extends ScrollPanel {
 			MessageViewElementNative element = new MessageViewElementNative(currentMessage, 
 					UserManager.getInstance().getUser(currentMessage.getMessageUserId()),
 					UserManager.getInstance().getUser(RuntimeData.getInstance().getUserId()),
-					myCallbackInterface);
+					myCallbackInterface, isMobile);
 
 			// When in invisible mode, all new messages are flagged unread
 			if (myInvisibleMode) {

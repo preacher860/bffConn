@@ -38,6 +38,11 @@ public class motd extends HTML {
     	
 		setHTML(displayedMotd);
 	}
+
+    public void setText(String text) {
+        myMotd = text;
+        setHTML(text);
+    }
 	
 	public boolean hasChanged(motdData motd)
 	{

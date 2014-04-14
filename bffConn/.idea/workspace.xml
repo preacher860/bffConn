@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java" line="47" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="871afaa6-7989-4f06-a34e-d091b2f41905" name="Default" comment="" />
+    <list default="true" id="871afaa6-7989-4f06-a34e-d091b2f41905" name="Default" comment="Moved the whole thing to MVN project&#10;">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffController.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/proxies/BffProxy.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/gin/MainGinjector.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/gin/MyModule.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/shared/ServerPaths.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageViewElement.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/EntryBox.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/EntryBox.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageView.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageViewElementNative.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageViewElementNative.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MotdInfo.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MotdInfo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/bffConn.css" afterPath="$PROJECT_DIR$/src/main/webapp/bffConn.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/com/lanouette/app/bffConn.gwt.xml" afterPath="$PROJECT_DIR$/src/main/resources/com/lanouette/app/bffConn.gwt.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/bffConn.html" afterPath="$PROJECT_DIR$/src/main/webapp/bffConn.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bffConn.iml" afterPath="$PROJECT_DIR$/bffConn.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/motd.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/motd.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="bffConn.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -55,6 +80,38 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/gin/MyModule.java" line="9" class="com.lanouette.app.client.gin.MyModule" package="com.lanouette.app.client.gin">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffController.java" line="47" class="com.lanouette.app.server.BffController" package="com.lanouette.app.server">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -64,19 +121,44 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="bffConn.gwt.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/com/lanouette/app/bffConn.gwt.xml">
+      <file leaf-file-name="BffProxy.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/proxies/BffProxy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="4" selection-start="464" selection-end="464" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="630">
+            <state line="16" column="65" selection-start="446" selection-end="446" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="522">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="web.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml">
+      <file leaf-file-name="bffConn.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="107" selection-start="349" selection-end="349" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="522">
+            <state line="225" column="52" selection-start="9163" selection-end="9163" vertical-scroll-proportion="0.42" vertical-offset="3528" max-vertical-offset="11628">
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#7544#11102#0" expanded="true" />
+                <element signature="e#11091#11092#0" expanded="true" />
+                <marker date="1397434864740" expanded="true" signature="17981:18213" placeholder="{...}" />
+                <marker date="1397434864740" expanded="true" signature="18092:18186" placeholder="{...}" />
+                <marker date="1397434864740" expanded="true" signature="18268:18313" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResponseImpl.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.0/gwt-servlet-2.6.0.jar!/com/google/gwt/http/client/ResponseImpl.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="21" column="28" selection-start="803" selection-end="803" vertical-scroll-proportion="-14.4" vertical-offset="0" max-vertical-offset="522">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JSONParser.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-user/2.6.0/gwt-user-2.6.0.jar!/com/google/gwt/json/client/JSONParser.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="29" column="56" selection-start="1218" selection-end="1218" vertical-scroll-proportion="-13.4" vertical-offset="169" max-vertical-offset="810">
               <folding />
             </state>
           </provider>
@@ -85,146 +167,86 @@
       <file leaf-file-name="GreetingService.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/GreetingService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="17" selection-start="260" selection-end="260" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="40" selection-start="745" selection-end="842" vertical-scroll-proportion="0.5302782" vertical-offset="0" max-vertical-offset="3114">
+            <state line="9" column="17" selection-start="260" selection-end="260" vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="324">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StatsWin.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/StatsWin.java">
+      <file leaf-file-name="ServerPaths.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/shared/ServerPaths.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="168" column="12" selection-start="7447" selection-end="7447" vertical-scroll-proportion="0.0" vertical-offset="2802" max-vertical-offset="7308">
+            <state line="16" column="82" selection-start="764" selection-end="796" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="468">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EntryBox.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/EntryBox.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="43" column="0" selection-start="1735" selection-end="1735" vertical-scroll-proportion="0.0" vertical-offset="1080" max-vertical-offset="2862">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MessageView.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="40" column="22" selection-start="1340" selection-end="1340" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4392">
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2275#2474#0" expanded="true" />
-                <element signature="e#2469#2470#0" expanded="true" />
-                <element signature="e#4698#4932#0" expanded="true" />
-                <element signature="e#4927#4928#0" expanded="true" />
-                <element signature="e#5367#5609#0" expanded="true" />
-                <element signature="e#5604#5605#0" expanded="true" />
-                <element signature="e#6030#6267#0" expanded="true" />
-                <element signature="e#6262#6263#0" expanded="true" />
-                <element signature="e#6723#6967#0" expanded="true" />
-                <element signature="e#6962#6963#0" expanded="true" />
-                <element signature="e#7660#7661#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IOModule.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IOModule.java">
+      <file leaf-file-name="MessageViewElementNative.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageViewElementNative.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="545" column="16" selection-start="19888" selection-end="19888" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="13554">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerConfig.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/server/ServerConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="13" selection-start="48" selection-end="48" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="468">
+            <state line="127" column="41" selection-start="5133" selection-end="5133" vertical-scroll-proportion="-13.714286" vertical-offset="1902" max-vertical-offset="7740">
               <folding>
-                <element signature="e#247#248#0" expanded="false" />
-                <element signature="e#273#274#0" expanded="false" />
-                <element signature="e#325#326#0" expanded="false" />
-                <element signature="e#364#365#0" expanded="false" />
-                <element signature="e#399#400#0" expanded="false" />
-                <element signature="e#425#426#0" expanded="false" />
-                <element signature="e#477#478#0" expanded="false" />
-                <element signature="e#516#517#0" expanded="false" />
-                <element signature="e#550#551#0" expanded="false" />
-                <element signature="e#575#576#0" expanded="false" />
-                <element signature="e#625#626#0" expanded="false" />
-                <element signature="e#662#663#0" expanded="false" />
-                <element signature="e#696#697#0" expanded="false" />
-                <element signature="e#721#722#0" expanded="false" />
-                <element signature="e#771#772#0" expanded="false" />
-                <element signature="e#808#809#0" expanded="false" />
-                <element signature="e#844#845#0" expanded="false" />
-                <element signature="e#871#872#0" expanded="false" />
-                <element signature="e#925#926#0" expanded="false" />
-                <element signature="e#966#967#0" expanded="false" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#6414#6591#0" expanded="true" />
+                <element signature="e#6580#6581#0" expanded="true" />
+                <element signature="e#6710#6888#0" expanded="true" />
+                <element signature="e#6877#6878#0" expanded="true" />
+                <element signature="e#7012#7269#0" expanded="true" />
+                <element signature="e#7258#7259#0" expanded="true" />
+                <element signature="e#7399#7653#0" expanded="true" />
+                <element signature="e#7642#7643#0" expanded="true" />
+                <element signature="e#7910#8093#0" expanded="true" />
+                <element signature="e#8078#8079#0" expanded="true" />
+                <element signature="e#8226#8445#0" expanded="true" />
+                <element signature="e#8430#8431#0" expanded="true" />
+                <element signature="e#8583#8799#0" expanded="true" />
+                <element signature="e#8784#8785#0" expanded="true" />
+                <element signature="e#8932#9128#0" expanded="true" />
+                <element signature="e#9113#9114#0" expanded="true" />
+                <element signature="e#9267#9490#0" expanded="true" />
+                <element signature="e#9475#9476#0" expanded="true" />
+                <element signature="e#9634#9854#0" expanded="true" />
+                <element signature="e#9839#9840#0" expanded="true" />
+                <element signature="e#10006#10289#0" expanded="true" />
+                <element signature="e#10278#10279#0" expanded="true" />
+                <element signature="e#10416#10734#0" expanded="true" />
+                <element signature="e#10723#10724#0" expanded="true" />
+                <element signature="e#11710#11711#0" expanded="true" />
+                <element signature="e#11742#11743#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="srvUserContainer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/server/srvUserContainer.java">
+      <file leaf-file-name="bffConn.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConn.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="13" selection-start="48" selection-end="48" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1584">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BffConnServer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffConnServer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="74" selection-start="427" selection-end="427" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="23886">
+            <state line="330" column="1" selection-start="5095" selection-end="5095" vertical-scroll-proportion="0.0" vertical-offset="5672" max-vertical-offset="8280">
               <folding>
-                <marker date="1391986075966" expanded="true" signature="7998:8025" placeholder="SELECT seq F..runtimedata..." />
-                <marker date="1391986075966" expanded="true" signature="8501:8529" placeholder="UPDATE runti..." />
-                <marker date="1391986075966" expanded="true" signature="8895:8928" placeholder="SELECT dbver..runtimedata..." />
-                <marker date="1391986075966" expanded="true" signature="9408:9442" placeholder="UPDATE runti..." />
-                <marker date="1391986075966" expanded="true" signature="9816:9854" placeholder="SELECT motd_..runtimedata..." />
-                <marker date="1391986075966" expanded="true" signature="10338:10377" placeholder="UPDATE runti..." />
-                <marker date="1391986075966" expanded="true" signature="10751:10788" placeholder="SELECT userd..runtimedata..." />
-                <marker date="1391986075966" expanded="true" signature="11272:11310" placeholder="UPDATE runti..." />
-                <marker date="1391986075966" expanded="true" signature="12201:12281" placeholder="INSERT into ..." />
-                <marker date="1391986075966" expanded="true" signature="12311:12346" placeholder="SELECT * FRO..sessions..." />
-                <marker date="1391986075966" expanded="true" signature="13490:13557" placeholder="SELECT * FRO..messagetable..." />
-                <marker date="1391986075966" expanded="true" signature="13705:13759" placeholder="SELECT * FRO..messagetable..." />
-                <marker date="1391986075966" expanded="true" signature="15693:15753" placeholder="SELECT * FRO..messagetable..." />
-                <marker date="1391986075966" expanded="true" signature="19760:19817" placeholder="UPDATE messa..." />
-                <marker date="1391986075966" expanded="true" signature="20790:20855" placeholder="UPDATE messa..." />
-                <marker date="1391986075966" expanded="true" signature="21762:21834" placeholder="UPDATE messa..." />
-                <marker date="1391986075966" expanded="true" signature="24204:24229" placeholder="SELECT * FRO..runtimedata..." />
-                <marker date="1391986075966" expanded="true" signature="25395:25430" placeholder="SELECT * FRO..sessions..." />
-                <marker date="1391986075966" expanded="true" signature="26059:26094" placeholder="SELECT * FRO..sessions..." />
-                <marker date="1391986075966" expanded="true" signature="26650:26702" placeholder="INSERT INTO ..." />
-                <marker date="1391986075966" expanded="true" signature="27209:27250" placeholder="UPDATE sessi..." />
-                <marker date="1391986075966" expanded="true" signature="27684:27722" placeholder="UPDATE sessi..." />
-                <marker date="1391986075966" expanded="true" signature="28206:28237" placeholder="DELETE FROM ..." />
-                <marker date="1391986075966" expanded="true" signature="29563:29594" placeholder="SELECT * FRO..users..." />
-                <marker date="1391986075966" expanded="true" signature="31283:31318" placeholder="DELETE from ..." />
-                <marker date="1391986075966" expanded="true" signature="31793:31850" placeholder="SELECT date ..." />
-                <marker date="1391986075966" expanded="true" signature="31873:31935" placeholder="UPDATE motd ..." />
-                <marker date="1391986075966" expanded="true" signature="33037:33110" placeholder="SELECT useri..messagetable..." />
-                <marker date="1391986075966" expanded="true" signature="33134:33226" placeholder="SELECT useri..messagetable..." />
-                <marker date="1391986075966" expanded="true" signature="33251:33346" placeholder="SELECT useri..messagetable..." />
-                <marker date="1391986075966" expanded="true" signature="33377:33456" placeholder="SELECT count..messagetable..." />
-                <marker date="1391986075966" expanded="true" signature="33487:33568" placeholder="SELECT SUM(B..messagetable..." />
-                <marker date="1391986075966" expanded="true" signature="33603:33656" placeholder="SELECT count..motd..." />
-                <marker date="1391986075966" expanded="true" signature="33691:33746" placeholder="SELECT SUM(B..motd..." />
-                <marker date="1391986075966" expanded="true" signature="37100:37184" placeholder="INSERT INTO ..." />
-                <marker date="1391986075966" expanded="true" signature="38059:38095" placeholder="SELECT * FRO..motd..." />
-                <marker date="1391986075966" expanded="true" signature="39305:39360" placeholder="UPDATE motd ..." />
-                <marker date="1391986075966" expanded="true" signature="40081:40144" placeholder="UPDATE motd ..." />
+                <marker date="1397432815260" expanded="true" signature="5443:5476" placeholder="{...}" />
+                <marker date="1397432815260" expanded="true" signature="5502:5536" placeholder="{...}" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="bffConn.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConn.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="73" selection-start="551" selection-end="551" vertical-scroll-proportion="-8.0" vertical-offset="0" max-vertical-offset="1008">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -236,19 +258,35 @@
       <setting name="OPEN_NEW_TAB" value="false" />
     </FindUsagesManager>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/main/webapp/bffConn.css" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/EntryBox.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/StatsWin.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/server/ServerConfig.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffConnServer.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/com/lanouette/app/bffConn.gwt.xml" />
-        <option value="$PROJECT_DIR$/src/main/webapp/bffConn.html" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/gin/MainGinjector.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/gin/MyModule.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/proxies/bffProxy.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/ServerPaths.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/shared/ServerPaths.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/proxies/BffProxy.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/applicationContext.xml" />
+        <option value="$PROJECT_DIR$/src/main/webapp/bffConn.html" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OrientationChangeHandler.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/resources/com/lanouette/app/bffConn.gwt.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/EntryBox.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageViewElementNative.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MotdInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/bffConn.css" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/motd.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java" />
       </list>
     </option>
   </component>
@@ -284,16 +322,52 @@
           <option name="myItemId" value="GWT Maven Archetype" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
         </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="org.hibernate:hibernate-validator-annotation-processor:4.1.0.Final" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependencyNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="GWT Maven Archetype" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="org.springframework:spring-webmvc:3.2.5.RELEASE" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependencyNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="GWT Maven Archetype" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
       </PATH>
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="16" />
-    <option name="y" value="53" />
-    <option name="width" value="1884" />
-    <option name="height" value="1110" />
+    <option name="x" value="3615" />
+    <option name="y" value="34" />
+    <option name="width" value="1875" />
+    <option name="height" value="1128" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -319,6 +393,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -437,6 +512,10 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shared" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -468,9 +547,106 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="proxies" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -490,11 +666,22 @@
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="FullScreen" value="false" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="OverrideImplement.overriding.sorted" value="false" />
+    <property name="LayoutCode.rearrangeEntriesJava" value="false" />
+    <property name="SearchEverywhereHistory" value="" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/com/lanouette/app/server" />
       <recent name="$PROJECT_DIR$/src/main/java/com/lanouette/app/client" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/webapp" />
     </key>
   </component>
   <component name="RunManager" selected="GWT Configuration.bffConn">
@@ -715,11 +902,18 @@
     </configuration>
     <configuration default="false" name="bffConn" type="GWT.ConfigurationType" factoryName="GWT Configuration">
       <module name="bffConn" />
-      <option name="VM_PARAMETERS" value="-Xmx1024m" />
+      <option name="VM_PARAMETERS" value="-Xmx1024m  -XX:MaxPermSize=1024m" />
       <option name="RUN_PAGE" value="bffConn.html" />
       <option name="GWT_MODULE" value="com.lanouette.app.bffConn" />
+      <option name="OPEN_IN_BROWSER" value="false" />
       <option name="BROWSER" value="Firefox" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -754,45 +948,77 @@
       <changelist id="871afaa6-7989-4f06-a34e-d091b2f41905" name="Default" comment="" />
       <created>1391978795513</created>
       <updated>1391978795513</updated>
-      <workItem from="1391978796885" duration="11067000" />
+      <workItem from="1391978796885" duration="16212000" />
+      <workItem from="1392505307426" duration="602000" />
+      <workItem from="1392506901067" duration="1224000" />
+      <workItem from="1393115654480" duration="10682000" />
+      <workItem from="1393190828177" duration="17343000" />
+      <workItem from="1393709049749" duration="13000" />
+      <workItem from="1393709105013" duration="608000" />
+      <workItem from="1397313900477" duration="3216000" />
+      <workItem from="1397393964279" duration="10242000" />
+      <workItem from="1397409527697" duration="5103000" />
+      <workItem from="1397415264353" duration="9442000" />
+      <workItem from="1397427596965" duration="192000" />
+      <workItem from="1397427816392" duration="7180000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11067000" />
+    <option name="totallyTimeSpent" value="82059000" />
+  </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="16" y="53" width="1884" height="1110" extended-state="0" />
+    <frame x="3615" y="34" width="1875" height="1128" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299595" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24489796" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959184" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2722672" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18152174" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24898785" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2722672" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29387754" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18152174" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24795918" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959184" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23043478" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18152174" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3299595" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20207536" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1594757" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33061224" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959184" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -817,61 +1043,204 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConn.css">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConn.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="417" column="1" selection-start="6693" selection-end="6693" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7614">
-          <folding>
-            <marker date="1391981439582" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1391981439582" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
+        <state line="12" column="73" selection-start="551" selection-end="551" vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="1008">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/com/lanouette/app/bffConn.gwt.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="33" selection-start="837" selection-end="837" vertical-scroll-proportion="0.0" vertical-offset="288" max-vertical-offset="648">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="110" column="0" selection-start="3977" selection-end="3977" vertical-scroll-proportion="0.0" vertical-offset="1428" max-vertical-offset="3204">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IOModule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="545" column="16" selection-start="19888" selection-end="19888" vertical-scroll-proportion="0.0" vertical-offset="9810" max-vertical-offset="13806">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="614" column="6" selection-start="22839" selection-end="22839" vertical-scroll-proportion="0.0" vertical-offset="10326" max-vertical-offset="11250">
+        <state line="108" column="47" selection-start="4011" selection-end="4011" vertical-scroll-proportion="0.0" vertical-offset="1944" max-vertical-offset="11250">
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5698#5842#0" expanded="true" />
-            <element signature="e#5831#5832#0" expanded="true" />
-            <element signature="e#5870#6011#0" expanded="true" />
-            <element signature="e#6000#6001#0" expanded="true" />
-            <element signature="e#6036#6323#0" expanded="true" />
-            <element signature="e#6312#6313#0" expanded="true" />
-            <element signature="e#6396#6910#0" expanded="true" />
-            <element signature="e#6899#6900#0" expanded="true" />
-            <element signature="e#6938#10118#0" expanded="true" />
-            <element signature="e#10107#10108#0" expanded="true" />
-            <element signature="e#11478#11625#0" expanded="true" />
-            <element signature="e#11623#11624#0" expanded="true" />
-            <element signature="e#14277#17085#0" expanded="true" />
-            <element signature="e#17074#17075#0" expanded="true" />
-            <marker date="1391982618142" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1391982618142" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1391982618142" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <element signature="e#7544#11102#0" expanded="true" />
+            <element signature="e#11091#11092#0" expanded="true" />
+            <marker date="1397434864740" expanded="true" signature="17981:18213" placeholder="{...}" />
+            <marker date="1397434864740" expanded="true" signature="18092:18186" placeholder="{...}" />
+            <marker date="1397434864740" expanded="true" signature="18268:18313" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/EntryBox.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/motdData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="12" selection-start="2289" selection-end="2289" vertical-scroll-proportion="0.0" vertical-offset="299" max-vertical-offset="3312">
+        <state line="2" column="13" selection-start="48" selection-end="48" vertical-scroll-proportion="0.0" vertical-offset="36" max-vertical-offset="306">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/motd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="13" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="1242">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MotdInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="13" selection-start="641" selection-end="641" vertical-scroll-proportion="0.0" vertical-offset="288" max-vertical-offset="3600">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/HeaderButtonBar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="58" selection-start="989" selection-end="989" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="3924">
           <folding>
-            <element signature="e#2373#2374#0" expanded="true" />
-            <element signature="e#2480#2654#0" expanded="true" />
-            <element signature="e#2643#2644#0" expanded="true" />
-            <element signature="e#2704#3651#0" expanded="true" />
-            <element signature="e#3638#3639#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#2220#2350#0" expanded="false" />
+            <element signature="e#2345#2346#0" expanded="false" />
+            <element signature="e#2696#2825#0" expanded="false" />
+            <element signature="e#2820#2821#0" expanded="false" />
+            <element signature="e#3227#3355#0" expanded="false" />
+            <element signature="e#3350#3351#0" expanded="false" />
+            <element signature="e#3716#3847#0" expanded="false" />
+            <element signature="e#3842#3843#0" expanded="false" />
+            <element signature="e#4186#4339#0" expanded="false" />
+            <element signature="e#4334#4335#0" expanded="false" />
+            <element signature="e#4702#4854#0" expanded="false" />
+            <element signature="e#4849#4850#0" expanded="false" />
+            <element signature="e#5169#5271#0" expanded="false" />
+            <element signature="e#5266#5267#0" expanded="false" />
+            <element signature="e#5411#5879#0" expanded="false" />
+            <element signature="e#5874#5875#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/GreetingService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffConnServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="17" selection-start="260" selection-end="260" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
+        <state line="15" column="74" selection-start="427" selection-end="427" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="23886">
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConn.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="73" selection-start="551" selection-end="551" vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="1008">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/com/lanouette/app/bffConn.gwt.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="33" selection-start="837" selection-end="837" vertical-scroll-proportion="0.0" vertical-offset="288" max-vertical-offset="648">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="110" column="0" selection-start="3977" selection-end="3977" vertical-scroll-proportion="0.0" vertical-offset="1428" max-vertical-offset="3204">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IOModule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="545" column="16" selection-start="19888" selection-end="19888" vertical-scroll-proportion="0.0" vertical-offset="9810" max-vertical-offset="13806">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="108" column="47" selection-start="4011" selection-end="4011" vertical-scroll-proportion="0.0" vertical-offset="1944" max-vertical-offset="11250">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7544#11102#0" expanded="true" />
+            <element signature="e#11091#11092#0" expanded="true" />
+            <marker date="1397434864740" expanded="true" signature="17981:18213" placeholder="{...}" />
+            <marker date="1397434864740" expanded="true" signature="18092:18186" placeholder="{...}" />
+            <marker date="1397434864740" expanded="true" signature="18268:18313" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/motdData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="13" selection-start="48" selection-end="48" vertical-scroll-proportion="0.0" vertical-offset="36" max-vertical-offset="306">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/motd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="13" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="1242">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MotdInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="13" selection-start="641" selection-end="641" vertical-scroll-proportion="0.0" vertical-offset="288" max-vertical-offset="3600">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/HeaderButtonBar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="58" selection-start="989" selection-end="989" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="3924">
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#2220#2350#0" expanded="false" />
+            <element signature="e#2345#2346#0" expanded="false" />
+            <element signature="e#2696#2825#0" expanded="false" />
+            <element signature="e#2820#2821#0" expanded="false" />
+            <element signature="e#3227#3355#0" expanded="false" />
+            <element signature="e#3350#3351#0" expanded="false" />
+            <element signature="e#3716#3847#0" expanded="false" />
+            <element signature="e#3842#3843#0" expanded="false" />
+            <element signature="e#4186#4339#0" expanded="false" />
+            <element signature="e#4334#4335#0" expanded="false" />
+            <element signature="e#4702#4854#0" expanded="false" />
+            <element signature="e#4849#4850#0" expanded="false" />
+            <element signature="e#5169#5271#0" expanded="false" />
+            <element signature="e#5266#5267#0" expanded="false" />
+            <element signature="e#5411#5879#0" expanded="false" />
+            <element signature="e#5874#5875#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffConnServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="74" selection-start="427" selection-end="427" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="23886">
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConn.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="73" selection-start="551" selection-end="551" vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="1008">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -879,25 +1248,64 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="168" column="12" selection-start="7447" selection-end="7447" vertical-scroll-proportion="0.0" vertical-offset="2802" max-vertical-offset="7308">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2275#2474#0" expanded="true" />
-            <element signature="e#2469#2470#0" expanded="true" />
-            <element signature="e#4698#4932#0" expanded="true" />
-            <element signature="e#4927#4928#0" expanded="true" />
-            <element signature="e#5367#5609#0" expanded="true" />
-            <element signature="e#5604#5605#0" expanded="true" />
-            <element signature="e#6030#6267#0" expanded="true" />
-            <element signature="e#6262#6263#0" expanded="true" />
-            <element signature="e#6723#6967#0" expanded="true" />
-            <element signature="e#6962#6963#0" expanded="true" />
-            <element signature="e#7660#7661#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#2275#2474#0" expanded="false" />
+            <element signature="e#2469#2470#0" expanded="false" />
+            <element signature="e#4698#4932#0" expanded="false" />
+            <element signature="e#4927#4928#0" expanded="false" />
+            <element signature="e#5367#5609#0" expanded="false" />
+            <element signature="e#5604#5605#0" expanded="false" />
+            <element signature="e#6030#6267#0" expanded="false" />
+            <element signature="e#6262#6263#0" expanded="false" />
+            <element signature="e#6723#6967#0" expanded="false" />
+            <element signature="e#6962#6963#0" expanded="false" />
+            <element signature="e#7660#7661#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IOModule.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/HeaderButtonBar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="545" column="16" selection-start="19888" selection-end="19888" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="13554">
+        <state line="20" column="56" selection-start="989" selection-end="989" vertical-scroll-proportion="0.0" vertical-offset="36" max-vertical-offset="3924">
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#2220#2350#0" expanded="false" />
+            <element signature="e#2345#2346#0" expanded="false" />
+            <element signature="e#2696#2825#0" expanded="false" />
+            <element signature="e#2820#2821#0" expanded="false" />
+            <element signature="e#3227#3355#0" expanded="false" />
+            <element signature="e#3350#3351#0" expanded="false" />
+            <element signature="e#3716#3847#0" expanded="false" />
+            <element signature="e#3842#3843#0" expanded="false" />
+            <element signature="e#4186#4339#0" expanded="false" />
+            <element signature="e#4334#4335#0" expanded="false" />
+            <element signature="e#4702#4854#0" expanded="false" />
+            <element signature="e#4849#4850#0" expanded="false" />
+            <element signature="e#5169#5271#0" expanded="false" />
+            <element signature="e#5266#5267#0" expanded="false" />
+            <element signature="e#5411#5879#0" expanded="false" />
+            <element signature="e#5874#5875#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/LoginWin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="13" selection-start="864" selection-end="864" vertical-scroll-proportion="-0.9956943" vertical-offset="997" max-vertical-offset="2358">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/gin/MyModule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="13" selection-start="198" selection-end="198" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="324">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/gin/MainGinjector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="35" selection-start="227" selection-end="227" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="252">
           <folding />
         </state>
       </provider>
@@ -905,7 +1313,61 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/server/srvUserContainer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="13" selection-start="48" selection-end="48" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1584">
-          <folding />
+          <folding>
+            <element signature="e#724#725#0" expanded="false" />
+            <element signature="e#740#741#0" expanded="false" />
+            <element signature="e#774#775#0" expanded="false" />
+            <element signature="e#793#794#0" expanded="false" />
+            <element signature="e#829#830#0" expanded="false" />
+            <element signature="e#858#859#0" expanded="false" />
+            <element signature="e#914#915#0" expanded="false" />
+            <element signature="e#959#960#0" expanded="false" />
+            <element signature="e#987#988#0" expanded="false" />
+            <element signature="e#1007#1008#0" expanded="false" />
+            <element signature="e#1046#1047#0" expanded="false" />
+            <element signature="e#1073#1074#0" expanded="false" />
+            <element signature="e#1101#1102#0" expanded="false" />
+            <element signature="e#1121#1122#0" expanded="false" />
+            <element signature="e#1160#1161#0" expanded="false" />
+            <element signature="e#1187#1188#0" expanded="false" />
+            <element signature="e#1220#1221#0" expanded="false" />
+            <element signature="e#1245#1246#0" expanded="false" />
+            <element signature="e#1294#1295#0" expanded="false" />
+            <element signature="e#1331#1332#0" expanded="false" />
+            <element signature="e#1477#1478#0" expanded="false" />
+            <element signature="e#1505#1506#0" expanded="false" />
+            <element signature="e#1560#1561#0" expanded="false" />
+            <element signature="e#1603#1604#0" expanded="false" />
+            <element signature="e#1637#1638#0" expanded="false" />
+            <element signature="e#1666#1667#0" expanded="false" />
+            <element signature="e#1720#1721#0" expanded="false" />
+            <element signature="e#1765#1766#0" expanded="false" />
+            <element signature="e#1806#1807#0" expanded="false" />
+            <element signature="e#1842#1843#0" expanded="false" />
+            <element signature="e#1910#1911#0" expanded="false" />
+            <element signature="e#1969#1970#0" expanded="false" />
+            <element signature="e#2004#2005#0" expanded="false" />
+            <element signature="e#2034#2035#0" expanded="false" />
+            <element signature="e#2073#2074#0" expanded="false" />
+            <element signature="e#2107#2108#0" expanded="false" />
+            <element signature="e#2163#2164#0" expanded="false" />
+            <element signature="e#2210#2211#0" expanded="false" />
+            <element signature="e#2274#2275#0" expanded="false" />
+            <element signature="e#2329#2330#0" expanded="false" />
+            <element signature="e#2369#2370#0" expanded="false" />
+            <element signature="e#2404#2405#0" expanded="false" />
+            <element signature="e#2470#2471#0" expanded="false" />
+            <element signature="e#2527#2528#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffConnServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="13" selection-start="927" selection-end="927" vertical-scroll-proportion="1.1335878" vertical-offset="0" max-vertical-offset="23886">
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -937,80 +1399,286 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConn.html">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/applicationContext.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="73" selection-start="551" selection-end="551" vertical-scroll-proportion="-8.0" vertical-offset="0" max-vertical-offset="1008">
+        <state line="18" column="28" selection-start="1142" selection-end="1142" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="810">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/com/lanouette/app/bffConn.gwt.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/GreetingService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="4" selection-start="464" selection-end="464" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="630">
+        <state line="9" column="17" selection-start="260" selection-end="260" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="0" selection-start="1760" selection-end="1760" vertical-scroll-proportion="0.0" vertical-offset="295" max-vertical-offset="954">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-user/2.6.0/gwt-user-2.6.0.jar!/com/google/gwt/event/dom/client/KeyUpHandler.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="9" selection-start="251" selection-end="251" vertical-scroll-proportion="0.21052632" vertical-offset="0" max-vertical-offset="513" />
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.0/gwt-servlet-2.6.0.jar!/com/google/gwt/event/dom/client/KeyDownEvent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="19" selection-start="773" selection-end="881" vertical-scroll-proportion="0.504" vertical-offset="0" max-vertical-offset="500" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConn.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="53" selection-start="380" selection-end="380" vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="1026">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/proxies/BffProxy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="65" selection-start="446" selection-end="446" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="324">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="177" column="35" selection-start="6483" selection-end="6483" vertical-scroll-proportion="0.0" vertical-offset="3186" max-vertical-offset="4464">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="107" selection-start="349" selection-end="349" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="522">
+        <state line="33" column="30" selection-start="1084" selection-end="1084" vertical-scroll-proportion="0.71918875" vertical-offset="133" max-vertical-offset="882">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffConnServer.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/shared/ServerPaths.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="74" selection-start="427" selection-end="427" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="23886">
+        <state line="16" column="82" selection-start="764" selection-end="796" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="468">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/com/lanouette/app/bffConn.gwt.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="4" selection-start="764" selection-end="812" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="738">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="22" selection-start="1340" selection-end="1340" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4392">
           <folding>
-            <marker date="1391986075966" expanded="true" signature="7998:8025" placeholder="SELECT seq F..runtimedata..." />
-            <marker date="1391986075966" expanded="true" signature="8501:8529" placeholder="UPDATE runti..." />
-            <marker date="1391986075966" expanded="true" signature="8895:8928" placeholder="SELECT dbver..runtimedata..." />
-            <marker date="1391986075966" expanded="true" signature="9408:9442" placeholder="UPDATE runti..." />
-            <marker date="1391986075966" expanded="true" signature="9816:9854" placeholder="SELECT motd_..runtimedata..." />
-            <marker date="1391986075966" expanded="true" signature="10338:10377" placeholder="UPDATE runti..." />
-            <marker date="1391986075966" expanded="true" signature="10751:10788" placeholder="SELECT userd..runtimedata..." />
-            <marker date="1391986075966" expanded="true" signature="11272:11310" placeholder="UPDATE runti..." />
-            <marker date="1391986075966" expanded="true" signature="12201:12281" placeholder="INSERT into ..." />
-            <marker date="1391986075966" expanded="true" signature="12311:12346" placeholder="SELECT * FRO..sessions..." />
-            <marker date="1391986075966" expanded="true" signature="13490:13557" placeholder="SELECT * FRO..messagetable..." />
-            <marker date="1391986075966" expanded="true" signature="13705:13759" placeholder="SELECT * FRO..messagetable..." />
-            <marker date="1391986075966" expanded="true" signature="15693:15753" placeholder="SELECT * FRO..messagetable..." />
-            <marker date="1391986075966" expanded="true" signature="19760:19817" placeholder="UPDATE messa..." />
-            <marker date="1391986075966" expanded="true" signature="20790:20855" placeholder="UPDATE messa..." />
-            <marker date="1391986075966" expanded="true" signature="21762:21834" placeholder="UPDATE messa..." />
-            <marker date="1391986075966" expanded="true" signature="24204:24229" placeholder="SELECT * FRO..runtimedata..." />
-            <marker date="1391986075966" expanded="true" signature="25395:25430" placeholder="SELECT * FRO..sessions..." />
-            <marker date="1391986075966" expanded="true" signature="26059:26094" placeholder="SELECT * FRO..sessions..." />
-            <marker date="1391986075966" expanded="true" signature="26650:26702" placeholder="INSERT INTO ..." />
-            <marker date="1391986075966" expanded="true" signature="27209:27250" placeholder="UPDATE sessi..." />
-            <marker date="1391986075966" expanded="true" signature="27684:27722" placeholder="UPDATE sessi..." />
-            <marker date="1391986075966" expanded="true" signature="28206:28237" placeholder="DELETE FROM ..." />
-            <marker date="1391986075966" expanded="true" signature="29563:29594" placeholder="SELECT * FRO..users..." />
-            <marker date="1391986075966" expanded="true" signature="31283:31318" placeholder="DELETE from ..." />
-            <marker date="1391986075966" expanded="true" signature="31793:31850" placeholder="SELECT date ..." />
-            <marker date="1391986075966" expanded="true" signature="31873:31935" placeholder="UPDATE motd ..." />
-            <marker date="1391986075966" expanded="true" signature="33037:33110" placeholder="SELECT useri..messagetable..." />
-            <marker date="1391986075966" expanded="true" signature="33134:33226" placeholder="SELECT useri..messagetable..." />
-            <marker date="1391986075966" expanded="true" signature="33251:33346" placeholder="SELECT useri..messagetable..." />
-            <marker date="1391986075966" expanded="true" signature="33377:33456" placeholder="SELECT count..messagetable..." />
-            <marker date="1391986075966" expanded="true" signature="33487:33568" placeholder="SELECT SUM(B..messagetable..." />
-            <marker date="1391986075966" expanded="true" signature="33603:33656" placeholder="SELECT count..motd..." />
-            <marker date="1391986075966" expanded="true" signature="33691:33746" placeholder="SELECT SUM(B..motd..." />
-            <marker date="1391986075966" expanded="true" signature="37100:37184" placeholder="INSERT INTO ..." />
-            <marker date="1391986075966" expanded="true" signature="38059:38095" placeholder="SELECT * FRO..motd..." />
-            <marker date="1391986075966" expanded="true" signature="39305:39360" placeholder="UPDATE motd ..." />
-            <marker date="1391986075966" expanded="true" signature="40081:40144" placeholder="UPDATE motd ..." />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/EntryBox.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="40" selection-start="745" selection-end="842" vertical-scroll-proportion="0.5302782" vertical-offset="0" max-vertical-offset="3114">
+        <state line="43" column="0" selection-start="1735" selection-end="1735" vertical-scroll-proportion="0.0" vertical-offset="1080" max-vertical-offset="2862">
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageViewElementNative.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="127" column="41" selection-start="5133" selection-end="5133" vertical-scroll-proportion="-13.714286" vertical-offset="1902" max-vertical-offset="7740">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#6414#6591#0" expanded="true" />
+            <element signature="e#6580#6581#0" expanded="true" />
+            <element signature="e#6710#6888#0" expanded="true" />
+            <element signature="e#6877#6878#0" expanded="true" />
+            <element signature="e#7012#7269#0" expanded="true" />
+            <element signature="e#7258#7259#0" expanded="true" />
+            <element signature="e#7399#7653#0" expanded="true" />
+            <element signature="e#7642#7643#0" expanded="true" />
+            <element signature="e#7910#8093#0" expanded="true" />
+            <element signature="e#8078#8079#0" expanded="true" />
+            <element signature="e#8226#8445#0" expanded="true" />
+            <element signature="e#8430#8431#0" expanded="true" />
+            <element signature="e#8583#8799#0" expanded="true" />
+            <element signature="e#8784#8785#0" expanded="true" />
+            <element signature="e#8932#9128#0" expanded="true" />
+            <element signature="e#9113#9114#0" expanded="true" />
+            <element signature="e#9267#9490#0" expanded="true" />
+            <element signature="e#9475#9476#0" expanded="true" />
+            <element signature="e#9634#9854#0" expanded="true" />
+            <element signature="e#9839#9840#0" expanded="true" />
+            <element signature="e#10006#10289#0" expanded="true" />
+            <element signature="e#10278#10279#0" expanded="true" />
+            <element signature="e#10416#10734#0" expanded="true" />
+            <element signature="e#10723#10724#0" expanded="true" />
+            <element signature="e#11710#11711#0" expanded="true" />
+            <element signature="e#11742#11743#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConn.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="330" column="1" selection-start="5095" selection-end="5095" vertical-scroll-proportion="0.0" vertical-offset="5672" max-vertical-offset="8280">
+          <folding>
+            <marker date="1397432815260" expanded="true" signature="5443:5476" placeholder="{...}" />
+            <marker date="1397432815260" expanded="true" signature="5502:5536" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/motdData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="13" selection-start="48" selection-end="48" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MotdInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="26" selection-start="1632" selection-end="1632" vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="3006">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.0/gwt-servlet-2.6.0.jar!/com/google/gwt/http/client/ResponseImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="28" selection-start="803" selection-end="803" vertical-scroll-proportion="-14.4" vertical-offset="0" max-vertical-offset="522">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-user/2.6.0/gwt-user-2.6.0.jar!/com/google/gwt/json/client/JSONParser.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="56" selection-start="1218" selection-end="1218" vertical-scroll-proportion="-13.4" vertical-offset="169" max-vertical-offset="810">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/motd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="22" selection-start="1010" selection-end="1010" vertical-scroll-proportion="0.6131045" vertical-offset="327" max-vertical-offset="1296">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IOModule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="329" column="105" selection-start="12242" selection-end="12242" vertical-scroll-proportion="0.5334395" vertical-offset="5335" max-vertical-offset="13554">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="225" column="52" selection-start="9163" selection-end="9163" vertical-scroll-proportion="0.42" vertical-offset="3528" max-vertical-offset="11628">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7544#11102#0" expanded="true" />
+            <element signature="e#11091#11092#0" expanded="true" />
+            <marker date="1397434864740" expanded="true" signature="17981:18213" placeholder="{...}" />
+            <marker date="1397434864740" expanded="true" signature="18092:18186" placeholder="{...}" />
+            <marker date="1397434864740" expanded="true" signature="18268:18313" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>bffConn:war</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>GWT</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>bffConn</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.20000002" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Maven: aopalliance:aopalliance:1.0</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
 

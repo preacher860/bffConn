@@ -30,11 +30,14 @@ public class MotdInfo extends VerticalPanel {
 	private boolean starred = false;
 	private boolean myIconBarHovered = false;
 	
-	public MotdInfo(userCallbackInterface cb) {
+	public MotdInfo(userCallbackInterface cb, boolean isMobile) {
 		
 		myUserCallbackInterface = cb;
-		
-		myMotdInfo.setStyleName("motdInfo");
+
+        myMotdInfo.setStyleName("motdInfo");
+        if(isMobile) {
+            myMotdInfo.addStyleName("motdInfoMobile");
+        }
 		myIconPane.setStyleName("motdIconPane");
 		
 		myStarIcon.setStyleName("motdStarIcon");
