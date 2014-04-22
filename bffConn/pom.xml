@@ -9,7 +9,7 @@
     <groupId>com.lanouette.app</groupId>
     <artifactId>bffConn</artifactId>
     <packaging>war</packaging>
-    <version>0.9-SNAPSHOT</version>
+    <version>0.50</version>
     <name>GWT Maven Archetype</name>
 
     <properties>

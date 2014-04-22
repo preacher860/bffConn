@@ -25,7 +25,7 @@ public class EntryBox extends HorizontalPanel {
     private int myEditingMessageSeq = 0;
 
 
-    public EntryBox(ioCallbackInterface callbackInterface, userCallbackInterface userCB, boolean mobile) {
+    public EntryBox(ioCallbackInterface callbackInterface, userCallbackInterface userCB, boolean mobile, boolean iphone) {
         myCallbackInterface = callbackInterface;
         myUserCallbackInterface = userCB;
 
@@ -41,8 +41,16 @@ public class EntryBox extends HorizontalPanel {
         infoItem.setVisible(false);
         editStack.setWidth("100%");
         editStack.getElement().setAttribute("cellpadding", "1");
+	    messageItem.setCharacterWidth(80);
         messageItem.addStyleName("messageEditBox");
-
+        if(mobile) {
+	    if(iphone) {
+		messageItem.addStyleName("messageEditBoxIPhone");
+	    } else {
+		messageItem.addStyleName("messageEditBoxMobile");
+	    }
+        }
+	
         ClickHandler entryBoxClickHandler = new ClickHandler() {
             public void onClick(ClickEvent event) {
                 myUserCallbackInterface.userEntry();

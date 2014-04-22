@@ -1,40 +1,76 @@
-/** Add css rules here for your application. */
-
+/** CSS RESET */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
 
 /** Example rules used by the template application (remove for your app) */
 h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 40px 0px 70px;
-  text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    color: #777777;
+    margin: 40px 0px 70px;
+    text-align: center;
 }
 
 .sendButton {
-  display: block;
-  font-size: 16pt;
+    display: block;
+    font-size: 16pt;
 }
 
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
-  width: 400px;
+    width: 400px;
 }
 
 .dialogVPanel {
-  margin: 5px;
+    margin: 5px;
 }
 
 .serverResponseLabelError {
-  color: red;
+    color: red;
 }
 
 /** Set ids using widget.getElement().setId("idOfElement") */
 #closeButton {
-  margin: 15px 6px 6px;
+    margin: 15px 6px 6px;
 }
 
 /** Add css rules here for your application. */
-
 
 /** Example rules used by the template application (remove for your app) */
 h1 {
@@ -99,77 +135,74 @@ h1 {
 }
 
 .tooltipStyle {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif;
-    font-size:11px;
-    border:1px solid #808080;
-    padding:4px;
-    background-color:black;
-    color:white;
-    opacity:0.75;
-    width:auto;
-    overflow:hidden;
-    text-align:center;
-    border-radius:6px;
+    font-family: Verdana, Bitstream Vera Sans, sans-serif;
+    font-size: 11px;
+    border: 1px solid #808080;
+    padding: 4px;
+    background-color: black;
+    color: white;
+    opacity: 0.75;
+    width: auto;
+    overflow: hidden;
+    text-align: center;
+    border-radius: 6px;
 }
 
 .myGridCell {
-    color:black;
-    background-color:#ffffff;
+    color: black;
+    background-color: #ffffff;
 }
+
 .myGridCellDark {
-    color:black;
-    background-color:#f0f0e8;
+    color: black;
+    background-color: #f0f0e8;
 }
 
 .myTitleBox {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif;
-    color:black;
-    font-size:14px;
+    font-family: Verdana, Bitstream Vera Sans, sans-serif;
+    color: black;
+    font-size: 14px;
     font-weight: bold;
+    padding: 5px;
 }
+
 .messageBoxHover {
-    border-style:solid;
-    border-color:#B0B0FF;
+    border-style: solid;
+    border-color: #B0B0FF;
 }
 
 .transparent {
-    opacity:0.0;
+    opacity: 0.0;
 }
 
 .opaque {
-    opacity:1.0;
+    opacity: 1.0;
+}
+
+.messageViewElementBox {
+    font-size: 12px;
+    padding: 5px;
+    line-height: 125%;
 }
 
 .messageViewElementBoxNormal {
-    font-size:12px;
     background-color: #C3D9FF;
-    padding: 5px;
-}
-
-.messageViewElementBoxMobile {
-    font-size:16px !important;
 }
 
 .messageViewElementBoxUnread {
-    font-size:12px;
     background-color: #f4b58c;
-    padding: 5px;
 }
 
 .messageViewElementBoxAdressee {
-    font-size:12px;
     background-color: #88FB9E;
-    padding: 5px;
 }
 
 .messageViewElementBoxAdresseeUnread {
-    font-size:12px;
     background-color: #eaa9f8;
-    padding: 5px;
 }
 
-.messageViewPic {
-;background-color: #B0B0B0;
+.messageViewPic {;
+    background-color: #B0B0B0;
     margin: 2px;
     border: 2px groove #808080;
 }
@@ -179,7 +212,7 @@ h1 {
 }
 
 .messageStatusBar {
-    background-color:  #B0B0B0;
+    background-color: #B0B0B0;
     height: 21px;
     vertical-align: middle;
     padding: 0;
@@ -193,25 +226,21 @@ h1 {
 }
 
 .userInfo {
-    background-color:  #B0B0B0;
+    background-color: #B0B0B0;
     padding: 3px;
-    width: 500px;
+    width: 485px;
     display: block;
     font-size: 7pt;
 }
 
-.userInfoMobile {
-    font-size: 10pt !important;
-}
-
 .iconPane {
-    background-color:  #B0B0B0;
+    background-color: #B0B0B0;
     width: auto;
     table-layout: fixed;
 }
 
 .messageView {
-    overflow:auto;
+    overflow: auto;
     position: absolute;
     background-color: #ffffff;
     border: 3px solid #455469;
@@ -237,7 +266,7 @@ h1 {
 }
 
 .messagePane {
-    background-color:  #B0B0B0;
+    background-color: #B0B0B0;
     width: 100%;
     height: 30px;
 }
@@ -251,9 +280,9 @@ h1 {
 }
 
 .starLabel {
-    font-size:12px;
+    font-size: 12px;
     padding: 2px;
-    width: 40px;
+    width: 45px;
 }
 
 .deleteIcon {
@@ -265,9 +294,9 @@ h1 {
 }
 
 .deleteLabel {
-    font-size:12px;
+    font-size: 12px;
     padding: 2px;
-    width: 40px;
+    width: 45px;
 }
 
 .editIcon {
@@ -279,9 +308,9 @@ h1 {
 }
 
 .editLabel {
-    font-size:12px;
+    font-size: 12px;
     padding: 2px;
-    width: 40px;
+    width: 45px;
 }
 
 .userAvatar {
@@ -289,7 +318,7 @@ h1 {
     height: 34px;
     margin-top: 4px;
     margin-left: 5px;
-    border: 2px groove #808080;
+    border-radius: 3px;
 }
 
 .starStack {
@@ -316,6 +345,7 @@ h1 {
 .entryBoxDesktop {
     width: 800px;
 }
+
 .entryBoxMobile {
     width: 96.5%;
 }
@@ -323,6 +353,7 @@ h1 {
 .leftToolbar {
     margin-left: 10px;
 }
+
 .mainPanel {
     background-image: url('images/backgrounds/convore.jpg');
     background-repeat: repeat;
@@ -333,11 +364,11 @@ h1 {
 .entryBoxInfoItem {
     height: auto;
     padding: 2px;
-    font-size:11px;
+    font-size: 11px;
 }
 
-.entryBoxPic {
-;background-color: #B0B0B0;
+.entryBoxPic {;
+    background-color: #B0B0B0;
     padding: 0px;
     border: 2px groove #808080;
 }
@@ -356,26 +387,25 @@ h1 {
 }
 
 .motd {
-    font-size:20px;
+    font-size: 20px;
     height: 24px;
     width: 800px;
-    text-align:center;
+    text-align: center;
     overflow: hidden;
     color: #ffffff;
     text-shadow: 3px 3px 2px rgba(0, 0, 0, 0.4)
 }
 
-
 .motdInfo {
-    font-size:10px;
+    font-size: 10px;
     width: 100%;
     height: 15px;
-    text-align:right;
+    text-align: right;
     overflow: hidden;
 }
 
 .motdInfoMobile {
-    font-size:14px !important;
+    font-size: 14px !important;
 }
 
 .motdIconPane {
@@ -393,24 +423,25 @@ h1 {
 }
 
 .linkiframe {
-    width:800px;
-    height:520px;
-    border:none;
-    overflow:hidden;
+    width: 800px;
+    height: 520px;
+    border: none;
+    overflow: hidden;
 }
+
 .linkdiv {
-    width:800px;
-    height:520px;
-    position:relative;
-    display:table;
-    border:solid;
-    overflow:hidden;
-    -moz-transform:scale(0.2);
-    -moz-transform-origin:0 0;
-    -o-transform:scale(0.2);
-    -o-transform-origin:0 0;
-    -webkit-transform:scale(0.2);
-    -webkit-transform-origin:0 0;
+    width: 800px;
+    height: 520px;
+    position: relative;
+    display: table;
+    border: solid;
+    overflow: hidden;
+    -moz-transform: scale(0.2);
+    -moz-transform-origin: 0 0;
+    -o-transform: scale(0.2);
+    -o-transform-origin: 0 0;
+    -webkit-transform: scale(0.2);
+    -webkit-transform-origin: 0 0;
 }
 
 .linkanchor {
@@ -419,7 +450,7 @@ h1 {
     right: 0;
     bottom: 0;
     left: 0;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 .headerStack {
@@ -430,25 +461,111 @@ h1 {
     border: none;
 }
 
-
 .tooltipStyle {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif;
-    font-size:11px;
-    border:1px solid #808080;
-    padding:4px;
-    background-color:black;
-    color:white;
-    opacity:0.75;
-    width:auto;
-    overflow:hidden;
-    text-align:center;
-    border-radius:6px;
+    font-family: Verdana, Bitstream Vera Sans, sans-serif;
+    font-size: 11px;
+    border: 1px solid #808080;
+    padding: 4px;
+    background-color: black;
+    color: white;
+    opacity: 0.75;
+    width: auto;
+    overflow: hidden;
+    text-align: center;
+    border-radius: 6px;
 }
 
 .messageEditBox {
+    font-family: Arial Unicode MS, Arial, sans-serif;
     width: 100%;
     height: 50px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+.headerAvatar {
+    width: 28px;
+    height: 28px;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    border-radius: 14px;
+    box-shadow: 0px 2px 3px #a0a0a0;
+    cursor: pointer;
+}
+
+.userTile {
+}
+
+[class="userTile"] img {
+    border-radius: 4px;
+}
+
+[class="userTileOver"] img {
+    border-radius: 4px;
+}
+
+/* Landscape */
+@media screen and (min-aspect-ratio: 15/9) {
+    .userInfoMobile {
+        font-size: 8pt !important;
+    }
+
+    .messageViewElementBoxMobile {
+        font-size: 16px !important;
+    }
+
+    .messageEditBoxMobile {
+        font-size: 10px;
+        height: 50px;
+    }
+
+    .messageEditBoxIPhone{
+	font-size: 25px;
+	height: 50px;
+    }
+
+    .starLabelMobile {
+    }
+
+    .deleteLabelMobile {
+    }
+
+    .editLabelMobile {
+    }
+}
+
+/* Portrait */
+@media screen and (max-aspect-ratio: 15/9) {
+    .userInfoMobile {
+        font-size: 12pt !important;
+    }
+
+    .messageViewElementBoxMobile {
+        font-size: 23px !important;
+    }
+
+    .messageEditBoxMobile {
+        font-size: 10px;
+        height: 50px;
+    }
+
+    .messageEditBoxIPhone {
+	font-size: 25px;
+	height:50px;
+    }
+
+    .starLabelMobile {
+        font-size: 16px;
+    }
+
+    .deleteLabelMobile {
+        font-size: 16px;
+    }
+
+    .editLabelMobile {
+        font-size: 16px;
+    }
+}
+

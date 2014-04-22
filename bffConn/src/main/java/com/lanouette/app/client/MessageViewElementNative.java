@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -85,6 +86,9 @@ public class MessageViewElementNative extends HorizontalPanel {
         starIcon.setStyleName("starIcon");
         starOverIcon.setStyleName("starIcon");
         starLabel.setStyleName("starLabel");
+        if(isMobile) {
+            starLabel.addStyleName("starLabelMobile");
+        }
 
         starStack.setStyleName("starStack");
         starStack.add(starIcon);
@@ -102,6 +106,9 @@ public class MessageViewElementNative extends HorizontalPanel {
         deleteOverIcon.setStyleName("deleteIcon");
         deleteOverIcon.setVisible(false);
         deleteLabel.setStyleName("deleteLabel");
+        if(isMobile) {
+            deleteLabel.addStyleName("deleteLabelMobile");
+        }
         deleteStack.setStyleName("deleteStack");
         deleteStack.setVisible(false);
         deleteStack.add(deleteIcon);
@@ -112,6 +119,9 @@ public class MessageViewElementNative extends HorizontalPanel {
         editOverIcon.setStyleName("editIcon");
         editOverIcon.setVisible(false);
         editLabel.setStyleName("editLabel");
+        if(isMobile) {
+            editLabel.addStyleName("editLabelMobile");
+        }
         editStack.setStyleName("editStack");
         editStack.setVisible(false);
         editStack.add(editIcon);
@@ -139,8 +149,10 @@ public class MessageViewElementNative extends HorizontalPanel {
 
         userMessagePane.setHTML(myEnhancedMessage);
 
+        infoPane.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         infoPane.add(userInfoLabel);
         infoPane.add(iconPane);
+
 
         setStyleName("messageViewElement");
         userMessagePane.setStyleName("messageViewElementBoxNormal");
@@ -157,7 +169,7 @@ public class MessageViewElementNative extends HorizontalPanel {
         messagePane.add(infoPane);
 
         add(imageStack);
-        setCellWidth(imageStack, "50px");
+        setCellWidth(imageStack, "44px");
         add(messagePane);
 
         setUserPaneColor();
@@ -275,15 +287,16 @@ public class MessageViewElementNative extends HorizontalPanel {
     }
 
     private void setUserPaneColor() {
+	userMessagePane.setStyleName("messageViewElementBox");
 
         if (forMe && myUnread)
-            userMessagePane.setStyleName("messageViewElementBoxAdresseeUnread"); // Addressee + unread purple
+            userMessagePane.addStyleName("messageViewElementBoxAdresseeUnread"); // Addressee + unread purple
         else if (forMe)
-            userMessagePane.setStyleName("messageViewElementBoxAdressee"); // Addressee green
+            userMessagePane.addStyleName("messageViewElementBoxAdressee"); // Addressee green
         else if (myUnread)
-            userMessagePane.setStyleName("messageViewElementBoxUnread"); // Unread orange
+            userMessagePane.addStyleName("messageViewElementBoxUnread"); // Unread orange
         else {
-            userMessagePane.setStyleName("messageViewElementBoxNormal"); // Normal blue
+            userMessagePane.addStyleName("messageViewElementBoxNormal"); // Normal blue
         }
 
         if (isMobile) {

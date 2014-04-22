@@ -21,27 +21,17 @@ public class UserTileDisplay extends VStack {
 	public UserTileDisplay(userCallbackInterface callbackInterface){
 		myUserCallbackInterface = callbackInterface;
 				
-		//setHeight(210);
 		setHeight(100);
-		
 		setWidth(216);
-	
-		//setMargin(5);
-		
+
 		setOverflow(Overflow.VISIBLE);
 		setBackgroundColor("#ffffff");
-		//setEdgeImage("borders/sharpframe_10.png");
-        //setEdgeSize(6); 
-        //setBackgroundImage("backgrounds/lgrey127.gif");
-        //setBackgroundRepeat(BkgndRepeat.REPEAT);
 		setShowEdges(true);
 		setEdgeSize(3);
 		setShowShadow(true);
 		setShadowSoftness(3);
 		setShadowOffset(4);
-		//setShadowDepth(2);
-		
-		
+
 		usersGrid.setWidth100();
 		usersGrid.setHeight(100);
 		usersGrid.setOverflow(Overflow.VISIBLE);
@@ -57,8 +47,6 @@ public class UserTileDisplay extends VStack {
 		titleLabel.setWidth100();
 		titleLabel.setHeight(30);
 		titleLabel.setContents("En ligne");
-		//titleLabel.setAlign(Alignment.CENTER);
-		titleLabel.setPadding(5);
 		titleLabel.setStyleName("myTitleBox");
 		titleLabel.setBackgroundImage("titleback30.png");
 		titleLabel.setBackgroundRepeat(BkgndRepeat.REPEAT_X);
@@ -68,6 +56,7 @@ public class UserTileDisplay extends VStack {
 		pictureField.setImageURLPrefix("");
 		pictureField.setImageWidth(40);
 		pictureField.setImageHeight(40);
+        pictureField.setCellStyle("userTile");
 		
 		DetailViewerField nameField = new DetailViewerField("name");
 		
@@ -76,7 +65,6 @@ public class UserTileDisplay extends VStack {
 		addMember(titleLabel);
 		addMember(usersGrid);
 		usersGrid.addRecordClickHandler(new RecordClickHandler() {  
-			@Override
 			public void onRecordClick(RecordClickEvent event) {
 				myUserCallbackInterface.avatarClicked(event.getRecord().getAttribute("name"));
 				usersGrid.deselectAllRecords();
