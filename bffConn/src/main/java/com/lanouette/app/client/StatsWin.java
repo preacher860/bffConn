@@ -56,13 +56,14 @@ public class StatsWin extends Window {
 		statsGrid = new ListGrid() {
 			@Override  
 	        protected String getCellCSSText(ListGridRecord record, int rowNum, int colNum) {  
-	                return "font-size:14px;font-weight:bold";  
+	                return "font-size:14px;font-weight:bold;vertical-align: middle;border-collapse:separate";
 	        }
 		};
-		
+
+        statsGrid.setHeaderBarStyle("statsHeader");
 		statsGrid.setWidth100();
 		statsGrid.setAutoFitWidthApproach(AutoFitWidthApproach.BOTH); 
-		statsGrid.setOverflow(Overflow.AUTO);
+		statsGrid.setOverflow(Overflow.VISIBLE);
 		statsGrid.setCanResizeFields(false);
 		statsGrid.setAutoFitData(Autofit.BOTH);
 		statsGrid.setShowAllRecords(true);

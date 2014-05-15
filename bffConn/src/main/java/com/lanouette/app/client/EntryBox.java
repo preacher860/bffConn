@@ -1,5 +1,7 @@
 package com.lanouette.app.client;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -30,7 +32,7 @@ public class EntryBox extends HorizontalPanel {
         myUserCallbackInterface = userCB;
 
         setStyleName("entryBox");
-        if(mobile) {
+        if (mobile) {
             addStyleName("entryBoxMobile");
         } else {
             addStyleName("entryBoxDesktop");
@@ -39,18 +41,19 @@ public class EntryBox extends HorizontalPanel {
         infoItem.setHTML("Editing message 222222");
         infoItem.setStyleName("entryBoxInfoItem");
         infoItem.setVisible(false);
-        editStack.setWidth("100%");
+
+        editStack.setStyleName("editBoxTable");
         editStack.getElement().setAttribute("cellpadding", "1");
-	    messageItem.setCharacterWidth(80);
+        messageItem.setCharacterWidth(80);
         messageItem.addStyleName("messageEditBox");
-        if(mobile) {
-	    if(iphone) {
-		messageItem.addStyleName("messageEditBoxIPhone");
-	    } else {
-		messageItem.addStyleName("messageEditBoxMobile");
-	    }
+        if (mobile) {
+            if (iphone) {
+                messageItem.addStyleName("messageEditBoxIPhone");
+            } else {
+                messageItem.addStyleName("messageEditBoxMobile");
+            }
         }
-	
+
         ClickHandler entryBoxClickHandler = new ClickHandler() {
             public void onClick(ClickEvent event) {
                 myUserCallbackInterface.userEntry();
@@ -102,12 +105,16 @@ public class EntryBox extends HorizontalPanel {
     }
 
     public void setFocus() {
-        messageItem.setFocus(true);
+        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+            public void execute() {
+                messageItem.setFocus(true);
+            }
+        });
     }
 
     public void setUser(UserContainer user) {
         Image userImage = new Image(user.getAvatarURL());
-        userImage.setStyleName("userAvatar");
+        userImage.setStyleName("userAvatarEntryBox");
         imageStack.add(userImage);
     }
 
@@ -115,16 +122,21 @@ public class EntryBox extends HorizontalPanel {
         String Message;
 
         int currentPos = messageItem.getCursorPos();
+        String insertedNick;
         String currentMsg = messageItem.getValue();
 
         Message = currentMsg.substring(0, currentPos);
         if (currentPos != 0) {
-            Message += " ";
+            insertedNick = " @" + userNick + " ";
+        } else {
+            insertedNick = "@" + userNick + " ";
         }
-        Message += "@" + userNick + " ";
+        Message += insertedNick;
         Message += currentMsg.substring(currentPos, currentMsg.length());
 
         messageItem.setValue(Message);
+        messageItem.setCursorPos(currentPos + insertedNick.length());
+
         setFocus();
     }
 

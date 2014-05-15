@@ -191,7 +191,8 @@ h1 {
 }
 
 .messageViewElementBoxNormal {
-    background-color: #C3D9FF;
+    /*background-color: #C3D9FF;*/
+    background-color: #FF0000
 }
 
 .messageViewElementBoxUnread {

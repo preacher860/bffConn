@@ -55,8 +55,8 @@ public class LoginWin extends Window {
         form.setAutoFocus(true);
 		  
 		usernameItem.setTitle("Usager");  
-		usernameItem.setRequired(true);  
-		  
+		usernameItem.setRequired(true);
+
 		passwordItem.setTitle("Mot de passe");  
 		passwordItem.setRequired(true);
 		

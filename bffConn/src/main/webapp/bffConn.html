@@ -12,14 +12,25 @@
     <!--                                                               -->
     <!-- Consider inlining CSS to reduce the number of requested files -->
     <!--                                                               -->
-    <link type="text/css" rel="stylesheet" href="bffConn.css">
+
     <link id='favicon' rel='SHORTCUT ICON' href='images/favicon.ico' type='image/x-icon'>
 
     <!--                                           -->
     <!-- Any title is fine                         -->
     <!--                                           -->
     <title>Connexion BFF</title>
-
+    <script type="text/javascript">
+        if (/Android|Opera Mini/i.test(navigator.userAgent)) {
+            console.log( "BFF: Android Mobile device");
+            document.write('<link type="text/css" rel="stylesheet" href="bffConnMobile.css">');
+        }else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            console.log( "BFF: iCrap Mobile device");
+            document.write('<link type="text/css" rel="stylesheet" href="bffConniPhone.css">');
+        else {
+            console.log( "BFF: Desktop device");
+            document.write('<link type="text/css" rel="stylesheet" href="bffConn.css">');
+        }
+    </script>
     <!--                                           -->
     <!-- This script loads your compiled module.   -->
     <!-- If you add any GWT meta tags, they must   -->
@@ -36,7 +47,8 @@
 <body>
 
 <!-- OPTIONAL: include this if you want history support -->
-<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
+<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+        style="position:absolute;width:0;height:0;border:0"></iframe>
 
 <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
 <noscript>

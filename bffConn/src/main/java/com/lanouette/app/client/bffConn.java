@@ -72,7 +72,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     private octoBox myOctoBox = new octoBox();
     private EntryBox myEntryBox = new EntryBox(this, this, isMobile, isIphone);
     private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
-    private MessageView myMessageManager = new MessageView(this, isMobile);
+    private MessageView myMessageManager = new MessageView(this, isMobile, isIphone);
     private Image headerImage = new Image();
     private motd myMotd = new motd();
     private MotdInfo myMotdInfo = new MotdInfo(this, isMobile);
@@ -133,7 +133,9 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         topToolbarLowerStack.add(userButtonBar);
         topToolbarLowerStack.add(myMotdInfo);
         topToolbarLowerStack.setCellHorizontalAlignment(myMotdInfo, HasHorizontalAlignment.ALIGN_RIGHT);
-        topToolbarLowerStack.setCellWidth(myMotdInfo, "550px");
+        topToolbarLowerStack.setCellWidth(myHeaderButtonBar, "245px");
+        topToolbarLowerStack.setCellWidth(userButtonBar, "320px");
+        topToolbarLowerStack.setCellWidth(myMotdInfo, "235px");
         userButtonBar.setVisible(false);
 
         topToolbarStack.add(myMotd);

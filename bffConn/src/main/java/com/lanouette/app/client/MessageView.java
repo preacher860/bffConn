@@ -13,6 +13,7 @@ public class MessageView extends ScrollPanel {
 	private static final int KEEP_AT_BOTTOM_RETRIES = 3;
 
     private final boolean isMobile;
+    private final boolean isIPhone;
 
     private String mobileMessageBoxStyle = "";
     private VerticalPanel mainVPanel = new VerticalPanel();
@@ -33,9 +34,11 @@ public class MessageView extends ScrollPanel {
 	private boolean myInvisibleMode = false;
 	
 	public MessageView(userCallbackInterface callbackInterface,
-                       boolean isMobile){
+                       boolean isMobile,
+                       boolean isIPhone){
 		myCallbackInterface = callbackInterface;
         this.isMobile = isMobile;
+        this.isIPhone = isIPhone;
 
 		mainVPanel.setStyleName("messageViewVpanel");
 		add(mainVPanel);
@@ -113,7 +116,7 @@ public class MessageView extends ScrollPanel {
 			MessageViewElementNative element = new MessageViewElementNative(currentMessage, 
 					UserManager.getInstance().getUser(currentMessage.getMessageUserId()),
 					UserManager.getInstance().getUser(RuntimeData.getInstance().getUserId()),
-					myCallbackInterface, isMobile);
+					myCallbackInterface, isMobile, isIPhone);
 
 			// When in invisible mode, all new messages are flagged unread
 			if (myInvisibleMode) {

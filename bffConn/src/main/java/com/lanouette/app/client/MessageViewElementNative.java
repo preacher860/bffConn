@@ -52,7 +52,7 @@ public class MessageViewElementNative extends HorizontalPanel {
 
     public MessageViewElementNative(MessageContainer message, UserContainer user,
                                     UserContainer myself, userCallbackInterface cb,
-                                    boolean isMobile) {
+                                    boolean isMobile, boolean isIPhone) {
         myUserCallbackInterface = cb;
         myMessageOriginatingUser = user.getNick();
         myMessage = message;
@@ -85,9 +85,17 @@ public class MessageViewElementNative extends HorizontalPanel {
 
         starIcon.setStyleName("starIcon");
         starOverIcon.setStyleName("starIcon");
+        if (isIPhone) {
+            starIcon.addStyleName("starIconIphone");
+            starOverIcon.addStyleName("starIconIphone");
+        }
         starLabel.setStyleName("starLabel");
-        if(isMobile) {
-            starLabel.addStyleName("starLabelMobile");
+        if (isMobile) {
+            if (isIPhone) {
+                starLabel.addStyleName("starLabelMobileIphone");
+            } else {
+                starLabel.addStyleName("starLabelMobile");
+            }
         }
 
         starStack.setStyleName("starStack");
@@ -104,10 +112,18 @@ public class MessageViewElementNative extends HorizontalPanel {
 
         deleteIcon.setStyleName("deleteIcon");
         deleteOverIcon.setStyleName("deleteIcon");
+        if (isIPhone) {
+            deleteIcon.addStyleName("deleteIconIphone");
+            deleteOverIcon.addStyleName("deleteIconIphone");
+        }
         deleteOverIcon.setVisible(false);
         deleteLabel.setStyleName("deleteLabel");
-        if(isMobile) {
-            deleteLabel.addStyleName("deleteLabelMobile");
+        if (isMobile) {
+            if (isIPhone) {
+                deleteLabel.addStyleName("deleteLabelMobileIphone");
+            } else {
+                deleteLabel.addStyleName("deleteLabelMobile");
+            }
         }
         deleteStack.setStyleName("deleteStack");
         deleteStack.setVisible(false);
@@ -117,10 +133,18 @@ public class MessageViewElementNative extends HorizontalPanel {
 
         editIcon.setStyleName("editIcon");
         editOverIcon.setStyleName("editIcon");
+        if (isIPhone) {
+            editIcon.addStyleName("editIconIphone");
+            editOverIcon.addStyleName("editIconIphone");
+        }
         editOverIcon.setVisible(false);
         editLabel.setStyleName("editLabel");
-        if(isMobile) {
+        if (isMobile) {
             editLabel.addStyleName("editLabelMobile");
+            if (isIPhone) {
+                editLabel.addStyleName("editLabelMobileIphone");
+
+            }
         }
         editStack.setStyleName("editStack");
         editStack.setVisible(false);
@@ -135,7 +159,7 @@ public class MessageViewElementNative extends HorizontalPanel {
         String infoLabelContents = "";
         if (isMobile) {
             infoLabelContents = message.getMessageSeqId() + " - " +
-                    user.getNick() + " - " + message.getMessageDate() +
+                    message.getMessageDate() +
                     " à " + message.getMessageTime();
         } else {
             infoLabelContents = "Message " + message.getMessageSeqId() + "   envoyé par " +
@@ -287,7 +311,7 @@ public class MessageViewElementNative extends HorizontalPanel {
     }
 
     private void setUserPaneColor() {
-	userMessagePane.setStyleName("messageViewElementBox");
+        userMessagePane.setStyleName("messageViewElementBox");
 
         if (forMe && myUnread)
             userMessagePane.addStyleName("messageViewElementBoxAdresseeUnread"); // Addressee + unread purple
