@@ -49,7 +49,7 @@ public class UserTileDisplay extends VStack {
 		titleLabel.setContents("En ligne");
 		titleLabel.setStyleName("myTitleBox");
 		titleLabel.setBackgroundImage("titleback30.png");
-		titleLabel.setBackgroundRepeat(BkgndRepeat.REPEAT_X);
+		//titleLabel.setBackgroundRepeat(BkgndRepeat.REPEAT_X);
 				
 		DetailViewerField pictureField = new DetailViewerField("picture");
 		pictureField.setType("image");

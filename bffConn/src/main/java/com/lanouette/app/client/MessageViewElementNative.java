@@ -85,18 +85,7 @@ public class MessageViewElementNative extends HorizontalPanel {
 
         starIcon.setStyleName("starIcon");
         starOverIcon.setStyleName("starIcon");
-        if (isIPhone) {
-            starIcon.addStyleName("starIconIphone");
-            starOverIcon.addStyleName("starIconIphone");
-        }
         starLabel.setStyleName("starLabel");
-        if (isMobile) {
-            if (isIPhone) {
-                starLabel.addStyleName("starLabelMobileIphone");
-            } else {
-                starLabel.addStyleName("starLabelMobile");
-            }
-        }
 
         starStack.setStyleName("starStack");
         starStack.add(starIcon);
@@ -112,19 +101,8 @@ public class MessageViewElementNative extends HorizontalPanel {
 
         deleteIcon.setStyleName("deleteIcon");
         deleteOverIcon.setStyleName("deleteIcon");
-        if (isIPhone) {
-            deleteIcon.addStyleName("deleteIconIphone");
-            deleteOverIcon.addStyleName("deleteIconIphone");
-        }
         deleteOverIcon.setVisible(false);
         deleteLabel.setStyleName("deleteLabel");
-        if (isMobile) {
-            if (isIPhone) {
-                deleteLabel.addStyleName("deleteLabelMobileIphone");
-            } else {
-                deleteLabel.addStyleName("deleteLabelMobile");
-            }
-        }
         deleteStack.setStyleName("deleteStack");
         deleteStack.setVisible(false);
         deleteStack.add(deleteIcon);
@@ -133,19 +111,8 @@ public class MessageViewElementNative extends HorizontalPanel {
 
         editIcon.setStyleName("editIcon");
         editOverIcon.setStyleName("editIcon");
-        if (isIPhone) {
-            editIcon.addStyleName("editIconIphone");
-            editOverIcon.addStyleName("editIconIphone");
-        }
         editOverIcon.setVisible(false);
         editLabel.setStyleName("editLabel");
-        if (isMobile) {
-            editLabel.addStyleName("editLabelMobile");
-            if (isIPhone) {
-                editLabel.addStyleName("editLabelMobileIphone");
-
-            }
-        }
         editStack.setStyleName("editStack");
         editStack.setVisible(false);
         editStack.add(editIcon);
@@ -183,9 +150,6 @@ public class MessageViewElementNative extends HorizontalPanel {
         infoPane.setStyleName("messageStatusBar");
 
         userInfoLabel.setStyleName("userInfo");
-        if (isMobile) {
-            userInfoLabel.addStyleName("userInfoMobile");
-        }
         iconPane.setStyleName("iconPane");
 
         messagePane.setStyleName("messagePane");
@@ -321,10 +285,6 @@ public class MessageViewElementNative extends HorizontalPanel {
             userMessagePane.addStyleName("messageViewElementBoxUnread"); // Unread orange
         else {
             userMessagePane.addStyleName("messageViewElementBoxNormal"); // Normal blue
-        }
-
-        if (isMobile) {
-            userMessagePane.addStyleName("messageViewElementBoxMobile");
         }
     }
 

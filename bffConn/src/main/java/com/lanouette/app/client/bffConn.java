@@ -12,6 +12,8 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Cookies;
@@ -22,6 +24,7 @@ import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -41,7 +44,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     public static final int MODE_RUNNING = 3;
     public static final int MODE_SHUTDOWN = 4;
 
-    private static final int MSG_INITIAL_RTRV = 200;
+    private static final int MSG_INITIAL_RTRV = 40;
     private static final int MSG_OLD_FETCH_NUM = 200;
     private static final int MSG_INITIAL_RTRV_MOBILE = 50;
     private static final int MSG_OLD_FETCH_NUM_MOBILE = 100;
@@ -149,6 +152,13 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         headerStack.add(topToolbarStack);
         headerStack.setCellWidth(headerImage, "240px");
         myHeaderButtonBar.setLocal(mySessionLocal);
+
+        Frame frame = new Frame("http://www.google.com/");
+        frame.addLoadHandler(new LoadHandler() {
+            public void onLoad(LoadEvent loadEvent) {
+                System.out.println("iframe loaded\n");
+            }
+        });
 
         mainDockPanel.addNorth(headerStack, 76);
         mainDockPanel.addWest(leftToolbarStack, 240);

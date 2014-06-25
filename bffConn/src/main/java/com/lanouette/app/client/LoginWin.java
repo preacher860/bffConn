@@ -83,7 +83,6 @@ public class LoginWin extends Window {
 			rememberItem.setValue(false);
 		
 		passwordItem.addKeyUpHandler(new KeyUpHandler() {
-			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getKeyName().compareTo("Enter") == 0){
 					event.cancel();
@@ -93,7 +92,6 @@ public class LoginWin extends Window {
 		});
 		
 		localItem.addKeyUpHandler(new KeyUpHandler() {
-			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getKeyName().compareTo("Enter") == 0){
 					event.cancel();
@@ -103,7 +101,6 @@ public class LoginWin extends Window {
 		});
 
 		submitButton.addClickHandler(new ClickHandler(){
-			@Override
 			public void onClick(ClickEvent event) {
 				loginSubmit(rememberItem.getValueAsBoolean());
 			}});

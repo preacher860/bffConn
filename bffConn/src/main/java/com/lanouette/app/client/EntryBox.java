@@ -32,11 +32,6 @@ public class EntryBox extends HorizontalPanel {
         myUserCallbackInterface = userCB;
 
         setStyleName("entryBox");
-        if (mobile) {
-            addStyleName("entryBoxMobile");
-        } else {
-            addStyleName("entryBoxDesktop");
-        }
         imageStack.setStyleName("entryBoxPicBox");
         infoItem.setHTML("Editing message 222222");
         infoItem.setStyleName("entryBoxInfoItem");
@@ -46,13 +41,6 @@ public class EntryBox extends HorizontalPanel {
         editStack.getElement().setAttribute("cellpadding", "1");
         messageItem.setCharacterWidth(80);
         messageItem.addStyleName("messageEditBox");
-        if (mobile) {
-            if (iphone) {
-                messageItem.addStyleName("messageEditBoxIPhone");
-            } else {
-                messageItem.addStyleName("messageEditBoxMobile");
-            }
-        }
 
         ClickHandler entryBoxClickHandler = new ClickHandler() {
             public void onClick(ClickEvent event) {

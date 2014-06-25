@@ -28,7 +28,7 @@ public class octoBox extends VStack{
 		titleLabel.setPadding(5);
 		titleLabel.setStyleName("myTitleBox");
 		titleLabel.setBackgroundImage("titleback30.png");
-		titleLabel.setBackgroundRepeat(BkgndRepeat.REPEAT_X);
+		//titleLabel.setBackgroundRepeat(BkgndRepeat.REPEAT_X);
 
 		addMember(titleLabel);
 		addMember(octoImage);

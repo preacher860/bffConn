@@ -44,12 +44,7 @@ public class MessageView extends ScrollPanel {
 		add(mainVPanel);
 
 		setStyleName("messageView");
-        if(isMobile) {
-            addStyleName("messageViewMobile");
-        } else {
-            addStyleName("messageViewDesktop");
-        }
-		
+
         // This scroll handler sets the flag used to determine if we're at bottom or not.
         // Only if were at bottom do we kick the autoscroll on new messages
         addScrollHandler(new ScrollHandler(){

@@ -55,7 +55,6 @@ public class HeaderButtonBar extends HStack{
 	    myLogoutButton.setPrompt("Déconnexion<br>(Ctrl-D)");
 	    myLogoutButton.setHoverStyle("tooltipStyle");
 	    myLogoutButton.addClickHandler(new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				myUserCallbackInterface.logoutClicked();
 			}
@@ -69,7 +68,6 @@ public class HeaderButtonBar extends HStack{
 	    myStatsButton.setPrompt("Statistiques<br>(Ctrl-S)");
 	    myStatsButton.setHoverStyle("tooltipStyle");
 	    myStatsButton.addClickHandler(new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				myUserCallbackInterface.statsClicked();
 			}
@@ -83,7 +81,6 @@ public class HeaderButtonBar extends HStack{
 	    myInfoButton.setPrompt("Info (Ctrl-I)<br>Version " + VersionInfo.CURRENT_MAJOR + "." + VersionInfo.CURRENT_VERSION);
 	    myInfoButton.setHoverStyle("tooltipStyle");
 	    myInfoButton.addClickHandler(new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				myUserCallbackInterface.infoClicked();
 			}
@@ -97,7 +94,6 @@ public class HeaderButtonBar extends HStack{
 	    myOctopusButton.setPrompt("Mode octo<br>(Ctrl-O)");
 	    myOctopusButton.setHoverStyle("tooltipStyle");
 	    myOctopusButton.addClickHandler(new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				myUserCallbackInterface.octopusClicked();
 			}
@@ -111,7 +107,6 @@ public class HeaderButtonBar extends HStack{
 	    myHideButton.setPrompt("Mode compact<br>(Ctrl-1)");
 	    myHideButton.setHoverStyle("tooltipStyle");
 	    myHideButton.addClickHandler(new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				myUserCallbackInterface.hideBarClicked();
 				setCompactView();
@@ -127,7 +122,6 @@ public class HeaderButtonBar extends HStack{
 	    myShowButton.setHoverStyle("tooltipStyle");
 	    myShowButton.hide();
 	    myShowButton.addClickHandler(new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				myUserCallbackInterface.showBarClicked();
 				setNormalView();
@@ -141,7 +135,6 @@ public class HeaderButtonBar extends HStack{
 	    myLocalButton.setPrompt("Changer localisation<br>(Ctrl-L)");
 	    myLocalButton.setHoverStyle("tooltipStyle");
 	    myLocalButton.addClickHandler(new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				form.show();
 			}
@@ -151,7 +144,6 @@ public class HeaderButtonBar extends HStack{
 	    localItem.setLength(30);
 	    localItem.setSelectOnFocus(true);
 	    localItem.addKeyUpHandler(new KeyUpHandler() {
-			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				if (event.getKeyName().compareTo("Enter") == 0){
 					event.cancel();

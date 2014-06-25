@@ -35,9 +35,6 @@ public class MotdInfo extends VerticalPanel {
 		myUserCallbackInterface = cb;
 
         myMotdInfo.setStyleName("motdInfo");
-        if(isMobile) {
-            myMotdInfo.addStyleName("motdInfoMobile");
-        }
 		myIconPane.setStyleName("motdIconPane");
 		
 		myStarIcon.setStyleName("motdStarIcon");
@@ -72,7 +69,6 @@ public class MotdInfo extends VerticalPanel {
 		add(myIconPane);
 		
 		MouseOverHandler starMouseOverHandler = new MouseOverHandler(){
-			@Override
 			public void onMouseOver(MouseOverEvent event) {
 				if(!starred){
 					myStarOverIcon.setVisible(true);
@@ -82,7 +78,6 @@ public class MotdInfo extends VerticalPanel {
 		myStarStack.addDomHandler(starMouseOverHandler, MouseOverEvent.getType());
 		
 		MouseOutHandler starMouseOutHandler = new MouseOutHandler(){
-			@Override
 			public void onMouseOut(MouseOutEvent event) {
 				if(!starred){
 					myStarOverIcon.setVisible(false);
@@ -100,7 +95,6 @@ public class MotdInfo extends VerticalPanel {
 		myStarStack.addDomHandler(starClickHandler, ClickEvent.getType());
 		
 		ClickHandler deleteClickHandler = new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				myUserCallbackInterface.motdDeleteClicked();
 			}
@@ -109,7 +103,6 @@ public class MotdInfo extends VerticalPanel {
 		myDeleteStack.addDomHandler(deleteClickHandler, ClickEvent.getType());
 		
 		MouseOverHandler deleteMouseOverHandler = new MouseOverHandler(){
-			@Override
 			public void onMouseOver(MouseOverEvent event) {
 				myDeleteOverIcon.setVisible(true);
 				myDeleteIcon.setVisible(false);
@@ -118,7 +111,6 @@ public class MotdInfo extends VerticalPanel {
 		myDeleteStack.addDomHandler(deleteMouseOverHandler, MouseOverEvent.getType());
 		
 		MouseOutHandler deleteMouseOutHandler = new MouseOutHandler(){
-			@Override
 			public void onMouseOut(MouseOutEvent event) {
 				myDeleteOverIcon.setVisible(false);
 				myDeleteIcon.setVisible(true);
@@ -127,7 +119,6 @@ public class MotdInfo extends VerticalPanel {
 		myDeleteStack.addDomHandler(deleteMouseOutHandler, MouseOutEvent.getType());
 
 		MouseOverHandler messageMouseOverHandler = new MouseOverHandler(){
-			@Override
 			public void onMouseOver(MouseOverEvent event) {
 				myIconBarHovered = true;
 				myStarStack.setVisible(true);
@@ -138,7 +129,6 @@ public class MotdInfo extends VerticalPanel {
 		addDomHandler(messageMouseOverHandler, MouseOverEvent.getType());
 		
 		MouseOutHandler messageMouseOutHandler = new MouseOutHandler(){
-			@Override
 			public void onMouseOut(MouseOutEvent event) {
 				myIconBarHovered = false;
 				if(!starred)
