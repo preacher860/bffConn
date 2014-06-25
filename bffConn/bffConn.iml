@@ -8,6 +8,7 @@
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
+          <root url="file://$MODULE_DIR$/src/extras" relative="bffConn/sc" />
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/target/generated-sources/gwt" />
@@ -82,6 +83,7 @@
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.smartgwt:smartgwt:3.0" level="project" />
+    <orderEntry type="library" name="Maven: com.smartgwt:smartgwt-skins:3.0" level="project" />
     <orderEntry type="library" name="Maven: com.allen-sauer.gwt.log:gwt-log:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.gwt.google-apis:gwt-visualization:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.1" level="project" />

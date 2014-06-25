@@ -12,7 +12,7 @@
     <!--                                                               -->
     <!-- Consider inlining CSS to reduce the number of requested files -->
     <!--                                                               -->
-
+    <link type="text/css" rel="stylesheet" href="bffConnBase.css">
     <link id='favicon' rel='SHORTCUT ICON' href='images/favicon.ico' type='image/x-icon'>
 
     <!--                                           -->
@@ -26,11 +26,26 @@
         }else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
             console.log( "BFF: iCrap Mobile device");
             document.write('<link type="text/css" rel="stylesheet" href="bffConniPhone.css">');
-        else {
+        } else {
             console.log( "BFF: Desktop device");
-            document.write('<link type="text/css" rel="stylesheet" href="bffConn.css">');
+            document.write('<link type="text/css" rel="stylesheet" href="bffConnDesktop.css">');
         }
     </script>
+
+    <script src=bffConn/sc/modules/ISC_Core.js></script>
+
+    <script src=bffConn/sc/modules/ISC_Foundation.js></script>
+    <script src=bffConn/sc/modules/ISC_Containers.js></script>
+    <script src=bffConn/sc/modules/ISC_Grids.js></script>
+    <script src=bffConn/sc/modules/ISC_Forms.js></script>
+    <script src=bffConn/sc/modules/ISC_RichTextEditor.js></script>
+    <script src=bffConn/sc/modules/ISC_Calendar.js></script>
+
+    <script src=bffConn/sc/modules/ISC_DataBinding.js></script>
+
+    <!--<script src=bffConn/sc/skins/Enterprise/load_skin.js></script>-->
+    <script src=bffConn/sc/skins/Graphite/load_skin.js></script>
+
     <!--                                           -->
     <!-- This script loads your compiled module.   -->
     <!-- If you add any GWT meta tags, they must   -->

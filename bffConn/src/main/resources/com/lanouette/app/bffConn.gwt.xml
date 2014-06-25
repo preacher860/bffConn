@@ -10,13 +10,17 @@
     <inherits name='com.google.gwt.user.theme.standard.Standard'/>
 
     <inherits name='com.google.gwt.visualization.Visualization'/>
-    <inherits name='com.smartgwt.SmartGwt'/>
-    <inherits name='com.smartclient.theme.graphite.Graphite'/>
+    <!--<inherits name='com.smartgwt.SmartGwt'/>-->
+    <!--<inherits name='com.smartclient.theme.graphite.Graphite'/>-->
+    <inherits name="com.smartgwt.SmartGwtNoScript"/>
+
     <inherits name="org.fusesource.restygwt.RestyGWT"/>
     <!--<inherits name="com.googlecode.mgwt.MGWT"/>-->
     <!--<set-property name="user.agent" value="safari" />-->
     <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
     <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+
+    <!--<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>-->
 
     <!-- Other module inherits                                      -->
     <inherits name='com.allen_sauer.gwt.log.gwt-log-DEBUG'/>
@@ -28,8 +32,11 @@
     <!-- Specify the app entry point class.                         -->
     <entry-point class='com.lanouette.app.client.bffConn'/>
 
-    <!-- Specify the paths for translatable code                    -->
+        <!-- Specify the paths for translatable code                    -->
     <source path='client'/>
     <source path='shared'/>
 
+    <add-linker name="xsiframe"/>
+    <set-configuration-property name="devModeRedirectEnabled" value="true"/>
+    <set-property name="compiler.useSourceMaps" value="true" />
 </module>
