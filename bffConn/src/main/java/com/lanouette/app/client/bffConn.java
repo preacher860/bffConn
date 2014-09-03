@@ -153,13 +153,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         headerStack.setCellWidth(headerImage, "240px");
         myHeaderButtonBar.setLocal(mySessionLocal);
 
-        Frame frame = new Frame("http://www.google.com/");
-        frame.addLoadHandler(new LoadHandler() {
-            public void onLoad(LoadEvent loadEvent) {
-                System.out.println("iframe loaded\n");
-            }
-        });
-
         mainDockPanel.addNorth(headerStack, 76);
         mainDockPanel.addWest(leftToolbarStack, 240);
         mainDockPanel.addSouth(myEntryBox, 110);
@@ -333,7 +326,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         if (sessionId.compareTo("0") == 0)  // Login failed
         {
             LoginWin loginWin = new LoginWin(this);
-            loginWin.show();
+            loginWin.setVisible(true);
         } else {
             RuntimeData.getInstance().setUserId(userId);
             RuntimeData.getInstance().setSessionId(sessionId);
@@ -359,7 +352,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         if (!valid) {
             // Present the login screen until valid login is performed
             LoginWin loginWin = new LoginWin(this);
-            loginWin.show();
+            loginWin.setVisible(true);
         } else {
             RuntimeData.getInstance().setUserId(userId);
             RuntimeData.getInstance().setSessionId(sessionId);

@@ -148,3 +148,48 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+.loginBox {
+    width: 300px;
+    height: 150px;
+    margin-top: -75px;
+    margin-left: -150px;
+    top: 50%;
+    left: 50%;
+    position: fixed;
+    border: 3px solid #455469;
+    box-shadow: 4px 4px 5px #888888;
+    background: white;
+}
+
+.loginLabel {
+    width: 100px;
+    text-align: right;
+    font-weight: bold;
+    font-size: smaller;
+}
+
+.loginHeader {
+    background: #22366A;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#22366A), to(#4D668A));
+    padding: 4px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.loginEntryBox{
+    padding: 1px !important;
+}
+
+.loginCheckbox {
+    font-weight: bold;
+    font-size: smaller;
+}
+
+.loginButton {
+    font-weight: bold;
+    font-size: smaller !important;
+    padding: 4px 10px !important;
+    margin: 4px !important;
+}

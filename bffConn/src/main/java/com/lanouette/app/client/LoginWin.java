@@ -2,124 +2,131 @@ package com.lanouette.app.client;
 
 import java.util.Date;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Cookies;
-import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.util.Page;
-import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.CheckboxItem;
-import com.smartgwt.client.widgets.form.fields.PasswordItem;
-import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.events.KeyUpEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyUpHandler;
-import com.smartgwt.client.widgets.layout.VLayout;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class LoginWin extends Window {
-	
-	private final DynamicForm form = new DynamicForm();
-	private TextItem usernameItem = new TextItem();
-	private PasswordItem passwordItem = new PasswordItem();
-	private TextItem localItem = new TextItem();
+public class LoginWin extends VerticalPanel {
+
+    private Label topLabel = new Label("Ouverture de session");
+
+    private HorizontalPanel userNamePanel = new HorizontalPanel();
+    private TextBox userNameItem = new TextBox();
+    private Label userNameLabel = new Label("Usager:");
+
+    private HorizontalPanel passwordPanel = new HorizontalPanel();
+    private PasswordTextBox passwordItem = new PasswordTextBox();
+    private Label passwordLabel = new Label("Mot de passe:");
+
+    private HorizontalPanel localPanel = new HorizontalPanel();
+    private TextBox localItem = new TextBox();
+    private Label localLabel = new Label("Localisation:");
+
+    private CheckBox storeLocal = new CheckBox("Retenir nom et localisation");
+
+    private Button submitButton = new Button("Soumettre");
+
 	private ioCallbackInterface myCallbackInterface;
-	private CheckboxItem rememberItem = new CheckboxItem("rememberItem");
-	
+
 	public LoginWin(ioCallbackInterface theCallbackInterface) {
 		myCallbackInterface = theCallbackInterface;
-		
-		setTitle("Connexion");  
-        setShowMinimizeButton(false);  
-        setIsModal(true);  
-        setShowModalMask(true);  
-        //centerInPage();  
-        setWidth(360);  
-        setHeight(200);  
-        
-        moveTo(Page.getWidth() / 2 - getWidth()/2, Page.getHeight() / 2 - getHeight()/2);
-        
-		VLayout layout = new VLayout(20);
-		layout.setAlign(Alignment.CENTER);
-		layout.setWidth100();
-		layout.setHeight100();
-		layout.setDefaultLayoutAlign(Alignment.CENTER);
-		
-		IButton submitButton = new IButton("Soumettre");
-		  
-		//form.setHeight100();  
-        form.setWidth100();  
-        form.setPadding(5);  
-        form.setLayoutAlign(VerticalAlignment.BOTTOM);
-        form.setAutoFocus(true);
-		  
-		usernameItem.setTitle("Usager");  
-		usernameItem.setRequired(true);
 
-		passwordItem.setTitle("Mot de passe");  
-		passwordItem.setRequired(true);
-		
-		localItem.setTitle("Localisation");
-		localItem.setRequired(false);
-		localItem.setLength(30);
-		localItem.setSelectOnFocus(true);
-		
-		rememberItem.setTitle("Retenir nom et localisation");
-		
+        setStyleName("loginBox");
+
+        topLabel.addStyleName("loginHeader");
+        userNameItem.addStyleName("loginEntryBox");
+        userNameLabel.addStyleName("loginLabel");
+        passwordItem.addStyleName("loginEntryBox");
+        passwordLabel.addStyleName("loginLabel");
+        localItem.addStyleName("loginEntryBox");
+        localLabel.addStyleName("loginLabel");
+        storeLocal.addStyleName("loginCheckbox");
+        submitButton.addStyleName("loginButton");
+
 		String remember = Cookies.getCookie("bffRememberNameLoc");
 		if((remember != null) && (remember.contentEquals("true")))
 		{
 			String local = Cookies.getCookie("bffLastLocation");
 			if(local != null)
-				localItem.setValue(local);
-			
+				localItem.setText(local);
+
 			String name = Cookies.getCookie("bffLastName");
 			if(name != null)
-				usernameItem.setValue(name);
-			
-			rememberItem.setValue(true);
+				userNameItem.setText(name);
+
+			storeLocal.setValue(true);
 		} else
-			rememberItem.setValue(false);
-		
-		passwordItem.addKeyUpHandler(new KeyUpHandler() {
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getKeyName().compareTo("Enter") == 0){
-					event.cancel();
-					loginSubmit(rememberItem.getValueAsBoolean());
+			storeLocal.setValue(false);
+
+        passwordItem.addKeyUpHandler(new KeyUpHandler() {
+            public void onKeyUp(KeyUpEvent keyUpEvent) {
+                if (keyUpEvent.getNativeEvent().getKeyCode() == 13){
+					keyUpEvent.stopPropagation();
+					loginSubmit(storeLocal.getValue());
 				}
-			}
-		});
-		
-		localItem.addKeyUpHandler(new KeyUpHandler() {
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getKeyName().compareTo("Enter") == 0){
-					event.cancel();
-					loginSubmit(rememberItem.getValueAsBoolean());
-				}
-			}
-		});
+            }
+        });
+
+        localItem.addKeyUpHandler(new KeyUpHandler() {
+            public void onKeyUp(KeyUpEvent keyUpEvent) {
+                if (keyUpEvent.getNativeEvent().getKeyCode() == 13){
+                    keyUpEvent.stopPropagation();
+                    loginSubmit(storeLocal.getValue());
+                }
+            }
+        });
 
 		submitButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event) {
-				loginSubmit(rememberItem.getValueAsBoolean());
+				loginSubmit(storeLocal.getValue());
 			}});
-		
-		form.setFields(usernameItem, passwordItem, localItem, rememberItem);  
 
-		layout.addMember(form);
-		layout.addMember(submitButton);
-		addItem(layout);
+        userNamePanel.add(userNameLabel);
+        userNamePanel.add(userNameItem);
+        userNamePanel.setCellVerticalAlignment(userNameLabel, HasVerticalAlignment.ALIGN_MIDDLE);
+
+        passwordPanel.add(passwordLabel);
+        passwordPanel.add(passwordItem);
+        passwordPanel.setCellVerticalAlignment(passwordLabel, HasVerticalAlignment.ALIGN_MIDDLE);
+
+        localPanel.add(localLabel);
+        localPanel.add(localItem);
+        localPanel.setCellVerticalAlignment(localLabel, HasVerticalAlignment.ALIGN_MIDDLE);
+
+        add(topLabel);
+        add(userNamePanel);
+        add(passwordPanel);
+        add(localPanel);
+        add(storeLocal);
+        add(submitButton);
+
+        setCellHorizontalAlignment(storeLocal, HasHorizontalAlignment.ALIGN_CENTER);
+        setCellHorizontalAlignment(submitButton, HasHorizontalAlignment.ALIGN_CENTER);
+
+        RootPanel.get().add(this);
+        RootPanel.get().setStyleName("mainPanel");
 	}
 	
 	private void loginSubmit(boolean rememberValues)
 	{
 		// If either username or password empty, don't go any further
-		if((usernameItem.getValueAsString() == null) || (passwordItem.getValueAsString() == null))
+		if((userNameItem.getText() == null) || (passwordItem.getText() == null))
 			return;
-		String local = localItem.getValueAsString();
-		if(local == null)
-			local = "";
+		String localisation = localItem.getText();
+		if(localisation == null)
+			localisation = "";
 		
 		if (rememberValues) {
 			long cookieLifespan = 1000 * 60 * 60 * 24 * 365; // one year
@@ -127,19 +134,19 @@ public class LoginWin extends Window {
 		    
 		    Cookies.setCookie("bffRememberNameLoc", "true", expires, null, "/", false);
 		    
-			String username = usernameItem.getValueAsString();
+			String username = userNameItem.getText();
 			Cookies.setCookie("bffLastName", username, expires, null, "/", false);
-			Cookies.setCookie("bffLastLocation", local, expires, null, "/", false);
+			Cookies.setCookie("bffLastLocation", localisation, expires, null, "/", false);
 		} else {
 			Cookies.removeCookie("bffRememberNameLoc", "/");
 			Cookies.removeCookie("bffLastName", "/");
 			Cookies.removeCookie("bffLastLocation", "/");
 		}
 		
-		myCallbackInterface.performLoginCallback(usernameItem.getValueAsString(), 
-												 passwordItem.getValueAsString(),
-												 local);
-		destroy();
+		myCallbackInterface.performLoginCallback(userNameItem.getText(),
+												 passwordItem.getText(),
+												 localisation);
+		RootPanel.get().remove(this);
 	}
 	
 	public void setLocal(String local) {
