@@ -295,7 +295,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         UserManager.getInstance().setUserList(users);
         myUserDataRcvd = true;
         myUserTileDisplay.UpdateOnlineUsers(UserManager.getInstance());
-        userButtonBar.updateOnlineUsers(UserManager.getInstance());
+        userButtonBar.updateOnlineUsers();
         RuntimeData.getInstance().setDbVersionUsers(RuntimeData.getInstance().getRequestedDbVersionUsers());
         //System.out.println("Users updated up to db version " + RuntimeData.getInstance().getDbVersionUsers());
     }
