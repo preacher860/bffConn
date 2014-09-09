@@ -13,25 +13,29 @@ public class UserButtonBar extends FocusPanel {
     int userDbVersion = 0;
     private userCallbackInterface myUserCallbackInterface;
     private HorizontalPanel panel = new HorizontalPanel();
-    final UserPopup popup;
+    private final UserPopup popup;
+    private boolean isMobile;
 
     UserButtonBar(userCallbackInterface callbackInterface) {
         myUserCallbackInterface = callbackInterface;
-        popup  = new UserPopup(callbackInterface);
+        popup = new UserPopup(callbackInterface);
+        isMobile = RuntimeData.getInstance().isMobile();
 
-        addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent clickEvent) {
-                setFocus(false);
+        if (isMobile) {
+            addClickHandler(new ClickHandler() {
+                public void onClick(ClickEvent clickEvent) {
+                    setFocus(false);
 
-                popup.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
-                    public void setPosition(int offsetWidth, int offsetHeight) {
-                        int left = getAbsoluteLeft();
-                        int top = getAbsoluteTop() + getOffsetHeight();
-                        popup.setPopupPosition(left, top);
-                    }
-                });
-            }
-        });
+                    popup.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
+                        public void setPosition(int offsetWidth, int offsetHeight) {
+                            int left = getAbsoluteLeft();
+                            int top = getAbsoluteTop() + getOffsetHeight();
+                            popup.setPopupPosition(left, top);
+                        }
+                    });
+                }
+            });
+        }
 
         add(panel);
     }
@@ -49,11 +53,13 @@ public class UserButtonBar extends FocusPanel {
                     image.setStyleName("headerAvatar");
                     image.setTitle(user.getNick());
 
-                    image.addClickHandler(new ClickHandler() {
-                        public void onClick(ClickEvent clickEvent) {
-                            //myUserCallbackInterface.avatarClicked(((Image)clickEvent.getSource()).getTitle());
-                        }
-                    });
+                    if (!isMobile) {
+                        image.addClickHandler(new ClickHandler() {
+                            public void onClick(ClickEvent clickEvent) {
+                                myUserCallbackInterface.avatarClicked(((Image) clickEvent.getSource()).getTitle());
+                            }
+                        });
+                    }
 
                     panel.add(image);
                 }

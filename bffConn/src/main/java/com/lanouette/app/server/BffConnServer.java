@@ -1303,6 +1303,7 @@ private int getNewestSeq(Connection conn)
       if (conn == null)  {
               System.out.println("~~~~~~~~~~ can't get a Mysql connection");
       }
+
       
       return conn;
   }

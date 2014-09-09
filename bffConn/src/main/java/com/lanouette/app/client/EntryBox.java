@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -19,6 +20,7 @@ public class EntryBox extends HorizontalPanel {
     private TextArea messageItem = new TextArea();
     private HTML infoItem = new HTML();
     private VerticalPanel imageStack = new VerticalPanel();
+    private FocusPanel imageStackWrapper = new FocusPanel();
     private VerticalPanel editStack = new VerticalPanel();
     private ioCallbackInterface myCallbackInterface;
     private userCallbackInterface myUserCallbackInterface;
@@ -27,7 +29,7 @@ public class EntryBox extends HorizontalPanel {
     private int myEditingMessageSeq = 0;
 
 
-    public EntryBox(ioCallbackInterface callbackInterface, userCallbackInterface userCB, boolean mobile, boolean iphone) {
+    public EntryBox(ioCallbackInterface callbackInterface, userCallbackInterface userCB) {
         myCallbackInterface = callbackInterface;
         myUserCallbackInterface = userCB;
 
@@ -73,23 +75,34 @@ public class EntryBox extends HorizontalPanel {
                 }
 
                 if (keyDownEvent.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE) {
-                    if (myIsEditing) {
-                        myIsEditing = false;
-                        infoItem.setVisible(false);
-                        myEditingMessageSeq = 0;
-                        messageItem.setValue("");
-                    }
+                    cancelEdit();
                 }
+            }
+        });
+
+        imageStackWrapper.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent clickEvent) {
+                cancelEdit();
             }
         });
 
         editStack.add(infoItem);
         editStack.add(messageItem);
 
-        add(imageStack);
+        imageStackWrapper.add(imageStack);
+        add(imageStackWrapper);
         add(editStack);
         setCellWidth(imageStack, "50px");
         setCellWidth(editStack, "100%");
+    }
+
+    private void cancelEdit() {
+        if (myIsEditing) {
+            myIsEditing = false;
+            infoItem.setVisible(false);
+            myEditingMessageSeq = 0;
+            messageItem.setValue("");
+        }
     }
 
     public void setFocus() {

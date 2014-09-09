@@ -46,7 +46,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
     private static final int MSG_INITIAL_RTRV = 400;
     private static final int MSG_OLD_FETCH_NUM = 200;
-    private static final int MSG_INITIAL_RTRV_MOBILE = 50;
+    private static final int MSG_INITIAL_RTRV_MOBILE = 80;
     private static final int MSG_OLD_FETCH_NUM_MOBILE = 100;
 
     private final BffProxy proxy;
@@ -73,7 +73,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     private UserTileDisplay myUserTileDisplay = new UserTileDisplay(this);
     private WaitBox myWaitBox = new WaitBox();
     private octoBox myOctoBox = new octoBox();
-    private EntryBox myEntryBox = new EntryBox(this, this, isMobile, isIphone);
+    private EntryBox myEntryBox = new EntryBox(this, this);
     private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
     private MessageView myMessageManager = new MessageView(this, isMobile, isIphone);
     private Image headerImage = new Image();
@@ -85,7 +85,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     private boolean wideView = true;
     private Timer myOctoTimer;
     private OctoObject OctoArray[] = new OctoObject[5];
-    private boolean toolbarHideable = true;
 
     //@Override
     public void onModuleLoad() {
@@ -265,7 +264,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
                     // Don't reschedule if shutting down, nothing good can come out of this
                     if (myCurrentMode != MODE_SHUTDOWN)
-                        myRefreshTimer.schedule(3000);
+                        myRefreshTimer.schedule(2000);
                 }
                 // Check server version to quickly detect any mismatch
                 ioModule.GetRuntimeData();
@@ -280,7 +279,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         ioModule.GetUserInfo();
         ioModule.GetRuntimeData();
         ioModule.GetMotd();
-        myRefreshTimer.schedule(1000);  //  Check if our init Gets are completed
+        myRefreshTimer.schedule(2000);  //  Check if our init Gets are completed
     }
 
     //@Override
@@ -525,16 +524,12 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     //@Override
     public void octopusOnTyped() {
         myOctoBox.show();
-        toolbarHideable = false;
-        myHeaderButtonBar.setAllowCompactMode(false);
         //showBarClicked();
     }
 
     //@Override
     public void octopusOffTyped() {
         myOctoBox.hide();
-        myHeaderButtonBar.setAllowCompactMode(true);
-        toolbarHideable = true;
     }
 
     //@Override

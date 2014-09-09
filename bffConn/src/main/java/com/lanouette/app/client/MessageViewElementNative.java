@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -54,14 +55,14 @@ public class MessageViewElementNative extends HorizontalPanel {
     private UserContainer myUser = null;
 
     public MessageViewElementNative(MessageContainer message, UserContainer user,
-                                    UserContainer myself, userCallbackInterface cb,
-                                    boolean isMobile, boolean isIPhone) {
+            UserContainer myself, userCallbackInterface cb) {
         myUserCallbackInterface = cb;
         myMessageOriginatingUser = user.getNick();
         myMessage = message;
         messageUser = user;
         myUser = myself;
-        this.isMobile = isMobile;
+        isMobile = RuntimeData.getInstance().isMobile();
+
         String myEnhancedMessage = "";
 
         // If message hidden (deleted), no need to perform all the stuff, return immediately
@@ -166,23 +167,40 @@ public class MessageViewElementNative extends HorizontalPanel {
 
         setUserPaneColor();
 
-        ClickHandler messagePaneClickHandler = new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                final MessagePopup popup = new MessagePopup(myMessage,
-                                                            myUser.equals(messageUser),
-                                                            myUserCallbackInterface);
+        if (isMobile) {
+            ClickHandler messagePaneClickHandler = new ClickHandler() {
+                public void onClick(ClickEvent event) {
+                    final MessagePopup popup = new MessagePopup(myMessage,
+                            myUser.equals(messageUser),
+                            myUserCallbackInterface);
 
-                popup.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
-                    public void setPosition(int offsetWidth, int offsetHeight) {
-                        int left = Window.getClientWidth() / 2 - offsetWidth / 2;
-                        int top = Window.getClientHeight() / 2 - offsetHeight / 2;
-                        ;
-                        popup.setPopupPosition(left, top);
-                    }
-                });
-            }
-        };
-        messagePane.addDomHandler(messagePaneClickHandler, ClickEvent.getType());
+                    popup.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
+                        public void setPosition(int offsetWidth, int offsetHeight) {
+                            int left = (int) (DOM.getElementById("messageView").getAbsoluteLeft() +
+                                    DOM.getElementById("messageView").getClientWidth() -
+                                    offsetWidth * 1.25);
+                            int top;
+
+                            // Popup always on top of message window, as long as this fits in message view.
+                            // Bottom otherwise
+                            if (getAbsoluteTop() - offsetHeight < DOM.getElementById("messageView").getAbsoluteTop()) {
+                                if (getAbsoluteTop() + getOffsetHeight() + offsetHeight >
+                                        Window.getClientHeight()) {
+                                    top = Window.getClientHeight() - offsetHeight;
+                                } else {
+                                    top = getAbsoluteTop() + getOffsetHeight();
+                                }
+                            } else {
+                                top = getAbsoluteTop() - offsetHeight;
+                            }
+
+                            popup.setPopupPosition(left, top);
+                        }
+                    });
+                }
+            };
+            messagePane.addDomHandler(messagePaneClickHandler, ClickEvent.getType());
+        }
 
         ClickHandler avatarClickHandler = new ClickHandler() {
             public void onClick(ClickEvent event) {
@@ -191,109 +209,112 @@ public class MessageViewElementNative extends HorizontalPanel {
         };
         imageStack.addDomHandler(avatarClickHandler, ClickEvent.getType());
 
-        ClickHandler starClickHandler = new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                myUserCallbackInterface.starClicked(myMessage.getMessageSeqId());
-            }
-        };
-        starStack.addDomHandler(starClickHandler, ClickEvent.getType());
+        if (!isMobile) {
 
-        MouseOverHandler starMouseOverHandler = new MouseOverHandler() {
-            public void onMouseOver(MouseOverEvent event) {
-                if (!starred) {
-                    starOverIcon.setVisible(true);
-                    starIcon.setVisible(false);
-                }
-            }
-        };
-        starStack.addDomHandler(starMouseOverHandler, MouseOverEvent.getType());
-
-        MouseOutHandler starMouseOutHandler = new MouseOutHandler() {
-            public void onMouseOut(MouseOutEvent event) {
-                if (!starred) {
-                    starOverIcon.setVisible(false);
-                    starIcon.setVisible(true);
-                }
-            }
-        };
-        starStack.addDomHandler(starMouseOutHandler, MouseOutEvent.getType());
-
-        // May only delete/edit own messages
-        if (myMessage.getMessageUserId() == RuntimeData.getInstance().getUserId()) {
-
-            ClickHandler editClickHandler = new ClickHandler() {
+            ClickHandler starClickHandler = new ClickHandler() {
                 public void onClick(ClickEvent event) {
-                    myUserCallbackInterface.editMessageClicked(myMessage);
+                    myUserCallbackInterface.starClicked(myMessage.getMessageSeqId());
                 }
             };
+            starStack.addDomHandler(starClickHandler, ClickEvent.getType());
 
-            editStack.addDomHandler(editClickHandler, ClickEvent.getType());
-
-            MouseOverHandler editMouseOverHandler = new MouseOverHandler() {
+            MouseOverHandler starMouseOverHandler = new MouseOverHandler() {
                 public void onMouseOver(MouseOverEvent event) {
-                    editOverIcon.setVisible(true);
-                    editIcon.setVisible(false);
+                    if (!starred) {
+                        starOverIcon.setVisible(true);
+                        starIcon.setVisible(false);
+                    }
                 }
             };
-            editStack.addDomHandler(editMouseOverHandler, MouseOverEvent.getType());
+            starStack.addDomHandler(starMouseOverHandler, MouseOverEvent.getType());
 
-            MouseOutHandler editMouseOutHandler = new MouseOutHandler() {
+            MouseOutHandler starMouseOutHandler = new MouseOutHandler() {
                 public void onMouseOut(MouseOutEvent event) {
-                    editOverIcon.setVisible(false);
-                    editIcon.setVisible(true);
+                    if (!starred) {
+                        starOverIcon.setVisible(false);
+                        starIcon.setVisible(true);
+                    }
                 }
             };
+            starStack.addDomHandler(starMouseOutHandler, MouseOutEvent.getType());
 
-            editStack.addDomHandler(editMouseOutHandler, MouseOutEvent.getType());
+            // May only delete/edit own messages
+            if (myMessage.getMessageUserId() == RuntimeData.getInstance().getUserId()) {
 
-            ClickHandler deleteClickHandler = new ClickHandler() {
-                public void onClick(ClickEvent event) {
-                    myUserCallbackInterface.deleteClicked(myMessage.getMessageSeqId());
-                }
-            };
+                ClickHandler editClickHandler = new ClickHandler() {
+                    public void onClick(ClickEvent event) {
+                        myUserCallbackInterface.editMessageClicked(myMessage);
+                    }
+                };
 
-            deleteStack.addDomHandler(deleteClickHandler, ClickEvent.getType());
+                editStack.addDomHandler(editClickHandler, ClickEvent.getType());
 
-            MouseOverHandler deleteMouseOverHandler = new MouseOverHandler() {
+                MouseOverHandler editMouseOverHandler = new MouseOverHandler() {
+                    public void onMouseOver(MouseOverEvent event) {
+                        editOverIcon.setVisible(true);
+                        editIcon.setVisible(false);
+                    }
+                };
+                editStack.addDomHandler(editMouseOverHandler, MouseOverEvent.getType());
+
+                MouseOutHandler editMouseOutHandler = new MouseOutHandler() {
+                    public void onMouseOut(MouseOutEvent event) {
+                        editOverIcon.setVisible(false);
+                        editIcon.setVisible(true);
+                    }
+                };
+
+                editStack.addDomHandler(editMouseOutHandler, MouseOutEvent.getType());
+
+                ClickHandler deleteClickHandler = new ClickHandler() {
+                    public void onClick(ClickEvent event) {
+                        myUserCallbackInterface.deleteClicked(myMessage.getMessageSeqId());
+                    }
+                };
+
+                deleteStack.addDomHandler(deleteClickHandler, ClickEvent.getType());
+
+                MouseOverHandler deleteMouseOverHandler = new MouseOverHandler() {
+                    public void onMouseOver(MouseOverEvent event) {
+                        deleteOverIcon.setVisible(true);
+                        deleteIcon.setVisible(false);
+                    }
+                };
+                deleteStack.addDomHandler(deleteMouseOverHandler, MouseOverEvent.getType());
+
+                MouseOutHandler deleteMouseOutHandler = new MouseOutHandler() {
+                    public void onMouseOut(MouseOutEvent event) {
+                        deleteOverIcon.setVisible(false);
+                        deleteIcon.setVisible(true);
+                    }
+                };
+
+                deleteStack.addDomHandler(deleteMouseOutHandler, MouseOutEvent.getType());
+            }
+
+            MouseOverHandler messageMouseOverHandler = new MouseOverHandler() {
                 public void onMouseOver(MouseOverEvent event) {
-                    deleteOverIcon.setVisible(true);
-                    deleteIcon.setVisible(false);
+                    myIconBarHovered = true;
+                    starStack.setVisible(true);
+                    deleteStack.setVisible(true);
+                    editStack.setVisible(true);
                 }
             };
-            deleteStack.addDomHandler(deleteMouseOverHandler, MouseOverEvent.getType());
 
-            MouseOutHandler deleteMouseOutHandler = new MouseOutHandler() {
+            addDomHandler(messageMouseOverHandler, MouseOverEvent.getType());
+
+            MouseOutHandler messageMouseOutHandler = new MouseOutHandler() {
                 public void onMouseOut(MouseOutEvent event) {
-                    deleteOverIcon.setVisible(false);
-                    deleteIcon.setVisible(true);
+                    myIconBarHovered = false;
+                    if (!starred)
+                        starStack.setVisible(false);
+                    deleteStack.setVisible(false);
+                    editStack.setVisible(false);
                 }
             };
 
-            deleteStack.addDomHandler(deleteMouseOutHandler, MouseOutEvent.getType());
+            addDomHandler(messageMouseOutHandler, MouseOutEvent.getType());
         }
-
-        MouseOverHandler messageMouseOverHandler = new MouseOverHandler() {
-            public void onMouseOver(MouseOverEvent event) {
-                myIconBarHovered = true;
-                starStack.setVisible(true);
-                deleteStack.setVisible(true);
-                editStack.setVisible(true);
-            }
-        };
-
-        addDomHandler(messageMouseOverHandler, MouseOverEvent.getType());
-
-        MouseOutHandler messageMouseOutHandler = new MouseOutHandler() {
-            public void onMouseOut(MouseOutEvent event) {
-                myIconBarHovered = false;
-                if (!starred)
-                    starStack.setVisible(false);
-                deleteStack.setVisible(false);
-                editStack.setVisible(false);
-            }
-        };
-
-        addDomHandler(messageMouseOutHandler, MouseOutEvent.getType());
     }
 
     private void setUserPaneColor() {

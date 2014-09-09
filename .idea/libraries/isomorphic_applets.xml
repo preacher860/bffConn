@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="isomorphic_applets">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/war/scrollwin/sc/system/helpers/isomorphic_applets.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -44,6 +44,7 @@ public class MessageView extends ScrollPanel {
 		add(mainVPanel);
 
 		setStyleName("messageView");
+        getElement().setId("messageView");
 
         // This scroll handler sets the flag used to determine if we're at bottom or not.
         // Only if were at bottom do we kick the autoscroll on new messages
@@ -111,7 +112,7 @@ public class MessageView extends ScrollPanel {
 			MessageViewElementNative element = new MessageViewElementNative(currentMessage, 
 					UserManager.getInstance().getUser(currentMessage.getMessageUserId()),
 					UserManager.getInstance().getUser(RuntimeData.getInstance().getUserId()),
-					myCallbackInterface, isMobile, isIPhone);
+					myCallbackInterface);
 
 			// When in invisible mode, all new messages are flagged unread
 			if (myInvisibleMode) {

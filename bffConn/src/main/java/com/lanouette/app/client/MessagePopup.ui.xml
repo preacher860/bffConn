@@ -4,46 +4,109 @@
     <ui:style>
         .closeButton {
             font-weight: bold;
-            font-size: x-large !important;
+            font-size: xx-large !important;
             padding: 4px 10px !important;
             margin: 4px !important;
         }
+
+        .namesPanel {
+            border-left-style: solid;
+            border-left-color: black;
+            background: lightblue;
+        }
+
+        .labelCell {
+            border-right: solid 1px black;
+        }
+
+        .bottomPane {
+            border-top: solid 1px black;
+        }
+
+        .starers {
+            font-size: large;
+            text-align: center;
+            margin: 8px;
+        }
+
+        .smallStar {
+            margin: 2px;
+            height: 32px;
+            width: 32px;
+        }
+
+        .starCountLabel {
+            margin: 2px;
+            font-size:large;
+        }
+
+        .seqLabel {
+            margin: 2px;
+            margin-bottom: 10px;
+            font-size: large;
+            text-align: center;
+        }
+
     </ui:style>
 
+    <g:VerticalPanel>
+        <g:HorizontalPanel>
+            <g:VerticalPanel ui:field="mainPanel">
+                <g:FocusPanel ui:field="starPanel" styleName="{style.labelCell}">
+                    <g:HorizontalPanel>
+                        <g:Image url="images/star.png" addStyleNames="popupImage" ui:field="starImage"></g:Image>
+                        <g:cell verticalAlignment="ALIGN_MIDDLE">
+                            <g:Label addStyleNames="popupLabel">Étoiler</g:Label>
+                        </g:cell>
+                    </g:HorizontalPanel>
+                </g:FocusPanel>
 
-    <g:VerticalPanel ui:field="mainPanel">
-        <g:FocusPanel ui:field="starPanel">
-            <g:HorizontalPanel>
-                <g:Image url="images/star.png" addStyleNames="popupImage" ui:field="starImage"></g:Image>
-                <g:cell verticalAlignment="ALIGN_MIDDLE">
-                    <g:Label addStyleNames="popupLabel">Étoiler</g:Label>
+                <g:FocusPanel ui:field="deletePanel" styleName="{style.labelCell}">
+                    <g:HorizontalPanel>
+                        <g:Image url="images/delete.png" addStyleNames="popupImage" ui:field="deleteImage"></g:Image>
+                        <g:cell verticalAlignment="ALIGN_MIDDLE">
+                            <g:Label addStyleNames="popupLabel">Effacer</g:Label>
+                        </g:cell>
+                    </g:HorizontalPanel>
+                </g:FocusPanel>
+
+                <g:FocusPanel ui:field="editPanel" styleName="{style.labelCell}">
+                    <g:HorizontalPanel>
+                        <g:Image url="images/pencil.png" addStyleNames="popupImage" ui:field="editImage"></g:Image>
+                        <g:cell verticalAlignment="ALIGN_MIDDLE">
+                            <g:Label addStyleNames="popupLabel">Éditer</g:Label>
+                        </g:cell>
+                    </g:HorizontalPanel>
+                </g:FocusPanel>
+
+
+            </g:VerticalPanel>
+
+            <g:VerticalPanel>
+                <g:cell>
+                    <g:Label addStyleNames="{style.seqLabel}" ui:field="seqIdLabel"></g:Label>
                 </g:cell>
-            </g:HorizontalPanel>
-        </g:FocusPanel>
 
-        <g:Label ui:field="starersBox" visible="false"></g:Label>
-
-        <g:FocusPanel ui:field="deletePanel">
-            <g:HorizontalPanel>
-                <g:Image url="images/delete.png" addStyleNames="popupImage" ui:field="deleteImage"></g:Image>
-                <g:cell verticalAlignment="ALIGN_MIDDLE">
-                    <g:Label addStyleNames="popupLabel">Effacer</g:Label>
+                <g:HorizontalPanel>
+                    <g:Image url="images/star.png" addStyleNames="{style.smallStar}" ></g:Image>
+                    <g:cell verticalAlignment="ALIGN_BOTTOM">
+                        <g:Label addStyleNames="{style.starCountLabel}" ui:field="starNum">x0</g:Label>
+                    </g:cell>
+                </g:HorizontalPanel>
+                <g:cell addStyleNames="{style.namesPanel}">
+                    <g:HTML ui:field="starersBox" addStyleNames="{style.starers}"></g:HTML>
                 </g:cell>
-            </g:HorizontalPanel>
-        </g:FocusPanel>
+            </g:VerticalPanel>
+        </g:HorizontalPanel>
 
-        <g:FocusPanel ui:field="editPanel">
-            <g:HorizontalPanel>
-                <g:Image url="images/edit.png" addStyleNames="popupImage" ui:field="editImage"></g:Image>
-                <g:cell verticalAlignment="ALIGN_MIDDLE">
-                    <g:Label addStyleNames="popupLabel">Éditer</g:Label>
-                </g:cell>
-            </g:HorizontalPanel>
-        </g:FocusPanel>
 
         <g:cell horizontalAlignment="ALIGN_CENTER">
+            <g:FocusPanel styleName="{style.bottomPane}">
             <g:Button styleName="{style.closeButton}" ui:field="closeButton">Fermer</g:Button>
+            </g:FocusPanel>
         </g:cell>
+
     </g:VerticalPanel>
+
 
 </ui:UiBinder>

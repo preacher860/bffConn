@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -38,12 +39,16 @@ public class MessagePopup extends PopupPanel {
     @UiField
     FocusPanel deletePanel;
     @UiField
-    Label starersBox;
+    HTML starersBox;
+    @UiField
+    Label seqIdLabel;
+    @UiField
+    Label starNum;
 
     public MessagePopup(MessageContainer message,
                         boolean isMine,
                         userCallbackInterface callbackInterface) {
-        super(false);
+        super(true);
 
         myCallbackInterface = callbackInterface;
         myMessage = message;
@@ -52,6 +57,17 @@ public class MessagePopup extends PopupPanel {
         setStyleName("popupFrame");
 
         setWidget(uiBinder.createAndBindUi(this));
+
+        if (myMessage.getMessageStars().length() > 0) {
+            String prompt = "";
+            ArrayList<String> nickList = UserManager.getInstance().idListToArray(myMessage.getMessageStars());
+            for (String nick : nickList)
+                prompt += nick + "<br>";
+            starersBox.setHTML(prompt.substring(0, prompt.length() - 1)); // Crappy hack to remove trailing newline
+            starNum.setText("x" + nickList.size());
+        }
+
+        seqIdLabel.setText("" + myMessage.getMessageSeqId());
 
         closeButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent clickEvent) {
@@ -80,14 +96,8 @@ public class MessagePopup extends PopupPanel {
 
         starPanel.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent clickEvent) {
-                if (myMessage.getMessageStars().length() > 0) {
-                    String prompt = "";
-                    ArrayList<String> nickList = UserManager.getInstance().idListToArray(myMessage.getMessageStars());
-                    for (String nick : nickList)
-                        prompt += nick + "\n";
-                    starersBox.setText(prompt.substring(0, prompt.length() - 1)); // Crappy hack to remove trailing newline
-                    starersBox.setVisible(true);
-                }
+                hide();
+                myCallbackInterface.starClicked(myMessage.getMessageSeqId());
             }
         });
     }

@@ -27,15 +27,6 @@ public class HeaderButtonBar extends HStack {
     private TextItem localItem = new TextItem();
     private Img octopus = new Img("octopus.gif");
     private FunctionPopup popup;
-    private boolean allowCompactMode = true;
-
-    public boolean isAllowCompactMode() {
-        return allowCompactMode;
-    }
-
-    public void setAllowCompactMode(boolean allowCompactMode) {
-        this.allowCompactMode = allowCompactMode;
-    }
 
     public HeaderButtonBar(userCallbackInterface callbackInterface) {
         myUserCallbackInterface = callbackInterface;
@@ -253,11 +244,9 @@ public class HeaderButtonBar extends HStack {
     }
 
     public void setCompactView() {
-        if (allowCompactMode) {
             myShowButton.show();
             myHideButton.hide();
             popup.setCompactView();
-        }
     }
 
     public void setNormalView() {
