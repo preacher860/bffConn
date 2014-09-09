@@ -44,7 +44,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     public static final int MODE_RUNNING = 3;
     public static final int MODE_SHUTDOWN = 4;
 
-    private static final int MSG_INITIAL_RTRV = 40;
+    private static final int MSG_INITIAL_RTRV = 400;
     private static final int MSG_OLD_FETCH_NUM = 200;
     private static final int MSG_INITIAL_RTRV_MOBILE = 50;
     private static final int MSG_OLD_FETCH_NUM_MOBILE = 100;
@@ -82,7 +82,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     private UserButtonBar userButtonBar = new UserButtonBar(this);
     private boolean faviconAlert = false;
     private int newestDisplayedWhenLostVisibility = 0;
-    private String mySessionLocal = "";
     private boolean wideView = true;
     private Timer myOctoTimer;
     private OctoObject OctoArray[] = new OctoObject[5];
@@ -99,6 +98,10 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         String sessionIdCookie = Cookies.getCookie("bffConnexionSID");
         ioModule.GetServerSessionValid(sessionIdCookie);
 
+        RuntimeData.getInstance().setMobile(isMobile);
+        RuntimeData.getInstance().setIphone(isIphone);
+
+        myHeaderButtonBar.initialize();
     }
 
     public bffConn() {
@@ -112,6 +115,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
         proxy = GWT.create(BffProxy.class);
         //((RestServiceProxy)service).setResource(resource);
+
     }
 
 
@@ -151,7 +155,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         headerStack.add(headerImage);
         headerStack.add(topToolbarStack);
         headerStack.setCellWidth(headerImage, "240px");
-        myHeaderButtonBar.setLocal(mySessionLocal);
+        myHeaderButtonBar.setLocal(RuntimeData.getInstance().getLocale());
 
         mainDockPanel.addNorth(headerStack, 76);
         mainDockPanel.addWest(leftToolbarStack, 240);
@@ -330,7 +334,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         } else {
             RuntimeData.getInstance().setUserId(userId);
             RuntimeData.getInstance().setSessionId(sessionId);
-            mySessionLocal = userLocal;
+            RuntimeData.getInstance().setLocale(userLocal);
 
             // Save sessionId in a cookie so we don't have to re-logon each time we load the app
             long cookieLifespan = 1000 * 60 * 60 * 24 * 7; // one week
@@ -356,7 +360,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         } else {
             RuntimeData.getInstance().setUserId(userId);
             RuntimeData.getInstance().setSessionId(sessionId);
-            mySessionLocal = local;
+            RuntimeData.getInstance().setLocale(local);
             System.out.println("Session was still active: " + RuntimeData.getInstance().getSessionId());
             applicationStart();
         }

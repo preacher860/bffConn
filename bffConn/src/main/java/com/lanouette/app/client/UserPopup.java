@@ -26,7 +26,7 @@ public class UserPopup extends PopupPanel {
 
         doSetAnimationType(this);
         setAnimationEnabled(true);
-        setStyleName("userPopup");
+        setStyleName("popupFrame");
 
         setWidget(mainPanel);
     }
@@ -37,10 +37,10 @@ public class UserPopup extends PopupPanel {
         for (UserContainer user : users) {
             Image image = new Image();
             image.setUrl(user.getAvatarURL());
-            image.setStyleName("userPopupAvatar");
+            image.setStyleName("popupImage");
 
             Label label = new Label(user.getNick());
-            label.addStyleName("userPopupLabel");
+            label.addStyleName("popupLabel");
 
             HorizontalPanel userPanel = new HorizontalPanel();
             userPanel.add(image);

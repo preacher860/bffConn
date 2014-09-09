@@ -193,3 +193,17 @@
     padding: 4px 10px !important;
     margin: 4px !important;
 }
+
+.popupImage {
+    width: 64px;
+    height: 64px;
+    margin-top: 4px;
+    margin-left: 5px;
+    border-radius: 7px;
+}
+
+.popupLabel {
+    font-size: xx-large;
+    font-weight: bold;
+    padding: 5px;
+}

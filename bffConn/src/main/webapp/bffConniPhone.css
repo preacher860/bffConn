@@ -99,6 +99,26 @@
         padding-right: 2px;
         padding-left: 8px;
     }
+
+    .popupImage {
+        width: 40px;
+        height: 40px;
+        margin-top: 4px;
+        margin-left: 5px;
+        border-radius: 7px;
+    }
+
+    .popupLabel {
+        font-size: x-large;
+        font-weight: bold;
+        padding: 5px;
+    }
+
+    .popupButton {
+        font-size: x-large;
+        font-weight: bold;
+        margin: 10px;
+    }
 }
 
 /* Portrait */
@@ -173,6 +193,26 @@
         padding-right: 2px;
         padding-left: 8px;
     }
+
+    .popupImage {
+        width: 64px;
+        height: 64px;
+        margin-top: 4px;
+        margin-left: 5px;
+        border-radius: 7px;
+    }
+
+    .popupLabel {
+        font-size: xx-large;
+        font-weight: bold;
+        padding: 5px;
+    }
+
+    .popupButton {
+        font-size: xx-large;
+        font-weight: bold;
+        margin: 10px;
+    }
 }
 
 .loginBox {
@@ -227,3 +267,4 @@ input[type=checkbox]
     padding: 4px 10px !important;
     margin: 4px !important;
 }
+

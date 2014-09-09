@@ -1,0 +1,44 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:style>
+        .dialogHeader {
+            background: #22366A;
+            background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#22366A), to(#4D668A));
+            padding: 4px;
+            font-weight: bold;
+            font-size: x-large;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .dialogEntryBox{
+            padding: 1px !important;
+            font-size: x-large;
+        }
+
+        .dialogButton {
+            font-weight: bold;
+            font-size: x-large !important;
+            padding: 4px 10px !important;
+            margin: 4px !important;
+        }
+    </ui:style>
+
+
+    <g:VerticalPanel ui:field="mainPanel">
+        <g:cell horizontalAlignment="ALIGN_CENTER">
+        <g:Label styleName="{style.dialogHeader}">Localisation</g:Label>
+        </g:cell>
+        <g:TextBox styleName="{style.dialogEntryBox}" maxLength="30" ui:field="localTextBox"></g:TextBox>
+        <g:HorizontalPanel width="100%">
+            <g:cell verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_CENTER">
+                <g:Button styleName="{style.dialogButton}" ui:field="cancelButton">Annuler</g:Button>
+            </g:cell>
+            <g:cell verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_CENTER">
+                <g:Button styleName="{style.dialogButton}" ui:field="acceptButton">Valider</g:Button>
+            </g:cell>
+        </g:HorizontalPanel>
+    </g:VerticalPanel>
+
+</ui:UiBinder>

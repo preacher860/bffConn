@@ -447,27 +447,8 @@ h1 {
     vertical-align: middle;
 }
 
-.userPopupAvatar {
-    width: 64px;
-    height: 64px;
-    margin-top: 4px;
-    margin-left: 5px;
-    border-radius: 7px;
-}
-
-.userPopupLabel {
-    font-size: xx-large;
-    font-weight: bold;
-    padding: 5px;
-}
-.userPopup {
+.popupFrame {
     border-style: solid;
     border-width: 2px;
     background: white;
-}
-
-.popupButton {
-    font-size: xx-large;
-    font-weight: bold;
-    margin: 10px;
 }

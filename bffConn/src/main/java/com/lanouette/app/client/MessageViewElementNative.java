@@ -10,11 +10,13 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class MessageViewElementNative extends HorizontalPanel {
@@ -48,6 +50,7 @@ public class MessageViewElementNative extends HorizontalPanel {
     private userCallbackInterface myUserCallbackInterface;
     private String myMessageOriginatingUser;
     private MessageContainer myMessage = null;
+    private UserContainer messageUser = null;
     private UserContainer myUser = null;
 
     public MessageViewElementNative(MessageContainer message, UserContainer user,
@@ -56,6 +59,7 @@ public class MessageViewElementNative extends HorizontalPanel {
         myUserCallbackInterface = cb;
         myMessageOriginatingUser = user.getNick();
         myMessage = message;
+        messageUser = user;
         myUser = myself;
         this.isMobile = isMobile;
         String myEnhancedMessage = "";
@@ -161,6 +165,24 @@ public class MessageViewElementNative extends HorizontalPanel {
         add(messagePane);
 
         setUserPaneColor();
+
+        ClickHandler messagePaneClickHandler = new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                final MessagePopup popup = new MessagePopup(myMessage,
+                                                            myUser.equals(messageUser),
+                                                            myUserCallbackInterface);
+
+                popup.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
+                    public void setPosition(int offsetWidth, int offsetHeight) {
+                        int left = Window.getClientWidth() / 2 - offsetWidth / 2;
+                        int top = Window.getClientHeight() / 2 - offsetHeight / 2;
+                        ;
+                        popup.setPopupPosition(left, top);
+                    }
+                });
+            }
+        };
+        messagePane.addDomHandler(messagePaneClickHandler, ClickEvent.getType());
 
         ClickHandler avatarClickHandler = new ClickHandler() {
             public void onClick(ClickEvent event) {

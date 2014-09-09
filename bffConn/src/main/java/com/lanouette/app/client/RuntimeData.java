@@ -17,8 +17,11 @@ public class RuntimeData {
 	private String motdDate;
 	private String motdTime;
 	private int motdUserId;
-	
-	
+    private boolean isMobile;
+    private boolean isIphone;
+    private String locale;
+    private boolean saveLocale;
+
 	private static final RuntimeData instance = new RuntimeData();
 	
 	public static RuntimeData getInstance() {
@@ -138,4 +141,30 @@ public class RuntimeData {
 	public void setServerDbVersionMotd(int serverDbVersionMotd) {
 		this.serverDbVersionMotd = serverDbVersionMotd;
 	}
+    public boolean isMobile() {
+        return isMobile;
+    }
+    public void setMobile(boolean isMobile) {
+        this.isMobile = isMobile;
+    }
+    public boolean isIphone() {
+        return isIphone;
+    }
+    public void setIphone(boolean isIphone) {
+        this.isIphone = isIphone;
+    }
+    public String getLocale() {
+        return locale;
+    }
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
+    public boolean isSaveLocale() {
+        return saveLocale;
+    }
+
+    public void setSaveLocale(boolean saveLocale) {
+        this.saveLocale = saveLocale;
+    }
 }
