@@ -1,25 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="871afaa6-7989-4f06-a34e-d091b2f41905" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../.idea/libraries/gwt_user.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../.idea/libraries/isomorphic_applets.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../.idea/libraries/lib.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_allen_sauer_gwt_log_gwt_log_3_3_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_gwt_google_apis_gwt_visualization_1_1_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_28.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffConnServer.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/server/BffConnServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/EntryBox.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/EntryBox.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/HeaderButtonBar.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/HeaderButtonBar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessagePopup.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessagePopup.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessagePopup.ui.xml" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessagePopup.ui.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageView.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageViewElementNative.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageViewElementNative.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserButtonBar.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserButtonBar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bffConn.iml" afterPath="$PROJECT_DIR$/bffConn.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="871afaa6-7989-4f06-a34e-d091b2f41905" name="Default" comment="" />
     <ignored path="bffConn.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="871afaa6-7989-4f06-a34e-d091b2f41905" time="1410272179363" ignored="false" />
