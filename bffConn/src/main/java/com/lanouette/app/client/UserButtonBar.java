@@ -18,7 +18,10 @@ public class UserButtonBar extends FocusPanel {
 
     UserButtonBar(userCallbackInterface callbackInterface) {
         myUserCallbackInterface = callbackInterface;
-        popup = new UserPopup(callbackInterface);
+        popup = new UserPopup(myUserCallbackInterface);
+    }
+
+    public void initialize() {
         isMobile = RuntimeData.getInstance().isMobile();
 
         if (isMobile) {

@@ -2,6 +2,15 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
     <ui:style>
+        .header {
+            background: #22366A;
+            background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#22366A), to(#4D668A));
+            padding: 4px;
+            font-weight: bold;
+            font-size: x-large;
+            color: white;
+        }
+
         .closeButton {
             font-weight: bold;
             font-size: xx-large !important;
@@ -50,6 +59,10 @@
     </ui:style>
 
     <g:VerticalPanel>
+        <g:cell>
+        <g:Label addStyleNames="{style.header}" ui:field="seqIdLabel"></g:Label>
+        </g:cell>
+
         <g:HorizontalPanel>
             <g:VerticalPanel ui:field="mainPanel">
                 <g:FocusPanel ui:field="starPanel" styleName="{style.labelCell}">
@@ -83,10 +96,6 @@
             </g:VerticalPanel>
 
             <g:VerticalPanel>
-                <g:cell>
-                    <g:Label addStyleNames="{style.seqLabel}" ui:field="seqIdLabel"></g:Label>
-                </g:cell>
-
                 <g:HorizontalPanel>
                     <g:Image url="images/star.png" addStyleNames="{style.smallStar}" ></g:Image>
                     <g:cell verticalAlignment="ALIGN_BOTTOM">

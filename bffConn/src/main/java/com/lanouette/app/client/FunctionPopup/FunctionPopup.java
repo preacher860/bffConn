@@ -1,4 +1,4 @@
-package com.lanouette.app.client;
+package com.lanouette.app.client.FunctionPopup;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,6 +11,8 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.lanouette.app.client.LocalDialog.LocalDialog;
+import com.lanouette.app.client.userCallbackInterface;
 
 public class FunctionPopup extends PopupPanel {
     private userCallbackInterface myUserCallbackInterface;
@@ -119,6 +121,6 @@ public class FunctionPopup extends PopupPanel {
     }
 
     private native void doSetAnimationType(PopupPanel popup) /*-{
-        popup.@com.lanouette.app.client.FunctionPopup::setAnimationType(Lcom/google/gwt/user/client/ui/PopupPanel$AnimationType;)(@com.google.gwt.user.client.ui.PopupPanel.AnimationType::ROLL_DOWN);
+        popup.@com.lanouette.app.client.FunctionPopup.FunctionPopup::setAnimationType(Lcom/google/gwt/user/client/ui/PopupPanel$AnimationType;)(@com.google.gwt.user.client.ui.PopupPanel.AnimationType::ROLL_DOWN);
     }-*/;
 }

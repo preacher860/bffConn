@@ -1,6 +1,7 @@
 package com.lanouette.app.client;
 
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.lanouette.app.client.FunctionPopup.FunctionPopup;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Img;
@@ -244,14 +245,18 @@ public class HeaderButtonBar extends HStack {
     }
 
     public void setCompactView() {
-            myShowButton.show();
-            myHideButton.hide();
+        myShowButton.show();
+        myHideButton.hide();
+        if (RuntimeData.getInstance().isMobile()) {
             popup.setCompactView();
+        }
     }
 
     public void setNormalView() {
         myShowButton.hide();
         myHideButton.show();
-        popup.setNormalView();
+        if (RuntimeData.getInstance().isMobile()) {
+            popup.setNormalView();
+        }
     }
 }

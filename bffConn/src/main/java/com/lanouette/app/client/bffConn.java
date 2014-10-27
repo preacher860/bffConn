@@ -101,6 +101,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         RuntimeData.getInstance().setIphone(isIphone);
 
         myHeaderButtonBar.initialize();
+        userButtonBar.initialize();
     }
 
     public bffConn() {

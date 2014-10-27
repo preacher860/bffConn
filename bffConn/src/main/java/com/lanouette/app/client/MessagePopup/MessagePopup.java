@@ -1,21 +1,25 @@
-package com.lanouette.app.client;
+package com.lanouette.app.client.MessagePopup;
 
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+import com.lanouette.app.client.MessageContainer;
+import com.lanouette.app.client.MessageViewElementNativeCallback;
+import com.lanouette.app.client.UserManager;
+import com.lanouette.app.client.userCallbackInterface;
 
 public class MessagePopup extends PopupPanel {
     interface MyUiBinder extends UiBinder<Widget, MessagePopup> {
@@ -24,6 +28,7 @@ public class MessagePopup extends PopupPanel {
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
     private userCallbackInterface myCallbackInterface;
+    private MessageViewElementNativeCallback myMessageCallback;
     private MessageContainer myMessage;
 
     @UiField
@@ -47,10 +52,12 @@ public class MessagePopup extends PopupPanel {
 
     public MessagePopup(MessageContainer message,
                         boolean isMine,
-                        userCallbackInterface callbackInterface) {
+                        userCallbackInterface callbackInterface,
+                        MessageViewElementNativeCallback messageCallback) {
         super(true);
 
         myCallbackInterface = callbackInterface;
+        myMessageCallback = messageCallback;
         myMessage = message;
 
         setAnimationEnabled(true);
@@ -67,11 +74,12 @@ public class MessagePopup extends PopupPanel {
             starNum.setText("x" + nickList.size());
         }
 
-        seqIdLabel.setText("" + myMessage.getMessageSeqId());
+        seqIdLabel.setText("Message " + myMessage.getMessageSeqId());
 
         closeButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent clickEvent) {
                 hide();
+                myMessageCallback.messageUnselect();
             }
         });
 
@@ -82,6 +90,7 @@ public class MessagePopup extends PopupPanel {
             editPanel.addClickHandler(new ClickHandler() {
                 public void onClick(ClickEvent clickEvent) {
                     hide();
+                    myMessageCallback.messageUnselect();
                     myCallbackInterface.editMessageClicked(myMessage);
                 }
             });
@@ -89,6 +98,7 @@ public class MessagePopup extends PopupPanel {
             deletePanel.addClickHandler(new ClickHandler() {
                 public void onClick(ClickEvent clickEvent) {
                     hide();
+                    myMessageCallback.messageUnselect();
                     myCallbackInterface.deleteClicked(myMessage.getMessageSeqId());
                 }
             });
@@ -97,7 +107,14 @@ public class MessagePopup extends PopupPanel {
         starPanel.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent clickEvent) {
                 hide();
+                myMessageCallback.messageUnselect();
                 myCallbackInterface.starClicked(myMessage.getMessageSeqId());
+            }
+        });
+
+        addCloseHandler(new CloseHandler<PopupPanel>() {
+            public void onClose(CloseEvent<PopupPanel> popupPanelCloseEvent) {
+                myMessageCallback.messageUnselect();
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.lanouette.app.client;
+package com.lanouette.app.client.LocalDialog;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,6 +11,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.lanouette.app.client.RuntimeData;
+import com.lanouette.app.client.userCallbackInterface;
 
 public class LocalDialog extends PopupPanel {
     interface MyUiBinder extends UiBinder<Widget, LocalDialog> {

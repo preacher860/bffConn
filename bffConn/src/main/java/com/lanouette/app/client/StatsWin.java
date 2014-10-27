@@ -62,7 +62,7 @@ public class StatsWin extends Window {
 
         statsGrid.setHeaderBarStyle("statsHeader");
 		statsGrid.setWidth100();
-		statsGrid.setAutoFitWidthApproach(AutoFitWidthApproach.BOTH); 
+		statsGrid.setAutoFitWidthApproach(AutoFitWidthApproach.BOTH);
 		statsGrid.setOverflow(Overflow.VISIBLE);
 		statsGrid.setCanResizeFields(false);
 		statsGrid.setAutoFitData(Autofit.BOTH);
@@ -196,11 +196,6 @@ public class StatsWin extends Window {
         hStack.addMember(chartStack);
         
 
-//    	JsArray<Selection> selections = pie.getSelections();
-//        Selection selection = selections.get(0);
-//        selections.set(0, selection.createRowSelection(1));
-//        System.out.println("Selecting row: " + selections.get(0).getRow());
-//        pie.setSelections(selections);
         Runnable onLoadCallback = new Runnable() {
 		      public void run() {
 		    	
@@ -350,7 +345,8 @@ class UserStatsData {
 		int recIndex = 0;
 
 		UserStatsRecord [] records = new UserStatsRecord[users.size()];
-		for(UserContainer currentUser:users) { 
+		for(UserContainer currentUser:users) {
+            for(int i = 0; i < 5; i++){
 			records[recIndex] = new UserStatsRecord(currentUser.getAvatarURL(), 
 													currentUser.getMessages(),
 													currentUser.getEditedMessages(),
@@ -358,6 +354,7 @@ class UserStatsData {
 													currentUser.getStarsSent(),
 													currentUser.getStarsRcvd());
 			recIndex++;
+            }
 		}
 		
 		return records;

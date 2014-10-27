@@ -225,6 +225,12 @@ h1 {
     margin: 1px;
 }
 
+.messageViewElementSelect {
+    border: 3px solid red !important;
+    margin-top: -1px;
+    margin-bottom: -1px;
+}
+
 .iconPane {
     background-color: #B0B0B0;
     width: auto;
@@ -320,6 +326,7 @@ h1 {
 }
 
 .motd {
+    padding-top: 3px;
     font-size: 20px;
     height: 24px;
     width: 800px;

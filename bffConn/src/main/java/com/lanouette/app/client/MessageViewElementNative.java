@@ -19,8 +19,9 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.lanouette.app.client.MessagePopup.MessagePopup;
 
-public class MessageViewElementNative extends HorizontalPanel {
+public class MessageViewElementNative extends HorizontalPanel implements MessageViewElementNativeCallback {
     private final boolean isMobile;
 
     private HorizontalPanel infoPane = new HorizontalPanel();
@@ -53,6 +54,7 @@ public class MessageViewElementNative extends HorizontalPanel {
     private MessageContainer myMessage = null;
     private UserContainer messageUser = null;
     private UserContainer myUser = null;
+    private MessageViewElementNative mySelfRef;
 
     public MessageViewElementNative(MessageContainer message, UserContainer user,
             UserContainer myself, userCallbackInterface cb) {
@@ -61,6 +63,7 @@ public class MessageViewElementNative extends HorizontalPanel {
         myMessage = message;
         messageUser = user;
         myUser = myself;
+        mySelfRef = this;
         isMobile = RuntimeData.getInstance().isMobile();
 
         String myEnhancedMessage = "";
@@ -172,7 +175,8 @@ public class MessageViewElementNative extends HorizontalPanel {
                 public void onClick(ClickEvent event) {
                     final MessagePopup popup = new MessagePopup(myMessage,
                             myUser.equals(messageUser),
-                            myUserCallbackInterface);
+                            myUserCallbackInterface,
+                            MessageViewElementNative.this);
 
                     popup.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
                         public void setPosition(int offsetWidth, int offsetHeight) {
@@ -197,6 +201,8 @@ public class MessageViewElementNative extends HorizontalPanel {
                             popup.setPopupPosition(left, top);
                         }
                     });
+
+                    addStyleName("messageViewElementSelect");
                 }
             };
             messagePane.addDomHandler(messagePaneClickHandler, ClickEvent.getType());
@@ -460,5 +466,9 @@ public class MessageViewElementNative extends HorizontalPanel {
             encapsulatedLink = encapsulateLink(link);
         }
         return encapsulatedLink;
+    }
+
+    public void messageUnselect() {
+        removeStyleName("messageViewElementSelect");
     }
 }
