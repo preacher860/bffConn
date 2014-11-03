@@ -142,7 +142,6 @@ h1 {
 .tooltipStyle {
     font-family: Verdana, Bitstream Vera Sans, sans-serif;
     font-size: 11px;
-    border: 1px solid #808080;
     padding: 4px;
     background-color: black;
     color: white;
@@ -227,8 +226,7 @@ h1 {
 
 .messageViewElementSelect {
     border: 3px solid red !important;
-    margin-top: -1px;
-    margin-bottom: -1px;
+    margin: -1px;
 }
 
 .iconPane {
@@ -389,21 +387,6 @@ h1 {
     border: none;
 }
 
-.tooltipStyle {
-    font-family: Verdana, Bitstream Vera Sans, sans-serif;
-    font-size: 11px;
-    border: 1px solid #808080;
-    padding: 4px;
-    background-color: black;
-    color: white;
-    opacity: 0.75;
-    width: auto;
-    overflow: hidden;
-    text-align: center;
-    border-radius: 6px;
-}
-
-
 .headerAvatar {
     width: 28px;
     height: 28px;
@@ -459,3 +442,9 @@ h1 {
     border-width: 2px;
     background: white;
 }
+
+.bottomStack {
+    right: 10px;
+    left: auto !important;
+}
+

@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.lanouette.app.client.UserPopup.UserPopup;
 
 public class UserButtonBar extends FocusPanel {
     int userDbVersion = 0;

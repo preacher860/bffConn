@@ -32,7 +32,9 @@ public class MessagePopup extends PopupPanel {
     private MessageContainer myMessage;
 
     @UiField
-    Button closeButton;
+    Image closeImage;
+    @UiField
+    FocusPanel closePanel;
     @UiField
     Image deleteImage;
     @UiField
@@ -76,7 +78,7 @@ public class MessagePopup extends PopupPanel {
 
         seqIdLabel.setText("Message " + myMessage.getMessageSeqId());
 
-        closeButton.addClickHandler(new ClickHandler() {
+        closePanel.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent clickEvent) {
                 hide();
                 myMessageCallback.messageUnselect();
@@ -84,7 +86,7 @@ public class MessagePopup extends PopupPanel {
         });
 
         if(!isMine) {
-            deleteImage.setUrl("images/deletegray.png");
+            deleteImage.setUrl("images/erasergray.png");
             editImage.setUrl("images/editgray.png");
         } else {
             editPanel.addClickHandler(new ClickHandler() {

@@ -38,7 +38,7 @@ public class FunctionPopup extends PopupPanel {
     @UiField
     FocusPanel logoutPanel;
     @UiField
-    Button closeButton;
+    FocusPanel closePanel;
 
     public FunctionPopup(userCallbackInterface callbackInterface) {
         super(false);
@@ -53,7 +53,7 @@ public class FunctionPopup extends PopupPanel {
 
         localDialog = new LocalDialog(myUserCallbackInterface);
 
-        closeButton.addClickHandler(new ClickHandler() {
+        closePanel.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent clickEvent) {
                 hide();
             }

@@ -1,9 +1,12 @@
-package com.lanouette.app.client;
+package com.lanouette.app.client.UserPopup;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -13,11 +16,22 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.lanouette.app.client.FunctionPopup.FunctionPopup;
+import com.lanouette.app.client.UserContainer;
+import com.lanouette.app.client.userCallbackInterface;
 
 public class UserPopup extends PopupPanel {
+    interface MyUiBinder extends UiBinder<Widget, UserPopup> {
+    }
 
-    private VerticalPanel mainPanel = new VerticalPanel();
+    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     private userCallbackInterface myUserCallbackInterface;
+
+    @UiField
+    VerticalPanel usersPanel;
+    @UiField
+    FocusPanel closePanel;
 
     public UserPopup(userCallbackInterface callbackInterface) {
         super(true);
@@ -28,11 +42,17 @@ public class UserPopup extends PopupPanel {
         setAnimationEnabled(true);
         setStyleName("popupFrame");
 
-        setWidget(mainPanel);
+        setWidget(uiBinder.createAndBindUi(this));
+
+        closePanel.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent clickEvent) {
+                hide();
+            }
+        });
     }
 
     public void setUserList(ArrayList<UserContainer> users) {
-        mainPanel.clear();
+        usersPanel.clear();
 
         for (UserContainer user : users) {
             Image image = new Image();
@@ -57,24 +77,12 @@ public class UserPopup extends PopupPanel {
                 }
             });
 
-            mainPanel.add(panelWrapper);
+            usersPanel.add(panelWrapper);
         }
-
-        Button closeButton = new Button("Fermer");
-        closeButton.setStyleName("popupButton");
-        closeButton.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent clickEvent) {
-                hide();
-            }
-        });
-
-        mainPanel.add(closeButton);
-        mainPanel.setCellHorizontalAlignment(closeButton, HasHorizontalAlignment.ALIGN_CENTER);
-
     }
 
     private native void doSetAnimationType(PopupPanel popup) /*-{
-        popup.@com.lanouette.app.client.UserPopup::setAnimationType(Lcom/google/gwt/user/client/ui/PopupPanel$AnimationType;)(@com.google.gwt.user.client.ui.PopupPanel.AnimationType::ROLL_DOWN);
+        popup.@com.lanouette.app.client.UserPopup.UserPopup::setAnimationType(Lcom/google/gwt/user/client/ui/PopupPanel$AnimationType;)(@com.google.gwt.user.client.ui.PopupPanel.AnimationType::ROLL_DOWN);
     }-*/;
 
 }

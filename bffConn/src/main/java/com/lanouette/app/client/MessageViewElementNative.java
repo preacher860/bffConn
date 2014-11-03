@@ -36,8 +36,8 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
     private HTML userMessagePane = new HTML();
     private Image starIcon = new Image("images/stargray.png");
     private Image starOverIcon = new Image("images/stargray_Over.png");
-    private Image deleteIcon = new Image("images/deletegray.png");
-    private Image deleteOverIcon = new Image("images/deletegray_Over.png");
+    private Image deleteIcon = new Image("images/erasergray.png");
+    private Image deleteOverIcon = new Image("images/erasergray_Over.png");
     private Image editIcon = new Image("images/editgray.png");
     private Image editOverIcon = new Image("images/edit.png");
     private Label starLabel = new Label("Étoiler");

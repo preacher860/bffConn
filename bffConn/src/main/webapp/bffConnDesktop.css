@@ -207,3 +207,8 @@
     font-weight: bold;
     padding: 5px;
 }
+
+.countItem {
+    text-align: center;
+    font-size: 10px;
+}

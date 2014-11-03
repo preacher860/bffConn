@@ -1,0 +1,33 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:style>
+        .buttonPanel {
+            padding: 4px;
+        }
+
+        .bottomPanel {
+            border-top: solid 1px black;
+        }
+
+        .tableCenter {
+            margin: auto;
+        }
+
+    </ui:style>
+
+    <g:VerticalPanel>
+        <g:VerticalPanel ui:field="usersPanel">
+        </g:VerticalPanel>
+
+        <g:FocusPanel ui:field="closePanel" styleName="{style.bottomPanel}">
+            <g:HorizontalPanel styleName="{style.tableCenter}">
+                <g:Image url="images/close.png" addStyleNames="popupImage"></g:Image>
+                <g:cell verticalAlignment="ALIGN_MIDDLE">
+                    <g:Label addStyleNames="popupLabel">Fermer</g:Label>
+                </g:cell>
+            </g:HorizontalPanel>
+        </g:FocusPanel>
+    </g:VerticalPanel>
+
+</ui:UiBinder>

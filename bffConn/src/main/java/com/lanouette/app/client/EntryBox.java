@@ -2,16 +2,25 @@ package com.lanouette.app.client;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -19,6 +28,7 @@ public class EntryBox extends HorizontalPanel {
 
     private TextArea messageItem = new TextArea();
     private HTML infoItem = new HTML();
+    private Label countItem = new Label();
     private VerticalPanel imageStack = new VerticalPanel();
     private FocusPanel imageStackWrapper = new FocusPanel();
     private VerticalPanel editStack = new VerticalPanel();
@@ -35,6 +45,7 @@ public class EntryBox extends HorizontalPanel {
 
         setStyleName("entryBox");
         imageStack.setStyleName("entryBoxPicBox");
+        countItem.setStyleName("countItem");
         infoItem.setHTML("Editing message 222222");
         infoItem.setStyleName("entryBoxInfoItem");
         infoItem.setVisible(false);
@@ -50,6 +61,16 @@ public class EntryBox extends HorizontalPanel {
             }
         };
         addDomHandler(entryBoxClickHandler, ClickEvent.getType());
+
+        messageItem.addKeyUpHandler(new KeyUpHandler() {
+            public void onKeyUp(KeyUpEvent keyUpEvent) {
+                    if (messageItem.getValue().length() > 0) {
+                        countItem.setText(Integer.toString(messageItem.getValue().length()));
+                    } else {
+                        countItem.setText("");
+                    }
+            }
+        });
 
         messageItem.addKeyDownHandler(new KeyDownHandler() {
             public void onKeyDown(KeyDownEvent keyDownEvent) {
@@ -117,6 +138,7 @@ public class EntryBox extends HorizontalPanel {
         Image userImage = new Image(user.getAvatarURL());
         userImage.setStyleName("userAvatarEntryBox");
         imageStack.add(userImage);
+        imageStack.add(countItem);
     }
 
     public void addAddressee(String userNick) {

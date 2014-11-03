@@ -268,3 +268,16 @@ input[type=checkbox]
     margin: 4px !important;
 }
 
+.chartLabel {
+    font-size: 15px;
+}
+
+.statsCloseLabel {
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+.countItem {
+    text-align: center;
+    font-size: 16px;
+}

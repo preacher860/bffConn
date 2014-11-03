@@ -60,7 +60,7 @@
 
     <g:VerticalPanel>
         <g:cell>
-        <g:Label addStyleNames="{style.header}" ui:field="seqIdLabel"></g:Label>
+        <g:Label addStyleNames="{style.header}" ui:field="seqIdLabel">Message du jour</g:Label>
         </g:cell>
 
         <g:HorizontalPanel>
@@ -82,17 +82,6 @@
                         </g:cell>
                     </g:HorizontalPanel>
                 </g:FocusPanel>
-
-                <g:FocusPanel ui:field="editPanel" styleName="{style.labelCell}">
-                    <g:HorizontalPanel>
-                        <g:Image url="images/pencil.png" addStyleNames="popupImage" ui:field="editImage"></g:Image>
-                        <g:cell verticalAlignment="ALIGN_MIDDLE">
-                            <g:Label addStyleNames="popupLabel">Éditer</g:Label>
-                        </g:cell>
-                    </g:HorizontalPanel>
-                </g:FocusPanel>
-
-
             </g:VerticalPanel>
 
             <g:VerticalPanel>

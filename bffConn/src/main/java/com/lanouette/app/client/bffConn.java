@@ -78,7 +78,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     private MessageView myMessageManager = new MessageView(this, isMobile, isIphone);
     private Image headerImage = new Image();
     private motd myMotd = new motd();
-    private MotdInfo myMotdInfo = new MotdInfo(this, isMobile);
+    private MotdInfo myMotdInfo = new MotdInfo(this);
     private UserButtonBar userButtonBar = new UserButtonBar(this);
     private boolean faviconAlert = false;
     private int newestDisplayedWhenLostVisibility = 0;
@@ -102,6 +102,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
         myHeaderButtonBar.initialize();
         userButtonBar.initialize();
+        myMotdInfo.initialize();
     }
 
     public bffConn() {

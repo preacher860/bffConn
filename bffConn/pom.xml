@@ -9,12 +9,12 @@
     <groupId>com.lanouette.app</groupId>
     <artifactId>bffConn</artifactId>
     <packaging>war</packaging>
-    <version>0.52</version>
+    <version>0.53</version>
     <name>GWT Maven Archetype</name>
 
     <properties>
         <!-- Convenience property to set the GWT version -->
-        <gwtVersion>2.6.0</gwtVersion>
+        <gwtVersion>2.6.1</gwtVersion>
         <!-- GWT needs at least java 1.5 -->
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -80,12 +80,12 @@
         <dependency>
             <groupId>com.smartgwt</groupId>
             <artifactId>smartgwt</artifactId>
-            <version>3.0</version>
+            <version>4.0</version>
         </dependency>
         <dependency>
             <groupId>com.smartgwt</groupId>
             <artifactId>smartgwt-skins</artifactId>
-            <version>3.0</version>
+            <version>4.0</version>
         </dependency>
         <dependency>
             <groupId>com.allen-sauer.gwt.log</groupId>
