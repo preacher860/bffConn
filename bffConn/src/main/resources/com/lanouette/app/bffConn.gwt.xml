@@ -15,7 +15,7 @@
     <!--<inherits name='com.smartclient.theme.graphite.Graphite'/>-->
     <inherits name="com.smartgwt.SmartGwtNoScript"/>
 
-    <inherits name="org.fusesource.restygwt.RestyGWT"/>
+    <!--<inherits name="org.fusesource.restygwt.RestyGWT"/>-->
     <!--<inherits name="com.googlecode.mgwt.MGWT"/>-->
     <!--<set-property name="user.agent" value="safari" />-->
     <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->

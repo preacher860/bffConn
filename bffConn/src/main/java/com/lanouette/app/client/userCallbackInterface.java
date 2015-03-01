@@ -13,8 +13,6 @@ public interface userCallbackInterface {
 	public void messageDisplayComplete();
 	public void octopusOnTyped();
 	public void octopusOffTyped();
-	public void superOctopusOnTyped();
-	public void superOctopusOffTyped();
 	public void starClicked(int seqId);
 	public void deleteClicked(int seqId);
 	public void newestUpdated();

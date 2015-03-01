@@ -198,10 +198,6 @@ public class MessageView extends ScrollPanel {
 	    	myCallbackInterface.octopusOnTyped();
     	if(message.getMessage().contains("!!!octo"))
 	    	myCallbackInterface.octopusOffTyped();
-    	if(message.getMessage().contains("superOcto!!!"))
-	    	myCallbackInterface.superOctopusOnTyped();
-    	if(message.getMessage().contains("Jérôme!!!"))
-	    	myCallbackInterface.superOctopusOffTyped();
 	}
 
 	public void setUnreadRange(int low, int high) {

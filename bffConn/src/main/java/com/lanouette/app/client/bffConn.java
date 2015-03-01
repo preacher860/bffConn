@@ -2,18 +2,12 @@ package com.lanouette.app.client;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.fusesource.restygwt.client.Method;
-import org.fusesource.restygwt.client.MethodCallback;
-
+import com.allen_sauer.gwt.log.client.ConsoleLogger;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Cookies;
@@ -24,19 +18,18 @@ import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.lanouette.app.client.proxies.BffProxy;
-import com.smartgwt.client.util.BooleanCallback;
-import com.smartgwt.client.util.SC;
+import com.googlecode.mgwt.ui.client.MGWT;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VStack;
-import com.googlecode.mgwt.ui.client.MGWT;
+
+//import org.fusesource.restygwt.client.Method;
+//import org.fusesource.restygwt.client.MethodCallback;
 
 public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInterface {
     public static final int MODE_INIT_S1 = 1;
@@ -48,8 +41,10 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     private static final int MSG_OLD_FETCH_NUM = 200;
     private static final int MSG_INITIAL_RTRV_MOBILE = 80;
     private static final int MSG_OLD_FETCH_NUM_MOBILE = 100;
+    private static final int POLL_FAST = 2000;
+    private static final int POLL_SLOW = 10000;
 
-    private final BffProxy proxy;
+    //private final BffProxy proxy;
     private final boolean isMobile = checkMobile();
     private final boolean isIphone = checkIphone();
 
@@ -60,13 +55,13 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     private HorizontalPanel topToolbarLowerStack = new HorizontalPanel();
     private VStack leftToolbarStack = new VStack();
     private VerticalPanel topToolbarStack = new VerticalPanel();
-    private DockLayoutPanel chatDockPanel = new DockLayoutPanel(Unit.EM);
 
     private IOModule ioModule = new IOModule(this);
     private Integer myCurrentMode = MODE_INIT_S1;
     private Timer myRefreshTimer;
     private Timer myFaviconTimer;
     private Timer myResizeTimer;
+    private Timer myInitTimer;
     private boolean myRuntimeDataRcvd = false;
     private boolean myUserDataRcvd = false;
     private boolean myMotdRcvd = false;
@@ -82,11 +77,9 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     private UserButtonBar userButtonBar = new UserButtonBar(this);
     private boolean faviconAlert = false;
     private int newestDisplayedWhenLostVisibility = 0;
-    private boolean wideView = true;
-    private Timer myOctoTimer;
-    private OctoObject OctoArray[] = new OctoObject[5];
+    private boolean myCatchupOnShow = false;
+    private int myPollSpeed = POLL_FAST;
 
-    //@Override
     public void onModuleLoad() {
         //MainGinjector ginjector = GWT.create(MainGinjector.class);
         //mainDockPanel = ginjector.getMainPanel();
@@ -114,7 +107,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         }
         //Resource resource = new Resource( GWT.getModuleBaseURL() + "pizza-service");
 
-        proxy = GWT.create(BffProxy.class);
+        //proxy = GWT.create(BffProxy.class);
         //((RestServiceProxy)service).setResource(resource);
 
     }
@@ -170,9 +163,9 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
         Window.addResizeHandler(new ResizeHandler() {
             public void onResize(ResizeEvent event) {
-		consoleLog("Width: " + Window.getClientWidth());
-		consoleLog("Height: " + Window.getClientHeight());
-		consoleLog("Ori: " + MGWT.getOrientation().toString());
+                consoleLog("Width: " + Window.getClientWidth());
+                consoleLog("Height: " + Window.getClientHeight());
+                consoleLog("Ori: " + MGWT.getOrientation().toString());
                 myResizeTimer.schedule(500);
             }
         });
@@ -183,16 +176,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
                 myMessageManager.toBottom(false);
             }
         };
-
-        myOctoTimer = new Timer() {
-            @Override
-            public void run() {
-                //for (int octoIndex = 0; octoIndex < OctoArray.length; octoIndex++) {
-                //	OctoArray[octoIndex].MoveOcto(canvas.getWidth(), canvas.getHeight());
-                //}
-            }
-        };
-        //myOctoTimer.scheduleRepeating(50);
 
         myFaviconTimer = new Timer() {
             @Override
@@ -247,26 +230,12 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 
                         ioModule.GetUserMessages(start_point, numMsgToFetch);
                     } else if (myCurrentMode == MODE_RUNNING) {
-                        //System.out.println("Db version: " + RuntimeData.getInstance().getDbVersion() + "  Srv Db version: " + RuntimeData.getInstance().getServerDbVersion());
-                        if (RuntimeData.getInstance().getDbVersion() < RuntimeData.getInstance().getServerDbVersion()) {
-                            System.out.println("DB version behind, updating to " + RuntimeData.getInstance().getDbVersion() + 1);
-                            ioModule.GetUserMessagesByVersion(RuntimeData.getInstance().getDbVersion() + 1);
-                        }
 
-                        if (RuntimeData.getInstance().getDbVersionUsers() < RuntimeData.getInstance().getServerDbVersionUsers()) {
-                            RuntimeData.getInstance().setRequestedDbVersionUsers(RuntimeData.getInstance().getServerDbVersionUsers());
-                            ioModule.GetUserInfo();
-                        }
-
-                        if (RuntimeData.getInstance().getDbVersionMotd() < RuntimeData.getInstance().getServerDbVersionMotd()) {
-                            System.out.println("MOTD version behind, updating to " + RuntimeData.getInstance().getServerDbVersionMotd());
-                            ioModule.GetMotd();
-                        }
                     }
 
                     // Don't reschedule if shutting down, nothing good can come out of this
                     if (myCurrentMode != MODE_SHUTDOWN)
-                        myRefreshTimer.schedule(2000);
+                        myRefreshTimer.schedule(myPollSpeed);
                 }
                 // Check server version to quickly detect any mismatch
                 ioModule.GetRuntimeData();
@@ -278,24 +247,42 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
             hideBarClicked();
         }
 
-        ioModule.GetUserInfo();
-        ioModule.GetRuntimeData();
-        ioModule.GetMotd();
-        myRefreshTimer.schedule(2000);  //  Check if our init Gets are completed
+        myInitTimer = new Timer() {
+            Integer initLoops = 0;
+
+            @Override
+            public void run() {
+                if (myRuntimeDataRcvd && myUserDataRcvd) {
+                    myInitTimer.cancel();
+                    myRefreshTimer.schedule(1);
+                } else {
+                    if ((initLoops % 2000) == 0) {
+                        ioModule.GetUserInfo();
+                        ioModule.GetRuntimeData();
+                        ioModule.GetMotd();
+                    }
+                    initLoops += 100;
+                    myInitTimer.schedule(100);
+                }
+            }
+        };
+
+        myInitTimer.schedule(1);
     }
 
-    //@Override
     public void messagesReceivedCallback(final ArrayList<MessageContainer> messages) {
         myMessageManager.newMessages(messages);
+        if (myCatchupOnShow) {
+            myMessageManager.setInvisibleMode(false);
+        }
     }
 
-    //@Override
     public void runtimeDataReceivedCallback() {
         myRuntimeDataRcvd = true;
         checkServerVersion();
+        checkRuntimeVersions();
     }
 
-    //@Override
     public void usersReceivedCallback(ArrayList<UserContainer> users) {
         UserManager.getInstance().setUserList(users);
         myUserDataRcvd = true;
@@ -308,24 +295,36 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     public void checkServerVersion() {
         if (RuntimeData.getInstance().getServerVersion() != VersionInfo.CURRENT_VERSION) {
             myCurrentMode = MODE_SHUTDOWN;
-            SC.warn("La version de l'application que vous utilisez est antérieure à celle du serveur. " +
-                    "La nouvelle version sera chargée automatiquement lorsque vous fermerez cette fenêtre.",
-                    new BooleanCallback() {
-                        //@Override
-                        public void execute(Boolean value) {
-                            Window.Location.reload();
-                        }
-                    });
+            Window.alert("La version de l'application que vous utilisez est antérieure à celle du serveur. " +
+                    "La nouvelle version sera chargée automatiquement lorsque vous fermerez ce message.");
+            Window.Location.reload();
         }
     }
 
-    //@Override
-    public void performLoginCallback(String login, String password, String local) {
+    public void checkRuntimeVersions() {
+        if (myCurrentMode == MODE_RUNNING) {
+            //System.out.println("Db version: " + RuntimeData.getInstance().getDbVersion() + "  Srv Db version: " + RuntimeData.getInstance().getServerDbVersion());
+            if (RuntimeData.getInstance().getDbVersion() < RuntimeData.getInstance().getServerDbVersion()) {
+                System.out.println("DB version behind, updating to " + RuntimeData.getInstance().getDbVersion() + 1);
+                ioModule.GetUserMessagesByVersion(RuntimeData.getInstance().getDbVersion() + 1);
+            }
 
+            if (RuntimeData.getInstance().getDbVersionUsers() < RuntimeData.getInstance().getServerDbVersionUsers()) {
+                RuntimeData.getInstance().setRequestedDbVersionUsers(RuntimeData.getInstance().getServerDbVersionUsers());
+                ioModule.GetUserInfo();
+            }
+
+            if (RuntimeData.getInstance().getDbVersionMotd() < RuntimeData.getInstance().getServerDbVersionMotd()) {
+                System.out.println("MOTD version behind, updating to " + RuntimeData.getInstance().getServerDbVersionMotd());
+                ioModule.GetMotd();
+            }
+        }
+    }
+
+    public void performLoginCallback(String login, String password, String local) {
         ioModule.GetNewSession(login, password, local);
     }
 
-    //@Override
     public void sessionReceivedCallback(String sessionId, Integer userId, String userNick, String userLocal) {
 
         if (sessionId.compareTo("0") == 0)  // Login failed
@@ -346,13 +345,11 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         }
     }
 
-    //@Override
     public void accessForbiddenCallback() {
         // Just reload for now, we'll handle graceful re-logins some day.  Riiight.
         Window.Location.reload();
     }
 
-    //@Override
     public void sessionValidReceivedCallback(String sessionId, int userId, String local, boolean valid) {
         if (!valid) {
             // Present the login screen until valid login is performed
@@ -367,7 +364,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         }
     }
 
-    //@Override
     public void messageToSendCallback(String message, boolean edit, int seqId) {
         if (message.startsWith("@mdj")) {
             if (message.equals("@mdj")) {
@@ -463,36 +459,34 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
                     myFaviconTimer.schedule(300);
                 }
                 Log.debug("Setting message manager mode to visible");
-                myMessageManager.setInvisibleMode(false);
+                myCatchupOnShow = true;
+                myPollSpeed = POLL_FAST;
+                myRefreshTimer.schedule(1);
             } else {
                 Log.debug("Tab is HIDDEN");
                 newestDisplayedWhenLostVisibility = myMessageManager.getNewestDisplayedSeq();
                 Log.debug("Setting message manager mode to invisible");
                 myMessageManager.setInvisibleMode(true);
+                myPollSpeed = POLL_SLOW;
             }
         } catch (Exception e) {
             Log.debug("Exception in visibilityChanged");
         }
     }
 
-    //@Override
     public void avatarClicked(String userNick) {
         myEntryBox.addAddressee(userNick);
     }
-
-    ;
 
     public void performLogout() {
         Cookies.removeCookie("bffConnexionSID", "/");
         ioModule.Logout();
     }
 
-    //@Override
     public void logoutComplete() {
         Window.Location.reload();
     }
 
-    //@Override
     public void logoutClicked() {
         performLogout();
     }
@@ -501,7 +495,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         new StatsWin(UserManager.getInstance().getUserList());
     }
 
-    //@Override
     public void localEntered(String local) {
         if (local != null)
             ioModule.SendLocal(local);
@@ -509,32 +502,29 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         myEntryBox.setFocus();
     }
 
-    //@Override
     public void octopusClicked() {
-        proxy.getMotd(12, 1234, 123456, new MethodCallback<List<String>>() {
-            public void onFailure(Method method, Throwable throwable) {
-                return;
-            }
-
-            public void onSuccess(Method method, List<String> strings) {
-                return;
-            }
-            //new OctopusWin();
-        });
+//        proxy.getMotd(12, 1234, 123456, new MethodCallback<List<String>>() {
+//            public void onFailure(Method method, Throwable throwable) {
+//                return;
+//            }
+//
+//            public void onSuccess(Method method, List<String> strings) {
+//                return;
+//            }
+//            //new OctopusWin();
+//        });
+        new OctopusWin();
     }
 
-    //@Override
     public void octopusOnTyped() {
         myOctoBox.show();
         //showBarClicked();
     }
 
-    //@Override
     public void octopusOffTyped() {
         myOctoBox.hide();
     }
 
-    //@Override
     public void scrollTop(int oldest) {
         int firstMsgToFetch;
         int numMsgToFetch;
@@ -563,7 +553,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         ioModule.GetUserMessages(firstMsgToFetch, numMsgToFetch);
     }
 
-    //@Override
     public void messageDisplayComplete() {
         if (compactModeEnabled) {
             ioModule.GetMotd();
@@ -572,17 +561,14 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         }
     }
 
-    //@Override
     public void starClicked(int seqId) {
         ioModule.SendStarMessage(seqId);
     }
 
-    //@Override
     public void deleteClicked(int seqId) {
         ioModule.SendDeleteMessage(seqId);
     }
 
-    //@Override
     public void newestUpdated() {
         try {
             Log.debug("newestUpdated called");
@@ -596,41 +582,18 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         }
     }
 
-    //@Override
     public void userEntry() {
         myMessageManager.ClearUnreadAll();
     }
 
-    //@Override
     public void editMessageClicked(MessageContainer message) {
         myEntryBox.editMessage(message);
     }
 
-    //@Override
     public void infoClicked() {
-        //SC.showConsole();
         Window.open("https://github.com/preacher860/bffConn/wiki/Historique-des-changements", "Historique", "");
     }
 
-    //@Override
-    public void superOctopusOnTyped() {
-        //for(OctoObject octo:OctoArray){
-        //	octo.showOcto();
-        //}
-        //myOctoTimer.scheduleRepeating(50);
-    }
-
-    //@Override
-    public void superOctopusOffTyped() {
-        //for(OctoObject octo:OctoArray){
-        //	octo.hideOcto();
-        //}
-        //myOctoTimer.cancel();
-
-
-    }
-
-    //@Override
     public void hideBarClicked() {
         compactModeEnabled = true;
         if (isMobile) {
@@ -643,9 +606,8 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         headerStack.setCellWidth(headerImage, "40px");
         myHeaderButtonBar.setCompactView();
         userButtonBar.setVisible(true);
-        }
+    }
 
-    //@Override
     public void showBarClicked() {
         compactModeEnabled = false;
         mainDockPanel.setWidgetSize(leftToolbarStack, 240);
@@ -656,7 +618,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         userButtonBar.setVisible(false);
     }
 
-    //@Override
     public void motdReceivedCallback(motdData motd) {
         myMotdRcvd = true;
         RuntimeData.getInstance().setDbVersionMotd(motd.dbVersion);
@@ -666,12 +627,10 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         }
     }
 
-    //@Override
     public void motdStarClicked() {
         ioModule.SendStarMOTD();
     }
 
-    //@Override
     public void motdDeleteClicked() {
         ioModule.DeleteMOTD();
     }
@@ -686,14 +645,14 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     }
 
     public boolean checkIphone() {
-	if(Window.Navigator.getUserAgent().contains("iPhone")) {
-	    return true;
-	}
-	return false;
+        if (Window.Navigator.getUserAgent().contains("iPhone")) {
+            return true;
+        }
+        return false;
     }
 
     native void consoleLog(String message) /*-{
-      console.log( "BFF: " + message );
+        console.log("BFF: " + message);
     }-*/;
 }
 
