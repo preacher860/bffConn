@@ -49,7 +49,7 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
     private boolean myUnread = false;
     private boolean forMe = false;
     private boolean myIconBarHovered = false;
-    private userCallbackInterface myUserCallbackInterface;
+    private UserCallbackInterface myUserCallbackInterface;
     private String myMessageOriginatingUser;
     private MessageContainer myMessage = null;
     private UserContainer messageUser = null;
@@ -57,7 +57,7 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
     private MessageViewElementNative mySelfRef;
 
     public MessageViewElementNative(MessageContainer message, UserContainer user,
-            UserContainer myself, userCallbackInterface cb) {
+            UserContainer myself, UserCallbackInterface cb) {
         myUserCallbackInterface = cb;
         myMessageOriginatingUser = user.getNick();
         myMessage = message;

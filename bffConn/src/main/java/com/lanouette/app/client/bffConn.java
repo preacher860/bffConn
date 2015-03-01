@@ -3,7 +3,6 @@ package com.lanouette.app.client;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.allen_sauer.gwt.log.client.ConsoleLogger;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.NativeEvent;
@@ -25,13 +24,13 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.googlecode.mgwt.ui.client.MGWT;
-import com.smartgwt.client.widgets.layout.LayoutSpacer;
-import com.smartgwt.client.widgets.layout.VStack;
+import com.lanouette.app.client.MessageBox.MessageBox;
+import com.lanouette.app.client.OnlineUsersView.OnlineUsers;
 
 //import org.fusesource.restygwt.client.Method;
 //import org.fusesource.restygwt.client.MethodCallback;
 
-public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInterface {
+public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInterface {
     public static final int MODE_INIT_S1 = 1;
     public static final int MODE_INIT_S2 = 2;
     public static final int MODE_RUNNING = 3;
@@ -47,13 +46,15 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     //private final BffProxy proxy;
     private final boolean isMobile = checkMobile();
     private final boolean isIphone = checkIphone();
+    private final OnlineUsers onlineUsers = new OnlineUsers(this);
+    private final MessageBox messageBox = new MessageBox();
 
     private boolean compactModeEnabled = false;
 
     DockLayoutPanel mainDockPanel = new DockLayoutPanel(Unit.PX);
     private HorizontalPanel headerStack = new HorizontalPanel();
     private HorizontalPanel topToolbarLowerStack = new HorizontalPanel();
-    private VStack leftToolbarStack = new VStack();
+    private VerticalPanel leftToolbarStack = new VerticalPanel();
     private VerticalPanel topToolbarStack = new VerticalPanel();
 
     private IOModule ioModule = new IOModule(this);
@@ -65,9 +66,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     private boolean myRuntimeDataRcvd = false;
     private boolean myUserDataRcvd = false;
     private boolean myMotdRcvd = false;
-    private UserTileDisplay myUserTileDisplay = new UserTileDisplay(this);
-    private WaitBox myWaitBox = new WaitBox();
-    private octoBox myOctoBox = new octoBox();
     private EntryBox myEntryBox = new EntryBox(this, this);
     private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
     private MessageView myMessageManager = new MessageView(this, isMobile, isIphone);
@@ -118,17 +116,9 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         mainDockPanel.setStyleName("mainPanel");
 
         headerImage.setUrl("images/bffConnLogo4.png");
-
-        LayoutSpacer toolbarSpacer = new LayoutSpacer();
-        LayoutSpacer toolbarSpacer2 = new LayoutSpacer();
-        toolbarSpacer.setHeight(15);
-        toolbarSpacer2.setHeight(15);
         leftToolbarStack.setStyleName("leftToolbar");
-        leftToolbarStack.addMember(myUserTileDisplay);
-        leftToolbarStack.addMember(toolbarSpacer);
-        leftToolbarStack.addMember(myWaitBox);
-        leftToolbarStack.addMember(toolbarSpacer2);
-        leftToolbarStack.addMember(myOctoBox);
+        leftToolbarStack.add(onlineUsers);
+        leftToolbarStack.add(messageBox);
 
         topToolbarLowerStack.add(myHeaderButtonBar);
         topToolbarLowerStack.add(userButtonBar);
@@ -224,8 +214,8 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
                         if (compactModeEnabled) {
                             myMotd.setText(waitMsg);
                         } else {
-                            myWaitBox.setMessage(waitMsg);
-                            myWaitBox.show();
+                            messageBox.setMessage(waitMsg);
+                            messageBox.setVisible(true);
                         }
 
                         ioModule.GetUserMessages(start_point, numMsgToFetch);
@@ -286,7 +276,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
     public void usersReceivedCallback(ArrayList<UserContainer> users) {
         UserManager.getInstance().setUserList(users);
         myUserDataRcvd = true;
-        myUserTileDisplay.UpdateOnlineUsers(UserManager.getInstance());
+        onlineUsers.UpdateOnlineUsers(UserManager.getInstance());
         userButtonBar.updateOnlineUsers();
         RuntimeData.getInstance().setDbVersionUsers(RuntimeData.getInstance().getRequestedDbVersionUsers());
         //System.out.println("Users updated up to db version " + RuntimeData.getInstance().getDbVersionUsers());
@@ -513,16 +503,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
 //            }
 //            //new OctopusWin();
 //        });
-        new OctopusWin();
-    }
-
-    public void octopusOnTyped() {
-        myOctoBox.show();
-        //showBarClicked();
-    }
-
-    public void octopusOffTyped() {
-        myOctoBox.hide();
     }
 
     public void scrollTop(int oldest) {
@@ -547,8 +527,8 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         if (compactModeEnabled) {
             myMotd.setText(waitMsg);
         } else {
-            myWaitBox.setMessage(waitMsg);
-            myWaitBox.show();
+            messageBox.setMessage(waitMsg);
+            messageBox.setVisible(true);
         }
         ioModule.GetUserMessages(firstMsgToFetch, numMsgToFetch);
     }
@@ -557,7 +537,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, userCallbackInt
         if (compactModeEnabled) {
             ioModule.GetMotd();
         } else {
-            myWaitBox.hide();
+            messageBox.setVisible(false);
         }
     }
 

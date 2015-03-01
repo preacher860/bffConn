@@ -2,19 +2,13 @@ package com.lanouette.app.client;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -33,13 +27,13 @@ public class EntryBox extends HorizontalPanel {
     private FocusPanel imageStackWrapper = new FocusPanel();
     private VerticalPanel editStack = new VerticalPanel();
     private ioCallbackInterface myCallbackInterface;
-    private userCallbackInterface myUserCallbackInterface;
+    private UserCallbackInterface myUserCallbackInterface;
     private boolean myIsShiftDown = false;
     private boolean myIsEditing = false;
     private int myEditingMessageSeq = 0;
 
 
-    public EntryBox(ioCallbackInterface callbackInterface, userCallbackInterface userCB) {
+    public EntryBox(ioCallbackInterface callbackInterface, UserCallbackInterface userCB) {
         myCallbackInterface = callbackInterface;
         myUserCallbackInterface = userCB;
 

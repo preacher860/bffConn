@@ -6,16 +6,15 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.lanouette.app.client.LocalDialog.LocalDialog;
-import com.lanouette.app.client.userCallbackInterface;
+import com.lanouette.app.client.UserCallbackInterface;
 
 public class FunctionPopup extends PopupPanel {
-    private userCallbackInterface myUserCallbackInterface;
+    private UserCallbackInterface myUserCallbackInterface;
 
     interface MyUiBinder extends UiBinder<Widget, FunctionPopup> {
     }
@@ -40,7 +39,7 @@ public class FunctionPopup extends PopupPanel {
     @UiField
     FocusPanel closePanel;
 
-    public FunctionPopup(userCallbackInterface callbackInterface) {
+    public FunctionPopup(UserCallbackInterface callbackInterface) {
         super(false);
 
         myUserCallbackInterface = callbackInterface;

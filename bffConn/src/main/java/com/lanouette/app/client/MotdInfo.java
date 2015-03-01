@@ -30,11 +30,11 @@ public class MotdInfo extends FocusPanel {
     private HorizontalPanel myDeleteStack = new HorizontalPanel();
     private HorizontalPanel myIconPane = new HorizontalPanel();
     private VerticalPanel myMainPane = new VerticalPanel();
-    private userCallbackInterface myUserCallbackInterface;
+    private UserCallbackInterface myUserCallbackInterface;
     private boolean starred = false;
     private boolean myIconBarHovered = false;
 
-    public MotdInfo(userCallbackInterface cb) {
+    public MotdInfo(UserCallbackInterface cb) {
         myUserCallbackInterface = cb;
 
         myMotdInfo.setStyleName("motdInfo");

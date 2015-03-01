@@ -9,7 +9,6 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
@@ -18,8 +17,8 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.lanouette.app.client.MessageContainer;
 import com.lanouette.app.client.MessageViewElementNativeCallback;
+import com.lanouette.app.client.UserCallbackInterface;
 import com.lanouette.app.client.UserManager;
-import com.lanouette.app.client.userCallbackInterface;
 
 public class MessagePopup extends PopupPanel {
     interface MyUiBinder extends UiBinder<Widget, MessagePopup> {
@@ -27,7 +26,7 @@ public class MessagePopup extends PopupPanel {
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-    private userCallbackInterface myCallbackInterface;
+    private UserCallbackInterface myCallbackInterface;
     private MessageViewElementNativeCallback myMessageCallback;
     private MessageContainer myMessage;
 
@@ -54,7 +53,7 @@ public class MessagePopup extends PopupPanel {
 
     public MessagePopup(MessageContainer message,
                         boolean isMine,
-                        userCallbackInterface callbackInterface,
+                        UserCallbackInterface callbackInterface,
                         MessageViewElementNativeCallback messageCallback) {
         super(true);
 

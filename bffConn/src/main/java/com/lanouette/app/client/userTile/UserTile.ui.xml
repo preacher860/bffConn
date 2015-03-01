@@ -1,0 +1,35 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:style>
+        .image {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            margin-bottom: 1px;
+            box-shadow: 2px 2px 4px #a0a0a0;
+        }
+
+        .tile {
+            margin: 3px 5px;
+            padding: 3px 5px;
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .tile:hover {
+            background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#cccccc), to(#eeeeee));
+            background: -moz-linear-gradient(top, #cccccc, #eeeeee);
+            background: -ms-linear-gradient(top, #cccccc, #eeeeee);
+
+        }
+    </ui:style>
+
+    <g:FocusPanel ui:field="panel" addStyleNames="{style.tile}">
+        <g:HTMLPanel>
+            <g:Image ui:field="userPicture" styleName="{style.image}"></g:Image>
+            <g:Label ui:field="userName"></g:Label>
+        </g:HTMLPanel>
+    </g:FocusPanel>
+</ui:UiBinder>

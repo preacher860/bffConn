@@ -21,7 +21,7 @@ public class MessageView extends ScrollPanel {
 	private int myNewestDisplayedSeq = 0;
 	private int myNewestDisplayedDb  = 0;
 	private int myNumOfMessagesDisplayed = 0;
-	private userCallbackInterface myCallbackInterface;
+	private UserCallbackInterface myCallbackInterface;
 	private Timer myScrollTimer;
 	private Timer myPositionTimer;
 	
@@ -33,7 +33,7 @@ public class MessageView extends ScrollPanel {
 	private int myKeepAtBottom = 0;
 	private boolean myInvisibleMode = false;
 	
-	public MessageView(userCallbackInterface callbackInterface,
+	public MessageView(UserCallbackInterface callbackInterface,
                        boolean isMobile,
                        boolean isIPhone){
 		myCallbackInterface = callbackInterface;
@@ -105,7 +105,6 @@ public class MessageView extends ScrollPanel {
 		for(int msgIndex = 0; msgIndex < messages.size(); msgIndex++) {
 
 			MessageContainer currentMessage = messages.get(msgIndex);
-			checkOcto(currentMessage);
 			if(currentMessage.getMessageUserId() != RuntimeData.getInstance().getUserId())
 				messagesNotOwn = true;
 
@@ -192,14 +191,6 @@ public class MessageView extends ScrollPanel {
 		return null;
 	}
 	
-	public void checkOcto(MessageContainer message)
-	{
-		if(message.getMessage().contains("octo!!!"))
-	    	myCallbackInterface.octopusOnTyped();
-    	if(message.getMessage().contains("!!!octo"))
-	    	myCallbackInterface.octopusOffTyped();
-	}
-
 	public void setUnreadRange(int low, int high) {
 		myUnreadLowest = low;
 		myUnreadHighest = high;

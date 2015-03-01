@@ -12,14 +12,14 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.lanouette.app.client.RuntimeData;
-import com.lanouette.app.client.userCallbackInterface;
+import com.lanouette.app.client.UserCallbackInterface;
 
 public class LocalDialog extends PopupPanel {
     interface MyUiBinder extends UiBinder<Widget, LocalDialog> {
     }
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    private userCallbackInterface myUserCallbackInterface;
+    private UserCallbackInterface myUserCallbackInterface;
 
     @UiField
     Button cancelButton;
@@ -28,7 +28,7 @@ public class LocalDialog extends PopupPanel {
     @UiField
     TextBox localTextBox;
 
-    public LocalDialog(userCallbackInterface callbackInterface) {
+    public LocalDialog(UserCallbackInterface callbackInterface) {
         super(true);
 
         myUserCallbackInterface = callbackInterface;

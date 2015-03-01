@@ -16,7 +16,7 @@ import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 
 public class HeaderButtonBar extends HStack {
-    private userCallbackInterface myUserCallbackInterface;
+    private UserCallbackInterface myUserCallbackInterface;
     private ImgButton myLogoutButton = new ImgButton();
     private ImgButton myLocalButton = new ImgButton();
     private ImgButton myStatsButton = new ImgButton();
@@ -29,7 +29,7 @@ public class HeaderButtonBar extends HStack {
     private Img octopus = new Img("octopus.gif");
     private FunctionPopup popup;
 
-    public HeaderButtonBar(userCallbackInterface callbackInterface) {
+    public HeaderButtonBar(UserCallbackInterface callbackInterface) {
         myUserCallbackInterface = callbackInterface;
     }
 

@@ -12,12 +12,12 @@ import com.lanouette.app.client.UserPopup.UserPopup;
 
 public class UserButtonBar extends FocusPanel {
     int userDbVersion = 0;
-    private userCallbackInterface myUserCallbackInterface;
+    private UserCallbackInterface myUserCallbackInterface;
     private HorizontalPanel panel = new HorizontalPanel();
     private final UserPopup popup;
     private boolean isMobile;
 
-    UserButtonBar(userCallbackInterface callbackInterface) {
+    UserButtonBar(UserCallbackInterface callbackInterface) {
         myUserCallbackInterface = callbackInterface;
         popup = new UserPopup(myUserCallbackInterface);
     }

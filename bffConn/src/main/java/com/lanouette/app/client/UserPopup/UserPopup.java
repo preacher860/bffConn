@@ -7,9 +7,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -17,23 +15,22 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.lanouette.app.client.FunctionPopup.FunctionPopup;
+import com.lanouette.app.client.UserCallbackInterface;
 import com.lanouette.app.client.UserContainer;
-import com.lanouette.app.client.userCallbackInterface;
 
 public class UserPopup extends PopupPanel {
     interface MyUiBinder extends UiBinder<Widget, UserPopup> {
     }
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    private userCallbackInterface myUserCallbackInterface;
+    private UserCallbackInterface myUserCallbackInterface;
 
     @UiField
     VerticalPanel usersPanel;
     @UiField
     FocusPanel closePanel;
 
-    public UserPopup(userCallbackInterface callbackInterface) {
+    public UserPopup(UserCallbackInterface callbackInterface) {
         super(true);
 
         myUserCallbackInterface = callbackInterface;
