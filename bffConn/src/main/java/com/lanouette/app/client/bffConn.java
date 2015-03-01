@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.googlecode.mgwt.ui.client.MGWT;
+import com.lanouette.app.client.IconBar.IconBar;
 import com.lanouette.app.client.MessageBox.MessageBox;
 import com.lanouette.app.client.OnlineUsersView.OnlineUsers;
 
@@ -48,6 +49,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     private final boolean isIphone = checkIphone();
     private final OnlineUsers onlineUsers = new OnlineUsers(this);
     private final MessageBox messageBox = new MessageBox();
+    private final IconBar iconBar = new IconBar(this);
 
     private boolean compactModeEnabled = false;
 
@@ -67,7 +69,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     private boolean myUserDataRcvd = false;
     private boolean myMotdRcvd = false;
     private EntryBox myEntryBox = new EntryBox(this, this);
-    private HeaderButtonBar myHeaderButtonBar = new HeaderButtonBar(this);
     private MessageView myMessageManager = new MessageView(this, isMobile, isIphone);
     private Image headerImage = new Image();
     private motd myMotd = new motd();
@@ -91,7 +92,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         RuntimeData.getInstance().setMobile(isMobile);
         RuntimeData.getInstance().setIphone(isIphone);
 
-        myHeaderButtonBar.initialize();
+        iconBar.initialize();
         userButtonBar.initialize();
         myMotdInfo.initialize();
     }
@@ -120,11 +121,11 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         leftToolbarStack.add(onlineUsers);
         leftToolbarStack.add(messageBox);
 
-        topToolbarLowerStack.add(myHeaderButtonBar);
+        topToolbarLowerStack.add(iconBar);
         topToolbarLowerStack.add(userButtonBar);
         topToolbarLowerStack.add(myMotdInfo);
         topToolbarLowerStack.setCellHorizontalAlignment(myMotdInfo, HasHorizontalAlignment.ALIGN_RIGHT);
-        topToolbarLowerStack.setCellWidth(myHeaderButtonBar, "245px");
+        topToolbarLowerStack.setCellWidth(iconBar, "245px");
         topToolbarLowerStack.setCellWidth(userButtonBar, "320px");
         topToolbarLowerStack.setCellWidth(myMotdInfo, "235px");
         userButtonBar.setVisible(false);
@@ -132,14 +133,13 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         topToolbarStack.add(myMotd);
         topToolbarStack.add(topToolbarLowerStack);
         topToolbarStack.setCellHeight(myMotd, "40px");
-        topToolbarStack.setCellHeight(myHeaderButtonBar, "32px");
         topToolbarStack.setCellVerticalAlignment(myMotd, HasVerticalAlignment.ALIGN_BOTTOM);
 
         headerStack.setStyleName("headerStack");
         headerStack.add(headerImage);
         headerStack.add(topToolbarStack);
         headerStack.setCellWidth(headerImage, "240px");
-        myHeaderButtonBar.setLocal(RuntimeData.getInstance().getLocale());
+        iconBar.setLocal(RuntimeData.getInstance().getLocale());
 
         mainDockPanel.addNorth(headerStack, 76);
         mainDockPanel.addWest(leftToolbarStack, 240);
@@ -383,7 +383,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
                     case Event.ONKEYDOWN:
                         if (ne.getCtrlKey() && !ne.getShiftKey()) {
                             if (ne.getKeyCode() == 'l' || ne.getKeyCode() == 'L') {
-                                myHeaderButtonBar.showLocationEntry();
+                                iconBar.showLocationEntry();
                                 event.consume();
                                 ne.preventDefault();
                                 ne.stopPropagation();
@@ -584,7 +584,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         leftToolbarStack.setVisible(false);
         headerImage.setVisible(false);
         headerStack.setCellWidth(headerImage, "40px");
-        myHeaderButtonBar.setCompactView();
+        iconBar.setCompactView();
         userButtonBar.setVisible(true);
     }
 
@@ -594,7 +594,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         leftToolbarStack.setVisible(true);
         headerImage.setVisible(true);
         headerStack.setCellWidth(headerImage, "240px");
-        myHeaderButtonBar.setNormalView();
+        iconBar.setNormalView();
         userButtonBar.setVisible(false);
     }
 

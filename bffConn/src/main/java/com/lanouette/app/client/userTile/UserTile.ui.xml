@@ -16,6 +16,7 @@
             display: inline-block;
             text-align: center;
             cursor: pointer;
+            font-size: 12px;
         }
 
         .tile:hover {

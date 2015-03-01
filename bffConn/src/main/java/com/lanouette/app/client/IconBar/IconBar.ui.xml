@@ -1,0 +1,42 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:style>
+        .panel {
+            outline: none;
+        }
+        .flowpanel {
+            height: 32px;
+            display: inline-flex;
+        }
+
+        .image {
+            height: 32px;
+            width: 32px;
+        }
+
+        .image:hover {
+            background: url("images/iconHover.png");
+        }
+
+        .localBox {
+            vertical-align: top;
+            margin-top: 5px;
+            height: 15px;
+        }
+    </ui:style>
+
+    <g:FocusPanel ui:field="panel" addStyleNames="{style.panel}">
+        <g:FlowPanel ui:field="iconPanel" addStyleNames="{style.flowpanel}">
+            <g:Image ui:field="compactButton" url="images/back2r.png" addStyleNames="{style.image}"></g:Image>
+            <g:Image ui:field="normalButton" url="images/fwd2r.png" addStyleNames="{style.image}"
+                     visible="false"></g:Image>
+            <g:Image ui:field="infoButton" url="images/info.png" addStyleNames="{style.image}"></g:Image>
+            <g:Image ui:field="localButton" url="images/local.png" addStyleNames="{style.image}"></g:Image>
+            <g:TextBox ui:field="localBox" addStyleNames="{style.localBox}" visible="false"></g:TextBox>
+            <g:Image ui:field="statsButton" url="images/stats.png" addStyleNames="{style.image}"></g:Image>
+            <g:Image ui:field="octoButton" url="images/octopus.png" addStyleNames="{style.image}"></g:Image>
+            <g:Image ui:field="logoutButton" url="images/logout.png" addStyleNames="{style.image}"></g:Image>
+        </g:FlowPanel>
+    </g:FocusPanel>
+</ui:UiBinder>

@@ -5,8 +5,9 @@
         .panel {
             min-height: 100px;
             width: 200px;
-            border: 1px solid black;
+            /*border: 1px solid black;*/
             background: #ffffff;
+            box-shadow: 4px 4px 5px #888888;
         }
 
         .titleText {

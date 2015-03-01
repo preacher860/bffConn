@@ -2,31 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0f6ef26-007f-400c-965e-29b8ee04a0ce" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.ui.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView/OnlineUsers.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView/OnlineUsers.ui.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/TileEvent.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/UserTile.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/UserTile.ui.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/GreetingService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OctoObject.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OctopusWin.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserTileDisplay.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/WaitBox.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/octoBox.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userCallbackInterface.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserCallbackInterface.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/EntryBox.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/EntryBox.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/FunctionPopup/FunctionPopup.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/FunctionPopup/FunctionPopup.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/HeaderButtonBar.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/HeaderButtonBar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/LocalDialog/LocalDialog.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/LocalDialog/LocalDialog.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessagePopup/MessagePopup.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessagePopup/MessagePopup.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageView.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageViewElementNative.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageViewElementNative.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MotdInfo.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MotdInfo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MotdPopup/MotdPopup.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MotdPopup/MotdPopup.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserButtonBar.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserButtonBar.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserPopup/UserPopup.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserPopup/UserPopup.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IconBar/IconBar.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IconBar/IconBar.ui.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/HeaderButtonBar.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/RestartWindow.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/TooltipListener.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/WaitWindow.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.ui.xml" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.ui.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView/OnlineUsers.ui.xml" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView/OnlineUsers.ui.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/UserTile.ui.xml" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/UserTile.ui.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java" afterPath="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -92,15 +76,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TileEvent.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/TileEvent.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="34" selection-start="107" selection-end="107" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="198">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="MessageBox.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -110,51 +85,35 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="bffConnDesktop.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConnDesktop.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="9" selection-start="73" selection-end="73" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3960">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MessageBox.ui.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.ui.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="25" selection-start="178" selection-end="178" vertical-scroll-proportion="0.14705883" vertical-offset="0" max-vertical-offset="756">
+              <folding>
+                <marker date="1425242387198" expanded="true" signature="151:367" placeholder="{...}" />
+                <marker date="1425242387198" expanded="true" signature="388:803" placeholder="{...}" />
+                <marker date="1425242387198" expanded="true" signature="823:860" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="OnlineUsers.ui.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView/OnlineUsers.ui.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="45" selection-start="1081" selection-end="1081" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="702">
+            <state line="8" column="12" selection-start="263" selection-end="263" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
               <folding>
-                <marker date="1425235960314" expanded="true" signature="151:289" placeholder="{...}" />
-                <marker date="1425235960314" expanded="true" signature="310:725" placeholder="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MessageBox.ui.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.ui.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="77" selection-start="1126" selection-end="1126" vertical-scroll-proportion="0.0" vertical-offset="126" max-vertical-offset="738">
-              <folding>
-                <marker date="1425236009922" expanded="true" signature="151:319" placeholder="{...}" />
-                <marker date="1425236009922" expanded="true" signature="340:755" placeholder="{...}" />
-                <marker date="1425236009922" expanded="true" signature="775:812" placeholder="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserTile.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/UserTile.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="35" selection-start="1338" selection-end="1338" vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="1152">
-              <folding>
-                <element signature="e#1129#1258#0" expanded="true" />
-                <element signature="e#1247#1248#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OnlineUsers.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView/OnlineUsers.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="0" selection-start="1857" selection-end="1857" vertical-scroll-proportion="0.0" vertical-offset="594" max-vertical-offset="1332">
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2063#2210#0" expanded="true" />
-                <element signature="e#2199#2200#0" expanded="true" />
+                <marker date="1425242360870" expanded="true" signature="151:338" placeholder="{...}" />
+                <marker date="1425242360870" expanded="true" signature="359:774" placeholder="{...}" />
               </folding>
             </state>
           </provider>
@@ -187,12 +146,60 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HeaderButtonBar.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/HeaderButtonBar.java">
+      <file leaf-file-name="UserTile.ui.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/UserTile.ui.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="33" selection-start="1967" selection-end="1967" vertical-scroll-proportion="0.5" vertical-offset="540" max-vertical-offset="4356">
+            <state line="18" column="25" selection-start="520" selection-end="520" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="738">
+              <folding>
+                <marker date="1425236828202" expanded="true" signature="151:322" placeholder="{...}" />
+                <marker date="1425236828202" expanded="true" signature="338:533" placeholder="{...}" />
+                <marker date="1425236828202" expanded="true" signature="555:798" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IconBar.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IconBar/IconBar.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="93" column="32" selection-start="2733" selection-end="2733" vertical-scroll-proportion="0.0" vertical-offset="1350" max-vertical-offset="3438">
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#3316#3502#0" expanded="true" />
+                <element signature="e#3491#3492#0" expanded="true" />
+                <element signature="e#3543#3728#0" expanded="true" />
+                <element signature="e#3717#3718#0" expanded="true" />
+                <element signature="e#3767#3916#0" expanded="true" />
+                <element signature="e#3905#3906#0" expanded="true" />
+                <element signature="e#3956#4136#0" expanded="true" />
+                <element signature="e#4125#4126#0" expanded="true" />
+                <element signature="e#4176#4326#0" expanded="true" />
+                <element signature="e#4315#4316#0" expanded="true" />
+                <element signature="e#4365#4517#0" expanded="true" />
+                <element signature="e#4506#4507#0" expanded="true" />
+                <element signature="e#4558#4709#0" expanded="true" />
+                <element signature="e#4698#4699#0" expanded="true" />
+                <element signature="e#4746#5448#0" expanded="true" />
+                <element signature="e#5437#5438#0" expanded="true" />
+                <element signature="e#5581#6090#0" expanded="true" />
+                <element signature="e#5705#6064#0" expanded="true" />
+                <element signature="e#6045#6046#0" expanded="true" />
+                <element signature="e#6079#6080#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IconBar.ui.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IconBar/IconBar.ui.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="45" selection-start="429" selection-end="429" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="846">
+              <folding>
+                <marker date="1425241953806" expanded="true" signature="151:189" placeholder="{...}" />
+                <marker date="1425241953806" expanded="true" signature="209:280" placeholder="{...}" />
+                <marker date="1425241953806" expanded="true" signature="297:359" placeholder="{...}" />
+                <marker date="1425241953806" expanded="true" signature="382:446" placeholder="{...}" />
+                <marker date="1425241953806" expanded="true" signature="466:565" placeholder="{...}" />
               </folding>
             </state>
           </provider>
@@ -240,18 +247,22 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/MessagePopup.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsers.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserTileDisplay.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/UserTile.ui.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/TileEvent.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/UserTile.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView/OnlineUsers.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/OnlineUsers.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView/OnlineUsers.ui.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.ui.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OctoObject.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserCallbackInterface.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/UserTile.ui.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IconBar/MessageBox.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IconBar/IconBar.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IconBar/IconBar.ui.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/WaitWindow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView/OnlineUsers.ui.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.ui.xml" />
       </list>
     </option>
   </component>
@@ -292,7 +303,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="10" />
-    <option name="y" value="36" />
+    <option name="y" value="38" />
     <option name="width" value="1882" />
     <option name="height" value="1136" />
   </component>
@@ -373,6 +384,32 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="images" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -492,6 +529,74 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OnlineUsersView" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bffConn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MessageBox" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
@@ -518,11 +623,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IconBar" />
       <recent name="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox" />
       <recent name="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView" />
       <recent name="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile" />
       <recent name="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MotdPopup" />
-      <recent name="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserPopup" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/com/lanouette/app/client/LocalDialog" />
@@ -803,15 +908,15 @@
       <workItem from="1414370500340" duration="45267000" />
       <workItem from="1419171610239" duration="1798000" />
       <workItem from="1420911712557" duration="598000" />
-      <workItem from="1423276070957" duration="24706000" />
+      <workItem from="1423276070957" duration="30548000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="82666000" />
+    <option name="totallyTimeSpent" value="88508000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="10" y="36" width="1882" height="1136" extended-state="0" />
+    <frame x="10" y="38" width="1882" height="1136" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -866,16 +971,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/StatsWin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="45" selection-start="2787" selection-end="2787" vertical-scroll-proportion="0.0" vertical-offset="1206" max-vertical-offset="6822" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IOModule.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="13806" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/VersionInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="42" selection-start="147" selection-end="147" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="216">
@@ -886,15 +981,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessagePopup/MessagePopup.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="84" column="5" selection-start="2892" selection-end="2892" vertical-scroll-proportion="0.0" vertical-offset="1512" max-vertical-offset="2286" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/HeaderButtonBar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="257" column="48" selection-start="9633" selection-end="9633" vertical-scroll-proportion="0.0" vertical-offset="4626" max-vertical-offset="4824">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserButtonBar.java">
@@ -924,10 +1010,10 @@
         <state line="40" column="13" selection-start="1675" selection-end="1675" vertical-scroll-proportion="0.0" vertical-offset="720" max-vertical-offset="12006">
           <folding>
             <element signature="imports" expanded="true" />
-            <marker date="1425236407502" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1425236407502" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1425236407502" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1425236407502" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1425242131582" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1425242131582" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1425242131582" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1425242131582" expanded="true" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -1096,23 +1182,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConnBase.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="37" selection-start="386" selection-end="386" vertical-scroll-proportion="0.2647059" vertical-offset="0" max-vertical-offset="8208">
-          <folding>
-            <marker date="1414878929000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1414878929000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConnDesktop.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="173" column="4" selection-start="2916" selection-end="2997" vertical-scroll-proportion="0.0" vertical-offset="2556" max-vertical-offset="3960">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/UserManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="78" column="36" selection-start="2220" selection-end="2220" vertical-scroll-proportion="0.0" vertical-offset="1044" max-vertical-offset="1656">
@@ -1130,17 +1199,6 @@
             <element signature="e#2531#2532#0" expanded="false" />
             <element signature="e#2575#2576#0" expanded="false" />
             <element signature="e#2610#2611#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/UserTile.ui.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="22" selection-start="1029" selection-end="1029" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
-          <folding>
-            <marker date="1425233671414" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1425233671414" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1425233671414" expanded="true" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -1194,44 +1252,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView/OnlineUsers.ui.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="45" selection-start="1081" selection-end="1081" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="702">
-          <folding>
-            <marker date="1425235960314" expanded="true" signature="151:289" placeholder="{...}" />
-            <marker date="1425235960314" expanded="true" signature="310:725" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.ui.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="77" selection-start="1126" selection-end="1126" vertical-scroll-proportion="0.0" vertical-offset="126" max-vertical-offset="738">
-          <folding>
-            <marker date="1425236009922" expanded="true" signature="151:319" placeholder="{...}" />
-            <marker date="1425236009922" expanded="true" signature="340:755" placeholder="{...}" />
-            <marker date="1425236009922" expanded="true" signature="775:812" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="38" column="0" selection-start="1198" selection-end="1198" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="738">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="494" column="27" selection-start="20218" selection-end="20218" vertical-scroll-proportion="0.0" vertical-offset="8370" max-vertical-offset="11304">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1425236407502" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1425236407502" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1425236407502" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1425236407502" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1256,11 +1280,116 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/HeaderButtonBar.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/userTile/UserTile.ui.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="33" selection-start="1967" selection-end="1967" vertical-scroll-proportion="0.5" vertical-offset="540" max-vertical-offset="4356">
+        <state line="18" column="25" selection-start="520" selection-end="520" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="738">
+          <folding>
+            <marker date="1425236828202" expanded="true" signature="151:322" placeholder="{...}" />
+            <marker date="1425236828202" expanded="true" signature="338:533" placeholder="{...}" />
+            <marker date="1425236828202" expanded="true" signature="555:798" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IconBar/IconBar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="93" column="32" selection-start="2733" selection-end="2733" vertical-scroll-proportion="0.0" vertical-offset="1350" max-vertical-offset="3438">
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#3316#3502#0" expanded="true" />
+            <element signature="e#3491#3492#0" expanded="true" />
+            <element signature="e#3543#3728#0" expanded="true" />
+            <element signature="e#3717#3718#0" expanded="true" />
+            <element signature="e#3767#3916#0" expanded="true" />
+            <element signature="e#3905#3906#0" expanded="true" />
+            <element signature="e#3956#4136#0" expanded="true" />
+            <element signature="e#4125#4126#0" expanded="true" />
+            <element signature="e#4176#4326#0" expanded="true" />
+            <element signature="e#4315#4316#0" expanded="true" />
+            <element signature="e#4365#4517#0" expanded="true" />
+            <element signature="e#4506#4507#0" expanded="true" />
+            <element signature="e#4558#4709#0" expanded="true" />
+            <element signature="e#4698#4699#0" expanded="true" />
+            <element signature="e#4746#5448#0" expanded="true" />
+            <element signature="e#5437#5438#0" expanded="true" />
+            <element signature="e#5581#6090#0" expanded="true" />
+            <element signature="e#5705#6064#0" expanded="true" />
+            <element signature="e#6045#6046#0" expanded="true" />
+            <element signature="e#6079#6080#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConnBase.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="139" column="24" selection-start="2463" selection-end="2463" vertical-scroll-proportion="-1.4863014" vertical-offset="3370" max-vertical-offset="8208">
+          <folding>
+            <marker date="1414878929000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1414878929000" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/images/fwd2r_Over.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/bffConnDesktop.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="9" selection-start="73" selection-end="73" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3960">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/images/iconHover.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/IconBar/IconBar.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="45" selection-start="429" selection-end="429" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="846">
+          <folding>
+            <marker date="1425241953806" expanded="true" signature="151:189" placeholder="{...}" />
+            <marker date="1425241953806" expanded="true" signature="209:280" placeholder="{...}" />
+            <marker date="1425241953806" expanded="true" signature="297:359" placeholder="{...}" />
+            <marker date="1425241953806" expanded="true" signature="382:446" placeholder="{...}" />
+            <marker date="1425241953806" expanded="true" signature="466:565" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/bffConn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="0" selection-start="3114" selection-end="3114" vertical-scroll-proportion="0.0" vertical-offset="705" max-vertical-offset="11304">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1425242131582" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1425242131582" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1425242131582" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1425242131582" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/OnlineUsersView/OnlineUsers.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="12" selection-start="263" selection-end="263" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
+          <folding>
+            <marker date="1425242360870" expanded="true" signature="151:338" placeholder="{...}" />
+            <marker date="1425242360870" expanded="true" signature="359:774" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lanouette/app/client/MessageBox/MessageBox.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="25" selection-start="178" selection-end="178" vertical-scroll-proportion="0.14705883" vertical-offset="0" max-vertical-offset="756">
+          <folding>
+            <marker date="1425242387198" expanded="true" signature="151:367" placeholder="{...}" />
+            <marker date="1425242387198" expanded="true" signature="388:803" placeholder="{...}" />
+            <marker date="1425242387198" expanded="true" signature="823:860" placeholder="{...}" />
           </folding>
         </state>
       </provider>

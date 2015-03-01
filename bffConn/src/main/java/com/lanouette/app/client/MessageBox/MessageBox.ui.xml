@@ -3,11 +3,12 @@
 
     <ui:style>
         .panel {
-            min-height: 100px;
+            min-height: 80px;
             width: 200px;
-            border: 1px solid black;
+            /*border: 1px solid black;*/
             margin-top: 20px;
             background: #ffffff;
+            box-shadow: 4px 4px 5px #888888;
         }
 
         .titleText {
