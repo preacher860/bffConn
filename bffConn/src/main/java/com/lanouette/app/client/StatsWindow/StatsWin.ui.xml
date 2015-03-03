@@ -1,0 +1,71 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+
+    <ui:style>
+        .dialogHeader {
+            background: #22366A;
+            background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#22366A), to(#4D668A));
+            padding: 4px;
+            font-weight: bold;
+            /*font-size: x-large;*/
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .grid {
+            height: 300px;
+            width: 330px;
+        }
+
+        .mainPanel {
+            width: 100%;
+            height: 100%
+        }
+
+        .dialog {
+            width: 600px;
+            /*height: 400px;*/
+        }
+
+        .imageButton {
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
+        .chatLabel {
+            margin-top: 10px;
+            text-align: center;
+        }
+    </ui:style>
+
+    <g:PopupPanel ui:field="panel" addStyleNames="{style.dialog}">
+        <g:VerticalPanel ui:field="mainPanel" addStyleNames="{style.mainPanel}">
+            <g:cell horizontalAlignment="ALIGN_CENTER">
+                <g:Label styleName="{style.dialogHeader}">Statistiques</g:Label>
+            </g:cell>
+            <g:SimplePanel ui:field="contentsPanel">
+                <g:HorizontalPanel>
+                    <c:DataGrid ui:field="dataGrid" addStyleNames="{style.grid}"></c:DataGrid>
+                    <g:VerticalPanel>
+                        <g:FlowPanel>
+                            <g:Image ui:field="msgButton" url="images/msg.png"
+                                     addStyleNames="{style.imageButton}" title="Messages envoyés"></g:Image>
+                            <g:Image ui:field="editedButton" url="images/edited.png"
+                                     addStyleNames="{style.imageButton}" title="Messages édités"></g:Image>
+                            <g:Image ui:field="erasedButton" url="images/eraser_s.png"
+                                     addStyleNames="{style.imageButton}"  title="Messages effacés"></g:Image>
+                            <g:Image ui:field="starTxButton" url="images/star_up_20.png"
+                                     addStyleNames="{style.imageButton}" title="Étoiles envoyées"></g:Image>
+                            <g:Image ui:field="starRxButton" url="images/star_down_20.png"
+                                     addStyleNames="{style.imageButton}"  title="Étoiles reçues"></g:Image>
+                        </g:FlowPanel>
+                        <g:HTML ui:field="chartLabel" addStyleNames="{style.chatLabel}"></g:HTML>
+                        <g:SimplePanel ui:field="chartPanel"></g:SimplePanel>
+                    </g:VerticalPanel>
+                </g:HorizontalPanel>
+            </g:SimplePanel>
+
+        </g:VerticalPanel>
+    </g:PopupPanel>
+</ui:UiBinder>

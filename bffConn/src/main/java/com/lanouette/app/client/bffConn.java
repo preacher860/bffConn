@@ -27,6 +27,7 @@ import com.googlecode.mgwt.ui.client.MGWT;
 import com.lanouette.app.client.IconBar.IconBar;
 import com.lanouette.app.client.MessageBox.MessageBox;
 import com.lanouette.app.client.OnlineUsersView.OnlineUsers;
+import com.lanouette.app.client.StatsWindow.StatsWin;
 
 //import org.fusesource.restygwt.client.Method;
 //import org.fusesource.restygwt.client.MethodCallback;

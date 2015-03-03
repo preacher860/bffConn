@@ -17,6 +17,7 @@
             padding-top: 6px;
             padding-left: 6px;
             height: 20px;
+
             background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#555555), to(#ffffff));
             background: -moz-linear-gradient(top, #555555, #ffffff);
             background: -ms-linear-gradient(top, #555555, #ffffff);
