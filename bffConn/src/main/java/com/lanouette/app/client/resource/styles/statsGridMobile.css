@@ -1,0 +1,100 @@
+.dataGridWidget {
+    overflow: auto;
+    font-size: 17px;
+}
+
+.dataGridHeader {
+    padding: 0px;
+    text-align: center;
+    text-shadow: none;
+    font-size: 13px;
+    font-family: Arial;
+    height: 20px;
+    vertical-align: middle;
+    border-bottom: none;
+
+    color: #ffffff;
+    /*width: 95%;*/
+
+    background: -webkit-linear-gradient(top, #eff3fb 0%, #dfe5ec 38%, #d4dae3 43%, #d7dde5 52%, #e8edf2 86%, #ebf2f4 100%) padding-box;
+    background: -moz-linear-gradient(top, #eff3fb 0%, #dfe5ec 38%, #d4dae3 43%, #d7dde5 52%, #e8edf2 86%, #ebf2f4 100%) padding-box;
+    background: linear-gradient(top, #eff3fb 0%, #dfe5ec 38%, #d4dae3 43%, #d7dde5 52%, #e8edf2 86%, #ebf2f4 100%) padding-box;
+}
+
+.dataGridFooter {
+    border-top-width: 20px;
+    border-top-style: solid;
+    border-top-color: #22366A;
+}
+
+.dataGridFirstColumnHeader {
+}
+
+.dataGridLastColumnHeader {
+}
+
+.dataGridCell {
+    text-align: center;
+    overflow: hidden;
+    font-size: 17px;
+    padding: 2px 4px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.dataGridEvenRow {
+    background: #ffffff;
+}
+
+.dataGridOddRow {
+    background: #e0e0e0;
+}
+
+.dataGridSelectedRow {
+}
+
+.dataGridSelectedRowCell {
+    border: none;
+}
+
+.dataGridHoveredRow {
+
+}
+
+.dataGridHoveredRowCell {
+
+}
+
+.dataGridKeyboardSelectedRow {
+    background: #ffc;
+}
+
+.dataGridKeyboardSelectedRowCell {
+    border: none;
+}
+
+.dataGridKeyboardSelectedCell {
+    border: none;
+}
+
+.dataGridOddRowCell {
+    border: none;
+}
+
+.dataGridEvenRowCell {
+    border: none;
+}
+
+.dataGridFirstColumn {
+    border-left: 2px solid #EDEDED;
+}
+
+.dataGridLastColumn {
+}
+
+input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+    margin: 1px 3px 0px 3px;
+    vertical-align: bottom;
+}

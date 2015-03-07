@@ -3,7 +3,7 @@
 
     <ui:style>
         .panel {
-            min-height: 80px;
+            min-height: 90px;
             width: 200px;
             /*border: 1px solid black;*/
             margin-top: 20px;
@@ -25,6 +25,7 @@
 
         .infoText {
             margin: 10px;
+            text-align: center;
         }
     </ui:style>
 

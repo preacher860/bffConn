@@ -1,0 +1,23 @@
+.gwt-DialogBox {}
+.gwt-DialogBox .Caption {
+    background: brown;
+}
+.gwt-DialogBox .dialogContent { }
+.gwt-DialogBox .dialogTopLeft { }
+.gwt-DialogBox .dialogTopLeftInner { }
+.gwt-DialogBox .dialogTopCenter {  }
+.gwt-DialogBox .dialogTopCenterInner {  }
+.gwt-DialogBox .dialogTopRight {  }
+.gwt-DialogBox .dialogTopRightInner {  }
+.gwt-DialogBox .dialogMiddleLeft {  }
+.gwt-DialogBox .dialogMiddleLeftInner { }
+.gwt-DialogBox .dialogMiddleCenter { }
+.gwt-DialogBox .dialogMiddleCenterInner {}
+.gwt-DialogBox .dialogMiddleRight { }
+.gwt-DialogBox .dialogMiddleRightInner {  }
+.gwt-DialogBox .dialogBottomLeft {  }
+.gwt-DialogBox .dialogBottomLeftInner {  }
+.gwt-DialogBox .dialogBottomCenter {  }
+.gwt-DialogBox .dialogBottomCenterInner {  }
+.gwt-DialogBox .dialogBottomRight {  }
+.gwt-DialogBox .dialogBottomRightInner {  }

@@ -16,13 +16,14 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
-import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
-import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.visualization.client.AbstractDataTable;
@@ -34,13 +35,6 @@ import com.google.gwt.visualization.client.visualizations.corechart.PieChart;
 import com.google.gwt.visualization.client.visualizations.corechart.TextStyle;
 import com.lanouette.app.client.RuntimeData;
 import com.lanouette.app.client.UserContainer;
-import com.smartgwt.client.widgets.ImgButton;
-import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.grid.ListGrid;
-import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.HStack;
-import com.smartgwt.client.widgets.layout.VStack;
-import com.smartgwt.client.widgets.tile.TileRecord;
 
 public class StatsWin {
     interface MyUiBinder extends UiBinder<Widget, StatsWin> {
@@ -48,29 +42,20 @@ public class StatsWin {
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
+    private final UserStatsDatabase userStatsDatabase;
     private PieChart pie;
     private PieChart.PieOptions myPieOptions;
-    private VStack vStack = new VStack();
-    private HStack hStack = new HStack();
-    private HLayout bottomStack = new HLayout();
-    private HStack buttonStack = new HStack();
-    private VStack chartStack = new VStack();
-    private ImgButton myMessagesButton = new ImgButton();
-    private ImgButton myDeletedButton = new ImgButton();
-    private ImgButton myEditedButton = new ImgButton();
-    private ImgButton myStarsSentButton = new ImgButton();
-    private ImgButton myStarsRcvdButton = new ImgButton();
-    private ImgButton myCloseButton = new ImgButton();
-    private Label myCloseLabel = new Label("Fermer");
-    private ListGrid statsGrid;
+
+    //private Label myCloseLabel = new Label("Fermer");
+
     private int headerButtonSize = 28;
     private int gridColumnWidth = 55;
-    // private DataGrid dataGrid;
+
 
     @UiField
-    PopupPanel panel;
+    DialogBox panel;
     @UiField
-    SimplePanel contentsPanel;
+    DockLayoutPanel mainPanel;
     @UiField
     SimplePanel chartPanel;
     @UiField
@@ -85,37 +70,58 @@ public class StatsWin {
     Image starRxButton;
     @UiField
     HTML chartLabel;
+    @UiField
+    SimplePanel buttonPanel;
+    @UiField
+    Button closeButton;
+    @UiField
+    FlowPanel controlPanel;
 
     @UiField(provided = true)
     CustomDataGrid<UserContainer> dataGrid;
 
+    private Integer tableIconSize;
     public StatsWin(final ArrayList<UserContainer> users) {
-        DataGrid.Resources tableRes = GWT.create(DesktopStatsGridResource.class);
+        DataGrid.Resources tableRes;
+
+
+        if (RuntimeData.getInstance().isMobile()) {
+            tableRes = GWT.create(MobileStatsGridResource.class);
+            tableIconSize = 36;
+        } else {
+            tableRes = GWT.create(DesktopStatsGridResource.class);
+            tableIconSize = 24;
+        }
+
         dataGrid = new CustomDataGrid<UserContainer>(32, tableRes);
         dataGrid.setAlwaysShowScrollBars(false);
         uiBinder.createAndBindUi(this);
 
-        //panel.setTitle("Statistiques");
-        //setAutoSize(true);
-        //setCanDragResize(false);
-        //setShowMinimizeButton(false);
-        //setTop(200);
-        //setLeft(200);
-        //setOpacity(100);
         panel.setPopupPosition(200, 200);
-
-        UserStatsDatabase userStatsDatabase = new UserStatsDatabase();
-        initTable(userStatsDatabase);
+        panel.getWidget().getParent().getElement().setAttribute("style", "box-shadow: 4px 4px 5px #888;");
+        userStatsDatabase = new UserStatsDatabase();
         userStatsDatabase.addDataDisplay(dataGrid);
 
-
-        List<UserContainer> fakeUsers = new ArrayList<UserContainer>();
-        for (int i = 0; i < 5; i++) {
-            for (UserContainer user : users) {
-                fakeUsers.add(user);
+        closeButton.addStyleName("closeButton");
+        closeButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                panel.hide();
             }
+        });
+
+        if(RuntimeData.getInstance().isMobile()) {
+            mainPanel.setWidgetSize(controlPanel, 38);
         }
-        userStatsDatabase.setList(fakeUsers);
+
+        userStatsDatabase.setList(users);
+        initTable(userStatsDatabase);
+
+        msgButton.addStyleName("statsImageButton");
+        editedButton.addStyleName("statsImageButton");
+        erasedButton.addStyleName("statsImageButton");
+        starTxButton.addStyleName("statsImageButton");
+        starRxButton.addStyleName("statsImageButton");
+        chartLabel.addStyleName("statsChartLabel");
 
         msgButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
@@ -160,37 +166,8 @@ public class StatsWin {
             headerButtonSize = 48;
             gridColumnWidth = 70;
         }
+        */
 
-        statsGrid = new ListGrid() {
-            @Override
-            protected String getCellCSSText(ListGridRecord record, int rowNum, int colNum) {
-                if (RuntimeData.getInstance().isMobile()) {
-                    return "font-size:18px;font-weight:bold;vertical-align: middle;border-collapse:separate";
-                } else {
-                    return "font-size:14px;font-weight:bold;vertical-align: middle;border-collapse:separate";
-                }
-            }
-        };
-
-
-
-
-        myCloseButton.setWidth(headerButtonSize);
-        myCloseButton.setHeight(headerButtonSize);
-        myCloseButton.setMargin(4);
-        myCloseButton.setShowRollOver(false);
-        myCloseButton.setShowHover(true);
-        myCloseButton.setShowDown(false);
-        myCloseButton.setSrc("close.png");
-        myCloseButton.setPrompt("Fermer");
-        myCloseButton.setHoverStyle("tooltipStyle");
-
-
-        myCloseLabel.setStyleName("statsCloseLabel");
-        myCloseLabel.setAutoWidth();
-        myCloseLabel.setTop(6);
-
-          */
         Runnable onLoadCallback = new Runnable() {
             public void run() {
 
@@ -348,7 +325,7 @@ public class StatsWin {
     private void initTable(UserStatsDatabase userStatsDatabase) {
         dataGrid.setAlwaysShowScrollBars(false);
         initUsersColumn();
-        initMessagesSentColumn(userStatsDatabase);
+        initMessagesSentColumn();
         initMessagesEditedColumn();
         initMessagesErasedColumn();
         initMessagesStarsTxColumn();
@@ -368,7 +345,7 @@ public class StatsWin {
         Header hdr = new Header(new SafeHtmlCell()) {
             @Override
             public SafeHtml getValue() {
-                return generateImageHtml("images/people.png", 24, 24);
+                return generateImageHtml("images/people.png", tableIconSize, tableIconSize);
             }
         };
 
@@ -376,7 +353,7 @@ public class StatsWin {
         dataGrid.setColumnWidth(userColumn, 40, Unit.PX);
     }
 
-    private void initMessagesSentColumn(UserStatsDatabase userStatsDatabase) {
+    private void initMessagesSentColumn() {
         Column<UserContainer, Number> messagesColumn =
                 new Column<UserContainer, Number>(new NumberCell()) {
                     @Override
@@ -388,29 +365,22 @@ public class StatsWin {
         Header hdr = new Header(new SafeHtmlCell()) {
             @Override
             public SafeHtml getValue() {
-                return generateImageHtml("images/msg.png", 24, 24);
+                return generateImageHtml("images/msg.png", tableIconSize, tableIconSize);
             }
         };
 
+        messagesColumn.setSortable(true);
         dataGrid.addColumn(messagesColumn, hdr);
 
-        messagesColumn.setSortable(true);
-        ListHandler<UserContainer> handler = new ListHandler<UserContainer>(userStatsDatabase.getList());
-        handler.setComparator(messagesColumn, new Comparator<UserContainer>() {
-            public int compare(UserContainer o1, UserContainer o2) {
-                return 0;
+        ColumnSortEvent.ListHandler sortHandler = new ColumnSortEvent.ListHandler(userStatsDatabase.getList());
+        sortHandler.setComparator(messagesColumn, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return comparator(((UserContainer) o1).getMessages(), ((UserContainer) o2).getMessages());
             }
         });
 
-        ColumnSortEvent.AsyncHandler sortHandler= new ColumnSortEvent.AsyncHandler(dataGrid) {
-            @Override
-            public void onColumnSort(ColumnSortEvent event) {
-                consoleLog("ColumnSort");
-            }
-        };
+
         dataGrid.addColumnSortHandler(sortHandler);
-        ColumnSortList columnSortList = dataGrid.getColumnSortList();
-        columnSortList.push(new ColumnSortList.ColumnSortInfo(messagesColumn, true));
         dataGrid.setColumnWidth(messagesColumn, 55, Unit.PX);
     }
 
@@ -426,10 +396,20 @@ public class StatsWin {
         Header hdr = new Header(new SafeHtmlCell()) {
             @Override
             public SafeHtml getValue() {
-                return generateImageHtml("images/edited.png", 24, 24);
+                return generateImageHtml("images/edited.png", tableIconSize, tableIconSize);
             }
         };
 
+        ColumnSortEvent.ListHandler sortHandler = new ColumnSortEvent.ListHandler(userStatsDatabase.getList());
+        sortHandler.setComparator(column, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return comparator(((UserContainer) o1).getEditedMessages(), ((UserContainer) o2).getEditedMessages());
+            }
+        });
+
+
+        column.setSortable(true);
+        dataGrid.addColumnSortHandler(sortHandler);
         dataGrid.addColumn(column, hdr);
         dataGrid.setColumnWidth(column, 55, Unit.PX);
     }
@@ -446,10 +426,18 @@ public class StatsWin {
         Header hdr = new Header(new SafeHtmlCell()) {
             @Override
             public SafeHtml getValue() {
-                return generateImageHtml("images/eraser_s.png", 24, 24);
+                return generateImageHtml("images/eraser_s.png", tableIconSize, tableIconSize);
             }
         };
 
+        ColumnSortEvent.ListHandler sortHandler = new ColumnSortEvent.ListHandler(userStatsDatabase.getList());
+        sortHandler.setComparator(column, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return comparator(((UserContainer) o1).getDeletedMessages(), ((UserContainer) o2).getDeletedMessages());
+            }
+        });
+        column.setSortable(true);
+        dataGrid.addColumnSortHandler(sortHandler);
         dataGrid.addColumn(column, hdr);
         dataGrid.setColumnWidth(column, 55, Unit.PX);
     }
@@ -466,10 +454,19 @@ public class StatsWin {
         Header hdr = new Header(new SafeHtmlCell()) {
             @Override
             public SafeHtml getValue() {
-                return generateImageHtml("images/star_down_20.png", 24, 24);
+                return generateImageHtml("images/star_down_20.png", tableIconSize, tableIconSize);
             }
         };
 
+        ColumnSortEvent.ListHandler sortHandler = new ColumnSortEvent.ListHandler(userStatsDatabase.getList());
+        sortHandler.setComparator(column, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return comparator(((UserContainer) o1).getStarsRcvd(), ((UserContainer) o2).getStarsRcvd());
+            }
+        });
+
+        column.setSortable(true);
+        dataGrid.addColumnSortHandler(sortHandler);
         dataGrid.addColumn(column, hdr);
         dataGrid.setColumnWidth(column, 55, Unit.PX);
     }
@@ -486,10 +483,19 @@ public class StatsWin {
         Header hdr = new Header(new SafeHtmlCell()) {
             @Override
             public SafeHtml getValue() {
-                return generateImageHtml("images/star_up_20.png", 24, 24);
+                return generateImageHtml("images/star_up_20.png", tableIconSize, tableIconSize);
             }
         };
 
+        ColumnSortEvent.ListHandler sortHandler = new ColumnSortEvent.ListHandler(userStatsDatabase.getList());
+        sortHandler.setComparator(column, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return comparator(((UserContainer) o1).getStarsSent(), ((UserContainer) o2).getStarsSent());
+            }
+        });
+
+        column.setSortable(true);
+        dataGrid.addColumnSortHandler(sortHandler);
         dataGrid.addColumn(column, hdr);
         dataGrid.setColumnWidth(column, 55, Unit.PX);
     }
@@ -520,66 +526,19 @@ public class StatsWin {
         return builder.toSafeHtml();
     }
 
+    private Integer comparator(Integer a, Integer b) {
+        if (a == b) {
+            return 0;
+        }
+
+        if (a > b) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
     native void consoleLog(String message) /*-{
         console.log("BFF: " + message);
     }-*/;
-}
-
-class UserStatsData {
-    public static UserStatsRecord[] getNewRecords(ArrayList<UserContainer> users) {
-        int recIndex = 0;
-
-        UserStatsRecord[] records = new UserStatsRecord[users.size()];
-        for (UserContainer currentUser : users) {
-            records[recIndex] = new UserStatsRecord(currentUser.getAvatarURL(),
-                    currentUser.getMessages(),
-                    currentUser.getEditedMessages(),
-                    currentUser.getDeletedMessages(),
-                    currentUser.getStarsSent(),
-                    currentUser.getStarsRcvd());
-            recIndex++;
-        }
-        return records;
-    }
-}
-
-class UserStatsRecord extends TileRecord {
-
-    public UserStatsRecord() {
-    }
-
-    public UserStatsRecord(String avatarURL, int messages, int edited, int deleted, int starsSent, int starsRcvd) {
-        setAvatarURL(avatarURL);
-        setMessages(messages);
-        setEdited(edited);
-        setDeleted(deleted);
-        setStarsSent(starsSent);
-        setStarsRcvd(starsRcvd);
-    }
-
-    public void setAvatarURL(String avatarURL) {
-        setAttribute("avatarURL", avatarURL);
-    }
-
-    public void setMessages(int messages) {
-        setAttribute("messages", messages);
-    }
-
-    public void setEdited(int deleted) {
-        setAttribute("edited", deleted);
-    }
-
-    public void setDeleted(int deleted) {
-        setAttribute("deleted", deleted);
-    }
-
-    public void setStarsRcvd(int stars) {
-        setAttribute("starsrcvd", stars);
-    }
-
-    public void setStarsSent(int stars) {
-        setAttribute("starssent", stars);
-    }
-
-
 }

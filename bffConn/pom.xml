@@ -224,14 +224,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <webappDirectory>${webappDirectory}</webappDirectory>
-                    <webResources>
-                        <resource>
-                            <!-- this is relative to the pom.xml directory -->
-                            <directory>src/extras</directory>
-                            <targetPath>bffConn/sc</targetPath>
-                        </resource>
-                    </webResources>
                 </configuration>
             </plugin>
             <plugin>

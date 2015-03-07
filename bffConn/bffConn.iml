@@ -8,7 +8,6 @@
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
-          <root url="file://$MODULE_DIR$/src/extras" relative="bffConn/sc" />
         </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src/test/resources" />

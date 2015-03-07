@@ -3,7 +3,6 @@ package com.lanouette.app.client;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Unit;
@@ -23,7 +22,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.googlecode.mgwt.ui.client.MGWT;
 import com.lanouette.app.client.IconBar.IconBar;
 import com.lanouette.app.client.MessageBox.MessageBox;
 import com.lanouette.app.client.OnlineUsersView.OnlineUsers;
@@ -86,7 +84,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
         //RootPanel.get().add(widget);
 
-        Log.debug("Logger in 'DEBUG' mode");
+        consoleLog("Logger in 'DEBUG' mode");
         String sessionIdCookie = Cookies.getCookie("bffConnexionSID");
         ioModule.GetServerSessionValid(sessionIdCookie);
 
@@ -156,7 +154,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
             public void onResize(ResizeEvent event) {
                 consoleLog("Width: " + Window.getClientWidth());
                 consoleLog("Height: " + Window.getClientHeight());
-                consoleLog("Ori: " + MGWT.getOrientation().toString());
+                //consoleLog("Ori: " + MGWT.getOrientation().toString());
                 myResizeTimer.schedule(500);
             }
         });
@@ -173,10 +171,10 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
             public void run() {
                 Element element = DOM.getElementById("favicon");
                 if (faviconAlert) {
-                    Log.debug("Setting favicon to alert (red)");
+                    consoleLog("Setting favicon to alert (red)");
                     element.setAttribute("href", "images/favicon_red.ico");
                 } else {
-                    Log.debug("Setting favicon to normal (blue)");
+                    consoleLog("Setting favicon to normal (blue)");
                     element.setAttribute("href", "images/favicon.ico");
                 }
             }
@@ -440,28 +438,28 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
     private void visibilityChanged() {
         // Reset new message indicator octo when switching to visible
-        Log.debug("Visibility changed to " + !isTabHidden());
+        consoleLog("Visibility changed to " + !isTabHidden());
         try {
             if (!isTabHidden()) {
-                Log.debug("Tab is VISIBLE");
+                consoleLog("Tab is VISIBLE");
                 if (faviconAlert) {
-                    Log.debug("Starting favicon timer");
+                    consoleLog("Starting favicon timer");
                     faviconAlert = false;
                     myFaviconTimer.schedule(300);
                 }
-                Log.debug("Setting message manager mode to visible");
+                consoleLog("Setting message manager mode to visible");
                 myCatchupOnShow = true;
                 myPollSpeed = POLL_FAST;
                 myRefreshTimer.schedule(1);
             } else {
-                Log.debug("Tab is HIDDEN");
+                consoleLog("Tab is HIDDEN");
                 newestDisplayedWhenLostVisibility = myMessageManager.getNewestDisplayedSeq();
-                Log.debug("Setting message manager mode to invisible");
+                consoleLog("Setting message manager mode to invisible");
                 myMessageManager.setInvisibleMode(true);
                 myPollSpeed = POLL_SLOW;
             }
         } catch (Exception e) {
-            Log.debug("Exception in visibilityChanged");
+            consoleLog("Exception in visibilityChanged");
         }
     }
 
@@ -552,14 +550,14 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
     public void newestUpdated() {
         try {
-            Log.debug("newestUpdated called");
+            consoleLog("newestUpdated called");
             if (myCurrentMode == MODE_RUNNING && !faviconAlert && isTabHidden()) {
-                Log.debug("Starting favicon timer");
+                consoleLog("Starting favicon timer");
                 faviconAlert = true;
                 myFaviconTimer.schedule(300);
             }
         } catch (Exception e) {
-            Log.debug("Exception in newestUpdated");
+            consoleLog("Exception in newestUpdated");
         }
     }
 

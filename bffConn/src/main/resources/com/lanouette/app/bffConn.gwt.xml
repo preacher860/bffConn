@@ -13,7 +13,7 @@
     <inherits name='com.google.gwt.visualization.Visualization'/>
     <!--<inherits name='com.smartgwt.SmartGwt'/>-->
     <!--<inherits name='com.smartclient.theme.graphite.Graphite'/>-->
-    <inherits name="com.smartgwt.SmartGwtNoScript"/>
+    <!--<inherits name="com.smartgwt.SmartGwtNoScript"/>-->
 
     <!--<inherits name="org.fusesource.restygwt.RestyGWT"/>-->
     <!--<inherits name="com.googlecode.mgwt.MGWT"/>-->
@@ -24,11 +24,11 @@
     <!--<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>-->
 
     <!-- Other module inherits                                      -->
-    <inherits name='com.allen_sauer.gwt.log.gwt-log-DEBUG'/>
+    <!--<inherits name='com.allen_sauer.gwt.log.gwt-log-DEBUG'/>-->
     <inherits name="com.google.gwt.json.JSON"/>
-    <inherits name="com.googlecode.mgwt.dom.DOM"/>
-    <inherits name="com.googlecode.mgwt.ui.UI"/>
-    <set-property name="log_DivLogger" value="DISABLED"/>
+    <!--<inherits name="com.googlecode.mgwt.dom.DOM"/>-->
+    <!--<inherits name="com.googlecode.mgwt.ui.UI"/>-->
+    <!--<set-property name="log_DivLogger" value="DISABLED"/>-->
 
     <!-- Specify the app entry point class.                         -->
     <entry-point class='com.lanouette.app.client.bffConn'/>
