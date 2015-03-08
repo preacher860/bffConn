@@ -25,7 +25,7 @@ public class IconBar implements IsWidget {
     }
 
     private final MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    private final UserCallbackInterface userCallbackInterface;
+    private UserCallbackInterface userCallbackInterface;
     private FunctionPopup popup;
 
     @UiField
@@ -49,13 +49,13 @@ public class IconBar implements IsWidget {
     @UiField
     TextBox localBox;
 
-    public IconBar(UserCallbackInterface userCallbackInterface) {
+    public IconBar() {
         uiBinder.createAndBindUi(this);
-
-        this.userCallbackInterface = userCallbackInterface;
     }
 
-    public void initialize() {
+    public void initialize(UserCallbackInterface userCallbackInterface) {
+        this.userCallbackInterface = userCallbackInterface;
+
         // Popup menu instanciated only on mobile devices
         if (RuntimeData.getInstance().isMobile()) {
             installPopup();

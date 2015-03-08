@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -16,12 +18,11 @@ import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.lanouette.app.client.IconBar.IconBar;
 import com.lanouette.app.client.MessageBox.MessageBox;
 import com.lanouette.app.client.OnlineUsersView.OnlineUsers;
@@ -31,6 +32,11 @@ import com.lanouette.app.client.StatsWindow.StatsWin;
 //import org.fusesource.restygwt.client.MethodCallback;
 
 public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInterface {
+    interface uiBinder extends UiBinder<Widget, bffConn> {
+    }
+
+    private final uiBinder uiBinder = GWT.create(uiBinder.class);
+
     public static final int MODE_INIT_S1 = 1;
     public static final int MODE_INIT_S2 = 2;
     public static final int MODE_RUNNING = 3;
@@ -38,7 +44,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
     private static final int MSG_INITIAL_RTRV = 400;
     private static final int MSG_OLD_FETCH_NUM = 200;
-    private static final int MSG_INITIAL_RTRV_MOBILE = 80;
+    private static final int MSG_INITIAL_RTRV_MOBILE = 50;
     private static final int MSG_OLD_FETCH_NUM_MOBILE = 100;
     private static final int POLL_FAST = 2000;
     private static final int POLL_SLOW = 10000;
@@ -46,17 +52,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     //private final BffProxy proxy;
     private final boolean isMobile = checkMobile();
     private final boolean isIphone = checkIphone();
-    private final OnlineUsers onlineUsers = new OnlineUsers(this);
-    private final MessageBox messageBox = new MessageBox();
-    private final IconBar iconBar = new IconBar(this);
-
-    private boolean compactModeEnabled = false;
-
-    DockLayoutPanel mainDockPanel = new DockLayoutPanel(Unit.PX);
-    private HorizontalPanel headerStack = new HorizontalPanel();
-    private HorizontalPanel topToolbarLowerStack = new HorizontalPanel();
-    private VerticalPanel leftToolbarStack = new VerticalPanel();
-    private VerticalPanel topToolbarStack = new VerticalPanel();
 
     private IOModule ioModule = new IOModule(this);
     private Integer myCurrentMode = MODE_INIT_S1;
@@ -64,25 +59,45 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     private Timer myFaviconTimer;
     private Timer myResizeTimer;
     private Timer myInitTimer;
+    private boolean compactModeEnabled = false;
     private boolean myRuntimeDataRcvd = false;
     private boolean myUserDataRcvd = false;
     private boolean myMotdRcvd = false;
-    private EntryBox myEntryBox = new EntryBox(this, this);
-    private MessageView myMessageManager = new MessageView(this, isMobile, isIphone);
-    private Image headerImage = new Image();
-    private motd myMotd = new motd();
-    private MotdInfo myMotdInfo = new MotdInfo(this);
-    private UserButtonBar userButtonBar = new UserButtonBar(this);
     private boolean faviconAlert = false;
-    private int newestDisplayedWhenLostVisibility = 0;
-    private boolean myCatchupOnShow = false;
     private int myPollSpeed = POLL_FAST;
+
+    @UiField
+    DockLayoutPanel mainDockPanel;
+    @UiField
+    HorizontalPanel headerStack;
+    @UiField
+    VerticalPanel topToolbarStack;
+    @UiField
+    HorizontalPanel topToolbarLowerStack;
+    @UiField
+    VerticalPanel leftToolbarStack;
+    @UiField
+    Image headerImage;
+    @UiField
+    Motd myMotd;
+    @UiField
+    IconBar iconBar;
+    @UiField
+    UserButtonBar userButtonBar;
+    @UiField
+    MotdInfo myMotdInfo;
+    @UiField
+    OnlineUsers onlineUsers;
+    @UiField
+    MessageBox messageBox;
+    @UiField
+    EntryBox myEntryBox;
+    @UiField
+    MessageView myMessageManager;
 
     public void onModuleLoad() {
         //MainGinjector ginjector = GWT.create(MainGinjector.class);
         //mainDockPanel = ginjector.getMainPanel();
-
-        //RootPanel.get().add(widget);
 
         consoleLog("Logger in 'DEBUG' mode");
         String sessionIdCookie = Cookies.getCookie("bffConnexionSID");
@@ -91,9 +106,14 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         RuntimeData.getInstance().setMobile(isMobile);
         RuntimeData.getInstance().setIphone(isIphone);
 
-        iconBar.initialize();
-        userButtonBar.initialize();
-        myMotdInfo.initialize();
+        uiBinder.createAndBindUi(this);
+
+        iconBar.initialize(this);
+        userButtonBar.initialize(this);
+        myMotdInfo.initialize(this);
+        onlineUsers.initialize(this);
+        myEntryBox.initialize(this, this);
+        myMessageManager.initialize(this);
     }
 
     public bffConn() {
@@ -112,43 +132,9 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
 
     public void applicationStart() {
-
-        mainDockPanel.setStyleName("mainPanel");
-
-        headerImage.setUrl("images/bffConnLogo4.png");
-        leftToolbarStack.setStyleName("leftToolbar");
-        leftToolbarStack.add(onlineUsers);
-        leftToolbarStack.add(messageBox);
-
-        topToolbarLowerStack.add(iconBar);
-        topToolbarLowerStack.add(userButtonBar);
-        topToolbarLowerStack.add(myMotdInfo);
-        topToolbarLowerStack.setCellHorizontalAlignment(myMotdInfo, HasHorizontalAlignment.ALIGN_RIGHT);
-        topToolbarLowerStack.setCellWidth(iconBar, "245px");
-        topToolbarLowerStack.setCellWidth(userButtonBar, "320px");
-        topToolbarLowerStack.setCellWidth(myMotdInfo, "235px");
-        userButtonBar.setVisible(false);
-
-        topToolbarStack.add(myMotd);
-        topToolbarStack.add(topToolbarLowerStack);
-        topToolbarStack.setCellHeight(myMotd, "40px");
-        topToolbarStack.setCellVerticalAlignment(myMotd, HasVerticalAlignment.ALIGN_BOTTOM);
-
-        headerStack.setStyleName("headerStack");
-        headerStack.add(headerImage);
-        headerStack.add(topToolbarStack);
-        headerStack.setCellWidth(headerImage, "240px");
         iconBar.setLocal(RuntimeData.getInstance().getLocale());
 
-        mainDockPanel.addNorth(headerStack, 76);
-        mainDockPanel.addWest(leftToolbarStack, 240);
-        mainDockPanel.addSouth(myEntryBox, 110);
-        mainDockPanel.add(myMessageManager);
-
         RootLayoutPanel.get().add(mainDockPanel);
-        RootLayoutPanel.get().setStyleName("mainPanel");
-
-        //Window.enableScrolling(false);
 
         Window.addResizeHandler(new ResizeHandler() {
             public void onResize(ResizeEvent event) {
@@ -261,9 +247,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
     public void messagesReceivedCallback(final ArrayList<MessageContainer> messages) {
         myMessageManager.newMessages(messages);
-        if (myCatchupOnShow) {
-            myMessageManager.setInvisibleMode(false);
-        }
     }
 
     public void runtimeDataReceivedCallback() {
@@ -278,7 +261,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         onlineUsers.UpdateOnlineUsers(UserManager.getInstance());
         userButtonBar.updateOnlineUsers();
         RuntimeData.getInstance().setDbVersionUsers(RuntimeData.getInstance().getRequestedDbVersionUsers());
-        //System.out.println("Users updated up to db version " + RuntimeData.getInstance().getDbVersionUsers());
     }
 
     public void checkServerVersion() {
@@ -292,7 +274,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
     public void checkRuntimeVersions() {
         if (myCurrentMode == MODE_RUNNING) {
-            //System.out.println("Db version: " + RuntimeData.getInstance().getDbVersion() + "  Srv Db version: " + RuntimeData.getInstance().getServerDbVersion());
             if (RuntimeData.getInstance().getDbVersion() < RuntimeData.getInstance().getServerDbVersion()) {
                 System.out.println("DB version behind, updating to " + RuntimeData.getInstance().getDbVersion() + 1);
                 ioModule.GetUserMessagesByVersion(RuntimeData.getInstance().getDbVersion() + 1);
@@ -370,7 +351,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         // Control max number of msg displayed - Disabled for DB debugging
         //if(messageVStack.getMembers().length > 100)
         //  messageVStack.removeMember(messageVStack.getMember(0));
-
+        // Note: it's actually faster not to...
     }
 
     private void installShortcuts() {
@@ -448,15 +429,17 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
                     myFaviconTimer.schedule(300);
                 }
                 consoleLog("Setting message manager mode to visible");
-                myCatchupOnShow = true;
+                myMessageManager.setInvisibleMode(false);
                 myPollSpeed = POLL_FAST;
                 myRefreshTimer.schedule(1);
             } else {
                 consoleLog("Tab is HIDDEN");
-                newestDisplayedWhenLostVisibility = myMessageManager.getNewestDisplayedSeq();
                 consoleLog("Setting message manager mode to invisible");
                 myMessageManager.setInvisibleMode(true);
-                myPollSpeed = POLL_SLOW;
+                if(RuntimeData.getInstance().isMobile()) {
+                    myPollSpeed = POLL_SLOW;
+                    myEntryBox.blurFocus();
+                }
             }
         } catch (Exception e) {
             consoleLog("Exception in visibilityChanged");
@@ -597,7 +580,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         userButtonBar.setVisible(false);
     }
 
-    public void motdReceivedCallback(motdData motd) {
+    public void motdReceivedCallback(MotdData motd) {
         myMotdRcvd = true;
         RuntimeData.getInstance().setDbVersionMotd(motd.dbVersion);
         if (myMotd.hasChanged(motd) || motd.deleted == 1) {

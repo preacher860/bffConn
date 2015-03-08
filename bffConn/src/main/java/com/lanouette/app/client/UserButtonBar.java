@@ -14,15 +14,16 @@ public class UserButtonBar extends FocusPanel {
     int userDbVersion = 0;
     private UserCallbackInterface myUserCallbackInterface;
     private HorizontalPanel panel = new HorizontalPanel();
-    private final UserPopup popup;
+    private UserPopup popup;
     private boolean isMobile;
 
-    UserButtonBar(UserCallbackInterface callbackInterface) {
-        myUserCallbackInterface = callbackInterface;
-        popup = new UserPopup(myUserCallbackInterface);
+    UserButtonBar() {
     }
 
-    public void initialize() {
+    public void initialize(UserCallbackInterface callbackInterface) {
+        myUserCallbackInterface = callbackInterface;
+        popup = new UserPopup(myUserCallbackInterface);
+
         isMobile = RuntimeData.getInstance().isMobile();
 
         if (isMobile) {

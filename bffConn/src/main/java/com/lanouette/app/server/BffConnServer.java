@@ -1036,7 +1036,7 @@ private int getNewestSeq(Connection conn)
     	  result = select.executeQuery();
     	  if(result.next()) {
     		  Date motdDate = new Date(result.getTimestamp(1).getTime());
-    		  //System.out.println("Current: " + currentDate.getTime() + " motd: " + motdDate.getTime());
+    		  //System.out.println("Current: " + currentDate.getTime() + " Motd: " + motdDate.getTime());
     		  if((currentDate.getTime() - motdDate.getTime()) / 1000 > MOTD_TIMEOUT)
     		  {
     			  PreparedStatement setDeleted = conn.prepareStatement(update);

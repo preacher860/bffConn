@@ -13,9 +13,9 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.lanouette.app.client.MotdData;
 import com.lanouette.app.client.UserCallbackInterface;
 import com.lanouette.app.client.UserManager;
-import com.lanouette.app.client.motdData;
 
 public class MotdPopup extends PopupPanel {
     interface MyUiBinder extends UiBinder<Widget, MotdPopup> {
@@ -24,7 +24,7 @@ public class MotdPopup extends PopupPanel {
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
     private UserCallbackInterface myCallbackInterface;
-    private motdData myMotdData;
+    private MotdData myMotdData;
 
     @UiField
     Image closeImage;
@@ -43,7 +43,7 @@ public class MotdPopup extends PopupPanel {
     @UiField
     Label starNum;
 
-    public MotdPopup(motdData motd,
+    public MotdPopup(MotdData motd,
                      UserCallbackInterface callbackInterface) {
         super(true);
 

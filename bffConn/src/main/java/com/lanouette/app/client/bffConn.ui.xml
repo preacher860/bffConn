@@ -1,0 +1,49 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:m='urn:import:com.lanouette.app.client'
+             xmlns:ib='urn:import:com.lanouette.app.client.IconBar'
+             xmlns:ou='urn:import:com.lanouette.app.client.OnlineUsersView'
+             xmlns:mb='urn:import:com.lanouette.app.client.MessageBox'>
+
+    <ui:style>
+    </ui:style>
+
+    <g:DockLayoutPanel ui:field="mainDockPanel" addStyleNames="mainPanel">
+        <g:north size="76">
+            <g:HorizontalPanel ui:field="headerStack" addStyleNames="headerStack">
+                <g:cell width="240px">
+                    <g:Image ui:field="headerImage" url="images/bffConnLogo4.png"></g:Image>
+                </g:cell>
+                <g:VerticalPanel ui:field="topToolbarStack">
+                    <g:cell height="40px" verticalAlignment="ALIGN_BOTTOM">
+                        <m:Motd ui:field="myMotd"></m:Motd>
+                    </g:cell>
+                    <g:HorizontalPanel ui:field="topToolbarLowerStack">
+                        <g:cell width="245px">
+                            <ib:IconBar ui:field="iconBar"></ib:IconBar>
+                        </g:cell>
+                        <g:cell width="320px">
+                            <m:UserButtonBar ui:field="userButtonBar" visible="false"></m:UserButtonBar>
+                        </g:cell>
+                        <g:cell width="235px" horizontalAlignment="ALIGN_RIGHT">
+                            <m:MotdInfo ui:field="myMotdInfo"></m:MotdInfo>
+                        </g:cell>
+                    </g:HorizontalPanel>
+                </g:VerticalPanel>
+            </g:HorizontalPanel>
+        </g:north>
+
+        <g:west size="240">
+            <g:VerticalPanel ui:field="leftToolbarStack" addStyleNames="leftToolbar">
+                <ou:OnlineUsers ui:field="onlineUsers"></ou:OnlineUsers>
+                <mb:MessageBox ui:field="messageBox"></mb:MessageBox>
+            </g:VerticalPanel>
+        </g:west>
+        <g:south size="110">
+            <m:EntryBox ui:field="myEntryBox"></m:EntryBox>
+        </g:south>
+        <g:center>
+            <m:MessageView ui:field="myMessageManager"></m:MessageView>
+        </g:center>
+    </g:DockLayoutPanel>
+</ui:UiBinder>

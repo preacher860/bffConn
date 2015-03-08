@@ -639,7 +639,7 @@ public class IOModule {
 			JSONObject obj;
 		    JSONValue jsonValue = JSONParser.parseStrict(serverResponse);
 		    JSONArray jsonArray = jsonValue.isArray();
-		    motdData motd = new motdData();
+		    MotdData motd = new MotdData();
 		    
 		    obj = jsonArray.get(0).isObject();
 		    String  serverMotd = obj.get("text").isString().stringValue();

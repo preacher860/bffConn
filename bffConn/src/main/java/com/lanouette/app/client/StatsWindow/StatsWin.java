@@ -84,7 +84,6 @@ public class StatsWin {
     public StatsWin(final ArrayList<UserContainer> users) {
         DataGrid.Resources tableRes;
 
-
         if (RuntimeData.getInstance().isMobile()) {
             tableRes = GWT.create(MobileStatsGridResource.class);
             tableIconSize = 36;
@@ -160,13 +159,6 @@ public class StatsWin {
 
         chartLabel.setHTML("<b>Messages envoyés par usager</b><br>Nombre total: " + computeTotalMessages(users));
         panel.show();
-
-        /*
-        if (RuntimeData.getInstance().isMobile()) {
-            headerButtonSize = 48;
-            gridColumnWidth = 70;
-        }
-        */
 
         Runnable onLoadCallback = new Runnable() {
             public void run() {

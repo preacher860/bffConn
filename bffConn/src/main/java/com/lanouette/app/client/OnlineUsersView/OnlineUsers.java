@@ -21,7 +21,7 @@ public class OnlineUsers implements IsWidget {
     }
 
     private final MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    private final UserCallbackInterface userCallbackInterface;
+    private UserCallbackInterface userCallbackInterface;
     private TileEvent tileEvent;
     private int userDbVersion = 0;
 
@@ -32,11 +32,12 @@ public class OnlineUsers implements IsWidget {
     @UiField
     FlowPanel usersView;
 
-    public OnlineUsers(UserCallbackInterface userCallbackInterface) {
+    public OnlineUsers() {
         uiBinder.createAndBindUi(this);
+    }
 
+    public void initialize(UserCallbackInterface userCallbackInterface) {
         this.userCallbackInterface = userCallbackInterface;
-
         createHandlers();
     }
 

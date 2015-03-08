@@ -4,18 +4,18 @@ import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.HTML;
 
-public class motd extends HTML {
+public class Motd extends HTML {
 
 	private String myMotd;
 	private String myStars;
 	
-	public motd() {
+	public Motd() {
 		setStyleName("motd");
 		myMotd = "";
 		myStars = "";
 	}
 	
-	public void update(motdData motd)
+	public void update(MotdData motd)
 	{
 		String displayedMotd = "";
 		if(motd.deleted == 0) {
@@ -44,7 +44,7 @@ public class motd extends HTML {
         setHTML(text);
     }
 	
-	public boolean hasChanged(motdData motd)
+	public boolean hasChanged(MotdData motd)
 	{
 		return !(motd.text.equals(myMotd)) || !(motd.stars.equals(myStars));
 	}

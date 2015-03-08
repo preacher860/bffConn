@@ -33,7 +33,11 @@ public class EntryBox extends HorizontalPanel {
     private int myEditingMessageSeq = 0;
 
 
-    public EntryBox(ioCallbackInterface callbackInterface, UserCallbackInterface userCB) {
+    public EntryBox() {
+
+    }
+
+    public void initialize(ioCallbackInterface callbackInterface, UserCallbackInterface userCB) {
         myCallbackInterface = callbackInterface;
         myUserCallbackInterface = userCB;
 
@@ -58,11 +62,11 @@ public class EntryBox extends HorizontalPanel {
 
         messageItem.addKeyUpHandler(new KeyUpHandler() {
             public void onKeyUp(KeyUpEvent keyUpEvent) {
-                    if (messageItem.getValue().length() > 0) {
-                        countItem.setText(Integer.toString(messageItem.getValue().length()));
-                    } else {
-                        countItem.setText("");
-                    }
+                if (messageItem.getValue().length() > 0) {
+                    countItem.setText(Integer.toString(messageItem.getValue().length()));
+                } else {
+                    countItem.setText("");
+                }
             }
         });
 
@@ -126,6 +130,10 @@ public class EntryBox extends HorizontalPanel {
                 messageItem.setFocus(true);
             }
         });
+    }
+
+    public void blurFocus() {
+        messageItem.setFocus(false);
     }
 
     public void setUser(UserContainer user) {

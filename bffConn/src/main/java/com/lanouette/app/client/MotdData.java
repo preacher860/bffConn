@@ -1,6 +1,6 @@
 package com.lanouette.app.client;
 
-public class motdData {
+public class MotdData {
 	public String text;
 	public String date;
 	public String time;

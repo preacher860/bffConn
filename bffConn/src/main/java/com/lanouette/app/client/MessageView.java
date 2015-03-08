@@ -12,10 +12,6 @@ public class MessageView extends ScrollPanel {
 	
 	private static final int KEEP_AT_BOTTOM_RETRIES = 3;
 
-    private final boolean isMobile;
-    private final boolean isIPhone;
-
-    private String mobileMessageBoxStyle = "";
     private VerticalPanel mainVPanel = new VerticalPanel();
 	private int myOldestDisplayedSeq = 0;
 	private int myNewestDisplayedSeq = 0;
@@ -33,62 +29,62 @@ public class MessageView extends ScrollPanel {
 	private int myKeepAtBottom = 0;
 	private boolean myInvisibleMode = false;
 	
-	public MessageView(UserCallbackInterface callbackInterface,
-                       boolean isMobile,
-                       boolean isIPhone){
-		myCallbackInterface = callbackInterface;
-        this.isMobile = isMobile;
-        this.isIPhone = isIPhone;
+	public MessageView(){
 
-		mainVPanel.setStyleName("messageViewVpanel");
-		add(mainVPanel);
+	}
 
-		setStyleName("messageView");
+    public void initialize(UserCallbackInterface callbackInterface) {
+        myCallbackInterface = callbackInterface;
+
+        mainVPanel.setStyleName("messageViewVpanel");
+        add(mainVPanel);
+
+        setStyleName("messageView");
         getElement().setId("messageView");
 
         // This scroll handler sets the flag used to determine if we're at bottom or not.
         // Only if were at bottom do we kick the autoscroll on new messages
         addScrollHandler(new ScrollHandler(){
-			public void onScroll(ScrollEvent event) {
-				if(getVerticalScrollPosition() == getMaximumVerticalScrollPosition()){
-					myAtBottom = true;
-				}
-				else {
-					myAtBottom = false;
-				}
-				
-				if(getVerticalScrollPosition() == 0)	{
-					// Autofetch old message when scrolling to top
-					myLastKnownOldest = myOldestDisplayedSeq;
-					myFetchingOld = true;
-					myCallbackInterface.scrollTop(myOldestDisplayedSeq);
-				}
-			}
+            public void onScroll(ScrollEvent event) {
+                if(getVerticalScrollPosition() == getMaximumVerticalScrollPosition()){
+                    myAtBottom = true;
+                }
+                else {
+                    myAtBottom = false;
+                }
+
+                if(getVerticalScrollPosition() == 0)	{
+                    // Autofetch old message when scrolling to top
+                    myLastKnownOldest = myOldestDisplayedSeq;
+                    myFetchingOld = true;
+                    myCallbackInterface.scrollTop(myOldestDisplayedSeq);
+                }
+            }
         } );
-        
+
         myScrollTimer = new Timer() {
-		      @Override
-		      public void run() {
-		    	  scrollToBottom();
-		    	  if(myKeepAtBottom < KEEP_AT_BOTTOM_RETRIES) {
-		    		  System.out.println("Forcing at bottom ret: " + myKeepAtBottom);
-		    		  myScrollTimer.schedule(1000);
-		    		  myKeepAtBottom++;
-		    	  }
-		      }
-		    };
-		    
-	    myPositionTimer = new Timer() {
-			@Override
-			public void run() {
-				MessageViewElementNative element;				
-				if ( (element = locateElement(myLastKnownOldest)) != null) {
-					System.out.println("Setting scrollpos to " + element.getElement().getOffsetTop());
-					setVerticalScrollPosition(element.getElement().getOffsetTop());
-				}
-			}
-	    };
-	}
+            @Override
+            public void run() {
+                scrollToBottom();
+                if(myKeepAtBottom < KEEP_AT_BOTTOM_RETRIES) {
+                    System.out.println("Forcing at bottom ret: " + myKeepAtBottom);
+                    myScrollTimer.schedule(1000);
+                    myKeepAtBottom++;
+                }
+            }
+        };
+
+        myPositionTimer = new Timer() {
+            @Override
+            public void run() {
+                MessageViewElementNative element;
+                if ( (element = locateElement(myLastKnownOldest)) != null) {
+                    System.out.println("Setting scrollpos to " + element.getElement().getOffsetTop());
+                    setVerticalScrollPosition(element.getElement().getOffsetTop());
+                }
+            }
+        };
+    }
 
     public void newMessages(ArrayList<MessageContainer> messages) {
 		boolean listWasEmtpy;

@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.lanouette.app.client.MotdPopup.MotdPopup;
 
 public class MotdInfo extends FocusPanel {
-    private motdData myMotd;
+    private MotdData myMotd;
     private HTML myMotdInfo = new HTML();
     private Image myStarIcon = new Image("images/stargray.png");
     private Image myStarOverIcon = new Image("images/stargray_Over.png");
@@ -34,49 +34,15 @@ public class MotdInfo extends FocusPanel {
     private boolean starred = false;
     private boolean myIconBarHovered = false;
 
-    public MotdInfo(UserCallbackInterface cb) {
-        myUserCallbackInterface = cb;
+    public MotdInfo() {
 
-        myMotdInfo.setStyleName("motdInfo");
-        myIconPane.setStyleName("motdIconPane");
-
-        myStarIcon.setStyleName("motdStarIcon");
-        myStarOverIcon.setStyleName("motdStarIcon");
-        myStarLabel.setStyleName("starLabel");
-        if (!starred) {
-            myStarStack.setVisible(false);
-            myStarOverIcon.setVisible(false);
-        } else {
-            myStarOverIcon.setVisible(true);
-            myStarIcon.setVisible(false);
-        }
-
-        myDeleteIcon.setStyleName("deleteIcon");
-        myDeleteOverIcon.setStyleName("deleteIcon");
-        myDeleteOverIcon.setVisible(false);
-        myDeleteLabel.setStyleName("deleteLabel");
-        myDeleteStack.setVisible(false);
-
-        myStarStack.add(myStarIcon);
-        myStarStack.add(myStarOverIcon);
-        myStarStack.add(myStarLabel);
-
-        myDeleteStack.add(myDeleteIcon);
-        myDeleteStack.add(myDeleteOverIcon);
-        myDeleteStack.add(myDeleteLabel);
-
-        myIconPane.setStyleName("motdIconPane");
-        myIconPane.add(myStarStack);
-        myIconPane.add(myDeleteStack);
-
-        myMainPane.add(myMotdInfo);
-        myMainPane.add(myIconPane);
-
-        add(myMainPane);
     }
 
-    void initialize() {
+    void initialize(UserCallbackInterface cb) {
         final boolean isMobile = RuntimeData.getInstance().isMobile();
+        myUserCallbackInterface = cb;
+
+        buildInterface();
 
         if (!isMobile) {
             ClickHandler starClickHandler = new ClickHandler() {
@@ -171,7 +137,7 @@ public class MotdInfo extends FocusPanel {
         });
     }
 
-    public void update(motdData motd, String motd_user) {
+    public void update(MotdData motd, String motd_user) {
         myMotd = motd;
 
         if (motd.deleted == 0) {
@@ -182,7 +148,7 @@ public class MotdInfo extends FocusPanel {
         setupStarred(motd);
     }
 
-    private void setupStarred(motdData motd) {
+    private void setupStarred(MotdData motd) {
         if (motd.deleted != 0) {
             myIconPane.setVisible(false);
             return;
@@ -214,6 +180,44 @@ public class MotdInfo extends FocusPanel {
         }
     }
 
+    private void buildInterface() {
+        myMotdInfo.setStyleName("motdInfo");
+        myIconPane.setStyleName("motdIconPane");
+
+        myStarIcon.setStyleName("motdStarIcon");
+        myStarOverIcon.setStyleName("motdStarIcon");
+        myStarLabel.setStyleName("starLabel");
+        if (!starred) {
+            myStarStack.setVisible(false);
+            myStarOverIcon.setVisible(false);
+        } else {
+            myStarOverIcon.setVisible(true);
+            myStarIcon.setVisible(false);
+        }
+
+        myDeleteIcon.setStyleName("deleteIcon");
+        myDeleteOverIcon.setStyleName("deleteIcon");
+        myDeleteOverIcon.setVisible(false);
+        myDeleteLabel.setStyleName("deleteLabel");
+        myDeleteStack.setVisible(false);
+
+        myStarStack.add(myStarIcon);
+        myStarStack.add(myStarOverIcon);
+        myStarStack.add(myStarLabel);
+
+        myDeleteStack.add(myDeleteIcon);
+        myDeleteStack.add(myDeleteOverIcon);
+        myDeleteStack.add(myDeleteLabel);
+
+        myIconPane.setStyleName("motdIconPane");
+        myIconPane.add(myStarStack);
+        myIconPane.add(myDeleteStack);
+
+        myMainPane.add(myMotdInfo);
+        myMainPane.add(myIconPane);
+
+        add(myMainPane);
+    }
     native void consoleLog(String message) /*-{
         console.log("BFF: " + message);
     }-*/;
