@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -181,12 +182,14 @@ public class MotdInfo extends FocusPanel {
     }
 
     private void buildInterface() {
+        getElement().setAttribute("style", "outline: none;");
+
         myMotdInfo.setStyleName("motdInfo");
         myIconPane.setStyleName("motdIconPane");
 
         myStarIcon.setStyleName("motdStarIcon");
         myStarOverIcon.setStyleName("motdStarIcon");
-        myStarLabel.setStyleName("starLabel");
+        myStarLabel.setStyleName("motdStarLabel");
         if (!starred) {
             myStarStack.setVisible(false);
             myStarOverIcon.setVisible(false);
@@ -201,10 +204,12 @@ public class MotdInfo extends FocusPanel {
         myDeleteLabel.setStyleName("deleteLabel");
         myDeleteStack.setVisible(false);
 
+        myStarStack.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
         myStarStack.add(myStarIcon);
         myStarStack.add(myStarOverIcon);
         myStarStack.add(myStarLabel);
 
+        myDeleteStack.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
         myDeleteStack.add(myDeleteIcon);
         myDeleteStack.add(myDeleteOverIcon);
         myDeleteStack.add(myDeleteLabel);

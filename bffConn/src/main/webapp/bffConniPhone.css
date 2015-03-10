@@ -64,6 +64,12 @@
         width: 80px;
     }
 
+    .motdStarLabel {
+        font-size: 14px;
+        padding: 2px;
+        width: 80px;
+    }
+
     .deleteLabel {
         font-size: 18px;
         padding: 2px;
@@ -154,6 +160,12 @@
 
     .starLabel {
         font-size: 22px;
+        padding: 2px;
+        width: 80px;
+    }
+
+    .motsStarLabel {
+        font-size: 16px;
         padding: 2px;
         width: 80px;
     }
@@ -295,4 +307,11 @@ input[type=checkbox]
 
 .statsChartLabel {
     font-size: 18px;
+}
+
+.messageStatusBar {
+    background-color: #B0B0B0;
+    height: 21px;
+    vertical-align: middle;
+    padding: 0;
 }

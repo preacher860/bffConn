@@ -6,7 +6,7 @@
 
 .userInfo {
     background-color: #B0B0B0;
-    padding: 3px;
+    padding: 4px 3px 3px;
     width: 485px;
     display: block;
     font-size: 7pt;
@@ -18,7 +18,7 @@
     overflow: auto;
     position: absolute;
     background-color: #ffffff;
-    border: 3px solid #455469;
+    border: 1px solid #455469;
     padding: 4px;
     margin-bottom: 5px;
     box-shadow: 4px 4px 5px #888888;
@@ -30,6 +30,7 @@
     font-size: 12px;
     padding: 5px;
     line-height: 120%;
+    height: 14px;
 }
 
 .messageEditBox {
@@ -44,55 +45,67 @@
 }
 
 .starIcon {
-    width: 16px;
-    height: 16px;
-    padding-top: 1px;
+    width: 14px;
+    height: 14px;
+    /*padding-bottom: 1px;*/
     padding-right: 2px;
     padding-left: 8px;
+    display: block;
+}
+
+.motdStarLabel {
+    font-size: 12px;
+    padding: 2px;
+    width: 45px;
 }
 
 .starLabel {
-    font-size: 12px;
-    padding: 2px;
+    font-size: 10px;
+    /*padding: 2px;*/
+    height: 10px;
     width: 45px;
 }
 
 .deleteIcon {
-    width: 16px;
-    height: 16px;
-    padding-top: 1px;
+    width: 14px;
+    height: 14px;
+    /*padding-bottom: 1px;*/
     padding-right: 2px;
     padding-left: 8px;
+    display: block;
 }
 
 .deleteLabel {
-    font-size: 12px;
-    padding: 2px;
+    font-size: 10px;
+    height: 10px;
+    /*padding: 2px;*/
     width: 45px;
 }
 
 .editIcon {
-    width: 16px;
-    height: 16px;
-    padding-top: 1px;
+    width: 14px;
+    height: 14px;
+    /*padding-bottom: 1px;*/
     padding-right: 2px;
     padding-left: 8px;
+    display: block;
 }
 
 .editLabel {
-    font-size: 12px;
-    padding: 2px;
+    font-size: 10px;
+    height: 10px;
+    /*padding: 2px;*/
     width: 45px;
 }
 
 .entryBox {
     /*height: 40px;*/
     background-color: #E0E0E0;
-    border: 3px solid #455469;
+    border: 1px solid #455469;
     box-shadow: 4px 4px 5px #888888;
     margin-top: 20px;
     margin-bottom: 10px;
-    width: 800px;
+    width: 795px;
 }
 
 .leftToolbar {
@@ -110,32 +123,8 @@
     font-size: 10px;
     width: 100%;
     height: 15px;
-    text-align: right;
+    /*text-align: right;*/
     overflow: hidden;
-}
-
-.starIcon {
-    width: 16px;
-    height: 16px;
-    padding-top: 1px;
-    padding-right: 2px;
-    padding-left: 8px;
-}
-
-.deleteIcon {
-    width: 16px;
-    height: 16px;
-    padding-top: 1px;
-    padding-right: 2px;
-    padding-left: 8px;
-}
-
-.editIcon {
-    width: 16px;
-    height: 16px;
-    padding-top: 1px;
-    padding-right: 2px;
-    padding-left: 8px;
 }
 
 .messageEditBox {
@@ -157,7 +146,7 @@
     top: 50%;
     left: 50%;
     position: fixed;
-    border: 3px solid #455469;
+    border: 1px solid #455469;
     box-shadow: 4px 4px 5px #888888;
     background: white;
 }
@@ -171,7 +160,12 @@
 
 .loginHeader {
     background: #22366A;
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#22366A), to(#4D668A));
+    background: -moz-linear-gradient(top, #22366a 0%, #596d89 50%, #4d668a 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#22366a), color-stop(50%,#596d89), color-stop(100%,#4d668a)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #22366a 0%,#596d89 50%,#4d668a 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #22366a 0%,#596d89 50%,#4d668a 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #22366a 0%,#596d89 50%,#4d668a 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #22366a 0%,#596d89 50%,#4d668a 100%); /* W3C */
     padding: 4px;
     font-weight: bold;
     color: white;
@@ -223,4 +217,16 @@
 
 .statsChartLabel {
 
+}
+
+.messageStatusBar {
+    background-color: #B0B0B0;
+    height: 16px;
+    vertical-align: bottom;
+    padding: 0px;
+    margin: 0px;
+}
+
+.userAvatar {
+    margin-top: 3px;
 }

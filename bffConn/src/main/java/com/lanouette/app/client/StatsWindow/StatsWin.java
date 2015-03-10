@@ -97,7 +97,7 @@ public class StatsWin {
         uiBinder.createAndBindUi(this);
 
         panel.setPopupPosition(200, 200);
-        panel.getWidget().getParent().getElement().setAttribute("style", "box-shadow: 4px 4px 5px #888;");
+        panel.getWidget().getParent().getElement().setAttribute("style", "box-shadow: 4px 4px 5px #888; border: 1px solid #455469;");
         userStatsDatabase = new UserStatsDatabase();
         userStatsDatabase.addDataDisplay(dataGrid);
 

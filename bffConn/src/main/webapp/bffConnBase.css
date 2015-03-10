@@ -193,13 +193,6 @@ h1 {
     background-color: #E0E0E0;
 }
 
-.messageStatusBar {
-    background-color: #B0B0B0;
-    height: 21px;
-    vertical-align: middle;
-    padding: 0;
-}
-
 .messageViewElementBoxNormal {
     background-color: #C3D9FF;
 }
@@ -267,24 +260,16 @@ h1 {
     width: 60px;
 }
 
+.starStack td {
+    vertical-align: bottom;
+}
+
 .editStack {
     width: 60px;
 }
 
 .deleteStack {
     width: 60px;
-}
-
-[class="starStack"] td {
-    vertical-align: bottom;
-}
-
-[class="editStack"] td {
-    vertical-align: bottom;
-}
-
-[class="deleteStack"] td {
-    vertical-align: bottom;
 }
 
 .leftToolbar {

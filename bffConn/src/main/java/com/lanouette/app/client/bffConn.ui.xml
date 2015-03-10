@@ -11,7 +11,7 @@
     <g:DockLayoutPanel ui:field="mainDockPanel" addStyleNames="mainPanel">
         <g:north size="76">
             <g:HorizontalPanel ui:field="headerStack" addStyleNames="headerStack">
-                <g:cell width="240px">
+                <g:cell width="225px">
                     <g:Image ui:field="headerImage" url="images/bffConnLogo4.png"></g:Image>
                 </g:cell>
                 <g:VerticalPanel ui:field="topToolbarStack">
@@ -25,7 +25,7 @@
                         <g:cell width="320px">
                             <m:UserButtonBar ui:field="userButtonBar" visible="false"></m:UserButtonBar>
                         </g:cell>
-                        <g:cell width="235px" horizontalAlignment="ALIGN_RIGHT">
+                        <g:cell  horizontalAlignment="ALIGN_RIGHT">
                             <m:MotdInfo ui:field="myMotdInfo"></m:MotdInfo>
                         </g:cell>
                     </g:HorizontalPanel>
@@ -33,7 +33,7 @@
             </g:HorizontalPanel>
         </g:north>
 
-        <g:west size="240">
+        <g:west size="225">
             <g:VerticalPanel ui:field="leftToolbarStack" addStyleNames="leftToolbar">
                 <ou:OnlineUsers ui:field="onlineUsers"></ou:OnlineUsers>
                 <mb:MessageBox ui:field="messageBox"></mb:MessageBox>

@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.lanouette.app.client.MessagePopup.MessagePopup;
+import com.smartgwt.client.types.VerticalAlignment;
 
 public class MessageViewElementNative extends HorizontalPanel implements MessageViewElementNativeCallback {
     private final boolean isMobile;
@@ -96,6 +97,7 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
         starLabel.setStyleName("starLabel");
 
         starStack.setStyleName("starStack");
+        starStack.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
         starStack.add(starIcon);
         starStack.add(starOverIcon);
         starStack.add(starLabel);
@@ -112,6 +114,7 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
         deleteOverIcon.setVisible(false);
         deleteLabel.setStyleName("deleteLabel");
         deleteStack.setStyleName("deleteStack");
+        deleteStack.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
         deleteStack.setVisible(false);
         deleteStack.add(deleteIcon);
         deleteStack.add(deleteOverIcon);
@@ -122,6 +125,7 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
         editOverIcon.setVisible(false);
         editLabel.setStyleName("editLabel");
         editStack.setStyleName("editStack");
+        editStack.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
         editStack.setVisible(false);
         editStack.add(editIcon);
         editStack.add(editOverIcon);
