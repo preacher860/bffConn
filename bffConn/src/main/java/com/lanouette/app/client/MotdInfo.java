@@ -23,8 +23,8 @@ public class MotdInfo extends FocusPanel {
     private HTML myMotdInfo = new HTML();
     private Image myStarIcon = new Image("images/stargray.png");
     private Image myStarOverIcon = new Image("images/stargray_Over.png");
-    private Image myDeleteIcon = new Image("images/deletegray.png");
-    private Image myDeleteOverIcon = new Image("images/deletegray_Over.png");
+    private Image myDeleteIcon = new Image("images/erasergray.png");
+    private Image myDeleteOverIcon = new Image("images/erasergray_Over.png");
     private Label myStarLabel = new Label("Étoiler");
     private Label myDeleteLabel = new Label("Effacer");
     private HorizontalPanel myStarStack = new HorizontalPanel();
@@ -198,10 +198,10 @@ public class MotdInfo extends FocusPanel {
             myStarIcon.setVisible(false);
         }
 
-        myDeleteIcon.setStyleName("deleteIcon");
-        myDeleteOverIcon.setStyleName("deleteIcon");
+        myDeleteIcon.setStyleName("motdStarIcon");
+        myDeleteOverIcon.setStyleName("motdStarIcon");
         myDeleteOverIcon.setVisible(false);
-        myDeleteLabel.setStyleName("deleteLabel");
+        myDeleteLabel.setStyleName("motdStarLabel");
         myDeleteStack.setVisible(false);
 
         myStarStack.setVerticalAlignment(HasVerticalAlignment.ALIGN_BOTTOM);
