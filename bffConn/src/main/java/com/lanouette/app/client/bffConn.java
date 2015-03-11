@@ -436,7 +436,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
                 consoleLog("Tab is HIDDEN");
                 consoleLog("Setting message manager mode to invisible");
                 myMessageManager.setInvisibleMode(true);
-                if(RuntimeData.getInstance().isMobile()) {
+                if (RuntimeData.getInstance().isMobile()) {
                     myPollSpeed = POLL_SLOW;
                     myEntryBox.blurFocus();
                 }
@@ -485,6 +485,11 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 //            }
 //            //new OctopusWin();
 //        });
+        consoleLog("Element 1000 at " + myMessageManager.locateElement(1000).getAbsoluteTop());
+        consoleLog("Scroll pos: " + myMessageManager.getVerticalScrollPosition());
+        //myMessageManager.setVerticalScrollPosition(myMessageManager.getVerticalScrollPosition() -
+        //        (myMessageManager.locateElement(1094).getAbsoluteTop() - 90) * -1);
+
     }
 
     public void scrollTop(int oldest) {
