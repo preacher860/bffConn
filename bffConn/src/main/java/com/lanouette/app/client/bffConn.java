@@ -5,6 +5,8 @@ import java.util.Date;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -35,37 +37,20 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     interface uiBinder extends UiBinder<Widget, bffConn> {
     }
 
-    private final uiBinder uiBinder = GWT.create(uiBinder.class);
-
     public static final int MODE_INIT_S1 = 1;
     public static final int MODE_INIT_S2 = 2;
     public static final int MODE_RUNNING = 3;
     public static final int MODE_SHUTDOWN = 4;
-
     private static final int MSG_INITIAL_RTRV = 400;
     private static final int MSG_OLD_FETCH_NUM = 200;
     private static final int MSG_INITIAL_RTRV_MOBILE = 50;
     private static final int MSG_OLD_FETCH_NUM_MOBILE = 100;
     private static final int POLL_FAST = 2000;
     private static final int POLL_SLOW = 10000;
-
+    private final uiBinder uiBinder = GWT.create(uiBinder.class);
     //private final BffProxy proxy;
     private final boolean isMobile = checkMobile();
     private final boolean isIphone = checkIphone();
-
-    private IOModule ioModule = new IOModule(this);
-    private Integer myCurrentMode = MODE_INIT_S1;
-    private Timer myRefreshTimer;
-    private Timer myFaviconTimer;
-    private Timer myResizeTimer;
-    private Timer myInitTimer;
-    private boolean compactModeEnabled = false;
-    private boolean myRuntimeDataRcvd = false;
-    private boolean myUserDataRcvd = false;
-    private boolean myMotdRcvd = false;
-    private boolean faviconAlert = false;
-    private int myPollSpeed = POLL_FAST;
-
     @UiField
     DockLayoutPanel mainDockPanel;
     @UiField
@@ -94,6 +79,33 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     EntryBox myEntryBox;
     @UiField
     MessageView myMessageManager;
+    private Integer jumpAfterLoad = 0;
+    private IOModule ioModule = new IOModule(this);
+    private Integer myCurrentMode = MODE_INIT_S1;
+    private Timer myRefreshTimer;
+    private Timer myFaviconTimer;
+    private Timer myResizeTimer;
+    private Timer myInitTimer;
+    private boolean compactModeEnabled = false;
+    private boolean myRuntimeDataRcvd = false;
+    private boolean myUserDataRcvd = false;
+    private boolean myMotdRcvd = false;
+    private boolean faviconAlert = false;
+    private int myPollSpeed = POLL_FAST;
+
+    public bffConn() {
+        installShortcuts();
+        try {
+            registerVisibilityChangeCallback();
+        } catch (Exception e) {
+
+        }
+        //Resource resource = new Resource( GWT.getModuleBaseURL() + "pizza-service");
+
+        //proxy = GWT.create(BffProxy.class);
+        //((RestServiceProxy)service).setResource(resource);
+
+    }
 
     public void onModuleLoad() {
         //MainGinjector ginjector = GWT.create(MainGinjector.class);
@@ -115,21 +127,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         myEntryBox.initialize(this, this);
         myMessageManager.initialize(this);
     }
-
-    public bffConn() {
-        installShortcuts();
-        try {
-            registerVisibilityChangeCallback();
-        } catch (Exception e) {
-
-        }
-        //Resource resource = new Resource( GWT.getModuleBaseURL() + "pizza-service");
-
-        //proxy = GWT.create(BffProxy.class);
-        //((RestServiceProxy)service).setResource(resource);
-
-    }
-
 
     public void applicationStart() {
         iconBar.setLocal(RuntimeData.getInstance().getLocale());
@@ -246,7 +243,12 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     }
 
     public void messagesReceivedCallback(final ArrayList<MessageContainer> messages) {
-        myMessageManager.newMessages(messages);
+        myMessageManager.newMessages(messages, jumpAfterLoad > 0);
+
+        if (jumpAfterLoad > 0) {
+            jumpToMessage(jumpAfterLoad);
+            jumpAfterLoad = 0;
+        }
     }
 
     public void runtimeDataReceivedCallback() {
@@ -354,56 +356,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         // Note: it's actually faster not to...
     }
 
-    private void installShortcuts() {
-        Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
-            //@Override
-            public void onPreviewNativeEvent(NativePreviewEvent event) {
-                NativeEvent ne = event.getNativeEvent();
-                switch (event.getTypeInt()) {
-                    case Event.ONKEYDOWN:
-                        if (ne.getCtrlKey() && !ne.getShiftKey()) {
-                            if (ne.getKeyCode() == 'l' || ne.getKeyCode() == 'L') {
-                                iconBar.showLocationEntry();
-                                event.consume();
-                                ne.preventDefault();
-                                ne.stopPropagation();
-                            } else if (ne.getKeyCode() == 'd' || ne.getKeyCode() == 'D') {
-                                performLogout();
-                                event.consume();
-                                ne.preventDefault();
-                                ne.stopPropagation();
-                            } else if (ne.getKeyCode() == 's' || ne.getKeyCode() == 'S') {
-                                statsClicked();
-                                event.consume();
-                                ne.preventDefault();
-                                ne.stopPropagation();
-                            } else if (ne.getKeyCode() == 'o' || ne.getKeyCode() == 'O') {
-                                octopusClicked();
-                                event.consume();
-                                ne.preventDefault();
-                                ne.stopPropagation();
-                            } else if (ne.getKeyCode() == 'i' || ne.getKeyCode() == 'I') {
-                                infoClicked();
-                                event.consume();
-                                ne.preventDefault();
-                                ne.stopPropagation();
-                            } else if (ne.getKeyCode() == '1') {
-                                hideBarClicked();
-                                event.consume();
-                                ne.preventDefault();
-                                ne.stopPropagation();
-                            } else if (ne.getKeyCode() == '2') {
-                                showBarClicked();
-                                event.consume();
-                                ne.preventDefault();
-                                ne.stopPropagation();
-                            }
-                        }
-                }
-            }
-        });
-    }
-
     public native void registerVisibilityChangeCallback() /*-{
         var that = this;
         document.addEventListener("webkitvisibilitychange",
@@ -416,35 +368,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     public final native boolean isTabHidden() /*-{
         return document.webkitHidden;
     }-*/;
-
-    private void visibilityChanged() {
-        // Reset new message indicator octo when switching to visible
-        consoleLog("Visibility changed to " + !isTabHidden());
-        try {
-            if (!isTabHidden()) {
-                consoleLog("Tab is VISIBLE");
-                if (faviconAlert) {
-                    consoleLog("Starting favicon timer");
-                    faviconAlert = false;
-                    myFaviconTimer.schedule(300);
-                }
-                consoleLog("Setting message manager mode to visible");
-                myMessageManager.setInvisibleMode(false);
-                myPollSpeed = POLL_FAST;
-                myRefreshTimer.schedule(1);
-            } else {
-                consoleLog("Tab is HIDDEN");
-                consoleLog("Setting message manager mode to invisible");
-                myMessageManager.setInvisibleMode(true);
-                if (RuntimeData.getInstance().isMobile()) {
-                    myPollSpeed = POLL_SLOW;
-                    myEntryBox.blurFocus();
-                }
-            }
-        } catch (Exception e) {
-            consoleLog("Exception in visibilityChanged");
-        }
-    }
 
     public void avatarClicked(String userNick) {
         myEntryBox.addAddressee(userNick);
@@ -485,11 +408,39 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 //            }
 //            //new OctopusWin();
 //        });
-        consoleLog("Element 1000 at " + myMessageManager.locateElement(1000).getAbsoluteTop());
-        consoleLog("Scroll pos: " + myMessageManager.getVerticalScrollPosition());
-        //myMessageManager.setVerticalScrollPosition(myMessageManager.getVerticalScrollPosition() -
-        //        (myMessageManager.locateElement(1094).getAbsoluteTop() - 90) * -1);
 
+    }
+
+    public void jumpEntered(Integer jumpId) {
+        // First check with message manager if this message is loaded
+        if (myMessageManager.isMessageLoaded(jumpId)) {
+            ConsoleLogger.getInstance().log("Message is loaded");
+            jumpToMessage(jumpId);
+        } else {
+            ConsoleLogger.getInstance().log("Message is NOT loaded");
+            if ((jumpId - 10 > myMessageManager.getOldestDisplayedSeq() - 500)) {
+                jumpAfterLoad = jumpId;
+                loadMessages(jumpId - 10, myMessageManager.getOldestDisplayedSeq() - jumpId + 10);
+            }
+        }
+    }
+
+    public void jumpToMessage(Integer jumpId) {
+        // Element should usually be locatable, but take next available if it's not there (likely deleted)
+        MessageViewElementNative element;
+
+        for (Integer seqId = jumpId; seqId < myMessageManager.getNewestDisplayedSeq(); seqId++) {
+            element = myMessageManager.locateElement(seqId);
+
+            if ((element != null) && (element.isVisible())) {
+                consoleLog("Element " + seqId + " at " + element.getAbsoluteTop());
+                consoleLog("Scroll pos: " + myMessageManager.getVerticalScrollPosition());
+
+                myMessageManager.setVerticalScrollPosition(myMessageManager.getVerticalScrollPosition() -
+                        (element.getAbsoluteTop() - 90) * -1);
+                break;
+            }
+        }
     }
 
     public void scrollTop(int oldest) {
@@ -507,6 +458,10 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         else
             firstMsgToFetch = 1;
 
+        loadMessages(firstMsgToFetch, numMsgToFetch);
+    }
+
+    public void loadMessages(Integer firstMsgToFetch, Integer numMsgToFetch) {
         String waitMsg = "Chargement des messages <b>" + firstMsgToFetch + " </b>à<b> ";
         waitMsg += (firstMsgToFetch + numMsgToFetch) + "</b>";
         waitMsg += ". Veuillez patienter.";
@@ -616,6 +571,85 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
             return true;
         }
         return false;
+    }
+
+    private void installShortcuts() {
+        Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
+            //@Override
+            public void onPreviewNativeEvent(NativePreviewEvent event) {
+                NativeEvent ne = event.getNativeEvent();
+                switch (event.getTypeInt()) {
+                    case Event.ONKEYDOWN:
+                        if (ne.getCtrlKey() && !ne.getShiftKey()) {
+                            if (ne.getKeyCode() == 'l' || ne.getKeyCode() == 'L') {
+                                iconBar.showLocationEntry();
+                                event.consume();
+                                ne.preventDefault();
+                                ne.stopPropagation();
+                            } else if (ne.getKeyCode() == 'd' || ne.getKeyCode() == 'D') {
+                                performLogout();
+                                event.consume();
+                                ne.preventDefault();
+                                ne.stopPropagation();
+                            } else if (ne.getKeyCode() == 's' || ne.getKeyCode() == 'S') {
+                                statsClicked();
+                                event.consume();
+                                ne.preventDefault();
+                                ne.stopPropagation();
+                            } else if (ne.getKeyCode() == 'o' || ne.getKeyCode() == 'O') {
+                                iconBar.showJumpEntry();
+                                event.consume();
+                                ne.preventDefault();
+                                ne.stopPropagation();
+                            } else if (ne.getKeyCode() == 'i' || ne.getKeyCode() == 'I') {
+                                infoClicked();
+                                event.consume();
+                                ne.preventDefault();
+                                ne.stopPropagation();
+                            } else if (ne.getKeyCode() == '1') {
+                                hideBarClicked();
+                                event.consume();
+                                ne.preventDefault();
+                                ne.stopPropagation();
+                            } else if (ne.getKeyCode() == '2') {
+                                showBarClicked();
+                                event.consume();
+                                ne.preventDefault();
+                                ne.stopPropagation();
+                            }
+                        }
+                }
+            }
+        });
+    }
+
+    private void visibilityChanged() {
+        // Reset new message indicator octo when switching to visible
+        consoleLog("Visibility changed to " + !isTabHidden());
+        try {
+            if (!isTabHidden()) {
+                consoleLog("Tab is VISIBLE");
+                if (faviconAlert) {
+                    consoleLog("Starting favicon timer");
+                    faviconAlert = false;
+                    myFaviconTimer.schedule(300);
+                }
+                consoleLog("Setting message manager mode to visible");
+                myMessageManager.setInvisibleMode(false);
+                myPollSpeed = POLL_FAST;
+                myRefreshTimer.schedule(1);
+            } else {
+                consoleLog("Tab is HIDDEN");
+                consoleLog("Setting message manager mode to invisible");
+                myMessageManager.setInvisibleMode(true);
+                if (RuntimeData.getInstance().isMobile()) {
+                    myPollSpeed = POLL_SLOW;
+                    myEntryBox.blurFocus();
+                }
+            }
+        } catch (Exception e) {
+            consoleLog("Exception in visibilityChanged");
+        }
     }
 
     native void consoleLog(String message) /*-{

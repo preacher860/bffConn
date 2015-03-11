@@ -4,6 +4,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -15,6 +17,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.lanouette.app.client.ConsoleLogger;
 import com.lanouette.app.client.FunctionPopup.FunctionPopup;
 import com.lanouette.app.client.RuntimeData;
 import com.lanouette.app.client.UserCallbackInterface;
@@ -25,9 +28,6 @@ public class IconBar implements IsWidget {
     }
 
     private final MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    private UserCallbackInterface userCallbackInterface;
-    private FunctionPopup popup;
-
     @UiField
     FocusPanel panel;
     @UiField
@@ -48,6 +48,10 @@ public class IconBar implements IsWidget {
     Image logoutButton;
     @UiField
     TextBox localBox;
+    @UiField
+    TextBox jumpBox;
+    private UserCallbackInterface userCallbackInterface;
+    private FunctionPopup popup;
 
     public IconBar() {
         uiBinder.createAndBindUi(this);
@@ -92,6 +96,12 @@ public class IconBar implements IsWidget {
     public void showLocationEntry() {
         localBox.setVisible(true);
         localBox.setFocus(true);
+    }
+
+    public void showJumpEntry() {
+        jumpBox.setValue("");
+        jumpBox.setVisible(true);
+        jumpBox.setFocus(true);
     }
 
     private void setTooltipText() {
@@ -140,7 +150,9 @@ public class IconBar implements IsWidget {
 
         octoButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                userCallbackInterface.octopusClicked();
+                jumpBox.setValue("");
+                jumpBox.setVisible(true);
+                jumpBox.setFocus(true);
             }
         });
 
@@ -162,6 +174,45 @@ public class IconBar implements IsWidget {
                     event.stopPropagation();
                     localBox.setVisible(false);
                     userCallbackInterface.localEntered(null);
+                }
+            }
+        });
+
+        jumpBox.addKeyUpHandler(new KeyUpHandler() {
+            public void onKeyUp(KeyUpEvent event) {
+                if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
+                    event.stopPropagation();
+                    String jumpId = jumpBox.getValue();
+                    if (jumpId == null) jumpId = "";
+                    jumpBox.setVisible(false);
+
+                    Integer jumpSeq = 0;
+                    try {
+                        jumpSeq = Integer.valueOf(jumpId);
+                    } catch (Exception e) {
+                        ConsoleLogger.getInstance().log("Invalid jump code " + jumpBox.getValue());
+                    }
+                    userCallbackInterface.jumpEntered(jumpSeq);
+                } else if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE) {
+                    event.stopPropagation();
+                    jumpBox.setVisible(false);
+                }
+            }
+        });
+
+        jumpBox.addKeyDownHandler(new KeyDownHandler() {
+            public void onKeyDown(KeyDownEvent event) {
+                Integer keyCode = event.getNativeEvent().getKeyCode();
+                if ((keyCode < KeyCodes.KEY_ZERO || keyCode > KeyCodes.KEY_NINE) &&
+                        (keyCode < 96 || keyCode > 105) &&  // Keypad digits
+                        (keyCode != KeyCodes.KEY_DELETE) &&
+                        (keyCode != KeyCodes.KEY_BACKSPACE) &&
+                        (keyCode != KeyCodes.KEY_HOME) &&
+                        (keyCode != KeyCodes.KEY_END) &&
+                        (keyCode != KeyCodes.KEY_LEFT) &&
+                        (keyCode != KeyCodes.KEY_RIGHT) &&
+                        (keyCode != KeyCodes.KEY_TAB)) {
+                    event.getNativeEvent().preventDefault();
                 }
             }
         });

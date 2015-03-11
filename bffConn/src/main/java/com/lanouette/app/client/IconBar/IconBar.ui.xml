@@ -24,6 +24,13 @@
             margin-top: 5px;
             height: 15px;
         }
+
+        .jumpBox {
+            vertical-align: top;
+            margin-top: 5px;
+            height: 15px;
+            width: 50px;
+        }
     </ui:style>
 
     <g:FocusPanel ui:field="panel" addStyleNames="{style.panel}">
@@ -36,6 +43,7 @@
             <g:TextBox ui:field="localBox" addStyleNames="{style.localBox}" visible="false"></g:TextBox>
             <g:Image ui:field="statsButton" url="images/stats.png" addStyleNames="{style.image}"></g:Image>
             <g:Image ui:field="octoButton" url="images/octopus.png" addStyleNames="{style.image}"></g:Image>
+            <g:TextBox ui:field="jumpBox" addStyleNames="{style.jumpBox}" visible="false"></g:TextBox>
             <g:Image ui:field="logoutButton" url="images/logout.png" addStyleNames="{style.image}"></g:Image>
         </g:FlowPanel>
     </g:FocusPanel>

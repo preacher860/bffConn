@@ -86,7 +86,7 @@ public class MessageView extends ScrollPanel {
         };
     }
 
-    public void newMessages(ArrayList<MessageContainer> messages) {
+    public void newMessages(ArrayList<MessageContainer> messages, Boolean jumping) {
 		boolean listWasEmtpy;
 		boolean messagesNotOwn = false;
 		boolean myNewestUpdated = false;
@@ -161,7 +161,7 @@ public class MessageView extends ScrollPanel {
 		RuntimeData.getInstance().setNewestSeqId(myNewestDisplayedSeq);
 		RuntimeData.getInstance().setDbVersion(myNewestDisplayedDb);
 		
-		if(myAtBottom) {
+		if(myAtBottom && !jumping) {
 			myKeepAtBottom = 0;
 			myScrollTimer.schedule(200);
 		}
@@ -174,16 +174,18 @@ public class MessageView extends ScrollPanel {
 		if (myNewestUpdated && !listWasEmtpy && messagesNotOwn){
 			myCallbackInterface.newestUpdated();
 		}
-			
-		
+
 		myCallbackInterface.messageDisplayComplete();
 	}
 	
 	public MessageViewElementNative locateElement(int seqId)
 	{
-		for(int elementIndex = myNumOfMessagesDisplayed - 1; elementIndex > 0; elementIndex--)
-			if (((MessageViewElementNative)mainVPanel.getWidget(elementIndex)).getMessage().getMessageSeqId() == seqId)
-				return ((MessageViewElementNative)mainVPanel.getWidget(elementIndex));
+		for(int elementIndex = myNumOfMessagesDisplayed - 1; elementIndex > 0; elementIndex--) {
+			if (((MessageViewElementNative)mainVPanel.getWidget(elementIndex)).getMessage().getMessageSeqId() == seqId) {
+                return ((MessageViewElementNative)mainVPanel.getWidget(elementIndex));
+            }
+        }
+
 		return null;
 	}
 	
@@ -227,4 +229,12 @@ public class MessageView extends ScrollPanel {
 		if (myAtBottom || forced)
 			scrollToBottom();
 	}
+
+    public Boolean isMessageLoaded(Integer seqId) {
+        if((seqId > myNewestDisplayedSeq) || (seqId < myOldestDisplayedSeq)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

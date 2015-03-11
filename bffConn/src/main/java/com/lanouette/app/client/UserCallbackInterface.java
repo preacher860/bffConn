@@ -9,6 +9,7 @@ public interface UserCallbackInterface {
 	public void hideBarClicked();
 	public void showBarClicked();
 	public void localEntered(String local);
+    public void jumpEntered(Integer jumpId);
 	public void scrollTop(int oldest);
 	public void messageDisplayComplete();
 	public void starClicked(int seqId);
