@@ -1,5 +1,5 @@
 package com.lanouette.app.client;
 
-public interface MessageViewElementNativeCallback {
+public interface MessageViewElementCallback {
     void messageUnselect();
 }

@@ -5,8 +5,6 @@ import java.util.Date;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -47,6 +45,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     private static final int MSG_OLD_FETCH_NUM_MOBILE = 100;
     private static final int POLL_FAST = 2000;
     private static final int POLL_SLOW = 10000;
+    private static final int MAX_JUMPBACK_MESSAGES = 4000;
     private final uiBinder uiBinder = GWT.create(uiBinder.class);
     //private final BffProxy proxy;
     private final boolean isMobile = checkMobile();
@@ -416,9 +415,11 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         if (myMessageManager.isMessageLoaded(jumpId)) {
             ConsoleLogger.getInstance().log("Message is loaded");
             jumpToMessage(jumpId);
+        } else if (jumpId > myMessageManager.getNewestDisplayedSeq()){
+            myMessageManager.scrollToBottom();
         } else {
             ConsoleLogger.getInstance().log("Message is NOT loaded");
-            if ((jumpId - 10 > myMessageManager.getOldestDisplayedSeq() - 500)) {
+            if ((jumpId - 10 > myMessageManager.getOldestDisplayedSeq() - MAX_JUMPBACK_MESSAGES)) {
                 jumpAfterLoad = jumpId;
                 loadMessages(jumpId - 10, myMessageManager.getOldestDisplayedSeq() - jumpId + 10);
             }
@@ -427,17 +428,16 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
     public void jumpToMessage(Integer jumpId) {
         // Element should usually be locatable, but take next available if it's not there (likely deleted)
-        MessageViewElementNative element;
+        MessageViewElement element;
 
         for (Integer seqId = jumpId; seqId < myMessageManager.getNewestDisplayedSeq(); seqId++) {
             element = myMessageManager.locateElement(seqId);
 
             if ((element != null) && (element.isVisible())) {
-                consoleLog("Element " + seqId + " at " + element.getAbsoluteTop());
-                consoleLog("Scroll pos: " + myMessageManager.getVerticalScrollPosition());
-
                 myMessageManager.setVerticalScrollPosition(myMessageManager.getVerticalScrollPosition() -
                         (element.getAbsoluteTop() - 90) * -1);
+                myMessageManager.setSelectedMessage(element);
+
                 break;
             }
         }
@@ -506,6 +506,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
     public void userEntry() {
         myMessageManager.ClearUnreadAll();
+        myMessageManager.clearSelectedMessage();
     }
 
     public void editMessageClicked(MessageContainer message) {

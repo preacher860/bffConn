@@ -2,6 +2,9 @@ package com.lanouette.app.client;
 
 import java.util.ArrayList;
 
+import com.allen_sauer.gwt.log.client.*;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -12,7 +15,9 @@ import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -20,9 +25,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.lanouette.app.client.MessagePopup.MessagePopup;
-import com.smartgwt.client.types.VerticalAlignment;
 
-public class MessageViewElementNative extends HorizontalPanel implements MessageViewElementNativeCallback {
+public class MessageViewElement extends HorizontalPanel implements MessageViewElementCallback {
     private final boolean isMobile;
 
     private HorizontalPanel infoPane = new HorizontalPanel();
@@ -55,10 +59,10 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
     private MessageContainer myMessage = null;
     private UserContainer messageUser = null;
     private UserContainer myUser = null;
-    private MessageViewElementNative mySelfRef;
+    private MessageViewElement mySelfRef;
 
-    public MessageViewElementNative(MessageContainer message, UserContainer user,
-            UserContainer myself, UserCallbackInterface cb) {
+    public MessageViewElement(MessageContainer message, UserContainer user,
+                              UserContainer myself, UserCallbackInterface cb) {
         myUserCallbackInterface = cb;
         myMessageOriginatingUser = user.getNick();
         myMessage = message;
@@ -151,6 +155,31 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
         userInfoLabel.setHTML(infoLabelContents);
 
         userMessagePane.setHTML(myEnhancedMessage);
+        Anchor testAnchor = new Anchor();
+        ClickHandler handler = new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                ConsoleLogger.getInstance().log("Anchor clicked");
+            }
+        };
+       // Anchor.wrap(DOM.getElementById("myLink")).addClickHandler(handler);
+
+        NodeList<Element> anchors = userMessagePane.getElement().getElementsByTagName("a");
+        ConsoleLogger.getInstance().log("Found anchors: " + anchors.getLength());
+//        for ( int i = 0 ; i < anchors.getLength() ; i++ ) {
+//            Element a = anchors.getItem(i);
+//            Anchor link = new Anchor(a.getInnerHTML());
+//            link.addClickHandler(new ClickHandler() {
+//                public void onClick(ClickEvent event) {
+//                    ConsoleLogger.getInstance().log("Anchor clicked");
+//                }
+//            });
+//            //HTMLPanel panel  = new HTMLPanel();
+//            //panel.
+//            //userMessagePane.addAndReplaceElement(link, a);
+//        }
+
+        Element element = DOM.getElementById("myLink");
+        //ConsoleLogger.getInstance().log("Element HTML: " + element.toString());
 
         infoPane.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         infoPane.add(userInfoLabel);
@@ -180,7 +209,7 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
                     final MessagePopup popup = new MessagePopup(myMessage,
                             myUser.equals(messageUser),
                             myUserCallbackInterface,
-                            MessageViewElementNative.this);
+                            MessageViewElement.this);
 
                     popup.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
                         public void setPosition(int offsetWidth, int offsetHeight) {
@@ -206,7 +235,7 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
                         }
                     });
 
-                    addStyleName("messageViewElementSelect");
+                    messageSelect();
                 }
             };
             messagePane.addDomHandler(messagePaneClickHandler, ClickEvent.getType());
@@ -437,7 +466,9 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
             outputMessage += item + " ";
         }
 
-        return outputMessage;
+        String finalMessage = "<a id='myLink'>TestLink</a>" + outputMessage;
+
+        return finalMessage;
     }
 
     private String encapsulateLink(String link) {
@@ -470,6 +501,10 @@ public class MessageViewElementNative extends HorizontalPanel implements Message
             encapsulatedLink = encapsulateLink(link);
         }
         return encapsulatedLink;
+    }
+
+    public void messageSelect() {
+        addStyleName("messageViewElementSelect");
     }
 
     public void messageUnselect() {

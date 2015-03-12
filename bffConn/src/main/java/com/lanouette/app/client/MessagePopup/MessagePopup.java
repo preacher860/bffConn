@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.lanouette.app.client.MessageContainer;
-import com.lanouette.app.client.MessageViewElementNativeCallback;
+import com.lanouette.app.client.MessageViewElementCallback;
 import com.lanouette.app.client.UserCallbackInterface;
 import com.lanouette.app.client.UserManager;
 
@@ -27,7 +27,7 @@ public class MessagePopup extends PopupPanel {
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
     private UserCallbackInterface myCallbackInterface;
-    private MessageViewElementNativeCallback myMessageCallback;
+    private MessageViewElementCallback myMessageCallback;
     private MessageContainer myMessage;
 
     @UiField
@@ -54,7 +54,7 @@ public class MessagePopup extends PopupPanel {
     public MessagePopup(MessageContainer message,
                         boolean isMine,
                         UserCallbackInterface callbackInterface,
-                        MessageViewElementNativeCallback messageCallback) {
+                        MessageViewElementCallback messageCallback) {
         super(true);
 
         myCallbackInterface = callbackInterface;

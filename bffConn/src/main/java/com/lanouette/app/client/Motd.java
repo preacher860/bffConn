@@ -49,7 +49,7 @@ public class Motd extends HTML {
 		return !(motd.text.equals(myMotd)) || !(motd.stars.equals(myStars));
 	}
 	
-	// Shameless duplication from MessageViewElementNative, tsk
+	// Shameless duplication from MessageViewElement, tsk
 	private String encapsulateLink(String link)
 	{
 		String encapsulatedLink;

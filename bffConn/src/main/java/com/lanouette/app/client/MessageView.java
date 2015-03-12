@@ -28,6 +28,7 @@ public class MessageView extends ScrollPanel {
 	private int myUnreadHighest = 0;
 	private int myKeepAtBottom = 0;
 	private boolean myInvisibleMode = false;
+    private MessageViewElement selectedMessage = null;
 	
 	public MessageView(){
 
@@ -77,7 +78,7 @@ public class MessageView extends ScrollPanel {
         myPositionTimer = new Timer() {
             @Override
             public void run() {
-                MessageViewElementNative element;
+                MessageViewElement element;
                 if ( (element = locateElement(myLastKnownOldest)) != null) {
                     System.out.println("Setting scrollpos to " + element.getElement().getOffsetTop());
                     setVerticalScrollPosition(element.getElement().getOffsetTop());
@@ -92,8 +93,8 @@ public class MessageView extends ScrollPanel {
 		boolean myNewestUpdated = false;
 		
 		if(myNumOfMessagesDisplayed > 0){
-			myNewestDisplayedSeq = ((MessageViewElementNative)mainVPanel.getWidget(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
-			myOldestDisplayedSeq = ((MessageViewElementNative)mainVPanel.getWidget(0)).getMessage().getMessageSeqId();
+			myNewestDisplayedSeq = ((MessageViewElement)mainVPanel.getWidget(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
+			myOldestDisplayedSeq = ((MessageViewElement)mainVPanel.getWidget(0)).getMessage().getMessageSeqId();
 			listWasEmtpy = false;
 		} else
 			listWasEmtpy = true;
@@ -104,7 +105,7 @@ public class MessageView extends ScrollPanel {
 			if(currentMessage.getMessageUserId() != RuntimeData.getInstance().getUserId())
 				messagesNotOwn = true;
 
-			MessageViewElementNative element = new MessageViewElementNative(currentMessage, 
+			MessageViewElement element = new MessageViewElement(currentMessage,
 					UserManager.getInstance().getUser(currentMessage.getMessageUserId()),
 					UserManager.getInstance().getUser(RuntimeData.getInstance().getUserId()),
 					myCallbackInterface);
@@ -135,12 +136,12 @@ public class MessageView extends ScrollPanel {
 			}
 			else {  //somewhere in-between.  Find appropriate insertion point
 				for(int elementIndex = myNumOfMessagesDisplayed - 1; elementIndex > 0; elementIndex--) {
-					int currentSeq = ((MessageViewElementNative)mainVPanel.getWidget(elementIndex)).getMessage().getMessageSeqId();
-					int previousSeq = ((MessageViewElementNative)mainVPanel.getWidget(elementIndex - 1)).getMessage().getMessageSeqId();
+					int currentSeq = ((MessageViewElement)mainVPanel.getWidget(elementIndex)).getMessage().getMessageSeqId();
+					int previousSeq = ((MessageViewElement)mainVPanel.getWidget(elementIndex - 1)).getMessage().getMessageSeqId();
 					//System.out.println("current: " + currentSeq + " previous: " + previousSeq);
 
 					if (currentSeq == currentMessage.getMessageSeqId()){
-						((MessageViewElementNative)mainVPanel.getWidget(elementIndex)).updateMessage(currentMessage);
+						((MessageViewElement)mainVPanel.getWidget(elementIndex)).updateMessage(currentMessage);
 						break;
 					}
 					if((currentMessage.getMessageSeqId() < currentSeq) && (currentMessage.getMessageSeqId() > previousSeq)){
@@ -155,8 +156,8 @@ public class MessageView extends ScrollPanel {
 			if(currentMessage.getMessageDbVersion() > myNewestDisplayedDb)
 				myNewestDisplayedDb = currentMessage.getMessageDbVersion();
 		}
-		myNewestDisplayedSeq = ((MessageViewElementNative)mainVPanel.getWidget(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
-		myOldestDisplayedSeq = ((MessageViewElementNative)mainVPanel.getWidget(0)).getMessage().getMessageSeqId();
+		myNewestDisplayedSeq = ((MessageViewElement)mainVPanel.getWidget(myNumOfMessagesDisplayed - 1)).getMessage().getMessageSeqId();
+		myOldestDisplayedSeq = ((MessageViewElement)mainVPanel.getWidget(0)).getMessage().getMessageSeqId();
 		
 		RuntimeData.getInstance().setNewestSeqId(myNewestDisplayedSeq);
 		RuntimeData.getInstance().setDbVersion(myNewestDisplayedDb);
@@ -178,11 +179,11 @@ public class MessageView extends ScrollPanel {
 		myCallbackInterface.messageDisplayComplete();
 	}
 	
-	public MessageViewElementNative locateElement(int seqId)
+	public MessageViewElement locateElement(int seqId)
 	{
 		for(int elementIndex = myNumOfMessagesDisplayed - 1; elementIndex > 0; elementIndex--) {
-			if (((MessageViewElementNative)mainVPanel.getWidget(elementIndex)).getMessage().getMessageSeqId() == seqId) {
-                return ((MessageViewElementNative)mainVPanel.getWidget(elementIndex));
+			if (((MessageViewElement)mainVPanel.getWidget(elementIndex)).getMessage().getMessageSeqId() == seqId) {
+                return ((MessageViewElement)mainVPanel.getWidget(elementIndex));
             }
         }
 
@@ -195,7 +196,7 @@ public class MessageView extends ScrollPanel {
 		
 		for (int messageId = low; messageId <= high; messageId++)
 		{
-			MessageViewElementNative currentElement = locateElement(messageId);
+			MessageViewElement currentElement = locateElement(messageId);
 			if (currentElement != null)
 				currentElement.setUnread(true);
 		}
@@ -204,13 +205,26 @@ public class MessageView extends ScrollPanel {
 	public void ClearUnreadAll() {
 		for (int messageId = myUnreadLowest; messageId <= myUnreadHighest; messageId++)
 		{
-			MessageViewElementNative currentElement = locateElement(messageId);
+			MessageViewElement currentElement = locateElement(messageId);
 			if (currentElement != null)
 				currentElement.setUnread(false);
 		}
 		myUnreadLowest = 0;
 		myUnreadHighest = 0;
 	}
+
+    public void setSelectedMessage(MessageViewElement message) {
+        clearSelectedMessage();
+
+        selectedMessage = message;
+        message.messageSelect();
+    }
+
+    public void clearSelectedMessage() {
+        if(selectedMessage != null) {
+            selectedMessage.messageUnselect();
+        }
+    }
 	
 	public int getOldestDisplayedSeq() {
 		return myOldestDisplayedSeq;

@@ -28,6 +28,10 @@
     min-height: 14px;
 }
 
+.messageViewElementSelect {
+    border: 2px solid red !important;
+}
+
 .messageEditBox {
     font-family: Arial Unicode MS, Arial, sans-serif;
     width: 100%;
