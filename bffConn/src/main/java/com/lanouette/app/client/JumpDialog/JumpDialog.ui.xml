@@ -14,8 +14,8 @@
 
         .dialogEntryBox{
             padding: 1px !important;
-            font-size: x-large;
             margin: 5px;
+            font-size: x-large;
         }
 
         .dialogButton {
@@ -29,15 +29,15 @@
 
     <g:VerticalPanel ui:field="mainPanel">
         <g:cell horizontalAlignment="ALIGN_CENTER">
-        <g:Label styleName="{style.dialogHeader}">Localisation</g:Label>
+        <g:Label styleName="{style.dialogHeader}">Saut vers message</g:Label>
         </g:cell>
-        <g:TextBox styleName="{style.dialogEntryBox}" maxLength="30" ui:field="localTextBox"></g:TextBox>
+        <g:TextBox styleName="{style.dialogEntryBox}" maxLength="6" ui:field="jumpTextBox"></g:TextBox>
         <g:HorizontalPanel width="100%">
             <g:cell verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_CENTER">
                 <g:Button styleName="{style.dialogButton}" ui:field="cancelButton">Annuler</g:Button>
             </g:cell>
             <g:cell verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_CENTER">
-                <g:Button styleName="{style.dialogButton}" ui:field="acceptButton">Valider</g:Button>
+                <g:Button styleName="{style.dialogButton}" ui:field="jumpButton">Sauter</g:Button>
             </g:cell>
         </g:HorizontalPanel>
     </g:VerticalPanel>

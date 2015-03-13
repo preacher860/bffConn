@@ -158,10 +158,17 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
                     try {
                         Integer value = Integer.valueOf(elementText.substring(1, elementText.length()));
                         ConsoleLogger.getInstance().log("Jumping to message " + value);
+                        event.stopPropagation();
                         myUserCallbackInterface.jumpLinkClicked(value);
                     } catch (Exception e) {
                         ConsoleLogger.getInstance().log("Jump doesn't appear to be a valid int");
                     }
+                }
+
+                // Check for links as not to pop the menu if following
+                String elementHref = Element.as(event.getNativeEvent().getEventTarget()).getPropertyString("href");
+                if (elementHref.startsWith("http://") || elementHref.startsWith("https://")) {
+                    event.stopPropagation();
                 }
             }
         });

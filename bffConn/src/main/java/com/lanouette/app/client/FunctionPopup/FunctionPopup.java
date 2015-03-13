@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.lanouette.app.client.JumpDialog.JumpDialog;
 import com.lanouette.app.client.LocalDialog.LocalDialog;
 import com.lanouette.app.client.UserCallbackInterface;
 
@@ -21,6 +22,7 @@ public class FunctionPopup extends PopupPanel {
 
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     private LocalDialog localDialog;
+    private JumpDialog jumpDialog;
 
     @UiField
     VerticalPanel mainPanel;
@@ -34,6 +36,8 @@ public class FunctionPopup extends PopupPanel {
     FocusPanel localPanel;
     @UiField
     FocusPanel statsPanel;
+    @UiField
+    FocusPanel octoPanel;
     @UiField
     FocusPanel logoutPanel;
     @UiField
@@ -51,6 +55,7 @@ public class FunctionPopup extends PopupPanel {
         setWidget(uiBinder.createAndBindUi(this));
 
         localDialog = new LocalDialog(myUserCallbackInterface);
+        jumpDialog = new JumpDialog(myUserCallbackInterface);
 
         closePanel.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent clickEvent) {
@@ -89,6 +94,19 @@ public class FunctionPopup extends PopupPanel {
                         int left = Window.getClientWidth() / 2  - offsetWidth / 2;
                         int top = 80;
                         localDialog.setPopupPosition(left, top);
+                    }
+                });
+            }
+        });
+
+        octoPanel.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent clickEvent) {
+                hide();
+                jumpDialog.setPopupPositionAndShow(new PopupPanel.PositionCallback() {
+                    public void setPosition(int offsetWidth, int offsetHeight) {
+                        int left = Window.getClientWidth() / 2  - offsetWidth / 2;
+                        int top = 80;
+                        jumpDialog.setPopupPosition(left, top);
                     }
                 });
             }

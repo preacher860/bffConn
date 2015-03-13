@@ -203,15 +203,16 @@ public class IconBar implements IsWidget {
         jumpBox.addKeyDownHandler(new KeyDownHandler() {
             public void onKeyDown(KeyDownEvent event) {
                 Integer keyCode = event.getNativeEvent().getKeyCode();
-                if ((keyCode < KeyCodes.KEY_ZERO || keyCode > KeyCodes.KEY_NINE) &&
-                        (keyCode < 96 || keyCode > 105) &&  // Keypad digits
-                        (keyCode != KeyCodes.KEY_DELETE) &&
-                        (keyCode != KeyCodes.KEY_BACKSPACE) &&
-                        (keyCode != KeyCodes.KEY_HOME) &&
-                        (keyCode != KeyCodes.KEY_END) &&
-                        (keyCode != KeyCodes.KEY_LEFT) &&
-                        (keyCode != KeyCodes.KEY_RIGHT) &&
-                        (keyCode != KeyCodes.KEY_TAB)) {
+                if (event.isShiftKeyDown() || event.isAltKeyDown() || event.isControlKeyDown() ||
+                        (!(keyCode >= KeyCodes.KEY_ZERO && keyCode <= KeyCodes.KEY_NINE) &&
+                                !(keyCode >= 96 && keyCode <= 105) &&  // Keypad digits
+                                (keyCode != KeyCodes.KEY_DELETE) &&
+                                (keyCode != KeyCodes.KEY_BACKSPACE) &&
+                                (keyCode != KeyCodes.KEY_HOME) &&
+                                (keyCode != KeyCodes.KEY_END) &&
+                                (keyCode != KeyCodes.KEY_LEFT) &&
+                                (keyCode != KeyCodes.KEY_RIGHT) &&
+                                (keyCode != KeyCodes.KEY_TAB))) {
                     event.getNativeEvent().preventDefault();
                 }
             }

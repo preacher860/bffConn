@@ -46,7 +46,8 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     private static final int MSG_OLD_FETCH_NUM_MOBILE = 100;
     private static final int POLL_FAST = 2000;
     private static final int POLL_SLOW = 10000;
-    private static final int MAX_JUMPBACK_MESSAGES = 4000;
+    private static final int MAX_JUMPBACK_MESSAGES = 2000;
+    private static final int MAX_JUMPBACK_MESSAGES_MOBILE = 500;
     private final uiBinder uiBinder = GWT.create(uiBinder.class);
     //private final BffProxy proxy;
     private final boolean isMobile = checkMobile();
@@ -430,7 +431,8 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
             myMessageManager.scrollToBottom();
         } else {
             ConsoleLogger.getInstance().log("Message is NOT loaded");
-            if ((jumpId - 10 > myMessageManager.getOldestDisplayedSeq() - MAX_JUMPBACK_MESSAGES)) {
+            Integer jumpBack = RuntimeData.getInstance().isMobile()? MAX_JUMPBACK_MESSAGES_MOBILE : MAX_JUMPBACK_MESSAGES;
+            if ((jumpId - 10 > myMessageManager.getOldestDisplayedSeq() - jumpBack)) {
                 jumpAfterLoad = jumpId;
                 loadMessages((jumpId - 10 < 1)? 1 : jumpId - 10, myMessageManager.getOldestDisplayedSeq() - jumpId + 10);
             }
@@ -545,10 +547,10 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
     public void showBarClicked() {
         compactModeEnabled = false;
-        mainDockPanel.setWidgetSize(leftToolbarStack, 240);
+        mainDockPanel.setWidgetSize(leftToolbarStack, 225);
         leftToolbarStack.setVisible(true);
         headerImage.setVisible(true);
-        headerStack.setCellWidth(headerImage, "240px");
+        headerStack.setCellWidth(headerImage, "225px");
         iconBar.setNormalView();
         userButtonBar.setVisible(false);
     }
