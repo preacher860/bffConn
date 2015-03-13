@@ -1,5 +1,7 @@
 package com.lanouette.app.client;
 
+import com.google.gwt.user.client.Window;
+
 public class UserContainer {
 
 	private Integer myId;
@@ -12,6 +14,7 @@ public class UserContainer {
 	private int		myEditedMessages;
 	private int 	myStarsSent;
 	private int		myStarsRcvd;
+    private String  myHostAvatarURL;
 	
 	public UserContainer(Integer Id, String Nick, String Name, String AvatarURL, boolean online, int messages, int deleted, int edited, int starsSent, int starsRcvd)
 	{
@@ -25,6 +28,8 @@ public class UserContainer {
 		myEditedMessages = edited;
 		myStarsSent = starsSent;
 		myStarsRcvd = starsRcvd;
+        myHostAvatarURL = Window.Location.getProtocol() + "//" +  Window.Location.getHost() + "/images" +
+                AvatarURL.substring(AvatarURL.lastIndexOf('/'), AvatarURL.length());
 	}
 	
 	public UserContainer(UserContainer user)
@@ -39,6 +44,7 @@ public class UserContainer {
 		myEditedMessages = user.getEditedMessages();
 		myStarsSent = user.getStarsSent();
 		myStarsRcvd = user.getStarsRcvd();
+        myHostAvatarURL = user.getHostAvatarURL();
 	}
 	
 	public boolean equals(UserContainer user)
@@ -47,7 +53,7 @@ public class UserContainer {
 		if(myId.equals(user.getId()) &&
 		   (myNick.compareTo(user.getNick()) == 0) &&
 		   (myName.compareTo(user.getName()) == 0) &&
-		   (myAvatarURL.compareTo(user.getAvatarURL()) == 0) &&
+		   (myAvatarURL.compareTo(user.getHostAvatarURL()) == 0) &&
 		    myOnlineStatus == user.getOnlineStatus())
 			return true;
 		
@@ -78,8 +84,12 @@ public class UserContainer {
 	public void setAvatarURL(String avatarURL) {
 		myAvatarURL = avatarURL;
 	}
-	
-	public boolean getOnlineStatus() {
+
+    public String getHostAvatarURL() {
+        return myHostAvatarURL;
+    }
+
+    public boolean getOnlineStatus() {
 		return myOnlineStatus;
 	}
 	

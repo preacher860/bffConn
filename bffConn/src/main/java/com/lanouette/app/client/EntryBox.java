@@ -137,7 +137,7 @@ public class EntryBox extends HorizontalPanel {
     }
 
     public void setUser(UserContainer user) {
-        Image userImage = new Image(user.getAvatarURL());
+        Image userImage = new Image(user.getHostAvatarURL());
         userImage.setStyleName("userAvatarEntryBox");
         imageStack.add(userImage);
         imageStack.add(countItem);

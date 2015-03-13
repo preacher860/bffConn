@@ -55,7 +55,6 @@ public class UserManager {
 	}
 	
 	public ArrayList<String> idListToArray(String idList){
-		//ArrayList<String> userArray = new ArrayList<String>();
 		String [] userIds = idList.split("[,]");
 		ArrayList<String> nickArray = new ArrayList<String>();
 		

@@ -47,7 +47,7 @@ public class OnlineUsers implements IsWidget {
 
             if (userManager.getOnlineUsers() != null) {
                 for (UserContainer user : userManager.getOnlineUsers()) {
-                    UserTile tile = new UserTile(user.getAvatarURL(), user.getNick(), tileEvent);
+                    UserTile tile = new UserTile(user.getHostAvatarURL(), user.getNick(), tileEvent);
                     usersView.add(tile);
                 }
             }

@@ -54,7 +54,7 @@ public class UserButtonBar extends FocusPanel {
             if (users != null) {
                 for (UserContainer user : users) {
                     Image image = new Image();
-                    image.setUrl(user.getAvatarURL());
+                    image.setUrl(user.getHostAvatarURL());
                     image.setStyleName("headerAvatar");
                     image.setTitle(user.getNick());
 

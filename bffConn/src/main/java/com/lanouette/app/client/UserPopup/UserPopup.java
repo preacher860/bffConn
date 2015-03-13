@@ -53,7 +53,7 @@ public class UserPopup extends PopupPanel {
 
         for (UserContainer user : users) {
             Image image = new Image();
-            image.setUrl(user.getAvatarURL());
+            image.setUrl(user.getHostAvatarURL());
             image.setStyleName("popupImage");
 
             Label label = new Label(user.getNick());

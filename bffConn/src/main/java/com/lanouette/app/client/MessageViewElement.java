@@ -2,9 +2,6 @@ package com.lanouette.app.client;
 
 import java.util.ArrayList;
 
-import com.allen_sauer.gwt.log.client.*;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -14,10 +11,11 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -28,7 +26,6 @@ import com.lanouette.app.client.MessagePopup.MessagePopup;
 
 public class MessageViewElement extends HorizontalPanel implements MessageViewElementCallback {
     private final boolean isMobile;
-
     private HorizontalPanel infoPane = new HorizontalPanel();
     private HorizontalPanel iconPane = new HorizontalPanel();
     private VerticalPanel messagePane = new VerticalPanel();
@@ -37,7 +34,6 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
     private HorizontalPanel starStack = new HorizontalPanel();
     private HorizontalPanel deleteStack = new HorizontalPanel();
     private HorizontalPanel editStack = new HorizontalPanel();
-
     private HTML userMessagePane = new HTML();
     private Image starIcon = new Image("images/stargray.png");
     private Image starOverIcon = new Image("images/stargray_Over.png");
@@ -49,7 +45,6 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
     private Label deleteLabel = new Label("Effacer");
     private Label editLabel = new Label("Éditer");
     private Image userImage;
-
     private boolean starred = false;
     private boolean myUnread = false;
     private boolean forMe = false;
@@ -81,15 +76,15 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
 
         setupStarred(myMessage);
         forMe = isMessageForLoggedUser(message, myself);
-        myEnhancedMessage = enhanceMessage(myMessage.getMessage());
+        myEnhancedMessage = enhanceMessage(myMessage);
 
         setStyleName("messageViewElement");
 
         Integer kittenSelect = 48 + message.getMessageUserId();
-        if (user.getAvatarURL().isEmpty())
+        if (user.getHostAvatarURL().isEmpty())
             userImage = new Image("http://placekitten.com/" + kittenSelect + "/" + kittenSelect);
         else
-            userImage = new Image(user.getAvatarURL());
+            userImage = new Image(user.getHostAvatarURL());
 
         userImage.setStyleName("userAvatar");
         userImage.setTitle(myMessageOriginatingUser);
@@ -155,16 +150,42 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
         userInfoLabel.setHTML(infoLabelContents);
 
         userMessagePane.setHTML(myEnhancedMessage);
-        Anchor testAnchor = new Anchor();
-        ClickHandler handler = new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                ConsoleLogger.getInstance().log("Anchor clicked");
-            }
-        };
-       // Anchor.wrap(DOM.getElementById("myLink")).addClickHandler(handler);
+//        Anchor testAnchor = new Anchor();
 
-        NodeList<Element> anchors = userMessagePane.getElement().getElementsByTagName("a");
-        ConsoleLogger.getInstance().log("Found anchors: " + anchors.getLength());
+        if (message.getMessageSeqId() == 1345) {
+            Timer timer = new Timer() {
+                @Override
+                public void run() {
+
+                    ClickHandler handler = new ClickHandler() {
+                        public void onClick(ClickEvent event) {
+                            ConsoleLogger.getInstance().log("Anchor clicked");
+                        }
+                    };
+
+
+                    Element element = DOM.getElementById("myLink");
+                    ConsoleLogger.getInstance().log(element.toString());
+
+                    Anchor.wrap(element).addClickHandler(handler);
+                    //Anchor anchor = new Anchor(element.getInnerHTML());
+                    //anchor.addClickHandler(handler);
+                }
+            };
+
+            //timer.schedule(4000);
+        }
+
+        userMessagePane.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                Element trgt = Element.as(event.getNativeEvent().getEventTarget());
+                ConsoleLogger.getInstance().log("Click target: " + trgt.getInnerHTML());
+            }
+        });
+        // Anchor.wrap(DOM.getElementById("myLink")).addClickHandler(handler);
+
+        //NodeList<Element> anchors = userMessagePane.getElement().getElementsByTagName("a");
+        //ConsoleLogger.getInstance().log("Found anchors: " + anchors.getLength());
 //        for ( int i = 0 ; i < anchors.getLength() ; i++ ) {
 //            Element a = anchors.getItem(i);
 //            Anchor link = new Anchor(a.getInnerHTML());
@@ -178,13 +199,12 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
 //            //userMessagePane.addAndReplaceElement(link, a);
 //        }
 
-        Element element = DOM.getElementById("myLink");
+        //Element element = DOM.getElementById("myLink");
         //ConsoleLogger.getInstance().log("Element HTML: " + element.toString());
 
         infoPane.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         infoPane.add(userInfoLabel);
         infoPane.add(iconPane);
-
 
         setStyleName("messageViewElement");
         userMessagePane.setStyleName("messageViewElementBoxNormal");
@@ -356,20 +376,6 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
         }
     }
 
-    private void setUserPaneColor() {
-        userMessagePane.setStyleName("messageViewElementBox");
-
-        if (forMe && myUnread)
-            userMessagePane.addStyleName("messageViewElementBoxAdresseeUnread"); // Addressee + unread purple
-        else if (forMe)
-            userMessagePane.addStyleName("messageViewElementBoxAdressee"); // Addressee green
-        else if (myUnread)
-            userMessagePane.addStyleName("messageViewElementBoxUnread"); // Unread orange
-        else {
-            userMessagePane.addStyleName("messageViewElementBoxNormal"); // Normal blue
-        }
-    }
-
     public boolean isMessageForLoggedUser(MessageContainer message, UserContainer myself) {
         String atUserNick = "@" + myself.getNick();
 
@@ -386,10 +392,37 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
         if (message.isMessageDeleted())
             setVisible(false);
 
-        userMessagePane.setHTML(enhanceMessage(message.getMessage()));
+        userMessagePane.setHTML(enhanceMessage(message));
         forMe = isMessageForLoggedUser(message, myUser);
         setUserPaneColor();
         setupStarred(message);
+    }
+
+    public void setUnread(boolean state) {
+        myUnread = state;
+        setUserPaneColor();
+    }
+
+    public void messageSelect() {
+        addStyleName("messageViewElementSelect");
+    }
+
+    public void messageUnselect() {
+        removeStyleName("messageViewElementSelect");
+    }
+
+    private void setUserPaneColor() {
+        userMessagePane.setStyleName("messageViewElementBox");
+
+        if (forMe && myUnread)
+            userMessagePane.addStyleName("messageViewElementBoxAdresseeUnread"); // Addressee + unread purple
+        else if (forMe)
+            userMessagePane.addStyleName("messageViewElementBoxAdressee"); // Addressee green
+        else if (myUnread)
+            userMessagePane.addStyleName("messageViewElementBoxUnread"); // Unread orange
+        else {
+            userMessagePane.addStyleName("messageViewElementBoxNormal"); // Normal blue
+        }
     }
 
     private void setupStarred(MessageContainer message) {
@@ -417,17 +450,12 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
         }
     }
 
-    public void setUnread(boolean state) {
-        myUnread = state;
-        setUserPaneColor();
-    }
-
-    private String enhanceMessage(String Message) {
+    private String enhanceMessage(MessageContainer message) {
         String outputMessage = "";
         int token = 0;
 
         // Split the message in tokens (separator is space) an try to locate URLs
-        String[] parts = Message.split("\\s+");
+        String[] parts = message.getMessage().split("\\s+");
 
         // Check if the message is targeted at someone (
         for (int tok = 0; tok < parts.length; tok++) {
@@ -466,9 +494,13 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
             outputMessage += item + " ";
         }
 
-        String finalMessage = "<a id='myLink'>TestLink</a>" + outputMessage;
+        if (message.getMessageSeqId() > 1300) {
+            String finalMessage = "<a id='myLink'>TestLink</a>" + outputMessage;
+            return finalMessage;
 
-        return finalMessage;
+        } else {
+            return outputMessage;
+        }
     }
 
     private String encapsulateLink(String link) {
@@ -501,13 +533,5 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
             encapsulatedLink = encapsulateLink(link);
         }
         return encapsulatedLink;
-    }
-
-    public void messageSelect() {
-        addStyleName("messageViewElementSelect");
-    }
-
-    public void messageUnselect() {
-        removeStyleName("messageViewElementSelect");
     }
 }

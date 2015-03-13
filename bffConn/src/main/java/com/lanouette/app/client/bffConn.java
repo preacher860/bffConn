@@ -8,6 +8,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Cookies;
@@ -125,6 +126,16 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         onlineUsers.initialize(this);
         myEntryBox.initialize(this, this);
         myMessageManager.initialize(this);
+
+        UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
+        ConsoleLogger.getInstance().log("Host: " + Window.Location.getHost());
+        ConsoleLogger.getInstance().log("Hostname: " + Window.Location.getHostName());
+        ConsoleLogger.getInstance().log("Href: " + Window.Location.getHref());
+        ConsoleLogger.getInstance().log("Path: " + Window.Location.getPath());
+        ConsoleLogger.getInstance().log("Port: " + Window.Location.getPort());
+        ConsoleLogger.getInstance().log("Proto: " + Window.Location.getProtocol());
+        ConsoleLogger.getInstance().log("Hash: " + Window.Location.getHash());
+        ConsoleLogger.getInstance().log("App URL: " + Window.Location.getProtocol() + "//" +  Window.Location.getHost() );
     }
 
     public void applicationStart() {

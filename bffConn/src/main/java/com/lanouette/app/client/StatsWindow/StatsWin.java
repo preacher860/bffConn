@@ -330,7 +330,7 @@ public class StatsWin {
                 new Column<UserContainer, SafeHtml>(new SafeHtmlCell()) {
                     @Override
                     public SafeHtml getValue(UserContainer object) {
-                        return generateImageHtml(object.getAvatarURL(), 30, 30);
+                        return generateImageHtml(object.getHostAvatarURL(), 30, 30);
                     }
                 };
 
