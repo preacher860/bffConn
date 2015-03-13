@@ -2,6 +2,7 @@ package com.lanouette.app.client;
 
 import java.util.ArrayList;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -11,10 +12,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -150,57 +148,24 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
         userInfoLabel.setHTML(infoLabelContents);
 
         userMessagePane.setHTML(myEnhancedMessage);
-//        Anchor testAnchor = new Anchor();
-
-        if (message.getMessageSeqId() == 1345) {
-            Timer timer = new Timer() {
-                @Override
-                public void run() {
-
-                    ClickHandler handler = new ClickHandler() {
-                        public void onClick(ClickEvent event) {
-                            ConsoleLogger.getInstance().log("Anchor clicked");
-                        }
-                    };
-
-
-                    Element element = DOM.getElementById("myLink");
-                    ConsoleLogger.getInstance().log(element.toString());
-
-                    Anchor.wrap(element).addClickHandler(handler);
-                    //Anchor anchor = new Anchor(element.getInnerHTML());
-                    //anchor.addClickHandler(handler);
-                }
-            };
-
-            //timer.schedule(4000);
-        }
 
         userMessagePane.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                Element trgt = Element.as(event.getNativeEvent().getEventTarget());
-                ConsoleLogger.getInstance().log("Click target: " + trgt.getInnerHTML());
+                String elementText = Element.as(event.getNativeEvent().getEventTarget()).getInnerHTML();
+
+                // Check for jump links
+                if (elementText.startsWith("#")) {
+                    try {
+                        Integer value = Integer.valueOf(elementText.substring(1, elementText.length()));
+                        ConsoleLogger.getInstance().log("Jumping to message " + value);
+                        myUserCallbackInterface.jumpLinkClicked(value);
+                    } catch (Exception e) {
+                        ConsoleLogger.getInstance().log("Jump doesn't appear to be a valid int");
+                    }
+                }
             }
         });
-        // Anchor.wrap(DOM.getElementById("myLink")).addClickHandler(handler);
 
-        //NodeList<Element> anchors = userMessagePane.getElement().getElementsByTagName("a");
-        //ConsoleLogger.getInstance().log("Found anchors: " + anchors.getLength());
-//        for ( int i = 0 ; i < anchors.getLength() ; i++ ) {
-//            Element a = anchors.getItem(i);
-//            Anchor link = new Anchor(a.getInnerHTML());
-//            link.addClickHandler(new ClickHandler() {
-//                public void onClick(ClickEvent event) {
-//                    ConsoleLogger.getInstance().log("Anchor clicked");
-//                }
-//            });
-//            //HTMLPanel panel  = new HTMLPanel();
-//            //panel.
-//            //userMessagePane.addAndReplaceElement(link, a);
-//        }
-
-        //Element element = DOM.getElementById("myLink");
-        //ConsoleLogger.getInstance().log("Element HTML: " + element.toString());
 
         infoPane.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         infoPane.add(userInfoLabel);
@@ -491,16 +456,14 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
                 }
             }
 
+            if (item.startsWith("#")) {
+                item = encapsulateJump(item);
+            }
+
             outputMessage += item + " ";
         }
 
-        if (message.getMessageSeqId() > 1300) {
-            String finalMessage = "<a id='myLink'>TestLink</a>" + outputMessage;
-            return finalMessage;
-
-        } else {
-            return outputMessage;
-        }
+        return outputMessage;
     }
 
     private String encapsulateLink(String link) {
@@ -533,5 +496,19 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
             encapsulatedLink = encapsulateLink(link);
         }
         return encapsulatedLink;
+    }
+
+    private String encapsulateJump(String jump) {
+        // First see if we can convert that to an int, otherwise leave it as text
+        try {
+            Integer value = Integer.valueOf(jump.substring(1, jump.length()));
+            if (value < 1) {
+                return jump;
+            }
+        } catch (Exception e) {
+            return jump;
+        }
+
+        return "<a class=\"jumpAnchor\">" + jump + "</a>";
     }
 }

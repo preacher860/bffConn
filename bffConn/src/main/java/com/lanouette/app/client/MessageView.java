@@ -87,6 +87,11 @@ public class MessageView extends ScrollPanel {
         };
     }
 
+    public void cancelKeepAtBottom() {
+        myKeepAtBottom = 0;
+        myScrollTimer.cancel();
+    }
+
     public void newMessages(ArrayList<MessageContainer> messages, Boolean jumping) {
 		boolean listWasEmtpy;
 		boolean messagesNotOwn = false;

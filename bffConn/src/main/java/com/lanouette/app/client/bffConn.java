@@ -432,7 +432,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
             ConsoleLogger.getInstance().log("Message is NOT loaded");
             if ((jumpId - 10 > myMessageManager.getOldestDisplayedSeq() - MAX_JUMPBACK_MESSAGES)) {
                 jumpAfterLoad = jumpId;
-                loadMessages(jumpId - 10, myMessageManager.getOldestDisplayedSeq() - jumpId + 10);
+                loadMessages((jumpId - 10 < 1)? 1 : jumpId - 10, myMessageManager.getOldestDisplayedSeq() - jumpId + 10);
             }
         }
     }
@@ -445,6 +445,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
             element = myMessageManager.locateElement(seqId);
 
             if ((element != null) && (element.isVisible())) {
+                myMessageManager.cancelKeepAtBottom();
                 myMessageManager.setVerticalScrollPosition(myMessageManager.getVerticalScrollPosition() -
                         (element.getAbsoluteTop() - 90) * -1);
                 myMessageManager.setSelectedMessage(element);
@@ -567,6 +568,10 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
     public void motdDeleteClicked() {
         ioModule.DeleteMOTD();
+    }
+
+    public void jumpLinkClicked(Integer seqId) {
+        jumpEntered(seqId);
     }
 
     public boolean checkMobile() {

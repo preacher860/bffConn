@@ -19,4 +19,5 @@ public interface UserCallbackInterface {
 	public void editMessageClicked(MessageContainer message);
 	public void motdStarClicked();
 	public void motdDeleteClicked();
+    public void jumpLinkClicked(Integer seqId);
 }
