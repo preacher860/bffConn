@@ -4,7 +4,7 @@
     <ui:style>
         .panel {
             min-height: 100px;
-            width: 190px;
+            width: 195px;
             border: 1px solid #455469;
             background: #ffffff;
             box-shadow: 4px 4px 5px #888888;

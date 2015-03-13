@@ -428,3 +428,6 @@ h1 {
     left: auto !important;
 }
 
+.jumpAnchor {
+    cursor: pointer;
+}
