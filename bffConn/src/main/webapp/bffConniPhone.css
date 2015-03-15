@@ -120,6 +120,11 @@
         padding: 5px;
     }
 
+    .popupSubLabel {
+        font-size: small;
+        padding: 5px;
+    }
+
     .popupButton {
         font-size: x-large;
         font-weight: bold;
@@ -217,6 +222,11 @@
     .popupLabel {
         font-size: xx-large;
         font-weight: bold;
+        padding: 5px;
+    }
+
+    .popupSubLabel {
+        font-size: medium;
         padding: 5px;
     }
 

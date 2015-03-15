@@ -2,22 +2,26 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
     <ui:style>
-        .buttonPanel {
-            padding: 4px;
+        .panel {
+            width: 300px;
         }
 
         .bottomPanel {
             border-top: solid 1px black;
+            outline:none;
         }
 
         .tableCenter{
             margin: auto;
         }
 
+        .buttonPanel {
+            outline: none;
+        }
     </ui:style>
 
-    <g:VerticalPanel ui:field="mainPanel">
-        <g:FocusPanel ui:field="modeNormalPanel" visible="false">
+    <g:VerticalPanel ui:field="mainPanel" styleName="{style.panel}">
+        <g:FocusPanel ui:field="modeNormalPanel" visible="false"  addStyleNames="{style.buttonPanel}">
             <g:HorizontalPanel>
                 <g:Image url="images/fwd2r.png" addStyleNames="popupImage"></g:Image>
                 <g:cell verticalAlignment="ALIGN_MIDDLE">
@@ -26,7 +30,7 @@
             </g:HorizontalPanel>
         </g:FocusPanel>
 
-        <g:FocusPanel ui:field="modeCompactPanel">
+        <g:FocusPanel ui:field="modeCompactPanel" addStyleNames="{style.buttonPanel}">
             <g:HorizontalPanel>
                 <g:Image url="images/back2r.png" addStyleNames="popupImage"></g:Image>
                 <g:cell verticalAlignment="ALIGN_MIDDLE">
@@ -35,7 +39,7 @@
             </g:HorizontalPanel>
         </g:FocusPanel>
 
-        <g:FocusPanel ui:field="infoPanel">
+        <g:FocusPanel ui:field="infoPanel" addStyleNames="{style.buttonPanel}">
             <g:HorizontalPanel>
                 <g:Image url="images/info.png" addStyleNames="popupImage"></g:Image>
                 <g:cell verticalAlignment="ALIGN_MIDDLE">
@@ -44,7 +48,7 @@
             </g:HorizontalPanel>
         </g:FocusPanel>
 
-        <g:FocusPanel ui:field="localPanel">
+        <g:FocusPanel ui:field="localPanel" addStyleNames="{style.buttonPanel}">
             <g:HorizontalPanel>
                 <g:Image url="images/local.png" addStyleNames="popupImage"></g:Image>
                 <g:cell verticalAlignment="ALIGN_MIDDLE">
@@ -53,7 +57,7 @@
             </g:HorizontalPanel>
         </g:FocusPanel>
 
-        <g:FocusPanel ui:field="statsPanel">
+        <g:FocusPanel ui:field="statsPanel" addStyleNames="{style.buttonPanel}">
             <g:HorizontalPanel>
                 <g:Image url="images/stats.png" addStyleNames="popupImage"></g:Image>
                 <g:cell verticalAlignment="ALIGN_MIDDLE">
@@ -62,7 +66,19 @@
             </g:HorizontalPanel>
         </g:FocusPanel>
 
-        <g:FocusPanel ui:field="logoutPanel">
+        <g:FocusPanel ui:field="alertPanel" addStyleNames="{style.buttonPanel}">
+            <g:HorizontalPanel>
+                <g:Image ui:field="audioButton" url="images/speaker.png" addStyleNames="popupImage"></g:Image>
+                <g:cell verticalAlignment="ALIGN_MIDDLE">
+                    <g:HTMLPanel>
+                    <g:Label addStyleNames="popupLabel">Alertes</g:Label>
+                    <g:Label ui:field="alertDescription" addStyleNames="popupSubLabel">Mode operation</g:Label>
+                    </g:HTMLPanel>
+                </g:cell>
+            </g:HorizontalPanel>
+        </g:FocusPanel>
+
+        <g:FocusPanel ui:field="logoutPanel" addStyleNames="{style.buttonPanel}">
             <g:HorizontalPanel>
                 <g:Image url="images/logout.png" addStyleNames="popupImage"></g:Image>
                 <g:cell verticalAlignment="ALIGN_MIDDLE">

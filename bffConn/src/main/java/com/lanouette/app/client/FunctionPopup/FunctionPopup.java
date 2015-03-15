@@ -7,9 +7,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.lanouette.app.client.Alerts;
+import com.lanouette.app.client.CookieData;
 import com.lanouette.app.client.LocalDialog.LocalDialog;
 import com.lanouette.app.client.UserCallbackInterface;
 
@@ -35,9 +39,15 @@ public class FunctionPopup extends PopupPanel {
     @UiField
     FocusPanel statsPanel;
     @UiField
+    FocusPanel alertPanel;
+    @UiField
     FocusPanel logoutPanel;
     @UiField
     FocusPanel closePanel;
+    @UiField
+    Image audioButton;
+    @UiField
+    Label alertDescription;
 
     public FunctionPopup(UserCallbackInterface callbackInterface) {
         super(false);
@@ -49,6 +59,8 @@ public class FunctionPopup extends PopupPanel {
         setStyleName("popupFrame");
 
         setWidget(uiBinder.createAndBindUi(this));
+
+        setAudioButtonStyle(CookieData.getInstance().getAudioMode());
 
         localDialog = new LocalDialog(myUserCallbackInterface);
 
@@ -101,6 +113,13 @@ public class FunctionPopup extends PopupPanel {
             }
         });
 
+        alertPanel.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                audioButtonToggle();
+                myUserCallbackInterface.alertModeChanged(CookieData.getInstance().getAudioMode());
+            }
+        });
+
         logoutPanel.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent clickEvent) {
                 myUserCallbackInterface.logoutClicked();
@@ -119,6 +138,42 @@ public class FunctionPopup extends PopupPanel {
         modeCompactPanel.setVisible(true);
     }
 
+    public void audioButtonToggle() {
+        if(CookieData.getInstance().getAudioMode().equals("disabled")) {
+            CookieData.getInstance().setAudioMode("once");
+            setAudioButtonStyle("once");
+            Alerts.getInstance().newMessageAlert();
+        } else if (CookieData.getInstance().getAudioMode().equals("once")){
+            CookieData.getInstance().setAudioMode("every");
+            setAudioButtonStyle("every");
+        } else if (CookieData.getInstance().getAudioMode().equals("every")){
+            CookieData.getInstance().setAudioMode("always");
+            setAudioButtonStyle("always");
+        } else if (CookieData.getInstance().getAudioMode().equals("always")){
+            CookieData.getInstance().setAudioMode("disabled");
+            setAudioButtonStyle("disabled");
+        }
+    }
+
+    private void setAudioButtonStyle(String mode) {
+        if(mode.equals("disabled")) {
+            audioButton.addStyleName("speakerIconDisabled");
+            audioButton.setUrl("images/speaker.png");
+            alertDescription.setText("Aucune alerte");
+        } else if(mode.equals("once")) {
+            audioButton.removeStyleName("speakerIconDisabled");
+            audioButton.setUrl("images/speaker.png");
+            alertDescription.setText("Alerte unique hors visibilité");
+        } else if(mode.equals("every")) {
+            audioButton.removeStyleName("speakerIconDisabled");
+            audioButton.setUrl("images/speaker_green.png");
+            alertDescription.setText("Alertes multiples hors visibilité");
+        } else if(mode.equals("always")) {
+            audioButton.removeStyleName("speakerIconDisabled");
+            audioButton.setUrl("images/speaker_red.png");
+            alertDescription.setText("Alertes multiples");
+        }
+    }
     private native void doSetAnimationType(PopupPanel popup) /*-{
         popup.@com.lanouette.app.client.FunctionPopup.FunctionPopup::setAnimationType(Lcom/google/gwt/user/client/ui/PopupPanel$AnimationType;)(@com.google.gwt.user.client.ui.PopupPanel.AnimationType::ROLL_DOWN);
     }-*/;

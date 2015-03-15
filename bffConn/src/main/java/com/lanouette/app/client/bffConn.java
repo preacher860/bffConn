@@ -91,6 +91,8 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     private boolean myUserDataRcvd = false;
     private boolean myMotdRcvd = false;
     private boolean faviconAlert = false;
+    private boolean audioEnabled = false;
+
     private int myPollSpeed = POLL_FAST;
 
     public bffConn() {
@@ -135,7 +137,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         ConsoleLogger.getInstance().log("Port: " + Window.Location.getPort());
         ConsoleLogger.getInstance().log("Proto: " + Window.Location.getProtocol());
         ConsoleLogger.getInstance().log("Hash: " + Window.Location.getHash());
-        ConsoleLogger.getInstance().log("App URL: " + Window.Location.getProtocol() + "//" +  Window.Location.getHost() );
+        ConsoleLogger.getInstance().log("App URL: " + Window.Location.getProtocol() + "//" + Window.Location.getHost());
     }
 
     public void applicationStart() {
@@ -398,6 +400,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
     public void statsClicked() {
         new StatsWin(UserManager.getInstance().getUserList());
+        ConsoleLogger.getInstance().log("Stats returned");
     }
 
     public void localEntered(String local) {
@@ -426,13 +429,13 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         if (myMessageManager.isMessageLoaded(jumpId)) {
             ConsoleLogger.getInstance().log("Message is loaded");
             jumpToMessage(jumpId);
-        } else if (jumpId > myMessageManager.getNewestDisplayedSeq()){
+        } else if (jumpId > myMessageManager.getNewestDisplayedSeq()) {
             myMessageManager.scrollToBottom();
         } else {
             ConsoleLogger.getInstance().log("Message is NOT loaded");
             if ((jumpId - 10 > myMessageManager.getOldestDisplayedSeq() - MAX_JUMPBACK_MESSAGES)) {
                 jumpAfterLoad = jumpId;
-                loadMessages((jumpId - 10 < 1)? 1 : jumpId - 10, myMessageManager.getOldestDisplayedSeq() - jumpId + 10);
+                loadMessages((jumpId - 10 < 1) ? 1 : jumpId - 10, myMessageManager.getOldestDisplayedSeq() - jumpId + 10);
             }
         }
     }
@@ -574,6 +577,10 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         jumpEntered(seqId);
     }
 
+    public void alertModeChanged(String mode) {
+        iconBar.setAudioButtonStyle(mode);
+    }
+
     public boolean checkMobile() {
         if (Window.Navigator.getUserAgent().contains("Mobile") ||
                 Window.Navigator.getUserAgent().contains("Android")) {
@@ -620,6 +627,11 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
                                 ne.stopPropagation();
                             } else if (ne.getKeyCode() == 'i' || ne.getKeyCode() == 'I') {
                                 infoClicked();
+                                event.consume();
+                                ne.preventDefault();
+                                ne.stopPropagation();
+                            } else if (ne.getKeyCode() == 'a' || ne.getKeyCode() == 'A') {
+                                iconBar.audioButtonToggle();
                                 event.consume();
                                 ne.preventDefault();
                                 ne.stopPropagation();

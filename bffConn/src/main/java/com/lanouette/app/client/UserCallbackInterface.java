@@ -20,4 +20,5 @@ public interface UserCallbackInterface {
 	public void motdStarClicked();
 	public void motdDeleteClicked();
     public void jumpLinkClicked(Integer seqId);
+    public void alertModeChanged(String mode);
 }

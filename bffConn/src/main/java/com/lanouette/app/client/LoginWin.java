@@ -129,7 +129,7 @@ public class LoginWin extends VerticalPanel {
 			localisation = "";
 		
 		if (rememberValues) {
-			long cookieLifespan = 1000 * 60 * 60 * 24 * 365; // one year
+			long cookieLifespan = 1000L * 60L * 60L * 24L * 365L; // one year
 		    Date expires = new Date(System.currentTimeMillis() + cookieLifespan);
 		    
 		    Cookies.setCookie("bffRememberNameLoc", "true", expires, null, "/", false);

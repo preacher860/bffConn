@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.media.client.Audio;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -17,7 +18,9 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.lanouette.app.client.Alerts;
 import com.lanouette.app.client.ConsoleLogger;
+import com.lanouette.app.client.CookieData;
 import com.lanouette.app.client.FunctionPopup.FunctionPopup;
 import com.lanouette.app.client.RuntimeData;
 import com.lanouette.app.client.UserCallbackInterface;
@@ -47,6 +50,8 @@ public class IconBar implements IsWidget {
     @UiField
     Image logoutButton;
     @UiField
+    Image audioButton;
+    @UiField
     TextBox localBox;
     @UiField
     TextBox jumpBox;
@@ -61,12 +66,14 @@ public class IconBar implements IsWidget {
         this.userCallbackInterface = userCallbackInterface;
 
         // Popup menu instanciated only on mobile devices
-        if (RuntimeData.getInstance().isMobile()) {
+        if (true){//RuntimeData.getInstance().isMobile()) {
             installPopup();
         } else {
             installHandlers();
             setTooltipText();
         }
+
+        setAudioButtonStyle(CookieData.getInstance().getAudioMode());
     }
 
     public Widget asWidget() {
@@ -110,7 +117,7 @@ public class IconBar implements IsWidget {
         infoButton.setTitle("Info (Ctrl-I)\nVersion " + VersionInfo.CURRENT_MAJOR + "." + VersionInfo.CURRENT_VERSION);
         localButton.setTitle("Changer localisation\n(Ctrl-L)");
         statsButton.setTitle("Statistiques\n(Ctrl-S)");
-        octoButton.setTitle("Octo\n(Ctrl-O)");
+        octoButton.setTitle("Saut vers message\n(Ctrl-O)");
         logoutButton.setTitle("Déconnexion\n(Ctrl-D)");
     }
 
@@ -153,6 +160,12 @@ public class IconBar implements IsWidget {
                 jumpBox.setValue("");
                 jumpBox.setVisible(true);
                 jumpBox.setFocus(true);
+            }
+        });
+
+        audioButton.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                audioButtonToggle();
             }
         });
 
@@ -216,6 +229,43 @@ public class IconBar implements IsWidget {
                 }
             }
         });
+    }
+
+    public void audioButtonToggle() {
+        if(CookieData.getInstance().getAudioMode().equals("disabled")) {
+            CookieData.getInstance().setAudioMode("once");
+            setAudioButtonStyle("once");
+            Alerts.getInstance().newMessageAlert();
+        } else if (CookieData.getInstance().getAudioMode().equals("once")){
+            CookieData.getInstance().setAudioMode("every");
+            setAudioButtonStyle("every");
+        } else if (CookieData.getInstance().getAudioMode().equals("every")){
+            CookieData.getInstance().setAudioMode("always");
+            setAudioButtonStyle("always");
+        } else if (CookieData.getInstance().getAudioMode().equals("always")){
+            CookieData.getInstance().setAudioMode("disabled");
+            setAudioButtonStyle("disabled");
+        }
+    }
+
+    public void setAudioButtonStyle(String mode) {
+        if(mode.equals("disabled")) {
+            audioButton.addStyleName("speakerIconDisabled");
+            audioButton.setUrl("images/speaker.png");
+            audioButton.setTitle("Aucune alerte\nCTRL-A");
+        } else if(mode.equals("once")) {
+            audioButton.removeStyleName("speakerIconDisabled");
+            audioButton.setUrl("images/speaker.png");
+            audioButton.setTitle("Alerte unique hors visibilité\nCTRL-A");
+        } else if(mode.equals("every")) {
+            audioButton.removeStyleName("speakerIconDisabled");
+            audioButton.setUrl("images/speaker_green.png");
+            audioButton.setTitle("Alertes multiples hors visibilité\nCTRL-A");
+        } else if(mode.equals("always")) {
+            audioButton.removeStyleName("speakerIconDisabled");
+            audioButton.setUrl("images/speaker_red.png");
+            audioButton.setTitle("Alertes multiples\nCTRL-A");
+        }
     }
 
     private void installPopup() {

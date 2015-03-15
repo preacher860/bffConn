@@ -159,11 +159,9 @@ public class RuntimeData {
     public void setLocale(String locale) {
         this.locale = locale;
     }
-
     public boolean isSaveLocale() {
         return saveLocale;
     }
-
     public void setSaveLocale(boolean saveLocale) {
         this.saveLocale = saveLocale;
     }

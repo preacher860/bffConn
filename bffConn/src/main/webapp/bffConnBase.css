@@ -431,3 +431,10 @@ h1 {
 .jumpAnchor {
     cursor: pointer;
 }
+
+.speakerIconDisabled {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    opacity: 0.6
+}
+

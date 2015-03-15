@@ -44,6 +44,7 @@
             <g:Image ui:field="statsButton" url="images/stats.png" addStyleNames="{style.image}"></g:Image>
             <g:Image ui:field="octoButton" url="images/octopus.png" addStyleNames="{style.image}"></g:Image>
             <g:TextBox ui:field="jumpBox" addStyleNames="{style.jumpBox}" visible="false"></g:TextBox>
+            <g:Image ui:field="audioButton" url="images/speaker.png" addStyleNames="{style.image}"></g:Image>
             <g:Image ui:field="logoutButton" url="images/logout.png" addStyleNames="{style.image}"></g:Image>
         </g:FlowPanel>
     </g:FocusPanel>
