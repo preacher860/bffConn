@@ -66,6 +66,15 @@
             </g:HorizontalPanel>
         </g:FocusPanel>
 
+        <g:FocusPanel ui:field="octoPanel">
+            <g:HorizontalPanel>
+                <g:Image url="images/octopus.png" addStyleNames="popupImage"></g:Image>
+                <g:cell verticalAlignment="ALIGN_MIDDLE">
+                    <g:Label addStyleNames="popupLabel">Saut</g:Label>
+                </g:cell>
+            </g:HorizontalPanel>
+        </g:FocusPanel>
+
         <g:FocusPanel ui:field="alertPanel" addStyleNames="{style.buttonPanel}">
             <g:HorizontalPanel>
                 <g:Image ui:field="audioButton" url="images/speaker.png" addStyleNames="popupImage"></g:Image>
