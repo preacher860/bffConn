@@ -66,7 +66,7 @@ public class IconBar implements IsWidget {
         this.userCallbackInterface = userCallbackInterface;
 
         // Popup menu instanciated only on mobile devices
-        if (true){//RuntimeData.getInstance().isMobile()) {
+        if (RuntimeData.getInstance().isMobile()) {
             installPopup();
         } else {
             installHandlers();
