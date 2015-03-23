@@ -303,6 +303,13 @@ h1 {
     height: expression(this.height > 200 ? "200px" : true);
 }
 
+.embeddedthumbnail {
+    max-width: 180px;
+    max-height: 60px;
+    width: expression(this.width > 180 ? "180px" : true);
+    height: expression(this.height > 60 ? "60px" : true);
+}
+
 .motd {
     padding-top: 3px;
     font-size: 20px;
@@ -438,3 +445,30 @@ h1 {
     opacity: 0.6
 }
 
+.ogAnchor {
+    text-decoration: none;
+    font-family: "Times New Roman", Georgia, Serif;
+    font-weight: bold;
+    color: black;
+}
+
+.ogAnchor:visited {
+    text-decoration: none;
+    font-family: "Times New Roman", Georgia, Serif;
+    font-weight: bold;
+    color: black;
+}
+
+.ogAnchorImage {
+
+}
+
+.ogTitleContainer {
+    vertical-align:top;
+    padding-left: 4px;
+}
+
+.ogTitleTarget {
+    font-size:smaller;
+    color: #666666;
+}

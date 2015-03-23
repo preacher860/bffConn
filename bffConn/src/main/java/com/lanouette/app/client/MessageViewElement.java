@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -15,8 +16,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.regexp.shared.MatchResult;
@@ -34,6 +33,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.lanouette.app.client.MessagePopup.MessagePopup;
 
 public class MessageViewElement extends HorizontalPanel implements MessageViewElementCallback {
+    private static final String urlPrefix = GWT.getModuleBaseURL();
+    private static final String servletName = "bffconnserver";
     private final boolean isMobile;
     private HorizontalPanel infoPane = new HorizontalPanel();
     private HorizontalPanel iconPane = new HorizontalPanel();
@@ -64,8 +65,6 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
     private UserContainer messageUser = null;
     private UserContainer myUser = null;
     private MessageViewElement mySelfRef;
-    private static final String urlPrefix = GWT.getModuleBaseURL();
-    private static final String servletName = "bffconnserver";
 
     public MessageViewElement(MessageContainer message, UserContainer user,
                               UserContainer myself, UserCallbackInterface cb) {
@@ -87,7 +86,7 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
 
         setupStarred(myMessage);
         forMe = isMessageForLoggedUser(message, myself);
-        myEnhancedMessage = enhanceMessage(myMessage);
+        myEnhancedMessage = enhanceMessage(myMessage.getMessage());
 
         setStyleName("messageViewElement");
 
@@ -184,7 +183,6 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
                 }
             }
         });
-
 
         infoPane.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         infoPane.add(userInfoLabel);
@@ -373,10 +371,11 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
     public void updateMessage(MessageContainer message) {
         myMessage = message;
 
-        if (message.isMessageDeleted())
+        if (message.isMessageDeleted()) {
             setVisible(false);
+        }
 
-        userMessagePane.setHTML(enhanceMessage(message));
+        userMessagePane.setHTML(enhanceMessage(message.getMessage()));
         forMe = isMessageForLoggedUser(message, myUser);
         setUserPaneColor();
         setupStarred(message);
@@ -393,6 +392,102 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
 
     public void messageUnselect() {
         removeStyleName("messageViewElementSelect");
+    }
+
+    public void SendOgDataRequest(String targetUrl) {
+        String url = urlPrefix + servletName;
+        url += "?rnd_value=" + Random.nextInt(400000000);
+
+        String postData = "request_mode=og_data";
+        postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+        postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
+        postData += "&target_url=" + targetUrl;
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
+        try {
+            builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+            builder.sendRequest(postData, new RequestCallback() {
+                public void onError(Request request, Throwable exception) {
+                    // Couldn't connect to server (could be timeout, SOP violation, etc.)
+                }
+
+                public void onResponseReceived(Request request, Response response) {
+                    if (200 == response.getStatusCode()) {
+                        JSONValue jsonValue = JSONParser.parseStrict(response.getText());
+
+                        String targetUrl = jsonValue.isObject().get("target_url").isString().stringValue();
+                        String ogTitle = jsonValue.isObject().get("ogtitle").isString().stringValue();
+                        String ogImage = jsonValue.isObject().get("ogimage").isString().stringValue();
+                        //ConsoleLogger.getInstance().log("Target URL: " + targetUrl);
+                        //ConsoleLogger.getInstance().log("OG Title: " + ogTitle);
+                        //ConsoleLogger.getInstance().log("OG Image: " + ogImage);
+
+                        if (!ogTitle.isEmpty()) {
+                            // Just keep the part before the first splitter
+                            if(ogTitle.contains("|")) {
+                                ogTitle = ogTitle.substring(0, ogTitle.indexOf('|'));
+                            }
+
+                            // Try to locate the anchor where this URL was encapsulated when the message was first
+                            // displayed. If found, replace the anchor with formatted OG data
+                            NodeList<Element> anchors = userMessagePane.getElement().getElementsByTagName("a");
+                            String displayedMessage = userMessagePane.getHTML();
+
+                            for (Integer anchorIndex = 0; anchorIndex < anchors.getLength(); anchorIndex++) {
+                                String anchorItem = anchors.getItem(anchorIndex).toString();
+
+                                // Don't detect anchors we already cooked.
+                                if (anchorItem.contains(targetUrl) && !anchorItem.contains("ogAnchor")) {
+                                    Integer targetUrlPos = displayedMessage.indexOf(anchorItem);
+
+                                    if (targetUrlPos >= 0) {
+                                        String replaced = "";
+
+                                        if (targetUrlPos > 0) {
+                                            replaced = displayedMessage.substring(0, targetUrlPos);
+                                            replaced += "<br>";
+                                        }
+
+                                        replaced += "<table><tr>";
+                                        if (!ogImage.isEmpty()) {
+                                            replaced += "<td>";
+                                            replaced += encapsulateThumbnail(targetUrl, ogImage);
+                                            replaced += "</td>";
+                                        }
+
+                                        replaced += "<td class='ogTitleContainer'>";
+                                        replaced += encapsulateAnchor(targetUrl, ogTitle) + "<br>";
+
+                                        RegExp regExp = RegExp.compile("https?://([a-zA-Z0-9.-]+)");
+                                        MatchResult matcher = regExp.exec(targetUrl);
+                                        if (matcher != null && matcher.getGroupCount() == 2) {
+                                            replaced += "<span class='ogTitleTarget'>";
+                                            replaced += matcher.getGroup(1) + "</span><br>";
+                                        }
+                                        replaced += "</td>";
+                                        replaced += "</tr></table>";
+
+                                        replaced += displayedMessage.substring(targetUrlPos + anchorItem.length(),
+                                                displayedMessage.length());
+
+                                        userMessagePane.setHTML(replaced);
+
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    } else if (403 == response.getStatusCode())
+                        // handleAccessForbidden();
+                        //else
+                        System.out.println("Request response error: " + response.getStatusCode());
+                }
+            }
+            );
+        } catch (RequestException e) {
+            Window.alert("Server error: " + e);
+            // Couldn't connect to server
+        }
     }
 
     private void setUserPaneColor() {
@@ -434,12 +529,12 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
         }
     }
 
-    private String enhanceMessage(MessageContainer message) {
+    private String enhanceMessage(String message) {
         String outputMessage = "";
         int token = 0;
 
         // Split the message in tokens (separator is space) an try to locate URLs
-        String[] parts = message.getMessage().split("\\s+");
+        String[] parts = message.split("\\s+");
 
         // Check if the message is targeted at someone (
         for (int tok = 0; tok < parts.length; tok++) {
@@ -462,7 +557,7 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
             if ((item.startsWith("http://")) || (item.startsWith("https://"))) {
                 if ((item.endsWith(".jpg")) || (item.endsWith(".gif")) || (item.endsWith(".png")) ||
                         (item.endsWith(".JPG")) || (item.endsWith(".GIF")) || (item.endsWith(".PNG")))
-                    item = "<br><a href=\"" + item + "\" target=\"_blank\"><img class=\"embeddedimage\" src=\"" + item + "\" /></a><br>";
+                    item = encapsulateImage(item, item);
                 else if (item.contains("www.youtube.com/user")) {
                     // Handle this as a normal link, it's not a video
                     // (except that we'll miss the http://www.youtube.com/user/UserName#p/u/1/1p3vcRhsYGo format)
@@ -486,10 +581,24 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
         return outputMessage;
     }
 
+    private String encapsulateImage(String href, String imgSrc) {
+        String encapsulated = "<br><a href=\"" + href + "\" target=\"_blank\">";
+        encapsulated += "<img class=\"embeddedimage\" src=\"" + imgSrc + "\" /></a><br>";
+
+        return encapsulated;
+    }
+
+    private String encapsulateThumbnail(String href, String imgSrc) {
+        String encapsulated = "<a class=\"ogAnchorImage\" href=\"" + href + "\" target=\"_blank\">";
+        encapsulated += "<img class=\"embeddedthumbnail\" src=\"" + imgSrc + "\" /></a>";
+
+        return encapsulated;
+    }
+
     private String encapsulateLink(String link) {
         String encapsulatedLink;
 
-        RegExp regExp = RegExp.compile("https?://([a-zA-Z0-9.]+)");
+        RegExp regExp = RegExp.compile("https?://([a-zA-Z0-9.-]+)");
         MatchResult matcher = regExp.exec(link);
         boolean matchFound = (matcher != null);
 
@@ -498,6 +607,14 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
             encapsulatedLink = "<a href=\"" + link + "\" target=\"_blank\">" + matcher.getGroup(1) + "</a>";
         } else
             encapsulatedLink = "<a href=\"" + link + "\" target=\"_blank\">lien</a>";
+        return encapsulatedLink;
+    }
+
+    private String encapsulateAnchor(String href, String title) {
+        String encapsulatedLink;
+
+        encapsulatedLink = "<a class=\"ogAnchor\" href=\"" + href + "\" target=\"_blank\">" + title + "</a>";
+
         return encapsulatedLink;
     }
 
@@ -537,54 +654,10 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
                 return jump;
             }
 
-
             encapsulated = "<a class=\"jumpAnchor\">" + matcher.getGroup(0) + "</a>";
             encapsulated += jump.substring(matcher.getGroup(0).length(), jump.length());
         }
 
         return encapsulated;
-    }
-
-    public void SendOgDataRequest(String targetUrl)
-    {
-        String url = urlPrefix + servletName;
-        url += "?rnd_value=" + Random.nextInt(400000000);
-
-        String postData = "request_mode=og_data";
-        postData += "&user_id=" + RuntimeData.getInstance().getUserId();
-        postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
-        postData += "&target_url=" + targetUrl;
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
-        try {
-            builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-            builder.sendRequest(postData, new RequestCallback() {
-                public void onError(Request request, Throwable exception) {
-                    // Couldn't connect to server (could be timeout, SOP violation, etc.)
-                }
-
-                public void onResponseReceived(Request request, Response response) {
-                    if (200 == response.getStatusCode()) {
-                        ConsoleLogger.getInstance().log("Got OdData");
-                        JSONObject obj;
-                        JSONValue jsonValue = JSONParser.parseStrict(response.getText());
-                        //JSONArray jsonArray = jsonValue.isArray();
-
-                        //obj = jsonArray.get(0).isObject();
-                        String ogTitle = jsonValue.isObject().get("ogtitle").isString().stringValue();
-                        String ogImage = jsonValue.isObject().get("ogimage").isString().stringValue();
-                        ConsoleLogger.getInstance().log("OG Title: " + ogTitle);
-                        ConsoleLogger.getInstance().log("OG Image: " + ogImage);
-                    }
-                    else if (403 == response.getStatusCode())
-                       // handleAccessForbidden();
-                    //else
-                      System.out.println("Request response error: " + response.getStatusCode());
-                }
-            });
-        } catch (RequestException e) {
-            Window.alert("Server error: " + e);
-            // Couldn't connect to server
-        }
     }
 }

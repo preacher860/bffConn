@@ -226,18 +226,24 @@ public class BffConnServer extends HttpServlet {
 
                 if(requestMode.contentEquals("og_data")) {
                     try {
-                        Document doc = Jsoup.connect(target_url).get();
+                        Document doc = Jsoup.connect(target_url).userAgent("Mozilla").get();
                         Elements title = doc.select("meta[property=og:title]");
                         Elements image = doc.select("meta[property=og:image]");
                         System.out.println("JSOUP Title: " + title.attr("content"));
                         System.out.println("JSOUP Image: " + image.attr("content"));
 
                         out.println("  {");
+                        out.println("     \"target_url\":\"" + target_url + "\",");
                         out.println("     \"ogtitle\":\"" + title.attr("content") + "\",");
                         out.println("     \"ogimage\":\"" + image.attr("content") + "\"");
                         out.print("  }");
                     } catch (Exception e) {
-
+                        System.out.println("OG data retrieval failed: " + e.toString());
+                        out.println("  {");
+                        out.println("     \"target_url\":\"" + target_url + "\",");
+                        out.println("     \"ogtitle\":\"\",");
+                        out.println("     \"ogimage\":\"\"");
+                        out.print("  }");
                     }
                 }
             }
