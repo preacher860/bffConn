@@ -2,6 +2,7 @@ package com.lanouette.app.client;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -9,9 +10,19 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -53,6 +64,8 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
     private UserContainer messageUser = null;
     private UserContainer myUser = null;
     private MessageViewElement mySelfRef;
+    private static final String urlPrefix = GWT.getModuleBaseURL();
+    private static final String servletName = "bffconnserver";
 
     public MessageViewElement(MessageContainer message, UserContainer user,
                               UserContainer myself, UserCallbackInterface cb) {
@@ -154,10 +167,9 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
                 String elementText = Element.as(event.getNativeEvent().getEventTarget()).getInnerHTML();
 
                 // Check for jump links
-                if (elementText.startsWith("#")) {
+                if (elementText != null && elementText.startsWith("#")) {
                     try {
                         Integer value = Integer.valueOf(elementText.substring(1, elementText.length()));
-                        ConsoleLogger.getInstance().log("Jumping to message " + value);
                         event.stopPropagation();
                         myUserCallbackInterface.jumpLinkClicked(value);
                     } catch (Exception e) {
@@ -167,7 +179,7 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
 
                 // Check for links as not to pop the menu if following
                 String elementHref = Element.as(event.getNativeEvent().getEventTarget()).getPropertyString("href");
-                if (elementHref.startsWith("http://") || elementHref.startsWith("https://")) {
+                if ((elementHref != null) && ((elementHref.startsWith("http://") || elementHref.startsWith("https://")))) {
                     event.stopPropagation();
                 }
             }
@@ -199,7 +211,7 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
             ClickHandler messagePaneClickHandler = new ClickHandler() {
                 public void onClick(ClickEvent event) {
                     final MessagePopup popup = new MessagePopup(myMessage,
-                            myUser.equals(messageUser),
+                            myUser.getNick().equals(messageUser.getNick()),
                             myUserCallbackInterface,
                             MessageViewElement.this);
 
@@ -459,6 +471,7 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
                     item = encapsulateYoutube(item);
                 } else {
                     // It's a link to some random site
+                    SendOgDataRequest(item);
                     item = encapsulateLink(item);
                 }
             }
@@ -506,16 +519,72 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
     }
 
     private String encapsulateJump(String jump) {
-        // First see if we can convert that to an int, otherwise leave it as text
-        try {
-            Integer value = Integer.valueOf(jump.substring(1, jump.length()));
-            if (value < 1) {
+        String encapsulated = jump;
+        RegExp regExp = RegExp.compile("[#]\\d+");
+        MatchResult matcher = regExp.exec(jump);
+
+        // Matched regex in group0, subex in group one (the hostname)
+        if (matcher != null && matcher.getGroupCount() == 1) {
+            ConsoleLogger.getInstance().log("Found jump link " + matcher.getGroup(0));
+
+            // First see if we can convert that to an int, otherwise leave it as text
+            try {
+                Integer value = Integer.valueOf(matcher.getGroup(0).substring(1, matcher.getGroup(0).length()));
+                if (value < 1) {
+                    return jump;
+                }
+            } catch (Exception e) {
                 return jump;
             }
-        } catch (Exception e) {
-            return jump;
+
+
+            encapsulated = "<a class=\"jumpAnchor\">" + matcher.getGroup(0) + "</a>";
+            encapsulated += jump.substring(matcher.getGroup(0).length(), jump.length());
         }
 
-        return "<a class=\"jumpAnchor\">" + jump + "</a>";
+        return encapsulated;
+    }
+
+    public void SendOgDataRequest(String targetUrl)
+    {
+        String url = urlPrefix + servletName;
+        url += "?rnd_value=" + Random.nextInt(400000000);
+
+        String postData = "request_mode=og_data";
+        postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+        postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
+        postData += "&target_url=" + targetUrl;
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
+        try {
+            builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+            builder.sendRequest(postData, new RequestCallback() {
+                public void onError(Request request, Throwable exception) {
+                    // Couldn't connect to server (could be timeout, SOP violation, etc.)
+                }
+
+                public void onResponseReceived(Request request, Response response) {
+                    if (200 == response.getStatusCode()) {
+                        ConsoleLogger.getInstance().log("Got OdData");
+                        JSONObject obj;
+                        JSONValue jsonValue = JSONParser.parseStrict(response.getText());
+                        //JSONArray jsonArray = jsonValue.isArray();
+
+                        //obj = jsonArray.get(0).isObject();
+                        String ogTitle = jsonValue.isObject().get("ogtitle").isString().stringValue();
+                        String ogImage = jsonValue.isObject().get("ogimage").isString().stringValue();
+                        ConsoleLogger.getInstance().log("OG Title: " + ogTitle);
+                        ConsoleLogger.getInstance().log("OG Image: " + ogImage);
+                    }
+                    else if (403 == response.getStatusCode())
+                       // handleAccessForbidden();
+                    //else
+                      System.out.println("Request response error: " + response.getStatusCode());
+                }
+            });
+        } catch (RequestException e) {
+            Window.alert("Server error: " + e);
+            // Couldn't connect to server
+        }
     }
 }

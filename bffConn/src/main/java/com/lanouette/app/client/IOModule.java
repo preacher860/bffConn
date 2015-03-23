@@ -537,7 +537,40 @@ public class IOModule {
 			// Couldn't connect to server        
 		}
 	}
-	
+
+    public void SendOgDataRequest(String targetUrl)
+    {
+        String url = urlPrefix + servletName;
+        url += "?rnd_value=" + Random.nextInt(400000000);
+
+        String postData = "request_mode=og_data";
+        postData += "&user_id=" + RuntimeData.getInstance().getUserId();
+        postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
+        postData += "&target_url=" + targetUrl;
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
+        try {
+            builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+            builder.sendRequest(postData, new RequestCallback() {
+                public void onError(Request request, Throwable exception) {
+                    // Couldn't connect to server (could be timeout, SOP violation, etc.)
+                }
+
+                public void onResponseReceived(Request request, Response response) {
+                    if (200 == response.getStatusCode())
+                        ConsoleLogger.getInstance().log("Got OdData");
+                    else if (403 == response.getStatusCode())
+                        handleAccessForbidden();
+                    else
+                        System.out.println("Request response error: " + response.getStatusCode());
+                }
+            });
+        } catch (RequestException e) {
+            Window.alert("Server error: " + e);
+            // Couldn't connect to server
+        }
+    }
+
 	private void handleNewMessages(String serverResponse)
 	{
 		int Index = 0;

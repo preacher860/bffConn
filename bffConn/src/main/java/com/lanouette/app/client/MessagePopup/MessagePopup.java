@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.lanouette.app.client.ConsoleLogger;
 import com.lanouette.app.client.MessageContainer;
 import com.lanouette.app.client.MessageViewElementCallback;
 import com.lanouette.app.client.UserCallbackInterface;
