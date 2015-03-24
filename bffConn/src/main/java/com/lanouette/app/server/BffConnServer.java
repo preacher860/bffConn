@@ -225,26 +225,7 @@ public class BffConnServer extends HttpServlet {
                 }
 
                 if(requestMode.contentEquals("og_data")) {
-                    try {
-                        Document doc = Jsoup.connect(target_url).userAgent("Mozilla").get();
-                        Elements title = doc.select("meta[property=og:title]");
-                        Elements image = doc.select("meta[property=og:image]");
-                        System.out.println("JSOUP Title: " + title.attr("content"));
-                        System.out.println("JSOUP Image: " + image.attr("content"));
-
-                        out.println("  {");
-                        out.println("     \"target_url\":\"" + target_url + "\",");
-                        out.println("     \"ogtitle\":\"" + title.attr("content") + "\",");
-                        out.println("     \"ogimage\":\"" + image.attr("content") + "\"");
-                        out.print("  }");
-                    } catch (Exception e) {
-                        System.out.println("OG data retrieval failed: " + e.toString());
-                        out.println("  {");
-                        out.println("     \"target_url\":\"" + target_url + "\",");
-                        out.println("     \"ogtitle\":\"\",");
-                        out.println("     \"ogimage\":\"\"");
-                        out.print("  }");
-                    }
+                    retrieveOgTags(out, target_url);
                 }
             }
         } else {
@@ -743,10 +724,9 @@ public class BffConnServer extends HttpServlet {
         String unescapedHTML = StringEscapeUtils.unescapeHtml3(cleanedMessage);
         String escapedMessage = escapeJson(unescapedHTML);
 
-
 //  	System.out.println("Evil: " + message);
-        System.out.println("Unesc: " + unescapedMessage);
-        System.out.println("Clean: " + cleanedMessage);
+//      System.out.println("Unesc: " + unescapedMessage);
+//      System.out.println("Clean: " + cleanedMessage);
 //  	System.out.println("Escaped: " + escapedMessage);
         return escapedMessage;
     }
@@ -1291,6 +1271,29 @@ public class BffConnServer extends HttpServlet {
         } catch (SQLException e) {
             System.err.println("Mysql Statement Error");
             e.printStackTrace();
+        }
+    }
+
+    private void retrieveOgTags(PrintWriter out, String target_url) {
+        try {
+            Document doc = Jsoup.connect(target_url).userAgent("Mozilla").get();
+            Elements title = doc.select("meta[property=og:title]");
+            Elements image = doc.select("meta[property=og:image]");
+            //System.out.println("JSOUP Title: " + title.attr("content"));
+            //System.out.println("JSOUP Image: " + image.attr("content"));
+
+            out.println("  {");
+            out.println("     \"target_url\":\"" + target_url + "\",");
+            out.println("     \"ogtitle\":\"" + title.attr("content") + "\",");
+            out.println("     \"ogimage\":\"" + image.attr("content") + "\"");
+            out.print("  }");
+        } catch (Exception e) {
+            System.out.println("OG data retrieval failed: " + e.toString());
+            out.println("  {");
+            out.println("     \"target_url\":\"" + target_url + "\",");
+            out.println("     \"ogtitle\":\"\",");
+            out.println("     \"ogimage\":\"\"");
+            out.print("  }");
         }
     }
 

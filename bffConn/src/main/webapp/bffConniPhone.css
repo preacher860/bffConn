@@ -235,6 +235,25 @@
         font-weight: bold;
         margin: 10px;
     }
+
+    .ogAnchor {
+        font-size: large;
+    }
+
+    .ogAnchor:visited {
+        font-size: large;
+    }
+
+    .embeddedthumbnail {
+        max-width: 240px;
+        max-height: 80px;
+        width: expression(this.width > 240 ? "240px" : true);
+        height: expression(this.height > 80 ? "80px" : true);
+    }
+
+    .ogTitleTarget {
+        font-size:medium;
+    }
 }
 
 .loginBox {

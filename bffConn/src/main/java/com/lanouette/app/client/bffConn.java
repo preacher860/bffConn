@@ -116,7 +116,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
         consoleLog("Logger in 'DEBUG' mode");
         String sessionIdCookie = Cookies.getCookie("bffConnexionSID");
-        ioModule.GetServerSessionValid(sessionIdCookie);
 
         RuntimeData.getInstance().setMobile(isMobile);
         RuntimeData.getInstance().setIphone(isIphone);
@@ -131,15 +130,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
         myEntryBox.initialize(this, this);
         myMessageManager.initialize(this);
 
-        UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
-        ConsoleLogger.getInstance().log("Host: " + Window.Location.getHost());
-        ConsoleLogger.getInstance().log("Hostname: " + Window.Location.getHostName());
-        ConsoleLogger.getInstance().log("Href: " + Window.Location.getHref());
-        ConsoleLogger.getInstance().log("Path: " + Window.Location.getPath());
-        ConsoleLogger.getInstance().log("Port: " + Window.Location.getPort());
-        ConsoleLogger.getInstance().log("Proto: " + Window.Location.getProtocol());
-        ConsoleLogger.getInstance().log("Hash: " + Window.Location.getHash());
-        ConsoleLogger.getInstance().log("App URL: " + Window.Location.getProtocol() + "//" + Window.Location.getHost());
+        ioModule.GetServerSessionValid(sessionIdCookie);
     }
 
     public void applicationStart() {

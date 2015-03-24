@@ -3,7 +3,6 @@ package com.lanouette.app.client;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -11,17 +10,11 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -33,9 +26,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.lanouette.app.client.MessagePopup.MessagePopup;
 
 public class MessageViewElement extends HorizontalPanel implements MessageViewElementCallback {
-    private static final String urlPrefix = GWT.getModuleBaseURL();
-    private static final String servletName = "bffconnserver";
     private final boolean isMobile;
+    private final ioCommandCallback ogCommandCallback;
     private HorizontalPanel infoPane = new HorizontalPanel();
     private HorizontalPanel iconPane = new HorizontalPanel();
     private VerticalPanel messagePane = new VerticalPanel();
@@ -65,7 +57,6 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
     private UserContainer messageUser = null;
     private UserContainer myUser = null;
     private MessageViewElement mySelfRef;
-    private final ioCommandCallback ogCommandCallback;
 
     public MessageViewElement(MessageContainer message, UserContainer user,
                               UserContainer myself, UserCallbackInterface cb) {
@@ -573,59 +564,63 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
     }
 
     private void processOgTags(String responseText) {
-        JSONValue jsonValue = JSONParser.parseStrict(responseText);
-        String targetUrl = jsonValue.isObject().get("target_url").isString().stringValue();
-        String ogTitle = jsonValue.isObject().get("ogtitle").isString().stringValue();
-        String ogImage = jsonValue.isObject().get("ogimage").isString().stringValue();
-        //ConsoleLogger.getInstance().log("Target URL: " + targetUrl);
-        //ConsoleLogger.getInstance().log("OG Title: " + ogTitle);
-        //ConsoleLogger.getInstance().log("OG Image: " + ogImage);
+        try {
+            JSONValue jsonValue = JSONParser.parseStrict(responseText);
+            String targetUrl = jsonValue.isObject().get("target_url").isString().stringValue();
+            String ogTitle = jsonValue.isObject().get("ogtitle").isString().stringValue();
+            String ogImage = jsonValue.isObject().get("ogimage").isString().stringValue();
+            //ConsoleLogger.getInstance().log("Target URL: " + targetUrl);
+            //ConsoleLogger.getInstance().log("OG Title: " + ogTitle);
+            //ConsoleLogger.getInstance().log("OG Image: " + ogImage);
 
-        if (!ogTitle.isEmpty()) {
-            // Just keep the part before the first splitter
-            if (ogTitle.contains("|")) {
-                ogTitle = ogTitle.substring(0, ogTitle.indexOf('|'));
-            }
-
-            // Try to locate the anchor where this URL was encapsulated when the message was first
-            // displayed. If found, replace the anchor with formatted OG data
-            String displayedMessage = userMessagePane.getHTML();
-
-            // Encapsulate target URL and match with the one likely present in DOM
-            String anchorItem = encapsulateLink(targetUrl);
-            Integer targetUrlPos = displayedMessage.indexOf(anchorItem);
-            if (targetUrlPos >= 0) {
-                String replaced = "";
-
-                if (targetUrlPos > 0) {
-                    replaced = displayedMessage.substring(0, targetUrlPos);
-                    replaced += "<br>";
+            if (!ogTitle.isEmpty()) {
+                // Just keep the part before the first splitter in the title
+                if (ogTitle.contains("|")) {
+                    ogTitle = ogTitle.substring(0, ogTitle.indexOf('|'));
                 }
 
-                replaced += "<table><tr>";
-                if (!ogImage.isEmpty()) {
-                    replaced += "<td class='ogImageContainer'>";
-                    replaced += encapsulateThumbnail(targetUrl, ogImage);
+                // Try to locate the anchor where this URL was encapsulated when the message was first
+                // displayed. If found, replace the anchor with formatted OG data
+                String displayedMessage = userMessagePane.getHTML();
+
+                // Encapsulate target URL and match with the one likely present in DOM
+                String anchorItem = encapsulateLink(targetUrl);
+                Integer targetUrlPos = displayedMessage.indexOf(anchorItem);
+                if (targetUrlPos >= 0) {
+                    String replaced = "";
+
+                    if (targetUrlPos > 0) {
+                        replaced = displayedMessage.substring(0, targetUrlPos);
+                        replaced += "<br>";
+                    }
+
+                    replaced += "<table><tr>";
+                    if (!ogImage.isEmpty()) {
+                        replaced += "<td class='ogImageContainer'>";
+                        replaced += encapsulateThumbnail(targetUrl, ogImage);
+                        replaced += "</td>";
+                    }
+
+                    replaced += "<td class='ogTitleContainer'>";
+                    replaced += encapsulateAnchor(targetUrl, ogTitle) + "<br>";
+
+                    RegExp regExp = RegExp.compile("https?://([a-zA-Z0-9.-]+)");
+                    MatchResult matcher = regExp.exec(targetUrl);
+                    if (matcher != null && matcher.getGroupCount() == 2) {
+                        replaced += "<span class='ogTitleTarget'>";
+                        replaced += matcher.getGroup(1) + "</span><br>";
+                    }
                     replaced += "</td>";
+                    replaced += "</tr></table>";
+
+                    replaced += displayedMessage.substring(targetUrlPos + anchorItem.length(),
+                            displayedMessage.length());
+
+                    userMessagePane.setHTML(replaced);
                 }
-
-                replaced += "<td class='ogTitleContainer'>";
-                replaced += encapsulateAnchor(targetUrl, ogTitle) + "<br>";
-
-                RegExp regExp = RegExp.compile("https?://([a-zA-Z0-9.-]+)");
-                MatchResult matcher = regExp.exec(targetUrl);
-                if (matcher != null && matcher.getGroupCount() == 2) {
-                    replaced += "<span class='ogTitleTarget'>";
-                    replaced += matcher.getGroup(1) + "</span><br>";
-                }
-                replaced += "</td>";
-                replaced += "</tr></table>";
-
-                replaced += displayedMessage.substring(targetUrlPos + anchorItem.length(),
-                        displayedMessage.length());
-
-                userMessagePane.setHTML(replaced);
             }
+        } catch (Exception e) {
+            ConsoleLogger.getInstance().log("Error encapsulating OG tags: " + e.toString());
         }
     }
 }
