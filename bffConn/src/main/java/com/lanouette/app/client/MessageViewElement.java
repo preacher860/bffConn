@@ -3,6 +3,7 @@ package com.lanouette.app.client;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -64,6 +65,7 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
     private UserContainer messageUser = null;
     private UserContainer myUser = null;
     private MessageViewElement mySelfRef;
+    private final ioCommandCallback ogCommandCallback;
 
     public MessageViewElement(MessageContainer message, UserContainer user,
                               UserContainer myself, UserCallbackInterface cb) {
@@ -74,6 +76,12 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
         myUser = myself;
         mySelfRef = this;
         isMobile = RuntimeData.getInstance().isMobile();
+
+        ogCommandCallback = new ioCommandCallback() {
+            public void execute(String response) {
+                processOgTags(response);
+            }
+        };
 
         String myEnhancedMessage = "";
 
@@ -393,40 +401,6 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
         removeStyleName("messageViewElementSelect");
     }
 
-    public void SendOgDataRequest(String targetUrl) {
-        String url = urlPrefix + servletName;
-        url += "?rnd_value=" + Random.nextInt(400000000);
-
-        String postData = "request_mode=og_data";
-        postData += "&user_id=" + RuntimeData.getInstance().getUserId();
-        postData += "&session_id=" + RuntimeData.getInstance().getSessionId();
-        postData += "&target_url=" + targetUrl;
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
-        try {
-            builder.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-            builder.sendRequest(postData, new RequestCallback() {
-                public void onError(Request request, Throwable exception) {
-                    // Couldn't connect to server (could be timeout, SOP violation, etc.)
-                    ConsoleLogger.getInstance().log("Got error from srv");
-                }
-
-                public void onResponseReceived(Request request, Response response) {
-                    if (200 == response.getStatusCode()) {
-                        processOgTags(response.getText());
-                    } else if (403 == response.getStatusCode())
-                        // handleAccessForbidden();
-                        //else
-                        System.out.println("Request response error: " + response.getStatusCode());
-                }
-            }
-            );
-        } catch (RequestException e) {
-            Window.alert("Server error: " + e);
-            // Couldn't connect to server
-        }
-    }
-
     private void setUserPaneColor() {
         userMessagePane.setStyleName("messageViewElementBox");
 
@@ -503,7 +477,7 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
                     item = encapsulateYoutube(item);
                 } else {
                     // It's a link to some random site
-                    SendOgDataRequest(item);
+                    IOModule.getInstance().SendOgDataRequest(item, ogCommandCallback);
                     item = encapsulateLink(item);
                 }
             }
@@ -630,7 +604,7 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
 
                 replaced += "<table><tr>";
                 if (!ogImage.isEmpty()) {
-                    replaced += "<td>";
+                    replaced += "<td class='ogImageContainer'>";
                     replaced += encapsulateThumbnail(targetUrl, ogImage);
                     replaced += "</td>";
                 }

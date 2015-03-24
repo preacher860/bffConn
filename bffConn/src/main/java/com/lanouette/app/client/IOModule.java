@@ -2,7 +2,9 @@ package com.lanouette.app.client;
 
 import java.util.ArrayList;
 
+import com.allen_sauer.gwt.log.client.*;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -22,10 +24,19 @@ public class IOModule {
 	private ioCallbackInterface myCallbackInterface;
 	private static final String urlPrefix = GWT.getModuleBaseURL();
 	private static final String servletName = "bffconnserver";
-	
-	public IOModule(ioCallbackInterface theCallbackInterface) {
-		myCallbackInterface = theCallbackInterface;
+
+    private static final IOModule instance = new IOModule();
+
+    public static IOModule getInstance() {
+        return instance;
+    }
+
+	public IOModule() {
 	}
+
+    public void initialize(ioCallbackInterface theCallbackInterface){
+        myCallbackInterface = theCallbackInterface;
+    }
 	
 	//private void postToServer()
 	public void SendUserMessage(String MessageText, Integer seqId)
@@ -538,8 +549,7 @@ public class IOModule {
 		}
 	}
 
-    public void SendOgDataRequest(String targetUrl)
-    {
+    public void SendOgDataRequest(String targetUrl, final ioCommandCallback command) {
         String url = urlPrefix + servletName;
         url += "?rnd_value=" + Random.nextInt(400000000);
 
@@ -557,14 +567,14 @@ public class IOModule {
                 }
 
                 public void onResponseReceived(Request request, Response response) {
-                    if (200 == response.getStatusCode())
-                        ConsoleLogger.getInstance().log("Got OdData");
-                    else if (403 == response.getStatusCode())
-                        handleAccessForbidden();
-                    else
+                    if (200 == response.getStatusCode()) {
+                        command.execute(response.getText());
+                    } else if (403 == response.getStatusCode()){
                         System.out.println("Request response error: " + response.getStatusCode());
+                    }
                 }
-            });
+            }
+            );
         } catch (RequestException e) {
             Window.alert("Server error: " + e);
             // Couldn't connect to server

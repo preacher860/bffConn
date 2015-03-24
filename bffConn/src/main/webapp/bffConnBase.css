@@ -465,7 +465,13 @@ h1 {
 
 .ogTitleContainer {
     vertical-align:top;
+    padding-top: 3px;
     padding-left: 4px;
+}
+
+.ogImageContainer {
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 
 .ogTitleTarget {

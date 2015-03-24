@@ -81,7 +81,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     @UiField
     MessageView myMessageManager;
     private Integer jumpAfterLoad = 0;
-    private IOModule ioModule = new IOModule(this);
+    private IOModule ioModule = IOModule.getInstance();
     private Integer myCurrentMode = MODE_INIT_S1;
     private Timer myRefreshTimer;
     private Timer myFaviconTimer;
@@ -123,6 +123,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
         uiBinder.createAndBindUi(this);
 
+        ioModule.initialize(this);
         iconBar.initialize(this);
         userButtonBar.initialize(this);
         myMotdInfo.initialize(this);
