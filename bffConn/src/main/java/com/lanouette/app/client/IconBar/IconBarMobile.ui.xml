@@ -1,0 +1,26 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:style>
+        .panel {
+            outline: none;
+        }
+        .flowpanel {
+            height: 32px;
+            display: inline-flex;
+        }
+
+        .image {
+            height: 64px;
+            width: 64px;
+            margin-left: 5px;
+            margin-top: 32px;
+        }
+    </ui:style>
+
+    <g:FocusPanel ui:field="panel" addStyleNames="{style.panel}">
+        <g:FlowPanel ui:field="iconPanel" addStyleNames="{style.flowpanel}">
+            <g:Image ui:field="menuButton" url="images/menu-mobile.png" addStyleNames="{style.image}"></g:Image>
+        </g:FlowPanel>
+    </g:FocusPanel>
+</ui:UiBinder>

@@ -21,20 +21,11 @@
     </ui:style>
 
     <g:VerticalPanel ui:field="mainPanel" styleName="{style.panel}">
-        <g:FocusPanel ui:field="modeNormalPanel" visible="false"  addStyleNames="{style.buttonPanel}">
+        <g:FocusPanel ui:field="fontSizePanel" addStyleNames="{style.buttonPanel}">
             <g:HorizontalPanel>
-                <g:Image url="images/fwd2r.png" addStyleNames="popupImage"></g:Image>
+                <g:Image url="images/fontsize.png" addStyleNames="popupImage"></g:Image>
                 <g:cell verticalAlignment="ALIGN_MIDDLE">
-                    <g:Label addStyleNames="popupLabel">Mode normal</g:Label>
-                </g:cell>
-            </g:HorizontalPanel>
-        </g:FocusPanel>
-
-        <g:FocusPanel ui:field="modeCompactPanel" addStyleNames="{style.buttonPanel}">
-            <g:HorizontalPanel>
-                <g:Image url="images/back2r.png" addStyleNames="popupImage"></g:Image>
-                <g:cell verticalAlignment="ALIGN_MIDDLE">
-                    <g:Label addStyleNames="popupLabel">Mode compact</g:Label>
+                    <g:Label ui:field="fontSizeLabel" addStyleNames="popupLabel">Mode normal</g:Label>
                 </g:cell>
             </g:HorizontalPanel>
         </g:FocusPanel>

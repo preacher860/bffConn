@@ -27,4 +27,19 @@ public class CookieData {
             return "disabled";
         }
     }
+
+    public void setViewMode(String value) {
+        Cookies.setCookie("bffViewMode", value,
+                new Date(System.currentTimeMillis() + ONE_YEAR_COOKIE));
+    }
+
+    public String getViewMode() {
+        String viewMode = Cookies.getCookie("bffViewMode");
+
+        if(viewMode != null) {
+            return viewMode;
+        } else {
+            return "normal";
+        }
+    }
 }

@@ -223,12 +223,6 @@ h1 {
     table-layout: fixed;
 }
 
-.messageViewVpanel {
-    height: 100%;
-    width: 100%;
-    background-color: #ffffff;
-}
-
 .messagePane {
     background-color: #B0B0B0;
     width: 100%;
@@ -240,6 +234,7 @@ h1 {
     height: 34px;
     margin-top: 4px;
     margin-left: 5px;
+    margin-right: 5px;
     border-radius: 3px;
 }
 
@@ -274,7 +269,7 @@ h1 {
 .mainPanel {
     background-image: url('images/backgrounds/convore.jpg');
     background-repeat: repeat;
-    min-width: 1000px;
+    /*min-width: 1000px;*/
     min-height: 300px;
 }
 
@@ -301,6 +296,7 @@ h1 {
     max-height: 200px;
     width: expression(this.width > 600 ? "600px" : true);
     height: expression(this.height > 200 ? "200px" : true);
+    box-shadow: 3px 3px 7px #888888;
 }
 
 .embeddedthumbnail {
@@ -477,4 +473,8 @@ h1 {
 .ogTitleTarget {
     font-size:smaller;
     color: #666666;
+}
+
+.width100 {
+    width:100%;
 }

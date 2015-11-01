@@ -20,17 +20,21 @@
     <!--                                           -->
     <title>Connexion BFF</title>
     <script type="text/javascript">
-        if (/Android|Opera Mini/i.test(navigator.userAgent)) {
-            console.log( "BFF: Android Mobile device");
+        if (/iPhone|iPad|iPod|UCBrowser|Android|Opera Mini/i.test(navigator.userAgent)) {
+            console.log( "BFF: Mobile device");
             document.write('<link type="text/css" rel="stylesheet" href="bffConnMobile.css">');
-        }else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            console.log( "BFF: iCrap Mobile device");
-            document.write('<link type="text/css" rel="stylesheet" href="bffConniPhone.css">');
+
+            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                console.log( "BFF: iCrap Mobile device");
+                document.write('<link type="text/css" rel="stylesheet" href="bffConniPhone.css">');
+            }
         } else {
             console.log( "BFF: Desktop device");
             document.write('<link type="text/css" rel="stylesheet" href="bffConnDesktop.css">');
         }
+
         document.write('<link type="text/css" rel="stylesheet" href="dialog.css">');
+        document.write('<link id="empsStyle" type="text/css" rel="stylesheet" href="">');
     </script>
 
        <!--                                           -->

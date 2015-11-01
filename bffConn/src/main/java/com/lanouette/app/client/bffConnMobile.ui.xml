@@ -9,20 +9,18 @@
     </ui:style>
 
     <g:DockLayoutPanel ui:field="mainDockPanel" addStyleNames="mainPanel">
-        <g:north size="76">
+        <g:north size="100">
             <g:HorizontalPanel ui:field="headerStack" addStyleNames="headerStack">
-                <g:cell width="225px">
-                    <g:Image ui:field="headerImage" url="images/bffConnLogo4.png"></g:Image>
+                <g:cell width="80px">
+                    <ib:IconBarBase ui:field="iconBar"></ib:IconBarBase>
                 </g:cell>
                 <g:VerticalPanel ui:field="topToolbarStack">
+                    <g:Image ui:field="headerImage" url="images/bffConnLogo4.png" visible="false"></g:Image>
                     <g:cell height="40px" verticalAlignment="ALIGN_BOTTOM">
                         <m:Motd ui:field="myMotd"></m:Motd>
                     </g:cell>
                     <g:HorizontalPanel ui:field="topToolbarLowerStack">
-                        <g:cell width="245px">
-                            <ib:IconBarBase ui:field="iconBar"></ib:IconBarBase>
-                        </g:cell>
-                        <g:cell width="320px">
+                        <g:cell width="500px">
                             <m:UserButtonBar ui:field="userButtonBar" visible="false"></m:UserButtonBar>
                         </g:cell>
                         <g:cell  horizontalAlignment="ALIGN_RIGHT">

@@ -11,6 +11,7 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -25,6 +26,8 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.lanouette.app.client.IconBar.IconBar;
+import com.lanouette.app.client.IconBar.IconBarBase;
+import com.lanouette.app.client.IconBar.IconBarMobile;
 import com.lanouette.app.client.MessageBox.MessageBox;
 import com.lanouette.app.client.OnlineUsersView.OnlineUsers;
 import com.lanouette.app.client.StatsWindow.StatsWin;
@@ -33,7 +36,12 @@ import com.lanouette.app.client.StatsWindow.StatsWin;
 //import org.fusesource.restygwt.client.MethodCallback;
 
 public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInterface {
+    @UiTemplate("bffConn.ui.xml")
     interface uiBinder extends UiBinder<Widget, bffConn> {
+    }
+
+    @UiTemplate("bffConnMobile.ui.xml")
+    interface uiBinderMobile extends UiBinder<Widget, bffConn> {
     }
 
     public static final int MODE_INIT_S1 = 1;
@@ -48,7 +56,6 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     private static final int POLL_SLOW = 10000;
     private static final int MAX_JUMPBACK_MESSAGES = 2000;
     private static final int MAX_JUMPBACK_MESSAGES_MOBILE = 500;
-    private final uiBinder uiBinder = GWT.create(uiBinder.class);
     //private final BffProxy proxy;
     private final boolean isMobile = checkMobile();
     private final boolean isIphone = checkIphone();
@@ -66,8 +73,8 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     Image headerImage;
     @UiField
     Motd myMotd;
-    @UiField
-    IconBar iconBar;
+    @UiField(provided = true)
+    IconBarBase iconBar;
     @UiField
     UserButtonBar userButtonBar;
     @UiField
@@ -93,6 +100,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     private boolean myMotdRcvd = false;
     private boolean faviconAlert = false;
     private boolean audioEnabled = false;
+    private UiBinder uiBinder;
 
     private int myPollSpeed = POLL_FAST;
 
@@ -116,14 +124,23 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
 
         consoleLog("Logger in 'DEBUG' mode");
         String sessionIdCookie = Cookies.getCookie("bffConnexionSID");
+
+        ioModule.initialize(this);
         ioModule.GetServerSessionValid(sessionIdCookie);
 
         RuntimeData.getInstance().setMobile(isMobile);
         RuntimeData.getInstance().setIphone(isIphone);
 
+        if (isMobile) {
+            uiBinder = GWT.create(uiBinderMobile.class);
+            iconBar = new IconBarMobile();
+        } else {
+            uiBinder = GWT.create(uiBinder.class);
+            iconBar = new IconBar();
+        }
+
         uiBinder.createAndBindUi(this);
 
-        ioModule.initialize(this);
         iconBar.initialize(this);
         userButtonBar.initialize(this);
         myMotdInfo.initialize(this);
@@ -435,7 +452,7 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
             myMessageManager.scrollToBottom();
         } else {
             ConsoleLogger.getInstance().log("Message is NOT loaded");
-            Integer jumpBack = RuntimeData.getInstance().isMobile()? MAX_JUMPBACK_MESSAGES_MOBILE : MAX_JUMPBACK_MESSAGES;
+            Integer jumpBack = RuntimeData.getInstance().isMobile() ? MAX_JUMPBACK_MESSAGES_MOBILE : MAX_JUMPBACK_MESSAGES;
             if ((jumpId - 10 > myMessageManager.getOldestDisplayedSeq() - jumpBack)) {
                 jumpAfterLoad = jumpId;
                 loadMessages((jumpId - 10 < 1) ? 1 : jumpId - 10, myMessageManager.getOldestDisplayedSeq() - jumpId + 10);

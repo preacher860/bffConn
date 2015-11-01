@@ -5,6 +5,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -13,6 +15,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.lanouette.app.client.Alerts;
+import com.lanouette.app.client.ConsoleLogger;
 import com.lanouette.app.client.CookieData;
 import com.lanouette.app.client.JumpDialog.JumpDialog;
 import com.lanouette.app.client.LocalDialog.LocalDialog;
@@ -31,9 +34,7 @@ public class FunctionPopup extends PopupPanel {
     @UiField
     VerticalPanel mainPanel;
     @UiField
-    FocusPanel modeNormalPanel;
-    @UiField
-    FocusPanel modeCompactPanel;
+    FocusPanel fontSizePanel;
     @UiField
     FocusPanel infoPanel;
     @UiField
@@ -52,6 +53,8 @@ public class FunctionPopup extends PopupPanel {
     Image audioButton;
     @UiField
     Label alertDescription;
+    @UiField
+    Label fontSizeLabel;
 
     public FunctionPopup(UserCallbackInterface callbackInterface) {
         super(false);
@@ -65,6 +68,7 @@ public class FunctionPopup extends PopupPanel {
         setWidget(uiBinder.createAndBindUi(this));
 
         setAudioButtonStyle(CookieData.getInstance().getAudioMode());
+        setViewMode(CookieData.getInstance().getViewMode());
 
         localDialog = new LocalDialog(myUserCallbackInterface);
         jumpDialog = new JumpDialog(myUserCallbackInterface);
@@ -75,18 +79,9 @@ public class FunctionPopup extends PopupPanel {
             }
         });
 
-        modeNormalPanel.addClickHandler(new ClickHandler() {
+        fontSizePanel.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent clickEvent) {
-                myUserCallbackInterface.showBarClicked();
-                setNormalView();
-                hide();
-            }
-        });
-
-        modeCompactPanel.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent clickEvent) {
-                myUserCallbackInterface.hideBarClicked();
-                setCompactView();
+                toggleViewMode();
                 hide();
             }
         });
@@ -146,14 +141,27 @@ public class FunctionPopup extends PopupPanel {
         });
     }
 
-    public void setCompactView() {
-        modeNormalPanel.setVisible(true);
-        modeCompactPanel.setVisible(false);
+    public void toggleViewMode() {
+        if(CookieData.getInstance().getViewMode().equals("normal")) {
+            CookieData.getInstance().setViewMode("emps");
+            setViewMode("emps");
+        } else {
+            CookieData.getInstance().setViewMode("normal");
+            setViewMode("normal");
+        }
     }
 
-    public void setNormalView() {
-        modeNormalPanel.setVisible(false);
-        modeCompactPanel.setVisible(true);
+    public void setViewMode(String mode) {
+        Element ele = DOM.getElementById("empsStyle");
+        ConsoleLogger.getInstance().log("CSS element: " + ele.toString());
+
+        if(mode.equals("emps")) {
+            ele.setAttribute("href", "bffConnMobileEmps.css");
+            fontSizeLabel.setText("Mode EMPS");
+        } else {
+            ele.setAttribute("href", "");
+            fontSizeLabel.setText("Mode normal");
+        }
     }
 
     public void audioButtonToggle() {

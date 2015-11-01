@@ -11,6 +11,8 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -26,7 +28,7 @@ import com.lanouette.app.client.RuntimeData;
 import com.lanouette.app.client.UserCallbackInterface;
 import com.lanouette.app.client.VersionInfo;
 
-public class IconBar implements IsWidget {
+public class IconBar extends IconBarBase {
     interface MyUiBinder extends UiBinder<Widget, IconBar> {
     }
 
@@ -55,7 +57,6 @@ public class IconBar implements IsWidget {
     TextBox localBox;
     @UiField
     TextBox jumpBox;
-    private UserCallbackInterface userCallbackInterface;
     private FunctionPopup popup;
 
     public IconBar() {
@@ -83,17 +84,11 @@ public class IconBar implements IsWidget {
     public void setCompactView() {
         normalButton.setVisible(true);
         compactButton.setVisible(false);
-        if (RuntimeData.getInstance().isMobile()) {
-            popup.setCompactView();
-        }
     }
 
     public void setNormalView() {
         normalButton.setVisible(false);
         compactButton.setVisible(true);
-        if (RuntimeData.getInstance().isMobile()) {
-            popup.setNormalView();
-        }
     }
 
     public void setLocal(String local) {
