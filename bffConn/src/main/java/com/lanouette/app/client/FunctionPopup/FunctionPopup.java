@@ -19,7 +19,9 @@ import com.lanouette.app.client.ConsoleLogger;
 import com.lanouette.app.client.CookieData;
 import com.lanouette.app.client.JumpDialog.JumpDialog;
 import com.lanouette.app.client.LocalDialog.LocalDialog;
+import com.lanouette.app.client.RuntimeData;
 import com.lanouette.app.client.UserCallbackInterface;
+import com.lanouette.app.client.VersionInfo;
 
 public class FunctionPopup extends PopupPanel {
     private UserCallbackInterface myUserCallbackInterface;
@@ -48,13 +50,15 @@ public class FunctionPopup extends PopupPanel {
     @UiField
     FocusPanel logoutPanel;
     @UiField
-    FocusPanel closePanel;
-    @UiField
     Image audioButton;
     @UiField
     Label alertDescription;
     @UiField
     Label fontSizeLabel;
+    @UiField
+    Label infoLabel;
+    @UiField
+    Label localisation;
 
     public FunctionPopup(UserCallbackInterface callbackInterface) {
         super(false);
@@ -73,16 +77,11 @@ public class FunctionPopup extends PopupPanel {
         localDialog = new LocalDialog(myUserCallbackInterface);
         jumpDialog = new JumpDialog(myUserCallbackInterface);
 
-        closePanel.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent clickEvent) {
-                hide();
-            }
-        });
+        infoLabel.setText("Info (v" + VersionInfo.CURRENT_MAJOR + "." + VersionInfo.CURRENT_VERSION + ")");
 
         fontSizePanel.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent clickEvent) {
                 toggleViewMode();
-                hide();
             }
         });
 
@@ -139,6 +138,13 @@ public class FunctionPopup extends PopupPanel {
                 hide();
             }
         });
+    }
+
+    @Override
+    public void show() {
+        super.show();
+
+       localisation.setText(RuntimeData.getInstance().getLocale());
     }
 
     public void toggleViewMode() {

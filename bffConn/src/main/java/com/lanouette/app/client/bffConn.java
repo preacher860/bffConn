@@ -423,8 +423,10 @@ public class bffConn implements EntryPoint, ioCallbackInterface, UserCallbackInt
     }
 
     public void localEntered(String local) {
-        if (local != null)
+        if (local != null) {
+            RuntimeData.getInstance().setLocale(local);
             ioModule.SendLocal(local);
+        }
 
         myEntryBox.setFocus();
     }

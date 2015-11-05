@@ -20,7 +20,7 @@
                         <m:Motd ui:field="myMotd"></m:Motd>
                     </g:cell>
                     <g:HorizontalPanel ui:field="topToolbarLowerStack">
-                        <g:cell width="500px">
+                        <g:cell width="550px">
                             <m:UserButtonBar ui:field="userButtonBar" visible="false"></m:UserButtonBar>
                         </g:cell>
                         <g:cell  horizontalAlignment="ALIGN_RIGHT">

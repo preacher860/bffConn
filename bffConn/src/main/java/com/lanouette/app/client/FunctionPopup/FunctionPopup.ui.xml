@@ -25,7 +25,10 @@
             <g:HorizontalPanel>
                 <g:Image url="images/fontsize.png" addStyleNames="popupImage"></g:Image>
                 <g:cell verticalAlignment="ALIGN_MIDDLE">
-                    <g:Label ui:field="fontSizeLabel" addStyleNames="popupLabel">Mode normal</g:Label>
+                    <g:HTMLPanel>
+                    <g:Label  addStyleNames="popupLabel">Affichage</g:Label>
+                    <g:Label ui:field="fontSizeLabel" addStyleNames="popupSubLabel">Mode normal</g:Label>
+                    </g:HTMLPanel>
                 </g:cell>
             </g:HorizontalPanel>
         </g:FocusPanel>
@@ -34,7 +37,7 @@
             <g:HorizontalPanel>
                 <g:Image url="images/info.png" addStyleNames="popupImage"></g:Image>
                 <g:cell verticalAlignment="ALIGN_MIDDLE">
-                    <g:Label addStyleNames="popupLabel">Info</g:Label>
+                    <g:Label ui:field="infoLabel" addStyleNames="popupLabel">Info</g:Label>
                 </g:cell>
             </g:HorizontalPanel>
         </g:FocusPanel>
@@ -43,7 +46,10 @@
             <g:HorizontalPanel>
                 <g:Image url="images/local.png" addStyleNames="popupImage"></g:Image>
                 <g:cell verticalAlignment="ALIGN_MIDDLE">
+                    <g:HTMLPanel>
                     <g:Label addStyleNames="popupLabel">Localisation</g:Label>
+                    <g:Label ui:field="localisation" addStyleNames="popupSubLabel"></g:Label>
+                    </g:HTMLPanel>
                 </g:cell>
             </g:HorizontalPanel>
         </g:FocusPanel>
@@ -86,19 +92,6 @@
                 </g:cell>
             </g:HorizontalPanel>
         </g:FocusPanel>
-
-        <g:FocusPanel ui:field="closePanel" styleName="{style.bottomPanel}">
-        <g:HorizontalPanel styleName="{style.tableCenter}">
-            <g:Image url="images/close.png" addStyleNames="popupImage" ></g:Image>
-            <g:cell verticalAlignment="ALIGN_MIDDLE">
-                <g:Label addStyleNames="popupLabel">Fermer</g:Label>
-            </g:cell>
-        </g:HorizontalPanel>
-        </g:FocusPanel>
-
-        <!--<g:cell horizontalAlignment="ALIGN_CENTER">-->
-            <!--<g:Button ui:field="closeButton" styleName="popupButton">Fermer</g:Button>-->
-        <!--</g:cell>-->
     </g:VerticalPanel>
 
 </ui:UiBinder>
