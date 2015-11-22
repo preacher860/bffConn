@@ -3,7 +3,6 @@ package com.lanouette.app.client;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -11,17 +10,11 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -376,13 +369,16 @@ public class MessageViewElement extends HorizontalPanel implements MessageViewEl
     }
 
     public void updateMessage(MessageContainer message) {
-        myMessage = message;
-
         if (message.isMessageDeleted()) {
             setVisible(false);
         }
 
-        userMessagePane.setHTML(enhanceMessage(message.getMessage()));
+        if (!myMessage.getMessage().equals(message.getMessage())) {
+            String enhancedMessage = enhanceMessage(message.getMessage());
+            userMessagePane.setHTML(enhancedMessage);
+        }
+
+        myMessage = message;
         forMe = isMessageForLoggedUser(message, myUser);
         setUserPaneColor();
         setupStarred(message);
