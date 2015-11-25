@@ -179,7 +179,8 @@ public class EntryBox extends HorizontalPanel {
     }
 
     public void editMessage(MessageContainer message) {
-        String decodedMessage = URL.decode(message.getMessage());
+        //String decodedMessage = URL.decode(message.getMessage());
+        String decodedMessage = message.getMessage();
         messageItem.setValue(deconvertCrLf(decodedMessage));
         myIsEditing = true;
         myEditingMessageSeq = message.getMessageSeqId();
