@@ -1303,7 +1303,7 @@ public class BffConnServer extends HttpServlet {
         url += myServerConfig.getSqlServerIp() + ":";
         url += myServerConfig.getSqlServerPort() + "/";
         url += myServerConfig.getDatabaseName();
-        url += "?useUnicode=true&characterEncoding=utf8";
+        url += "?useUnicode=true";
 
         String driver = "com.mysql.jdbc.Driver";
         String user = myServerConfig.getDatabaseUser();
